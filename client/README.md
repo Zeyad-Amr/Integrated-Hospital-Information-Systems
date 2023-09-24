@@ -25,7 +25,15 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ```bash
 
     src/
+    ├── app/                                # Pages named by app routes
+    │   ├── home/
+    │   ├── about/
+    │   ├── contact/
+    │   └── .../
+    │
     ├── assets/                             # Shared assets (e.g., fonts, images)
+    │
+    ├── components/                         # Shared UI components
     │
     ├── config/
     │   ├── env/
@@ -46,34 +54,27 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │   ├── layout/                         # Layout components (e.g., header, footer)
     │   ├── hooks/                          # Custom React hooks
     │   ├── auth/                           # Authentication-related code
-    │   ├── mock/                           # Mock data and API endpoints for testing
+    │   ├── mock/                           # Mock data
     │   └── constants/                      # Constants and configuration files
-    │
-    ├── redux/
-    │   └── store.ts                        # Redux store configuration
-    │
-    ├── components/                         # Shared UI components
-    │
-    ├── app/                                # Pages named by app routes
-    │   ├── home/
-    │   ├── about/
-    │   ├── contact/
-    │   └── .../
     │
     ├── features/
     │   └── auth/
     │      ├── data/
-    │      │   ├── api/                     # API-related code
-    │      │   ├── models/                  # Data models or structures
-    │      │   └── repositories/            # Data access and storage
+    │      │   ├── datasources/             # Data sources (e.g., API, LocalStorage)
+    │      │   ├── models/                  # Data models or structures for data transfer without behavior (e.g., User, Post)
+    │      │   └── repositories/            # Data access and storage (e.g., UserRepository)
     │      ├── domain/
-    │      │   ├── entities/                # Domain-specific entities
-    │      │   ├── repositories/            # Interfaces for data access
-    │      │   └── useCases/                # Business logic
+    │      │   ├── entities/                # Domain-specific entities with behavior and business rules (e.g., User, Post)
+    │      │   ├── repositories/            # Abstraction for data access (e.g., UserRepository)
+    │      │   ├── value-objects/           # Domain-specific value objects (e.g., PatientName for Patient entity having firstName and lastName)
+    │      │   └── useCases/                # Business logic (e.g., Login, Logout)
     │      └── presentation/
-    │          ├── auth-pages/              # Feature-specific pages for authentication
+    │          ├── pages/                   # Feature-specific pages
     │          ├── components/              # Feature-specific UI components
-    │          └── controllers/             # State management (e.g., Redux)
+    │          └── controllers/             # State management (Redux Slices)
+    │
+    ├── redux/
+    │   └── store.ts                        # Redux store configuration
     │
     └── services/                           # External services or integrations
 
