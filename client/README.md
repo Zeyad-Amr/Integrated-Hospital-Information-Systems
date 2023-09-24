@@ -1,29 +1,82 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Run the project
 
-## Getting Started
+First, if you haven't already, install [Node.js](https://nodejs.org/en/download/).
 
-First, run the development server:
+Then, install the dependencies:
 
 ```bash
+
+npm install
+
+```
+
+Then, run the development server:
+
+```bash
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+
+    src/
+    ├── assets/                  # Shared assets (e.g., fonts, images)
+    │
+    ├── components/
+    │   └── common/               # Reusable UI components
+    │
+    ├── features/
+    │   ├── auth/
+    │   │   ├── data/
+    │   │   │   ├── api/         # API-related code
+    │   │   │   ├── models/      # Data models or structures
+    │   │   │   └── repositories/ # Data access and storage
+    │   │   ├── domain/
+    │   │   │   ├── entities/    # Domain-specific entities
+    │   │   │   ├── repositories/ # Interfaces for data access
+    │   │   │   └── useCases/     # Business logic
+    │   │   └── presentation/
+    │   │       ├── auth-pages/  # Feature-specific pages for authentication
+    │   │       ├── components/  # Feature-specific UI components
+    │   │       └── controllers/ # State management (e.g., Redux)
+    │
+    ├── app/                      # Pages named by app
+    │   ├── home/
+    │   ├── about/
+    │   ├── contact/
+    │   └── .../
+    │
+    ├── core/
+    │   ├── utils/               # Utility functions and helpers
+    │   ├── components/          # Reusable UI components (not feature-specific)
+    │   ├── endpoints/           # API endpoint configurations
+    │   ├── routes/              # Application routes or navigation paths
+    │   ├── theme/               # Styling and theming-related files
+    │   ├── types/               # Custom TypeScript types
+    │   ├── layout/              # Layout components (e.g., header, footer)
+    │   ├── hooks/               # Custom React hooks
+    │   ├── auth/                # Authentication-related code
+    │   ├── mock/                # Mock data and API endpoints for testing
+    │   └── constants/           # Constants and configuration files
+    │
+    ├── redux/
+    │   ├── store.ts            # Redux store configuration
+    │
+    └── services/                # External services or integrations
+
+```
 
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
 
+- You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
