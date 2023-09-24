@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "The server of Qasr HIS ",
+  "main": "build/app.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/app.js",
+    "dev": "concurrently \"npx tsc -w\" \"nodemon build/src/app.js\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.3.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.14",
+    "@types/express": "^4.17.18",
+    "@types/node": "^20.6.4",
+    "concurrently": "^8.2.1",
+    "nodemon": "^3.0.1",
+    "prisma": "^5.3.1"
+  }
+}
