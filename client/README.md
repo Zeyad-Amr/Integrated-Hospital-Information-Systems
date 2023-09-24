@@ -25,49 +25,57 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ```bash
 
     src/
-    ├── assets/                  # Shared assets (e.g., fonts, images)
+    ├── assets/                             # Shared assets (e.g., fonts, images)
     │
-    ├── components/
-    │   └── common/               # Reusable UI components
+    ├── config/
+    │   ├── env/
+    │   │   ├── development.env             # Environment variables for development
+    │   │   ├── production.env              # Environment variables for production
+    │   │   └── testing.env                 # Environment variables for testing
+    │   └── settings/
+    │       ├── api_keys.json               # API keys and secrets
+    │       └── app_config.json             # App configuration
     │
-    ├── features/
-    │   ├── auth/
-    │   │   ├── data/
-    │   │   │   ├── api/         # API-related code
-    │   │   │   ├── models/      # Data models or structures
-    │   │   │   └── repositories/ # Data access and storage
-    │   │   ├── domain/
-    │   │   │   ├── entities/    # Domain-specific entities
-    │   │   │   ├── repositories/ # Interfaces for data access
-    │   │   │   └── useCases/     # Business logic
-    │   │   └── presentation/
-    │   │       ├── auth-pages/  # Feature-specific pages for authentication
-    │   │       ├── components/  # Feature-specific UI components
-    │   │       └── controllers/ # State management (e.g., Redux)
+    ├── core/
+    │   ├── utils/                          # Utility functions and helpers
+    │   ├── components/                     # Reusable UI components (not feature-specific)
+    │   ├── endpoints/                      # API endpoint configurations
+    │   ├── routes/                         # Application routes or navigation paths
+    │   ├── theme/                          # Styling and theming-related files
+    │   ├── types/                          # Custom TypeScript types
+    │   ├── layout/                         # Layout components (e.g., header, footer)
+    │   ├── hooks/                          # Custom React hooks
+    │   ├── auth/                           # Authentication-related code
+    │   ├── mock/                           # Mock data and API endpoints for testing
+    │   └── constants/                      # Constants and configuration files
     │
-    ├── app/                      # Pages named by app
+    ├── redux/
+    │   └── store.ts                        # Redux store configuration
+    │
+    ├── components/                         # Shared UI components
+    │
+    ├── app/                                # Pages named by app routes
     │   ├── home/
     │   ├── about/
     │   ├── contact/
     │   └── .../
     │
-    ├── core/
-    │   ├── utils/               # Utility functions and helpers
-    │   ├── components/          # Reusable UI components (not feature-specific)
-    │   ├── endpoints/           # API endpoint configurations
-    │   ├── routes/              # Application routes or navigation paths
-    │   ├── theme/               # Styling and theming-related files
-    │   ├── types/               # Custom TypeScript types
-    │   ├── layout/              # Layout components (e.g., header, footer)
-    │   ├── hooks/               # Custom React hooks
-    │   ├── auth/                # Authentication-related code
-    │   ├── mock/                # Mock data and API endpoints for testing
-    │   └── constants/           # Constants and configuration files
+    ├── features/
+    │   └── auth/
+    │      ├── data/
+    │      │   ├── api/                     # API-related code
+    │      │   ├── models/                  # Data models or structures
+    │      │   └── repositories/            # Data access and storage
+    │      ├── domain/
+    │      │   ├── entities/                # Domain-specific entities
+    │      │   ├── repositories/            # Interfaces for data access
+    │      │   └── useCases/                # Business logic
+    │      └── presentation/
+    │          ├── auth-pages/              # Feature-specific pages for authentication
+    │          ├── components/              # Feature-specific UI components
+    │          └── controllers/             # State management (e.g., Redux)
     │
-    ├── redux/
-    │   ├── store.ts            # Redux store configuration
-    │
-    └── services/                # External services or integrations
+    └── services/                           # External services or integrations
 
 ```
 
