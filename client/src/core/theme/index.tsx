@@ -9,8 +9,7 @@ import {
   ThemeProvider as MuiThemeProvider,
   ThemeOptions,
 } from "@mui/material/styles";
-// locales
-import { useLocales } from "@/core/locales";
+
 // components
 import { useSettingsContext } from "@/core/components/settings";
 // system
@@ -34,8 +33,6 @@ type Props = {
 };
 
 export default function ThemeProvider({ children }: Props) {
-  const { currentLang } = useLocales();
-
   const settings = useSettingsContext();
 
   const darkModeOption = darkMode(settings.themeMode);
@@ -90,10 +87,7 @@ export default function ThemeProvider({ children }: Props) {
     contrastOption.components
   );
 
-  const themeWithLocale = useMemo(
-    () => createTheme(theme, currentLang.systemValue),
-    [currentLang.systemValue, theme]
-  );
+  const themeWithLocale = useMemo(() => createTheme(theme), [theme]);
 
   return (
     <NextAppDirEmotionCacheProvider options={{ key: "css" }}>
