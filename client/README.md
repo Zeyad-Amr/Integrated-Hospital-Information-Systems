@@ -32,8 +32,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │   └── .../
     │
     ├── assets/                             # Shared assets (e.g., fonts, images)
-    │
-    ├── components/                         # Shared UI components
+    │   ├── fonts/                          # Fonts
+    │   ├── data/                           # Data files (e.g., JSON, CSV)
+    │   ├── images/                         # Images
+    │   ├── illustrations/                  # Illustrations
+    │   └── icons/                          # Icons
     │
     ├── config/
     │   ├── env/
@@ -41,10 +44,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │   │   ├── production.env              # Environment variables for production
     │   │   └── testing.env                 # Environment variables for testing
     │   └── settings/
-    │       ├── api_keys.json               # API keys and secrets
-    │       └── app_config.json             # App configuration
+    │       ├── api-keys.ts                 # API keys
+    │       └── app-config.ts               # Application configuration
     │
     ├── core/
+    │   ├── api/                            # API client
     │   ├── utils/                          # Utility functions and helpers
     │   ├── components/                     # Reusable UI components (not feature-specific)
     │   ├── endpoints/                      # API endpoint configurations
@@ -54,10 +58,15 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │   ├── layout/                         # Layout components (e.g., header, footer)
     │   ├── hooks/                          # Custom React hooks
     │   ├── auth/                           # Authentication-related code
-    │   ├── mock/                           # Mock data
+    │   ├── _mock/                           # Mock data
+    │   ├── redux/                          # Redux store, reducers, and middleware
+    │   │   ├── store.ts                    # Redux store
+    │   │   ├── reducers.ts                 # Root reducer
+    │   │   ├── middlewares/                # Redux middlewares
+    │   │   └── slices/                     # Root slices
     │   └── constants/                      # Constants and configuration files
     │
-    ├── features/
+    ├── modules/
     │   └── auth/
     │      ├── data/
     │      │   ├── datasources/             # Data sources (e.g., API, LocalStorage)
@@ -71,10 +80,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │      └── presentation/
     │          ├── pages/                   # Feature-specific pages
     │          ├── components/              # Feature-specific UI components
-    │          └── controllers/             # State management (Redux Slices)
-    │
-    ├── redux/
-    │   └── store.ts                        # Redux store configuration
+    │          └── controllers/             # Feature-specific controllers
+    │              ├── index.tsx            # Controller for the feature
+    │              ├── slices/              # Redux slices
+    │              └── middlewares/         # Redux middleware
     │
     └── services/                           # External services or integrations
 
