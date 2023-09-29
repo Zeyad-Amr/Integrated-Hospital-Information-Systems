@@ -66,28 +66,20 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en" className={primaryFont.className}>
       <body>
-        <AuthProvider>
-          <SettingsProvider
-            defaultSettings={{
-              themeMode: "light", // 'light' | 'dark'
-              themeDirection: "ltr", //  'rtl' | 'ltr'
-              themeContrast: "default", // 'default' | 'bold'
-              themeLayout: "vertical", // 'vertical' | 'horizontal' | 'mini'
-              themeColorPresets: "default", // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
-              themeStretch: false,
-            }}
-          >
-            <ThemeProvider>
-              <MotionLazy>
-                <SnackbarProvider>
-                  <SettingsDrawer />
-                  <ProgressBar />
-                  <AuthConsumer>{children}</AuthConsumer>
-                </SnackbarProvider>
-              </MotionLazy>
-            </ThemeProvider>
-          </SettingsProvider>
-        </AuthProvider>
+        <SettingsProvider
+          defaultSettings={{
+            themeMode: "light", // 'light' | 'dark'
+            themeDirection: "ltr", //  'rtl' | 'ltr'
+            themeContrast: "default", // 'default' | 'bold'
+            themeLayout: "vertical", // 'vertical' | 'horizontal' | 'mini'
+            themeColorPresets: "default", // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
+            themeStretch: false,
+          }}
+        >
+          <ThemeProvider>
+            <MotionLazy>{children}</MotionLazy>
+          </ThemeProvider>
+        </SettingsProvider>
       </body>
     </html>
   );

@@ -2,7 +2,7 @@
 import { useTheme } from '@mui/material/styles';
 import { Variant } from '@mui/material/styles/createTypography';
 // hooks
-import { useWidth } from '@/core/hooks/use-responsive';
+import { useWidth } from '@/core/shared/hooks/use-responsive';
 
 // ----------------------------------------------------------------------
 

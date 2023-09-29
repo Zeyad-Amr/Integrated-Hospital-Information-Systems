@@ -3,9 +3,9 @@
 import isEqual from "lodash/isEqual";
 import { useEffect, useMemo, useCallback, useState } from "react";
 // hooks
-import { useLocalStorage } from "@/core/hooks/use-local-storage";
+import { useLocalStorage } from "@/core/shared/hooks/use-local-storage";
 // utils
-import { localStorageGetItem } from "@/core/utils/storage-available";
+import { localStorageGetItem } from "@/core/shared/utils/storage-available";
 //
 import { SettingsValueProps } from "../types";
 import { SettingsContext } from "./settings-context";
