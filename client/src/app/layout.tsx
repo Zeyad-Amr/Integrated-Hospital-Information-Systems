@@ -2,10 +2,13 @@
 import ThemeProvider from "@/core/theme";
 import { primaryFont } from "@/core/theme/typography";
 // components
-import ProgressBar from "@/core/components/progress-bar";
-import { MotionLazy } from "@/core/components/animate/motion-lazy";
-import SnackbarProvider from "@/core/components/snackbar/snackbar-provider";
-import { SettingsProvider, SettingsDrawer } from "@/core/components/settings";
+import ProgressBar from "@/core/shared/components/progress-bar";
+import { MotionLazy } from "@/core/shared/components/animate/motion-lazy";
+import SnackbarProvider from "@/core/shared/components/snackbar/snackbar-provider";
+import {
+  SettingsProvider,
+  SettingsDrawer,
+} from "@/core/shared/components/settings";
 
 // auth
 import { AuthProvider, AuthConsumer } from "@/core/auth/context/jwt";

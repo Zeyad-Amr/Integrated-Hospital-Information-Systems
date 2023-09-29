@@ -38,6 +38,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │   ├── illustrations/                  # Illustrations
     │   └── icons/                          # Icons
     │
+    │
     ├── config/
     │   ├── env/
     │   │   ├── development.env             # Environment variables for development
@@ -48,23 +49,25 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │       └── app-config.ts               # Application configuration
     │
     ├── core/
-    │   ├── api/                            # API client
-    │   ├── utils/                          # Utility functions and helpers
-    │   ├── components/                     # Reusable UI components (not feature-specific)
-    │   ├── endpoints/                      # API endpoint configurations
-    │   ├── routes/                         # Application routes or navigation paths
-    │   ├── theme/                          # Styling and theming-related files
-    │   ├── types/                          # Custom TypeScript types
-    │   ├── layout/                         # Layout components (e.g., header, footer)
-    │   ├── hooks/                          # Custom React hooks
+    │   ├── _mock/                          # Mock data
+    │   ├── api/
+    │   │   ├── api-client/                 # API client
+    │   │   └── endpoints/                  # API endpoints
     │   ├── auth/                           # Authentication-related code
-    │   ├── _mock/                           # Mock data
+    │   ├── layout/                         # Layout components (e.g., header, footer)
     │   ├── redux/                          # Redux store, reducers, and middleware
     │   │   ├── store.ts                    # Redux store
     │   │   ├── reducers.ts                 # Root reducer
     │   │   ├── middlewares/                # Redux middlewares
-    │   │   └── slices/                     # Root slices
-    │   └── constants/                      # Constants and configuration files
+    │   │   └── slices/                     # Redux slices
+    │   ├── routes/                         # Application routes or navigation paths
+    │   ├── shared/                         # Shared code
+    │   │   ├── components/                 # Shared UI components
+    │   │   ├── constants/                  # Shared constants
+    │   │   ├── hooks/                      # Shared React hooks
+    │   │   ├── types/                      # Shared TypeScript types and interfaces
+    │   │   └── utils/                      # Shared utility functions and helpers
+    │   └── theme/                          # Styling and theming-related files
     │
     ├── modules/
     │   └── auth/

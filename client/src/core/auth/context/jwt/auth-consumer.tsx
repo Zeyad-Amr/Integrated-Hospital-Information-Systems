@@ -1,7 +1,7 @@
 "use client";
 
 // components
-import { SplashScreen } from "@/core/components/loading-screen";
+import { SplashScreen } from "@/core/shared/components/loading-screen";
 //
 import { AuthContext } from "./auth-context";
 

@@ -8,7 +8,7 @@ import { useMockedUser } from "@/core/hooks/use-mocked-user";
 // assets
 import { ForbiddenIllustration } from "@/assets/illustrations";
 // components
-import { MotionContainer, varBounce } from "@/core/components/animate";
+import { MotionContainer, varBounce } from "@/core/shared/components/animate";
 
 // ----------------------------------------------------------------------
 
