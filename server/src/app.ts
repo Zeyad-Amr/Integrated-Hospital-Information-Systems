@@ -12,7 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
-const PORT = 4000
-app.listen(PORT, () => {
-    console.log(`listening to ${PORT}`);
+app.listen(process.env.PORT || 4000, () => {
+    console.log(`listening to ${process.env.PORT || 4000}`);
 });
