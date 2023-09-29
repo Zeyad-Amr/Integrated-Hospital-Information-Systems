@@ -4,7 +4,7 @@
   "description": "The server of Qasr HIS ",
   "main": "build/app.js",
   "scripts": {
-    "build": "tsc",
+    "build": "npx tsc",
     "start": "node build/app.js",
     "dev": "concurrently \"npx tsc -w\" \"nodemon build/src/app.js\""
   },
