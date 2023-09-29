@@ -1,4 +1,4 @@
-import "@/core/utils/highlight";
+import "@/core/shared/utils/highlight";
 import dynamic from "next/dynamic";
 // @mui
 import { alpha } from "@mui/material/styles";

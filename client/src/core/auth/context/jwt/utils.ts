@@ -1,7 +1,7 @@
 // routes
 import { paths } from '@/core/routes/paths';
 // utils
-import axios from '@/core/utils/axios';
+import axios from '@/core/shared/utils/axios';
 
 // ----------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
 // utils
-import "@/core/utils/highlight";
+import "@/core/shared/utils/highlight";
 import ReactMarkdown from "react-markdown";
 // markdown plugins
 import rehypeRaw from "rehype-raw";

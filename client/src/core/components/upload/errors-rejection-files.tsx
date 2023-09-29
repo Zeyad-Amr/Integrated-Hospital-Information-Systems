@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 // utils
-import { fData } from "@/core/utils/format-number";
+import { fData } from "@/core/shared/utils/format-number";
 //
 import { fileData } from "../file-thumbnail";
 

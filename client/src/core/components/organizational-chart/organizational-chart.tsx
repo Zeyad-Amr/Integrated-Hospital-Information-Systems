@@ -2,7 +2,7 @@ import { Tree, TreeNode } from "react-organizational-chart";
 // @mui
 import { useTheme } from "@mui/material/styles";
 // utils
-import { flattenArray } from "@/core/utils/flatten-array";
+import { flattenArray } from "@/core/shared/utils/flatten-array";
 //
 import GroupNode from "./_common/group-node";
 import SimpleNode from "./_common/simple-node";

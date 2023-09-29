@@ -2,13 +2,16 @@
 import ThemeProvider from "@/core/theme";
 import { primaryFont } from "@/core/theme/typography";
 // components
-import ProgressBar from "@/core/components/progress-bar";
-import { MotionLazy } from "@/core/components/animate/motion-lazy";
-import SnackbarProvider from "@/core/components/snackbar/snackbar-provider";
-import { SettingsProvider, SettingsDrawer } from "@/core/components/settings";
+// import ProgressBar from "@/core/shared/components/progress-bar";
+// import { MotionLazy } from "@/core/shared/components/animate/motion-lazy";
+// import SnackbarProvider from "@/core/shared/components/snackbar/snackbar-provider";
+import {
+  SettingsProvider,
+  // SettingsDrawer,
+} from "@/core/components/settings";
 
 // auth
-import { AuthProvider, AuthConsumer } from "@/core/auth/context/jwt";
+// import { AuthProvider, AuthConsumer } from "@/core/auth/context/jwt";
 
 import "./globals.css";
 import type { Metadata } from "next";
@@ -63,28 +66,18 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en" className={primaryFont.className}>
       <body>
-        <AuthProvider>
-          <SettingsProvider
-            defaultSettings={{
-              themeMode: "light", // 'light' | 'dark'
-              themeDirection: "ltr", //  'rtl' | 'ltr'
-              themeContrast: "default", // 'default' | 'bold'
-              themeLayout: "vertical", // 'vertical' | 'horizontal' | 'mini'
-              themeColorPresets: "default", // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
-              themeStretch: false,
-            }}
-          >
-            <ThemeProvider>
-              <MotionLazy>
-                <SnackbarProvider>
-                  <SettingsDrawer />
-                  <ProgressBar />
-                  <AuthConsumer>{children}</AuthConsumer>
-                </SnackbarProvider>
-              </MotionLazy>
-            </ThemeProvider>
-          </SettingsProvider>
-        </AuthProvider>
+        <SettingsProvider
+          defaultSettings={{
+            themeMode: "light", // 'light' | 'dark'
+            themeDirection: "rtl", //  'rtl' | 'ltr'
+            themeContrast: "default", // 'default' | 'bold'
+            themeLayout: "vertical", // 'vertical' | 'horizontal' | 'mini'
+            themeColorPresets: "default", // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
+            themeStretch: false,
+          }}
+        >
+          <ThemeProvider>{children}</ThemeProvider>
+        </SettingsProvider>
       </body>
     </html>
   );

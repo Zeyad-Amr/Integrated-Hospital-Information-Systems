@@ -1,9 +1,9 @@
 import useSWR from 'swr';
 import { useMemo } from 'react';
 // utils
-import { fetcher, endpoints } from '@/core/utils/axios';
+import { fetcher, endpoints } from '@/core/shared/utils/axios';
 // types
-import { IPostItem } from '@/core/types/blog';
+import { IPostItem } from '@/core/shared/types/blog';
 
 // ----------------------------------------------------------------------
 

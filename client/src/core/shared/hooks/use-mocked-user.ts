@@ -3,7 +3,7 @@ import { _mock } from '@/core/_mock';
 // TO GET THE USER FROM THE AUTHCONTEXT, YOU CAN USE
 
 // CHANGE:
-// import { useMockedUser } from '@/core/hooks/use-mocked-user';
+// import { useMockedUser } from '@/core/shared/hooks/use-mocked-user';
 // const { user } = useMockedUser();
 
 // TO:
