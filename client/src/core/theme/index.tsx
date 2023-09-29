@@ -11,7 +11,7 @@ import {
 } from "@mui/material/styles";
 
 // components
-import { useSettingsContext } from "@/core/shared/components/settings";
+import { useSettingsContext } from "@/core/components/settings";
 // system
 import { palette } from "./palette";
 import { shadows } from "./shadows";

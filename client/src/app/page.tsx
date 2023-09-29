@@ -5,7 +5,7 @@ import { useScroll } from "framer-motion";
 import Link from "next/link";
 
 // components
-import ScrollProgress from "@/core/shared/components/scroll-progress";
+import ScrollProgress from "@/core/components/scroll-progress";
 
 // ----------------------------------------------------------------------
 

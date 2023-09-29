@@ -1,7 +1,7 @@
 import { Theme } from "@mui/material/styles";
 import { buttonClasses } from "@mui/material/Button";
 // components
-import Iconify from "@/core/shared/components/iconify";
+import Iconify from "@/core/components/iconify";
 
 // ----------------------------------------------------------------------
 

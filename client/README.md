@@ -54,6 +54,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │   │   ├── api-client/                 # API client
     │   │   └── endpoints/                  # API endpoints
     │   ├── auth/                           # Authentication-related code
+    │   ├── components/                     # General Shared UI components
     │   ├── layout/                         # Layout components (e.g., header, footer)
     │   ├── redux/                          # Redux store, reducers, and middleware
     │   │   ├── store.ts                    # Redux store
