@@ -3,7 +3,7 @@ const TestPage = () => {
   return (
     <Box
       sx={{
-        backgroundColor: "secondary.main",
+        backgroundColor: "primary.contrastText",
         width: "100%",
         height: "100%",
         display: "flex",

@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
 import { SidebarContext } from "./context/context";
 import React, { useContext } from "react";
-import Button from "@mui/material/Button";
+import SidebarHeader from "./sidebar-header";
 const SidebarLayout = (props: any) => {
-  const { collapsed, onCollapse } = useContext(SidebarContext);
+  const { collapsed } = useContext(SidebarContext);
   return (
     <Box
       sx={{
@@ -11,36 +11,33 @@ const SidebarLayout = (props: any) => {
         flexDirection: "column",
         height: "100vh",
         width: "100%",
+        backgroundColor: "primary.main",
       }}
     >
-      <Box
-        sx={{
-          width: "100%",
-          height: "10vh",
-          backgroundColor: "primary.main",
-        }}
-      >
-        <Button onClick={onCollapse}>Toggle</Button>
-      </Box>
+      <SidebarHeader height="calc(5vh + 4vw)" />
+
       <Box
         sx={{
           display: "flex",
           flexDirection: "row",
-          height: "90vh",
           width: "100%",
+          height: "100%",
         }}
       >
         <Box
           sx={{
-            width: collapsed ? "5vw" : "20vw",
-            height: "90vh",
             backgroundColor: "primary.main",
+            width: collapsed ? "5vw" : "20vw",
+            transition: "width 0.3s ease-in-out",
           }}
         ></Box>
         <Box
           sx={{
-            width: collapsed ? "95vw" : "80vw",
-            height: "90vh",
+            marginX: "2vw",
+            width: "100%",
+            borderRadius: "20px 20px 0px 0px",
+            overflow: "hidden",
+            position: "relative",
           }}
         >
           {props.children}
