@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-const CloseIcon = () => {
+const MenuIcon = () => {
   return (
     <Box
       component="svg"
@@ -28,4 +28,4 @@ const CloseIcon = () => {
   );
 };
 
-export default CloseIcon;
+export default MenuIcon;

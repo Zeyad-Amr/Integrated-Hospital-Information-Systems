@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 
-const CloseIcon = ({}) => {
+const NotificationIcon = ({}) => {
   return (
     <Box
       component="svg"
@@ -29,4 +29,4 @@ const CloseIcon = ({}) => {
   );
 };
 
-export default CloseIcon;
+export default NotificationIcon;
