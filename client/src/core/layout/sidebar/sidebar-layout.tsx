@@ -28,7 +28,7 @@ const SidebarLayout = (props: any) => {
         <Box
           sx={{
             backgroundColor: "primary.main",
-            width: collapsed ? "5vw" : "25vw",
+            width: collapsed ? "4vw" : "25vw",
             transition: "width 0.3s ease-in-out",
           }}
         >

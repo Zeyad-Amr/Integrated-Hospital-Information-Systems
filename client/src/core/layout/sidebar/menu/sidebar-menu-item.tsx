@@ -25,10 +25,8 @@ const SidebarMenuItem = ({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "start",
-
+        justifyContent: collapsed ? "center" : "start",
         flexWrap: "nowrap",
-
         cursor: "pointer",
         backgroundColor: "common.white",
         borderRadius: "10px",
@@ -45,7 +43,6 @@ const SidebarMenuItem = ({
           width: "3rem",
           height: "3rem",
           padding: "0.5rem",
-          marginX: "0.5rem",
         }}
       >
         {icon}
@@ -57,6 +54,7 @@ const SidebarMenuItem = ({
           display: collapsed ? "none" : "block",
           whiteSpace: "nowrap",
           overflow: "hidden",
+          marginX: "0.5rem",
         }}
       >
         {text}
