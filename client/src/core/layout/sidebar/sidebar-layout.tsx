@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import { SidebarContext } from "./context/context";
 import React, { useContext } from "react";
 import SidebarHeader from "./sidebar-header";
+import SidebarComponent from "./sidebar-component";
 const SidebarLayout = (props: any) => {
   const { collapsed } = useContext(SidebarContext);
   return (
@@ -27,10 +28,12 @@ const SidebarLayout = (props: any) => {
         <Box
           sx={{
             backgroundColor: "primary.main",
-            width: collapsed ? "5vw" : "20vw",
+            width: collapsed ? "5vw" : "25vw",
             transition: "width 0.3s ease-in-out",
           }}
-        ></Box>
+        >
+          <SidebarComponent />
+        </Box>
         <Box
           sx={{
             marginX: "2vw",

@@ -1,5 +1,7 @@
 import { Roboto, Barlow } from 'next/font/google';
 
+import type { Theme } from '@mui/material/styles';
+
 // ----------------------------------------------------------------------
 
 export function remToPx(value: string) {
@@ -30,12 +32,10 @@ declare module '@mui/material/styles' {
   }
 }
 export const primaryFont = Roboto({
-  weight: ['400', '700'],
+  weight: ['100', '300', '400', '500', '700', '900'],
   subsets: ['latin'],
   display: 'swap',
   fallback: ['Helvetica', 'Arial', 'sans-serif'],
-
-
 });
 
 export const secondaryFont = Barlow({
