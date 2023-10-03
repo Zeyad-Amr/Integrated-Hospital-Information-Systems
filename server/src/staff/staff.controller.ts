@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { StaffUseCases } from "./staff.use-case";
-import StaffDB from "./staff.data-access";
+import StaffDB from "./staff.db-client";
 
 export class StaffController {
     private use_cases: StaffUseCases

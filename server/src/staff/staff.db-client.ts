@@ -1,8 +1,7 @@
 import db, { DbClient } from "../shared/db";
-import { DbInterface } from "../shared/interfaces/DbInterface";
 import { Staff, StaffMethodsArgs, StaffResponse } from "./staff.interface";
 
-export default class StaffDB implements DbInterface<Staff, StaffResponse, StaffMethodsArgs> {
+export default class StaffDB {
     private prisma: DbClient
     constructor() {
         this.prisma = db;
@@ -24,7 +23,7 @@ export default class StaffDB implements DbInterface<Staff, StaffResponse, StaffM
             throw error
         }
     }
-    async getOne(args: StaffMethodsArgs['FindFirstOrThrowArgs'], isThrow?: boolean | undefined): Promise<StaffResponse | null> {
+    async getOne(args: StaffMethodsArgs['FindFirstOrThrowArgs']): Promise<StaffResponse | null> {
         try {
             const staffMember = await this.prisma.staff.findFirstOrThrow(args)
             return staffMember

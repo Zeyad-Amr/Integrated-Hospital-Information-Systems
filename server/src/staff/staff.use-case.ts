@@ -1,4 +1,4 @@
-import StaffDB from "./staff.data-access";
+import StaffDB from "./staff.db-client";
 import { Staff } from "./staff.interface";
 import StaffService from "./staff.service";
 
@@ -10,7 +10,7 @@ export class StaffUseCases {
 
     public async create(data: Staff) {
         try {
-            data = this.service.validate(data);
+            data = this.service.validate(data, this.service.postSchema);
             const newMember = await this.db.create(data);
             return newMember
         } catch (error) {
@@ -19,7 +19,7 @@ export class StaffUseCases {
         }
     }
 
-    public async get_one(id: number) {
+    public async get_one(id: string) {
         try {
             const staffMember = await this.db.getOne({ where: { id } });
             return staffMember
@@ -39,9 +39,9 @@ export class StaffUseCases {
         }
     }
 
-    public async update(id: number, data: Staff) {
+    public async update(id: string, data: Staff) {
         try {
-            data = this.service.validate(data, true);
+            data = this.service.validate(data, this.service.updateSchema);
             const staff = await this.db.updateOne({
                 data,
                 where: {
@@ -55,7 +55,7 @@ export class StaffUseCases {
         }
     }
 
-    public async delete(id: number) {
+    public async delete(id: string) {
         try {
             const staff = await this.db.deleteOne({
                 where: {

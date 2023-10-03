@@ -1,6 +1,6 @@
 import express from "express";
 import { StaffController } from "./staff.controller";
-import StaffDB from "./staff.data-access";
+import StaffDB from "./staff.db-client";
 
 const router = express.Router();
 

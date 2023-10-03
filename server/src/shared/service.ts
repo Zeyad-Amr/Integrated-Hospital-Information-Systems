@@ -30,6 +30,7 @@ export default class Services {
             msg = `There is ${problem} with this ${error.meta.target[0]}`
             return { statusCode, msg }
         }
+        // TODO: handle errors with 500 status code
         statusCode = 500
         msg = error?.message ? error?.message : error
         console.log(error);
@@ -41,11 +42,7 @@ export default class Services {
     updateSchema = Joi.object({});
     postSchema = Joi.object({});
 
-    validate = (data: any, update: boolean = false) => {
-        let Schema: Joi.ObjectSchema = this.postSchema
-        if (update) {
-            Schema = this.updateSchema
-        }
+    validate = (data: any, Schema: Joi.ObjectSchema) => {
         const result = Schema.validate(data);
         if (result.error) {
 

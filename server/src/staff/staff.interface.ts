@@ -6,7 +6,7 @@ export interface Staff {
 }
 
 export interface StaffResponse extends Staff {
-    id: number
+    id?: string
 }
 
 export interface StaffMethodsArgs extends methodsArgs {
