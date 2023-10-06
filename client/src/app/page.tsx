@@ -1,16 +1,32 @@
 "use client";
 
 import TestPage from "@/core/shared/components/test";
-import Sidebar from "@/core/layout/sidebar/index";
-
+import { Button, Box } from "@mui/material";
+import { useRouter } from "next/navigation";
 // ----------------------------------------------------------------------
 
 export default function HomePage() {
+  const router = useRouter();
+
   return (
-    <div>
-      <Sidebar>
-        <TestPage label="Dashboard" />
-      </Sidebar>
-    </div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <TestPage label="Hello, My Team" />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          router.push("/dashboard");
+        }}
+      >
+        Go to Dashboard
+      </Button>
+    </Box>
   );
 }

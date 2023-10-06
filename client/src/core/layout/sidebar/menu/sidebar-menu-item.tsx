@@ -22,7 +22,7 @@ const SidebarMenuItem = ({
   const { collapsed } = useContext(SidebarContext);
   const pathname = usePathname();
   const router = useRouter();
-  const isActive = pathname === path;
+  const isActive = pathname.startsWith(path);
   console.log(pathname);
   console.log(isActive);
 

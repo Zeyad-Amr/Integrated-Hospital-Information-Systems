@@ -9,7 +9,7 @@ const SidebarComponent = (props: any) => {
         icon={<LogoIcon primary={"white"} />}
         activeIcon={<LogoIcon />}
         text="لوحة التحكم"
-        path="/"
+        path="/dashboard"
       />
 
       <SidebarMenuItem
