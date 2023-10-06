@@ -1,4 +1,4 @@
-import { Roboto, Barlow } from 'next/font/google';
+import { Noto_Sans_Arabic, Almarai } from 'next/font/google';
 
 import type { Theme } from '@mui/material/styles';
 
@@ -31,18 +31,19 @@ declare module '@mui/material/styles' {
     fontWeightSemiBold: React.CSSProperties['fontWeight'];
   }
 }
-export const primaryFont = Roboto({
-  weight: ['100', '300', '400', '500', '700', '900'],
-  subsets: ['latin'],
+
+export const primaryFont = Noto_Sans_Arabic({
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  subsets: ['arabic'],
   display: 'swap',
-  fallback: ['Helvetica', 'Arial', 'sans-serif'],
+  fallback: ['Almarai', 'Helvetica', 'Arial', 'sans-serif'],
 });
 
-export const secondaryFont = Barlow({
-  weight: ['900'],
-  subsets: ['latin'],
+export const secondaryFont = Almarai({
+  weight: ['300', '400', '700'],
+  subsets: ['arabic'],
   display: 'swap',
-  fallback: ['Helvetica', 'Arial', 'sans-serif'],
+  fallback: ['Noto_Sans_Arabic', 'Helvetica', 'Arial', 'sans-serif'],
 });
 
 // ----------------------------------------------------------------------

@@ -6,23 +6,23 @@ const SidebarComponent = (props: any) => {
   return (
     <Box sx={{}}>
       <SidebarMenuItem
-        icon={<LogoIcon isLight={false} />}
+        icon={<LogoIcon primary={"white"} />}
+        activeIcon={<LogoIcon />}
         text="لوحة التحكم"
-        path="/notifications"
-        active={true}
+        path="/"
       />
 
       <SidebarMenuItem
-        icon={<LogoIcon isLight={false} />}
+        icon={<LogoIcon primary={"white"} />}
+        activeIcon={<LogoIcon />}
         text="المستخدمين"
-        path="/notifications"
-        active={true}
+        path="/users"
       />
       <SidebarMenuItem
-        icon={<LogoIcon isLight={false} />}
+        icon={<LogoIcon primary={"white"} />}
+        activeIcon={<LogoIcon />}
         text="الأقسام"
-        path="/notifications"
-        active={true}
+        path="/departments"
       />
     </Box>
   );

@@ -2,24 +2,44 @@ import { Box, Typography } from "@mui/material";
 import { SidebarContext } from "../context/context";
 import React, { useContext } from "react";
 // import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import { usePathname, useRouter } from "next/navigation";
+
 interface SidebarMenuItemProps {
   icon: React.ReactNode;
+  activeIcon?: React.ReactNode;
   text: string;
   path: string;
-  active: boolean;
   children?: React.ReactNode;
 }
 
 const SidebarMenuItem = ({
   icon,
+  activeIcon,
   text,
   path,
-  active,
   children,
 }: SidebarMenuItemProps) => {
   const { collapsed } = useContext(SidebarContext);
+  const pathname = usePathname();
+  const router = useRouter();
+  const isActive = pathname === path;
+  console.log(pathname);
+  console.log(isActive);
+
+  const handleClick = () => {
+    console.log("clicked");
+
+    if (children) {
+      console.log("has children");
+    } else {
+      console.log("no children");
+      router.push(path);
+    }
+  };
+
   return (
     <Box
+      onClick={handleClick}
       sx={{
         width: "100%",
         display: "flex",
@@ -28,13 +48,13 @@ const SidebarMenuItem = ({
         justifyContent: collapsed ? "center" : "start",
         flexWrap: "nowrap",
         cursor: "pointer",
-        backgroundColor: "common.white",
+        backgroundColor: isActive ? "common.white" : "transparent",
         borderRadius: "10px",
         marginY: "1vh",
         marginLeft: "1vw",
-        padding: "0.1rem",
+
         "&:hover": {
-          backgroundColor: "secondary.main",
+          backgroundColor: isActive ? "secondary.main" : "primary.darker",
         },
       }}
     >
@@ -43,14 +63,16 @@ const SidebarMenuItem = ({
           width: "3rem",
           height: "3rem",
           padding: "0.5rem",
+          display: "flex",
+          alignItems: "center",
         }}
       >
-        {icon}
+        {isActive ? activeIcon : icon}
       </Box>
       <Typography
-        variant="h5"
+        variant="h6"
         sx={{
-          color: "primary.main",
+          color: isActive ? "primary.main" : "common.white",
           display: collapsed ? "none" : "block",
           whiteSpace: "nowrap",
           overflow: "hidden",

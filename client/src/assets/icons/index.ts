@@ -1,12 +1,12 @@
-export { default as SentIcon } from './sent-icon';
-export { default as PasswordIcon } from './password-icon';
-export { default as PlanFreeIcon } from './plan-free-icon';
-export { default as EmailInboxIcon } from './email-inbox-icon';
-export { default as PlanStarterIcon } from './plan-starter-icon';
-export { default as PlanPremiumIcon } from './plan-premium-icon';
-export { default as NotificationIcon } from './notification-icon';
-export { default as NewNotificationIcon } from './new-notification-icon';
-export { default as MenuIcon } from './menu-icon';
-export { default as CloseIcon } from './close-icon';
-export { default as LogoIcon } from './logo-icon';
+export { default as SentIcon } from './external/sent-icon';
+export { default as PasswordIcon } from './external/password-icon';
+export { default as PlanFreeIcon } from './external/plan-free-icon';
+export { default as EmailInboxIcon } from './external/email-inbox-icon';
+export { default as PlanStarterIcon } from './external/plan-starter-icon';
+export { default as PlanPremiumIcon } from './external/plan-premium-icon';
+export { default as NotificationIcon } from './custom/notification-icon';
+export { default as NewNotificationIcon } from './custom/new-notification-icon';
+export { default as MenuIcon } from './custom/menu-icon';
+export { default as CloseIcon } from './custom/close-icon';
+export { default as LogoIcon } from './custom/logo-icon';
 

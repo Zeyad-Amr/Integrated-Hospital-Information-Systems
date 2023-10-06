@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-const TestPage = () => {
+const TestPage = ({ label = "Test" }) => {
   return (
     <Box
       sx={{
@@ -13,7 +13,7 @@ const TestPage = () => {
         fontWeight: "fontWeightBold",
       }}
     >
-      Test
+      {label}
     </Box>
   );
 };

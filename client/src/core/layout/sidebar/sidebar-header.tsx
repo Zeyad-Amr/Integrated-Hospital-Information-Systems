@@ -40,7 +40,11 @@ const SidebarHeader = (props: SidebarHeaderProps) => {
             height: "1.2rem",
           }}
         >
-          {!collapsed ? <CloseIcon /> : <MenuIcon />}
+          {!collapsed ? (
+            <CloseIcon primary="white" />
+          ) : (
+            <MenuIcon primary="white" />
+          )}
         </Box>
       </Button>
       <Box
@@ -49,7 +53,7 @@ const SidebarHeader = (props: SidebarHeaderProps) => {
           height: "3rem",
         }}
       >
-        <LogoIcon />
+        <LogoIcon primary="white" />
       </Box>
       <Button
         onClick={() => console.log("Notification")}
@@ -64,7 +68,7 @@ const SidebarHeader = (props: SidebarHeaderProps) => {
             height: "1.3rem",
           }}
         >
-          <NotificationIcon />
+          <NotificationIcon primary="white" />
         </Box>
       </Button>
     </Box>

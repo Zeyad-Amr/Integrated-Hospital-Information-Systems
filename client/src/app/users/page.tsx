@@ -5,11 +5,11 @@ import Sidebar from "@/core/layout/sidebar/index";
 
 // ----------------------------------------------------------------------
 
-export default function HomePage() {
+export default function Users() {
   return (
     <div>
       <Sidebar>
-        <TestPage label="Dashboard" />
+        <TestPage label={"Users"} />
       </Sidebar>
     </div>
   );
