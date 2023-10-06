@@ -1,28 +1,29 @@
 import { Box, Typography } from "@mui/material";
 import { SidebarContext } from "../context/context";
-import React, { useContext } from "react";
-// import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import React, { useContext, useState } from "react";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { usePathname, useRouter } from "next/navigation";
-
+import SidebarMenuItemChildren from "./sidebar-menu-item-children";
 interface SidebarMenuItemProps {
   icon: React.ReactNode;
   activeIcon?: React.ReactNode;
   text: string;
   path: string;
-  children?: React.ReactNode;
 }
 
 const SidebarMenuItem = ({
+  children,
   icon,
   activeIcon,
   text,
   path,
-  children,
-}: SidebarMenuItemProps) => {
+}: SidebarMenuItemProps & { children?: any }) => {
   const { collapsed } = useContext(SidebarContext);
+
   const pathname = usePathname();
   const router = useRouter();
   const isActive = pathname.startsWith(path);
+  const [expanded, setExpanded] = useState(isActive);
   console.log(pathname);
   console.log(isActive);
 
@@ -31,6 +32,7 @@ const SidebarMenuItem = ({
 
     if (children) {
       console.log("has children");
+      setExpanded(!expanded);
     } else {
       console.log("no children");
       router.push(path);
@@ -38,49 +40,87 @@ const SidebarMenuItem = ({
   };
 
   return (
-    <Box
-      onClick={handleClick}
-      sx={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: collapsed ? "center" : "start",
-        flexWrap: "nowrap",
-        cursor: "pointer",
-        backgroundColor: isActive ? "common.white" : "transparent",
-        borderRadius: "10px",
-        marginY: "1vh",
-        marginLeft: "1vw",
-
-        "&:hover": {
-          backgroundColor: isActive ? "secondary.main" : "primary.darker",
-        },
-      }}
-    >
+    <Box>
       <Box
+        onClick={handleClick}
         sx={{
-          width: "3rem",
-          height: "3rem",
-          padding: "0.5rem",
+          width: "100%",
           display: "flex",
+          flexDirection: "row",
           alignItems: "center",
+          justifyContent: collapsed ? "center" : "space-between",
+          flexWrap: "nowrap",
+          cursor: "pointer",
+          backgroundColor: isActive ? "common.white" : "transparent",
+          borderRadius: "10px",
+          marginY: "1vh",
+          marginLeft: "1vw",
+
+          "&:hover": {
+            backgroundColor: isActive ? "secondary.main" : "primary.darker",
+          },
         }}
       >
-        {isActive ? activeIcon : icon}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: collapsed ? "center" : "start",
+            flexWrap: "nowrap",
+          }}
+        >
+          <Box
+            sx={{
+              width: "3rem",
+              height: "3rem",
+              padding: "0.5rem",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            {isActive ? activeIcon : icon}
+          </Box>
+          <Typography
+            variant="h6"
+            sx={{
+              color: isActive ? "primary.main" : "common.white",
+              display: collapsed ? "none" : "block",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              marginX: "0.5rem",
+            }}
+          >
+            {text}
+          </Typography>
+        </Box>
+        <ExpandMore
+          sx={{
+            display: !expanded && !collapsed && children ? "block" : "none",
+            color: isActive ? "primary.main" : "common.white",
+            marginX: "0.5rem",
+          }}
+        />
+        <ExpandLess
+          sx={{
+            display: expanded && !collapsed && children ? "block" : "none",
+            color: isActive ? "primary.main" : "common.white",
+            marginX: "0.5rem",
+          }}
+        />
       </Box>
-      <Typography
-        variant="h6"
-        sx={{
-          color: isActive ? "primary.main" : "common.white",
-          display: collapsed ? "none" : "block",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          marginX: "0.5rem",
-        }}
-      >
-        {text}
-      </Typography>
+      {children && (
+        <Box
+          sx={{
+            display: collapsed ? "none" : "flex",
+            height: expanded ? "auto" : "0px",
+            transition: "height 0.5s",
+            overflow: "hidden",
+          }}
+        >
+          <SidebarMenuItemChildren>{children}</SidebarMenuItemChildren>
+        </Box>
+      )}
     </Box>
   );
 };
