@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import Box from "@mui/material/Box";
 import SidebarMenuItem from "./menu/sidebar-menu-item";
-import SidebarMenuSubItem from "./menu/sidebar-menu-subitem";
+import SidebarSubmenuItem from "./menu/sidebar-submenu-item";
 import { LogoIcon } from "@/assets/icons";
 const SidebarComponent = (props: any) => {
   return (
@@ -19,9 +19,14 @@ const SidebarComponent = (props: any) => {
         text="المستخدمين"
         path="/users"
       >
-        <SidebarMenuSubItem text="إضافة مستخدم" path="/users/create" />
-
-        <SidebarMenuSubItem text="عرض المستخدمين" path="/users/all" />
+        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
+        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
+        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
+        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
+        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
+        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
+        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
+        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
       </SidebarMenuItem>
 
       <SidebarMenuItem
@@ -30,9 +35,9 @@ const SidebarComponent = (props: any) => {
         text="الأقسام"
         path="/departments"
       >
-        <SidebarMenuSubItem text="إضافة قسم" path="/departments/create" />
+        <SidebarSubmenuItem text="إضافة قسم" path="/departments/create" />
 
-        <SidebarMenuSubItem text="عرض الأقسام" path="/departments/all" />
+        <SidebarSubmenuItem text="عرض الأقسام" path="/departments/all" />
       </SidebarMenuItem>
     </Box>
   );

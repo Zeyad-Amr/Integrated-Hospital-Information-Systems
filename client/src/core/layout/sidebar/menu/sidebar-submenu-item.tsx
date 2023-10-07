@@ -4,12 +4,12 @@ import React, { useContext, useState } from "react";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { usePathname, useRouter } from "next/navigation";
 
-interface SidebarMenuSubItemProps {
+interface SidebarSubmenuItemProps {
   text: string;
   path: string;
 }
 
-const SidebarMenuSubItem = ({ text, path }: SidebarMenuSubItemProps) => {
+const SidebarSubmenuItem = ({ text, path }: SidebarSubmenuItemProps) => {
   const { collapsed } = useContext(SidebarContext);
   const [expanded, setExpanded] = useState(false);
   const pathname = usePathname();
@@ -63,4 +63,4 @@ const SidebarMenuSubItem = ({ text, path }: SidebarMenuSubItemProps) => {
   );
 };
 
-export default SidebarMenuSubItem;
+export default SidebarSubmenuItem;

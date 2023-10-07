@@ -113,8 +113,8 @@ const SidebarMenuItem = ({
         <Box
           sx={{
             display: collapsed ? "none" : "flex",
-            height: expanded ? "auto" : "0px",
-            transition: "height 0.5s",
+            height: expanded ? (children.length + 1) * 2.5 + "rem" : 0,
+            transition: "height 0.5s ease",
             overflow: "hidden",
           }}
         >
