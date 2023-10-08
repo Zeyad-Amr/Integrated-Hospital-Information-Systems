@@ -1,29 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, BadRequestException, Logger } from '@nestjs/common';
 import { StaffService } from './staff.service';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { UpdateStaffDto } from './dto/update-staff.dto';
+import { Prisma } from '@prisma/client';
 
 @Controller('staff')
 export class StaffController {
   constructor(private readonly staffService: StaffService) { }
 
   @Post()
-  create(@Body() createStaffDto: CreateStaffDto) {
-    return this.staffService.create(createStaffDto);
+  async create(@Body() createStaffDto: CreateStaffDto) {
+    return await this.staffService.create(createStaffDto);
+
   }
 
   @Get()
-  findAll() {
-    return this.staffService.findAll();
+  async findAll() {
+    return await this.staffService.findAll();
   }
-
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
       return await this.staffService.findOne(id);
     } catch (error) {
-
       throw new NotFoundException()
     }
   }
@@ -38,7 +38,9 @@ export class StaffController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.staffService.remove(id);
+  async remove(@Param('id') id: string) {
+    console.log(id);
+    return await this.staffService.remove(id);
+
   }
 }
