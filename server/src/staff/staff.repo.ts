@@ -16,6 +16,7 @@ export class StaffRepo extends PrismaGenericRepo<Staff> {
     where?: Prisma.StaffWhereInput,
     orderBy?: Prisma.StaffOrderByWithRelationInput,
   ): Promise<Staff[]> {
+    // why not using the generic one
     return this.prismaService.staff.findMany({
       skip,
       take,
