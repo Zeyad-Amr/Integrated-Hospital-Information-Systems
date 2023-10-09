@@ -1,39 +1,65 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { UpdateStaffDto } from './dto/update-staff.dto';
 import { StaffRepo } from './staff.repo';
+import { HTTP_CONFLICT, HTTP_NOT_FOUND } from 'src/shared/constants/http-codes';
 
 @Injectable()
 export class StaffService {
-  constructor(private staffRepo: StaffRepo) { }
+  constructor(private staffRepo: StaffRepo) {}
   async create(createStaffDto: CreateStaffDto) {
-    const newStaff = await this.staffRepo.create(createStaffDto)
-    return newStaff;
+    try {
+      const newStaff = await this.staffRepo.create(createStaffDto);
+      return newStaff;
+    } catch (error) {
+      if (error.code === HTTP_CONFLICT)
+        return new ConflictException('staff member already exists');
+
+      return new InternalServerErrorException();
+    }
   }
 
   async findAll() {
-    const staff = await this.staffRepo.getAll()
-    return staff;
+    try {
+      return await this.staffRepo.getAll();
+    } catch (error) {
+      return error;
+    }
   }
 
   async findOne(id: string) {
-    const staff = await this.staffRepo.get(id)
-    return staff;
+    try {
+      const staff = await this.staffRepo.getByID(id);
+      return staff;
+    } catch (error) {
+      if (error.code === HTTP_NOT_FOUND)
+        return new NotFoundException('staff member not found');
+      return InternalServerErrorException;
+    }
   }
 
   async update(id: string, updateStaffDto: UpdateStaffDto) {
-    const staff = await this.staffRepo.update(id, updateStaffDto)
-    return staff;
+    try {
+      const staff = await this.staffRepo.update(id, updateStaffDto);
+      return staff;
+    } catch (error) {
+      if (error.code === HTTP_NOT_FOUND)
+        return new NotFoundException('staff member not found');
+      return InternalServerErrorException;
+    }
   }
 
-  async remove(id: string) {
+  async delete(id: string) {
     try {
-      await this.staffRepo.delete(id)
-      return { msg: 'Deleted successfully' }
-
+      await this.staffRepo.delete(id);
     } catch (error) {
-      throw new Error(error)
+      if (error.code === HTTP_NOT_FOUND) return new NotFoundException();
+      return new InternalServerErrorException();
     }
   }
 }
-
