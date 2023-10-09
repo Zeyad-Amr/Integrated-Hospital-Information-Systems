@@ -17,7 +17,7 @@ const SidebarLayout = (props: any) => {
         alignItems: "center",
       }}
     >
-      <SidebarHeader height="calc(5vh + 4vw)" />
+      <SidebarHeader height="12vh" />
 
       <Box
         flex="1"
@@ -27,37 +27,34 @@ const SidebarLayout = (props: any) => {
           justifyContent: "space-between",
           alignItems: "stretch",
           width: "100%",
-          height: "80vh",
+          height: "88vh",
         }}
       >
         <Box
           sx={{
             backgroundColor: "primary.main",
-            width: collapsed ? "5rem" : "20rem",
+            width: collapsed ? "5rem" : "18rem",
             transition: "width 0.3s ease-in-out",
+
             overflowX: "hidden",
             overflowY: "scroll",
           }}
         >
           <SidebarComponent />
         </Box>
-        {/* <Box
+        <Box
+          flex="1"
           sx={{
-            marginX: "2vw",
-            width: "100%",
-            height: "100%",
-            borderRadius: "20px 20px 0px 0px",
             overflowX: "hidden",
             overflowY: "scroll",
-            
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
+            marginRight: "2vw",
+            width: "100%",
+            borderRadius: "20px 20px 0px 0px",
+            backgroundColor: "primary.contrastText",
           }}
         >
-          {props.children}
-        </Box> */}
+          <Box>{props.children}</Box>
+        </Box>
       </Box>
     </Box>
   );
