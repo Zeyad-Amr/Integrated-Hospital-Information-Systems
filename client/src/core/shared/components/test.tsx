@@ -1,33 +1,21 @@
+import Label from "@/core/components/label/label";
 import Box from "@mui/material/Box";
 const TestPage = ({ label = "Test" }) => {
   return (
     <Box
       sx={{
-        width: "100%",
-        height: "100%",
+        fontSize: "h1.fontSize",
+        fontWeight: "fontWeightBold",
       }}
     >
-      <Box
-        sx={{
-          backgroundColor: "primary.contrastText",
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "h1.fontSize",
-          fontWeight: "fontWeightBold",
-        }}
-      >
-        {Array.from(Array(20).keys()).map((item, index) => {
+      <div>{label}</div>
+      {/* {Array.from(Array(20).keys()).map((item, index) => {
           return (
-            <div key={index}>
-              {label} {index}
+            <div key={index+1}>
+              {label} {index+1}
             </div>
           );
-        })}
-      </Box>
+        })} */}
     </Box>
   );
 };
