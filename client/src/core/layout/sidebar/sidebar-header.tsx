@@ -25,6 +25,7 @@ const SidebarHeader = (props: SidebarHeaderProps) => {
         alignItems: "center",
         justifyContent: "space-between",
         paddingX: "1rem",
+        paddingY: "clamp(0.5rem, 1vw, 1rem)",
       }}
     >
       <Button

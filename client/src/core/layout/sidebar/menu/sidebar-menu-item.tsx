@@ -44,7 +44,6 @@ const SidebarMenuItem = ({
       <Box
         onClick={handleClick}
         sx={{
-          width: "100%",
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
@@ -54,7 +53,7 @@ const SidebarMenuItem = ({
           backgroundColor: isActive ? "common.white" : "transparent",
           borderRadius: "10px",
           marginY: "1vh",
-          marginLeft: "1vw",
+          marginX: "1vw",
 
           "&:hover": {
             backgroundColor: isActive ? "secondary.main" : "primary.darker",

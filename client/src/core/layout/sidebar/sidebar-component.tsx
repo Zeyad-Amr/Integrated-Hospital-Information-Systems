@@ -5,7 +5,12 @@ import SidebarSubmenuItem from "./menu/sidebar-submenu-item";
 import { LogoIcon } from "@/assets/icons";
 const SidebarComponent = (props: any) => {
   return (
-    <Box sx={{}}>
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+      }}
+    >
       <SidebarMenuItem
         icon={<LogoIcon primary={"white"} />}
         activeIcon={<LogoIcon />}

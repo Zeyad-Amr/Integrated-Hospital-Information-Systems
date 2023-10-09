@@ -32,13 +32,11 @@ const SidebarSubmenuItem = ({ text, path }: SidebarSubmenuItemProps) => {
           width: "100%",
           display: "flex",
           flexDirection: "row",
+          justifyContent: "flex-start",
           alignItems: "center",
-
           flexWrap: "nowrap",
           cursor: "pointer",
-
           marginY: "1vh",
-          marginLeft: "1vw",
         }}
       >
         <Typography

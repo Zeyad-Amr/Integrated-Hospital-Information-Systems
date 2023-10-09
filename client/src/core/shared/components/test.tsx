@@ -3,17 +3,31 @@ const TestPage = ({ label = "Test" }) => {
   return (
     <Box
       sx={{
-        backgroundColor: "primary.contrastText",
         width: "100%",
         height: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "h1.fontSize",
-        fontWeight: "fontWeightBold",
       }}
     >
-      {label}
+      <Box
+        sx={{
+          backgroundColor: "primary.contrastText",
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "h1.fontSize",
+          fontWeight: "fontWeightBold",
+        }}
+      >
+        {Array.from(Array(20).keys()).map((item, index) => {
+          return (
+            <div key={index}>
+              {label} {index}
+            </div>
+          );
+        })}
+      </Box>
     </Box>
   );
 };
