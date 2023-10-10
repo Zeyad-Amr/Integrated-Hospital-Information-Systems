@@ -12,9 +12,9 @@ datasource db {
 
 model Staff {
   id    String  @id @default(uuid())
-  ssn   String
+  ssn   String @unique
   name  String
-  email String
+  email String @unique
   phone String
   role  String?
 }
