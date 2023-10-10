@@ -1,7 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { SidebarContext } from "../context/context";
 import React, { useContext, useState } from "react";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { usePathname, useRouter } from "next/navigation";
 
 interface SidebarSubmenuItemProps {
@@ -11,7 +10,6 @@ interface SidebarSubmenuItemProps {
 
 const SidebarSubmenuItem = ({ text, path }: SidebarSubmenuItemProps) => {
   const { collapsed } = useContext(SidebarContext);
-  const [expanded, setExpanded] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const isActive = pathname === path;
@@ -40,7 +38,7 @@ const SidebarSubmenuItem = ({ text, path }: SidebarSubmenuItemProps) => {
         }}
       >
         <Typography
-          variant="body1"
+          variant="body2"
           sx={{
             color: isActive ? "secondary.main" : "common.white",
             display: collapsed ? "none" : "block",

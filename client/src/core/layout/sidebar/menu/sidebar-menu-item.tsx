@@ -81,8 +81,9 @@ const SidebarMenuItem = ({
             {isActive ? activeIcon : icon}
           </Box>
           <Typography
-            variant="h6"
+            variant="body1"
             sx={{
+              fontWeight: "bold",
               color: isActive ? "primary.main" : "common.white",
               display: collapsed ? "none" : "block",
               whiteSpace: "nowrap",

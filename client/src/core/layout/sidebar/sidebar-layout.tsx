@@ -33,7 +33,7 @@ const SidebarLayout = (props: any) => {
         <Box
           sx={{
             backgroundColor: "primary.main",
-            width: collapsed ? "5rem" : "18rem",
+            width: collapsed ? "5rem" : "16rem",
             transition: "width 0.3s ease-in-out",
 
             overflowX: "hidden",
@@ -49,7 +49,7 @@ const SidebarLayout = (props: any) => {
             overflowY: "scroll",
             marginRight: "2vw",
             width: "100%",
-            borderRadius: "20px 20px 0px 0px",
+            borderRadius: "10px 10px 0px 0px",
             backgroundColor: "primary.contrastText",
           }}
         >
