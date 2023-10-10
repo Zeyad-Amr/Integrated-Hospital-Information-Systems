@@ -11,12 +11,17 @@ import {
 import { StaffService } from './staff.service';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { UpdateStaffDto } from './dto/update-staff.dto';
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiForbiddenResponse, ApiOperation, ApiResponse, ApiTags, ApiUnprocessableEntityResponse } from '@nestjs/swagger';
 
+@ApiTags("staff")
 @Controller('staff')
 export class StaffController {
-  constructor(private readonly staffService: StaffService) {}
+  constructor(private readonly staffService: StaffService) { }
 
   @Post()
+  @ApiOperation({ summary: "Create staff member" })
+  @ApiCreatedResponse({ description: "created successfully" })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
   async create(@Body() createStaffDto: CreateStaffDto) {
     return await this.staffService.create(createStaffDto);
   }

@@ -52,14 +52,14 @@ export class PrismaGenericRepo<T> {
 
   create = async (item: Omit<T, 'id'>): Promise<T> => {
     try {
-      const res = this.prisma[this.modelName].create({
+      const res = await this.prisma[this.modelName].create({
         data: item as any,
       });
       return res;
     } catch (error) {
       if (error.code === 'P2002')
         throw new HttpError('staff member already exists', HTTP_CONFLICT);
-
+      console.log(error)
       throw new HttpError('internal server error', HTTP_INTERNAL_SERVER_ERROR);
     }
   };
