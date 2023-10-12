@@ -50,9 +50,16 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: echo "DATABASE_URL=$DATABASE_URL" >> .env
+        working-directory: ./server/
+
+
       
       - name: Prisma Migrate
         run: npx prisma migrate dev
-        
+        working-directory: ./server/
+
+
       - name: Run Integration Tests
         run: npm run test:e2e
+        working-directory: ./server/
+
