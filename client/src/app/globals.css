@@ -1,6 +1,6 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -17,6 +17,6 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: rgb(var(--background-end-rgb));
   background: rgb(var(--foreground-rgb));
 }

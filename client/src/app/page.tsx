@@ -1,32 +1,32 @@
 "use client";
 
-import { useScroll } from "framer-motion";
-
-import Link from "next/link";
-
-// components
-import ScrollProgress from "@/core/components/scroll-progress";
-
+import TestPage from "@/core/shared/components/test";
+import { Button, Box } from "@mui/material";
+import { useRouter } from "next/navigation";
 // ----------------------------------------------------------------------
 
 export default function HomePage() {
-  const { scrollYProgress } = useScroll();
-  return (
-    <div>
-      <ScrollProgress scrollYProgress={scrollYProgress} />
+  const router = useRouter();
 
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <div className="flex flex-col items-center justify-center">
-          <h1 className="text-6xl font-bold text-center">
-            Hello, We are {""}
-            <span className="text-blue-500">Team Khaleha 3la Allah</span>
-          </h1>
-          <h2 className="text-4xl font-bold text-center">
-            Welcome to <span className="text-blue-500">our GP.</span>
-          </h2>
-          <Link href="/test"> Go to Test Page</Link>
-        </div>
-      </main>
-    </div>
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <TestPage label="Hello, My Team" />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          router.push("/dashboard");
+        }}
+      >
+        Go to Dashboard
+      </Button>
+    </Box>
   );
 }

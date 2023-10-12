@@ -33,24 +33,30 @@ const GREY = {
   900: '#161C24',
 };
 
+
+// Complementary palette:
+// #232836
+// #FFCC00
+
+
+
 const PRIMARY = {
-  lighter: '#C8FAD6',
-  light: '#5BE49B',
-  main: '#00A76F',
+  lighter: '#EAF0F9',
+  light: '#C8FAD6',
+  main: '#232836',
   dark: '#007867',
   darker: '#004B50',
   contrastText: '#FFFFFF',
 };
 
 const SECONDARY = {
-  lighter: '#EFD6FF',
-  light: '#C684FF',
-  main: '#8E33FF',
-  dark: '#5119B7',
-  darker: '#27097A',
-  contrastText: '#FFFFFF',
+  lighter: '#FFD4CC',
+  light: '#FFCC00',
+  main: '#FFCC00',
+  dark: '#B39E00',
+  darker: '#7F7800',
+  contrastText: '#000000',
 };
-
 const INFO = {
   lighter: '#CAFDF5',
   light: '#61F3F3',
