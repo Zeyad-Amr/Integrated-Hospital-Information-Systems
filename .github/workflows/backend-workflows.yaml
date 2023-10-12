@@ -10,6 +10,24 @@ jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: QasrHIS
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    strategy:
+      matrix:
+        node-version: [18]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -26,3 +44,15 @@ jobs:
       - name: Run Linter
         run: npm run lint
         working-directory: ./server/
+
+      
+      - name: Set Up Secrets
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: echo "DATABASE_URL=$DATABASE_URL" >> .env
+      
+      - name: Prisma Migrate
+        run: npx prisma migrate dev
+        
+      - name: Run Integration Tests
+        run: npm run test:e2e
