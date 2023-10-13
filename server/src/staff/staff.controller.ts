@@ -25,14 +25,14 @@ import {
 @ApiTags('staff')
 @Controller('staff')
 export class StaffController {
-  constructor(private readonly staffService: StaffService) { }
+  constructor(private readonly staffService: StaffService) {}
 
   @Post()
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create staff member' })
   @ApiCreatedResponse({ description: 'created successfully' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
-  @ApiConflictResponse({ description: "staff member already exist" })
+  @ApiConflictResponse({ description: 'staff member already exist' })
   async create(@Body() createStaffDto: CreateStaffDto) {
     return await this.staffService.create(createStaffDto);
   }
