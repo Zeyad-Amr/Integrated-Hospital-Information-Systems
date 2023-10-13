@@ -9,3 +9,9 @@ CREATE TABLE "Staff" (
 
     CONSTRAINT "Staff_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Staff_ssn_key" ON "Staff"("ssn");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Staff_email_key" ON "Staff"("email");
