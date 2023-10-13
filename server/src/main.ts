@@ -8,7 +8,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
 
-  const config = new DocumentBuilder().setTitle("Qasr HIS").setDescription("Qasr APIs Describtion").setVersion("1.0").build();
+  const config = new DocumentBuilder()
+    .setTitle('Qasr HIS')
+    .setDescription('Qasr APIs Describtion')
+    .setVersion('1.0')
+    .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
   app.useGlobalPipes(new ValidationPipe());
