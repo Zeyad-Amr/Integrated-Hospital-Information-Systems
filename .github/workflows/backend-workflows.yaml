@@ -48,7 +48,7 @@ jobs:
       
       - name: Set Up Secrets
         env:
-          DATABASE_URL: DATABASE_URL="postgresql://postgres:postgres@localhost:5432/DATABASE?schema=QasrHIS&sslmode=prefer"
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/DATABASE?schema=QasrHIS&sslmode=prefer
         run: echo "DATABASE_URL=$DATABASE_URL" >> .env
         working-directory: ./server/
       
