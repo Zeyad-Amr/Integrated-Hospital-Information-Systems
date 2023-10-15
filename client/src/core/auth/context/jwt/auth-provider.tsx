@@ -2,7 +2,7 @@
 
 import { useEffect, useReducer, useCallback, useMemo } from "react";
 // utils
-import axios, { endpoints } from "@/core/shared/utils/axios";
+import axios, { endpoints } from "@/core/api/client";
 //
 import { AuthContext } from "./auth-context";
 import { isValidToken, setSession } from "./utils";

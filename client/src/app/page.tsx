@@ -3,6 +3,7 @@
 import TestPage from "@/core/shared/components/test";
 import { Button, Box } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { ApiClient, Endpoints, axiosInstance } from "@/core/api";
 // ----------------------------------------------------------------------
 
 export default function HomePage() {
@@ -26,6 +27,22 @@ export default function HomePage() {
         }}
       >
         Go to Dashboard
+      </Button>
+
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          console.log("Test API Client");
+          // ApiClient.get(Endpoints.staff.list).then((res) => {
+          //   console.log(res);
+          // });
+          axiosInstance.get(Endpoints.staff.list).then((res) => {
+            console.log(res);
+          });
+        }}
+      >
+        Test API Client
       </Button>
     </Box>
   );
