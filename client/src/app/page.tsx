@@ -3,7 +3,7 @@
 import TestPage from "@/core/shared/components/test";
 import { Button, Box } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { ApiClient, Endpoints, axiosInstance } from "@/core/api";
+import { ApiClient, Endpoints } from "@/core/api";
 // ----------------------------------------------------------------------
 
 export default function HomePage() {
@@ -32,14 +32,19 @@ export default function HomePage() {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => {
+        onClick={async () => {
           console.log("Test API Client");
-          // ApiClient.get(Endpoints.staff.list).then((res) => {
-          //   console.log(res);
-          // });
-          axiosInstance.get(Endpoints.staff.list).then((res) => {
-            console.log(res);
-          });
+
+          try {
+            const getData = await ApiClient.get(Endpoints.staff.details, {
+              pathVariables: { id: "e63855f2-26b9-485e-8f30-e918728b15ef0" },
+            });
+            console.log(getData);
+            // Handle success and process the data
+          } catch (error) {
+            // Handle the error, e.g., display an error message or perform error-specific actions
+            console.log(error);
+          }
         }}
       >
         Test API Client
