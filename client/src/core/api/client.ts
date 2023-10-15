@@ -2,17 +2,13 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { HOST_API } from '@/config/settings/app-config';
 
 // Create a custom axios instance
-export const axiosInstance = axios.create({
-  baseURL: HOST_API, headers: {
-    "Content-Type": "application/json",
-  },
-});
+const axiosInstance = axios.create({ baseURL: HOST_API });
 
-// // Add a request interceptor
-// axiosInstance.interceptors.response.use(
-//   (res) => res,
-//   (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
-// );
+// Add a request interceptor
+axiosInstance.interceptors.response.use(
+  (res) => res,
+  (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
+);
 
 // API Client class
 class ApiClient {
@@ -42,12 +38,8 @@ class ApiClient {
   public async get(endpoint: string, { data, queryParams, pathParams, config }: { data?: any; queryParams?: any; pathParams?: any; config?: AxiosRequestConfig } = {}) {
     const url = this.replacePathVariables(endpoint, pathParams);
     const requestConfig: AxiosRequestConfig = {
-      ...config,
-      headers: {
-        'Content-Type': 'application/json',
-      },
       params: queryParams,
-
+      ...config,
     };
     return axiosInstance.get(url, requestConfig);
   }
