@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  NotFoundException,
 } from '@nestjs/common';
 import { StaffService } from './staff.service';
 import { CreateStaffDto } from './dto/create-staff.dto';
@@ -21,11 +20,13 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { handleError } from 'src/shared/http-error';
+
 
 @ApiTags('staff')
 @Controller('staff')
 export class StaffController {
-  constructor(private readonly staffService: StaffService) {}
+  constructor(private readonly staffService: StaffService) { }
 
   @Post()
   @ApiBearerAuth()
@@ -34,7 +35,11 @@ export class StaffController {
   @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiConflictResponse({ description: 'staff member already exist' })
   async create(@Body() createStaffDto: CreateStaffDto) {
-    return await this.staffService.create(createStaffDto);
+    try {
+      return await this.staffService.create(createStaffDto);
+    } catch (error) {
+      throw handleError(error)
+    }
   }
 
   @Get()
@@ -42,7 +47,11 @@ export class StaffController {
   @ApiOperation({ summary: 'get staff members' })
   @ApiOkResponse({ description: 'get a staff members' })
   async findAll() {
-    return await this.staffService.findAll();
+    try {
+      return await this.staffService.findAll();
+    } catch (error) {
+      throw handleError(error)
+    }
   }
 
   @Get(':id')
@@ -54,7 +63,7 @@ export class StaffController {
     try {
       return await this.staffService.findOne(id);
     } catch (error) {
-      throw new NotFoundException();
+      throw handleError(error)
     }
   }
 
@@ -70,7 +79,7 @@ export class StaffController {
     try {
       return await this.staffService.update(id, updateStaffDto);
     } catch (error) {
-      throw new NotFoundException();
+      throw handleError(error)
     }
   }
 
@@ -80,6 +89,10 @@ export class StaffController {
   @ApiOkResponse({ description: 'deleted successfully' })
   @ApiNotFoundResponse({ description: 'staff member not found' })
   async delete(@Param('id') id: string) {
-    return await this.staffService.delete(id);
+    try {
+      return await this.staffService.delete(id);
+    } catch (error) {
+      throw handleError(error)
+    }
   }
 }

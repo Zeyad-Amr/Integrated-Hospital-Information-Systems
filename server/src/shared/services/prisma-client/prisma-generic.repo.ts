@@ -1,4 +1,3 @@
-import { handleError } from '../../http-error';
 import { PrismaService } from './prisma.service';
 import { Injectable } from '@nestjs/common';
 @Injectable()
@@ -27,7 +26,7 @@ export class PrismaGenericRepo<T> {
       );
       return res;
     } catch (error) {
-      throw handleError(error);
+      throw error
     }
   }
   async getByID(id: any): Promise<T | null> {
@@ -37,18 +36,18 @@ export class PrismaGenericRepo<T> {
       });
       return res;
     } catch (error) {
-      throw handleError(error);
+      throw error
     }
   }
 
-  create = async (item: Omit<T, 'id'>): Promise<T> => {
+  async create(item: Omit<T, 'id'>): Promise<T> {
     try {
       const res = await this.prisma[this.modelName].create({
         data: item as any,
       });
       return res;
     } catch (error) {
-      throw handleError(error);
+      throw error
     }
   };
 
@@ -60,7 +59,7 @@ export class PrismaGenericRepo<T> {
       });
       return res;
     } catch (error) {
-      throw handleError(error);
+      throw error
     }
   }
   async delete(id: string): Promise<void> {
@@ -71,7 +70,7 @@ export class PrismaGenericRepo<T> {
         },
       });
     } catch (error) {
-      throw handleError(error);
+      throw error
     }
   }
 }

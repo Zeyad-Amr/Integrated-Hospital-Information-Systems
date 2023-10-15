@@ -6,8 +6,10 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { LoginUserDto } from 'src/user/dto/login-user.dto';
 
-export class CreateStaffDto {
+export class CreateStaffDto extends LoginUserDto {
+
   @ApiProperty({
     type: String,
     description: 'staff name (required field)',

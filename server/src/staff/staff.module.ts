@@ -4,10 +4,15 @@ import { StaffController } from './staff.controller';
 import { PrismaService } from '../shared/services/prisma-client/prisma.service';
 import { StaffRepo } from './staff.repo';
 import { PrismaModule } from '../shared/services/prisma-client/prisma.module';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, UserModule],
   controllers: [StaffController],
-  providers: [StaffService, PrismaService, StaffRepo],
+  providers: [
+    StaffService,
+    StaffRepo,
+    PrismaService,
+  ],
 })
-export class StaffModule {}
+export class StaffModule { }
