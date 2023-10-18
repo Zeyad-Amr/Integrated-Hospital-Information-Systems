@@ -20,12 +20,12 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { handleError } from 'src/shared/http-error';
+import { handleError } from '../shared/http-error';
 
 @ApiTags('staff')
 @Controller('staff')
 export class StaffController {
-  constructor(private readonly staffService: StaffService) {}
+  constructor(private readonly staffService: StaffService) { }
 
   @Post()
   @ApiBearerAuth()
