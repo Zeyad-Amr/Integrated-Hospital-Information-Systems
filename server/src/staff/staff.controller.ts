@@ -22,11 +22,10 @@ import {
 } from '@nestjs/swagger';
 import { handleError } from 'src/shared/http-error';
 
-
 @ApiTags('staff')
 @Controller('staff')
 export class StaffController {
-  constructor(private readonly staffService: StaffService) { }
+  constructor(private readonly staffService: StaffService) {}
 
   @Post()
   @ApiBearerAuth()
@@ -38,7 +37,7 @@ export class StaffController {
     try {
       return await this.staffService.create(createStaffDto);
     } catch (error) {
-      throw handleError(error)
+      throw handleError(error);
     }
   }
 
@@ -50,7 +49,7 @@ export class StaffController {
     try {
       return await this.staffService.findAll();
     } catch (error) {
-      throw handleError(error)
+      throw handleError(error);
     }
   }
 
@@ -63,7 +62,7 @@ export class StaffController {
     try {
       return await this.staffService.findOne(id);
     } catch (error) {
-      throw handleError(error)
+      throw handleError(error);
     }
   }
 
@@ -79,7 +78,7 @@ export class StaffController {
     try {
       return await this.staffService.update(id, updateStaffDto);
     } catch (error) {
-      throw handleError(error)
+      throw handleError(error);
     }
   }
 
@@ -92,7 +91,7 @@ export class StaffController {
     try {
       return await this.staffService.delete(id);
     } catch (error) {
-      throw handleError(error)
+      throw handleError(error);
     }
   }
 }

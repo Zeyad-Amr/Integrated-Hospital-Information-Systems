@@ -9,10 +9,6 @@ import { UserModule } from 'src/user/user.module';
 @Module({
   imports: [PrismaModule, UserModule],
   controllers: [StaffController],
-  providers: [
-    StaffService,
-    StaffRepo,
-    PrismaService,
-  ],
+  providers: [StaffService, StaffRepo, PrismaService],
 })
-export class StaffModule { }
+export class StaffModule {}

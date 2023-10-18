@@ -2,17 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { UpdateStaffDto } from './dto/update-staff.dto';
 import { StaffRepo } from './staff.repo';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class StaffService {
   constructor(
     private staffRepo: StaffRepo,
-    private userService: UserService
-  ) { }
+    private userService: UserService,
+  ) {}
   async create(createStaffDto: CreateStaffDto) {
     try {
-      createStaffDto.password = await this.userService.hashPassword(createStaffDto.password);
+      createStaffDto.password = await this.userService.hashPassword(
+        createStaffDto.password,
+      );
       const newStaff = await this.staffRepo.create(createStaffDto);
       return newStaff;
     } catch (error) {

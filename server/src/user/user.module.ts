@@ -11,10 +11,10 @@ import { JwtModule } from '@nestjs/jwt';
       global: true,
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '7d' },
-    })
+    }),
   ],
   controllers: [UserController],
   providers: [UserService, UserRepo, PrismaService],
-  exports: [UserService]
+  exports: [UserService],
 })
-export class UserModule { }
+export class UserModule {}

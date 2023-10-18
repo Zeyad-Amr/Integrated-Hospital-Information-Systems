@@ -26,7 +26,7 @@ export class PrismaGenericRepo<T> {
       );
       return res;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
   async getByID(id: any): Promise<T | null> {
@@ -36,7 +36,7 @@ export class PrismaGenericRepo<T> {
       });
       return res;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -47,9 +47,9 @@ export class PrismaGenericRepo<T> {
       });
       return res;
     } catch (error) {
-      throw error
+      throw error;
     }
-  };
+  }
 
   async update(id: string, item: Omit<T, 'id'>): Promise<T | null> {
     try {
@@ -59,7 +59,7 @@ export class PrismaGenericRepo<T> {
       });
       return res;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
   async delete(id: string): Promise<void> {
@@ -70,7 +70,7 @@ export class PrismaGenericRepo<T> {
         },
       });
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }

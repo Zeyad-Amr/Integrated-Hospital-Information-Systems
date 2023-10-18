@@ -16,23 +16,23 @@ export class StaffRepo extends PrismaGenericRepo<Staff> {
 
   async create(item: CreateStaff): Promise<Staff> {
     try {
-      const { username, password, ...personalData } = item
+      const { username, password, ...personalData } = item;
       const res = await this.prismaService.staff.create({
         data: {
           ...personalData,
           user: {
             create: {
               username,
-              password
-            }
-          }
+              password,
+            },
+          },
         },
       });
       return res;
     } catch (error) {
-      throw error
+      throw error;
     }
-  };
+  }
 
   async getAll(
     skip?: number,
@@ -51,7 +51,7 @@ export class StaffRepo extends PrismaGenericRepo<Staff> {
         orderBy,
       });
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }
