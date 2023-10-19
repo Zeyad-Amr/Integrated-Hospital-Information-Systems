@@ -11,7 +11,6 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { handleError } from '../shared/http-error';
 import {
   ApiBadRequestResponse,
-  ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
   ApiUnauthorizedResponse,
