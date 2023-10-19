@@ -17,7 +17,7 @@ export class StaffRepo extends PrismaGenericRepo<Staff> {
   async create(item: CreateStaff): Promise<Staff> {
     try {
       const { username, password, ...personalData } = item;
-      const res = await this.prismaService.staff.create({
+      const staffMember = await this.prismaService.staff.create({
         data: {
           ...personalData,
           user: {
@@ -28,7 +28,7 @@ export class StaffRepo extends PrismaGenericRepo<Staff> {
           },
         },
       });
-      return res;
+      return staffMember;
     } catch (error) {
       throw error;
     }

@@ -27,7 +27,6 @@ export class UserController {
     return await this.userService.findAll();
   }
 
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Login user' })
   @ApiOkResponse({ description: 'User logged in successfully' })
   @ApiBadRequestResponse({ description: 'Bad Request' })

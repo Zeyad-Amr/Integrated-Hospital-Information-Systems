@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginUserDto } from './dto/login-user.dto';
-import { UserRepo } from './user.repo';
+import { UserRepo } from './auth.repo';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
@@ -9,22 +9,22 @@ export class UserService {
   constructor(
     private userRepo: UserRepo,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async login(loginUserDto: LoginUserDto) {
     try {
-      const errMsg = 'Invalid username or password';
-      const exist = await this.userRepo.getByUsername(loginUserDto.username);
-      if (!exist) {
-        throw new UnauthorizedException(errMsg);
+      const errInvalidCredentials = 'Invalid username or password';
+      const user = await this.userRepo.getByUsername(loginUserDto.username);
+      if (!user) {
+        throw new UnauthorizedException(errInvalidCredentials);
       }
-      const validPass = bcrypt.compare(loginUserDto.password, exist.password);
+      const validPass = bcrypt.compare(loginUserDto.password, user.password);
       if (!validPass) {
-        throw new UnauthorizedException(errMsg);
+        throw new UnauthorizedException(errInvalidCredentials);
       }
       const token = await this.jwtService.signAsync({
-        sub: exist.staffId,
-        username: exist.username,
+        sub: user.staffId,
+        username: user.username,
       });
       return token;
     } catch (error) {

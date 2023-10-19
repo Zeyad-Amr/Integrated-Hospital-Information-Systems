@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { LoginUserDto } from '../../user/dto/login-user.dto';
+import { LoginUserDto } from '../../auth/dto/login-user.dto';
 
 export class CreateStaffDto extends LoginUserDto {
   @ApiProperty({
