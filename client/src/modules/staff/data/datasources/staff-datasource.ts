@@ -1,5 +1,5 @@
 import StaffModel from '../models/staff-model';
-import { ApiClient, Endpoints, ErrorResponse, ErrorMessage, ErrorsCodes } from "@/core/api";
+import { ApiClient, Endpoints, ErrorResponse, ErrorMessage } from "@/core/api";
 import { Either } from "@/core/shared/utils/either";
 export abstract class BaseStaffDataSource {
     abstract getStaffMemberById(id: string): Promise<Either<ErrorResponse, StaffModel>>;
@@ -9,7 +9,22 @@ export abstract class BaseStaffDataSource {
     abstract deleteStaffMember(id: string): Promise<Either<ErrorResponse, boolean>>;
 }
 
-export class StaffDataSource extends BaseStaffDataSource {
+class StaffDataSource extends BaseStaffDataSource {
+    private static instance: StaffDataSource;
+
+    private constructor() {
+        super();
+    }
+
+    //* Singleton pattern implementation to get the same instance of the class every time
+    public static getInstance(): StaffDataSource {
+        if (!StaffDataSource.instance) {
+            StaffDataSource.instance = new StaffDataSource();
+        }
+
+        return StaffDataSource.instance;
+    }
+
 
     async getStaffMemberById(id: string): Promise<Either<ErrorResponse, StaffModel>> {
         try {
@@ -67,3 +82,5 @@ export class StaffDataSource extends BaseStaffDataSource {
         }
     }
 }
+
+export default StaffDataSource.getInstance();
