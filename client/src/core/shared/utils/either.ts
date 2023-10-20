@@ -34,14 +34,24 @@ class Either<L, R> {
         }
         throw new Error("Cannot get right value from a Left Either");
     }
+
+    fold<T>(leftFn: (l: L) => T, rightFn: (r: R) => T): T {
+        if (this.isLeft()) {
+            return leftFn(this.value as L);
+        }
+        return rightFn(this.value as R);
+    }
 }
 
 class Left<L> {
     constructor(private readonly value: L) { }
+
 }
 
 class Right<R> {
-    constructor(private readonly value: R) { }
+    constructor(private readonly value: R) {
+
+    }
 }
 
 export { Either, Left, Right };

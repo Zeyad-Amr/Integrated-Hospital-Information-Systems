@@ -3,7 +3,9 @@
 import TestPage from "@/core/shared/components/test";
 import { Button, Box } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { ApiClient, Endpoints } from "@/core/api";
+import { StaffDataSource } from "@/modules/staff/data/datasources/staff-datasource";
+import StaffModel from "@/modules/staff/data/models/staff-model";
+import { Either } from "@/core/shared/utils/either";
 // ----------------------------------------------------------------------
 
 export default function HomePage() {
@@ -33,21 +35,94 @@ export default function HomePage() {
         variant="contained"
         color="primary"
         onClick={async () => {
-          console.log("Test API Client");
-
-          try {
-            const getData = await ApiClient.get(Endpoints.staff.details, {
-              pathVariables: { id: "e63855f2-26b9-485e-8f30-e918728b15ef0" },
-            });
-            console.log(getData);
-            // Handle success and process the data
-          } catch (error) {
-            // Handle the error, e.g., display an error message or perform error-specific actions
-            console.log(error);
-          }
+          const staffDataSource = new StaffDataSource();
+          const result = await staffDataSource.createStaffMember(
+            new StaffModel({
+              id: "",
+              name: "Raouf",
+              ssn: "30003106108893",
+              email: "raouaaf@gmail.com",
+              phone: "01098157733",
+              role: "receptionist",
+            })
+          );
+          result.fold(
+            (error) => console.log(error),
+            (success) => console.log(success)
+          );
         }}
       >
-        Test API Client
+        Create Staff
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={async () => {
+          const staffDataSource = new StaffDataSource();
+          const result = await staffDataSource.getStaffMemberById(
+            "63f41edd-0bba-401c-8d5a-4befda7b9476"
+          );
+          result.fold(
+            (error) => console.log(error),
+            (success) => console.log(success)
+          );
+        }}
+      >
+        Get Staff By Id
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={async () => {
+          const staffDataSource = new StaffDataSource();
+          const result = await staffDataSource.getAllStaffMembers();
+          result.fold(
+            (error) => console.log(error),
+            (success) => console.log(success)
+          );
+        }}
+      >
+        Get All Staff
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={async () => {
+          const staffDataSource = new StaffDataSource();
+          const result = await staffDataSource.updateStaffMember(
+            "63f41edd-0bba-401c-8d5a-4befda7b9476",
+            new StaffModel({
+              id: "63f41edd-0bba-401c-8d5a-4befda7b9476",
+              name: "Raouf",
+              ssn: "30003106108898",
+              email: "raouf@gmail.com",
+              phone: "01098157733",
+              role: "receptionist",
+            })
+          );
+          result.fold(
+            (error) => console.log(error),
+            (success) => console.log(success)
+          );
+        }}
+      >
+        update Staff
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={async () => {
+          const staffDataSource = new StaffDataSource();
+          const result = await staffDataSource.deleteStaffMember(
+            "63f41edd-0bba-401c-8d5a-4befda7b9476"
+          );
+          result.fold(
+            (error) => console.log(error),
+            (success) => console.log(success)
+          );
+        }}
+      >
+        delete Staff
       </Button>
     </Box>
   );

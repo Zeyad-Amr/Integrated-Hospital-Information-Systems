@@ -80,7 +80,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │      │   ├── entities/                # Domain-specific entities with behavior and business rules (e.g., User, Post)
     │      │   ├── repositories/            # Abstraction for data access (e.g., UserRepository)
     │      │   ├── value-objects/           # Domain-specific value objects (e.g., PatientName for Patient entity having firstName and lastName)
-    │      │   └── useCases/                # Business logic (e.g., Login, Logout)
+    │      │   └── usecases/                # Business logic (e.g., Login, Logout)
     │      └── presentation/
     │          ├── pages/                   # Feature-specific pages
     │          ├── components/              # Feature-specific UI components

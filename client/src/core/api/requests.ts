@@ -40,10 +40,9 @@ class ApiClient {
       params: queryParams,
       ...config,
     };
-
     try {
       const response = await axiosInstance.get(url, requestConfig);
-      return response.data;
+      return response;
     } catch (error) {
       throw error;
     }
@@ -55,7 +54,7 @@ class ApiClient {
   // @param queryParams - Query parameters to be sent with the request
   // @param pathVariables - Path variables to be replaced in the endpoint URL
   // @param config - Axios request config
-  public async post(endpoint: string, { data, queryParams, pathVariables, config }: { data?: any; queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
+  public async post(endpoint: string, data: any, { queryParams, pathVariables, config }: { queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
     const url = this.replacePathVariables(endpoint, pathVariables);
     const requestConfig: AxiosRequestConfig = {
       params: queryParams,
@@ -64,7 +63,7 @@ class ApiClient {
 
     try {
       const response = await axiosInstance.post(url, data, requestConfig);
-      return response.data;
+      return response;
     } catch (error) {
       throw error;
     }
@@ -76,7 +75,7 @@ class ApiClient {
   // @param queryParams - Query parameters to be sent with the request
   // @param pathVariables - Path variables to be replaced in the endpoint URL
   // @param config - Axios request config
-  public async put(endpoint: string, { data, queryParams, pathVariables, config }: { data?: any; queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
+  public async put(endpoint: string, data: any, { queryParams, pathVariables, config }: { queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
     const url = this.replacePathVariables(endpoint, pathVariables);
     const requestConfig: AxiosRequestConfig = {
       params: queryParams,
@@ -85,7 +84,7 @@ class ApiClient {
 
     try {
       const response = await axiosInstance.put(url, data, requestConfig);
-      return response.data;
+      return response;
     } catch (error) {
       throw error;
     }
@@ -97,7 +96,7 @@ class ApiClient {
   // @param queryParams - Query parameters to be sent with the request
   // @param pathVariables - Path variables to be replaced in the endpoint URL
   // @param config - Axios request config
-  public async patch(endpoint: string, { data, queryParams, pathVariables, config }: { data?: any; queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
+  public async patch(endpoint: string, data: any, { queryParams, pathVariables, config }: { queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
     const url = this.replacePathVariables(endpoint, pathVariables);
     const requestConfig: AxiosRequestConfig = {
       params: queryParams,
@@ -106,7 +105,7 @@ class ApiClient {
 
     try {
       const response = await axiosInstance.patch(url, data, requestConfig);
-      return response.data;
+      return response;
     } catch (error) {
       throw error;
     }
@@ -126,7 +125,7 @@ class ApiClient {
 
     try {
       const response = await axiosInstance.delete(url, requestConfig);
-      return response.data;
+      return response;
     } catch (error) {
       throw error;
     }

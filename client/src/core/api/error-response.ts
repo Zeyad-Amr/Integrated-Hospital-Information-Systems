@@ -4,5 +4,4 @@ type ErrorResponse = {
     path: string;
     timestamp: string;
 }
-
 export default ErrorResponse;
