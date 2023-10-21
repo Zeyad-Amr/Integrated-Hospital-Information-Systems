@@ -10,21 +10,67 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Staff {
-  id    String  @id @default(uuid())
-  ssn   String  @unique
-  name  String
-  email String  @unique
-  phone String
-  role  String?
+model Person {
+  id                 String    @id @default(uuid())
+  firstName          String
+  secondName         String
+  thirdName          String
+  fourthName         String
+  SSN                String    @unique
+  verificationMethod Identity
+  gender             String
+  birthDate          DateTime
+  phone              String    @unique
+  email              String    @unique
+  governate          String
+  address            String
+  Employee           Employee?
+  Visits             Visit[]   @relation("visitPatient")
+  visits             Visit[]   @relation("visitCompanion")
+}
 
-  user User?
+model Employee {
+  id                String     @id @default(uuid())
+  person            Person     @relation(fields: [personID], references: [id])
+  personID          String     @unique
+  User              User?
+  createdByEmployee Employee?  @relation("CreatedBy", fields: [createdById], references: [id])
+  createdById       String?
+  createdEmployees  Employee[] @relation("CreatedBy")
+  Visit             Visit[]
 }
 
 model User {
-  username String @id @unique
-  password String
+  username   String   @id
+  password   String
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  employeeId String   @unique
+}
 
-  staff   Staff  @relation(fields: [staffId], references: [id], onDelete: Cascade)
-  staffId String @unique
+model Visit {
+  id             String   @id @default(uuid())
+  code           String   @unique
+  sequenceNumber Int
+  notes          String // ???
+  kinship        String
+  creator        Employee @relation(fields: [creatorId], references: [id])
+  creatorId      String
+  patient        Person   @relation("visitPatient", fields: [patientId], references: [id])
+  patientId      String
+  companion      Person   @relation("visitCompanion", fields: [companionId], references: [id])
+  companionId    String
+  incident       Incident @relation(fields: [incidentId], references: [id])
+  incidentId     String
+}
+
+model Incident {
+  id               String  @id @default(uuid())
+  description      String
+  numberOfPatients Int
+  Visit            Visit[]
+}
+
+enum Identity {
+  NATIONALIDCARD
+  PASSPORT
 }
