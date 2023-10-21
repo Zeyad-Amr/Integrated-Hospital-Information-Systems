@@ -1,44 +1,123 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { HOST_API } from '@/config/settings/app-config';
-import ErrorResponse from './error-response';
+import { AxiosRequestConfig } from 'axios';
+import axiosInstance from './config';
 // ----------------------------------------------------------------
 
-//* Create a custom axios instance
-const axiosInstance = axios.create({ baseURL: HOST_API });
+//* API Client class
+class ApiClient {
 
-//* Add a request interceptor
-axiosInstance.interceptors.request.use(
-    (config) => {
-        // Modify the request configuration here (e.g., add headers, authentication tokens, etc.)      
-        return config;
-    },
-    (error) => {
-        const errorResponse: ErrorResponse = error.response.data;
-        return Promise.reject(errorResponse);
+  //* Method to replace route parameters in the endpoint URL with values from pathVariables
+  private replacePathVariables(endpoint: string, pathVariables: { [key: string]: string }) {
+    // Replace route parameters in the endpoint URL with values from pathVariables
+    let url = endpoint;
+    if (pathVariables) {
+      Object.keys(pathVariables).forEach((variable) => {
+        url = url.replace(`:${variable}`, pathVariables[variable]);
+      });
     }
-);
+    return url;
+  }
 
-//* Add a response interceptor
-axiosInstance.interceptors.response.use(
-    (response) => {
-        // Modify the response or perform other tasks
-        return response;
-    },
-    (error) => {
-        /*
-        *   By default,
-        *
-        *   Axios response success range from 200 to 299:
-        *   200-299: Successful responses
-        *
-        *   Axios response errors range from 300 to 599:
-        *   300-399: Redirection
-        *   400-499: Client errors
-        *   500-599: Server errors
-        */
-
-        const errorResponse: ErrorResponse = error.response.data;
-        return Promise.reject(errorResponse);
+  //* GET method to make a GET request to the API
+  //* @param endpoint - API endpoint
+  //* @param queryParams - Query parameters to be sent with the request
+  //* @param pathVariables - Path variables to be replaced in the endpoint URL
+  //* @param config - Axios request config
+  public async get(endpoint: string, { queryParams, pathVariables, config }: { queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
+    const url = this.replacePathVariables(endpoint, pathVariables);
+    const requestConfig: AxiosRequestConfig = {
+      params: queryParams,
+      ...config,
+    };
+    try {
+      const response = await axiosInstance.get(url, requestConfig);
+      return response;
+    } catch (error) {
+      throw error;
     }
-);
-export default axiosInstance;
+  }
+
+  //* POST method to make a POST request to the API
+  // @param endpoint - API endpoint
+  // @param data - Request body
+  // @param queryParams - Query parameters to be sent with the request
+  // @param pathVariables - Path variables to be replaced in the endpoint URL
+  // @param config - Axios request config
+  public async post(endpoint: string, data: any, { queryParams, pathVariables, config }: { queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
+    const url = this.replacePathVariables(endpoint, pathVariables);
+    const requestConfig: AxiosRequestConfig = {
+      params: queryParams,
+      ...config,
+    };
+
+    try {
+      const response = await axiosInstance.post(url, data, requestConfig);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  //* PUT method to make a PUT request to the API
+  // @param endpoint - API endpoint
+  // @param data - Request body
+  // @param queryParams - Query parameters to be sent with the request
+  // @param pathVariables - Path variables to be replaced in the endpoint URL
+  // @param config - Axios request config
+  public async put(endpoint: string, data: any, { queryParams, pathVariables, config }: { queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
+    const url = this.replacePathVariables(endpoint, pathVariables);
+    const requestConfig: AxiosRequestConfig = {
+      params: queryParams,
+      ...config,
+    };
+
+    try {
+      const response = await axiosInstance.put(url, data, requestConfig);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  //* PATCH method to make a PATCH request to the API
+  // @param endpoint - API endpoint
+  // @param data - Request body
+  // @param queryParams - Query parameters to be sent with the request
+  // @param pathVariables - Path variables to be replaced in the endpoint URL
+  // @param config - Axios request config
+  public async patch(endpoint: string, data: any, { queryParams, pathVariables, config }: { queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
+    const url = this.replacePathVariables(endpoint, pathVariables);
+    const requestConfig: AxiosRequestConfig = {
+      params: queryParams,
+      ...config,
+    };
+
+    try {
+      const response = await axiosInstance.patch(url, data, requestConfig);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  //* DELETE method to make a DELETE request to the API
+  // @param endpoint - API endpoint
+  // @param queryParams - Query parameters to be sent with the request
+  // @param pathVariables - Path variables to be replaced in the endpoint URL
+  // @param config - Axios request config
+  public async delete(endpoint: string, { queryParams, pathVariables, config }: { queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
+    const url = this.replacePathVariables(endpoint, pathVariables);
+    const requestConfig: AxiosRequestConfig = {
+      params: queryParams,
+      ...config,
+    };
+
+    try {
+      const response = await axiosInstance.delete(url, requestConfig);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+}
+
+export default ApiClient;
