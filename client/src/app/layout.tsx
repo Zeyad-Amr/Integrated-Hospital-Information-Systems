@@ -11,10 +11,7 @@ import {
 } from "@/core/components/settings";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { AppServicesLocator } from "@/core/service-locator";
-
-const inter = Inter({ subsets: ["latin"] });
 
 // ----------------------------------------------------------------------
 
