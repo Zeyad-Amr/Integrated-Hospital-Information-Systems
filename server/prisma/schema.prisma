@@ -11,22 +11,24 @@ datasource db {
 }
 
 model Person {
-  id                 String    @id @default(uuid())
+  id                 String       @id @default(uuid())
   firstName          String
   secondName         String
   thirdName          String
   fourthName         String
-  SSN                String    @unique
-  verificationMethod Identity
-  gender             String
+  SSN                String       @unique
+  verificationMethod IdentityEnum
+  gender             GenderEnum
   birthDate          DateTime
-  phone              String    @unique
-  email              String    @unique
+  phone              String?      @unique
+  email              String?      @unique
   governate          String
   address            String
   Employee           Employee?
-  Visits             Visit[]   @relation("visitPatient")
-  visits             Visit[]   @relation("visitCompanion")
+  Visits             Visit[]      @relation("visitPatient")
+  visits             Visit[]      @relation("visitCompanion")
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime?
 }
 
 model Employee {
@@ -35,9 +37,13 @@ model Employee {
   personID          String     @unique
   User              User?
   createdByEmployee Employee?  @relation("CreatedBy", fields: [createdById], references: [id])
-  createdById       String?
+  createdById       String
   createdEmployees  Employee[] @relation("CreatedBy")
-  Visit             Visit[]
+  // Visit             Visit[]
+  shiftStart        DateTime
+  shiftEnd          DateTime
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime?
 }
 
 model User {
@@ -45,32 +51,54 @@ model User {
   password   String
   employee   Employee @relation(fields: [employeeId], references: [id])
   employeeId String   @unique
+  createdAt  DateTime @default(now())
+
+  updatedAt DateTime?
 }
 
 model Visit {
-  id             String   @id @default(uuid())
-  code           String   @unique
+  id             String       @id @default(uuid())
+  code           String?      @unique
   sequenceNumber Int
-  notes          String // ???
-  kinship        String
-  creator        Employee @relation(fields: [creatorId], references: [id])
-  creatorId      String
-  patient        Person   @relation("visitPatient", fields: [patientId], references: [id])
-  patientId      String
-  companion      Person   @relation("visitCompanion", fields: [companionId], references: [id])
-  companionId    String
-  incident       Incident @relation(fields: [incidentId], references: [id])
-  incidentId     String
+  kinship        KinshipEnum?
+  // it has to be commented till the emplopyee api created
+  // creator        Employee     @relation(fields: [creatorId], references: [id])
+  creatorId      String?
+  patient        Person?       @relation("visitPatient", fields: [patientId], references: [id])
+  patientId      String?
+  companion      Person?      @relation("visitCompanion", fields: [companionId], references: [id])
+  companionId    String?
+  incident       Incident?    @relation(fields: [incidentId], references: [id])
+  incidentId     String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime?
 }
 
 model Incident {
-  id               String  @id @default(uuid())
+  id               String    @id @default(uuid())
   description      String
   numberOfPatients Int
   Visit            Visit[]
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime?
 }
 
-enum Identity {
+enum IdentityEnum {
   NATIONALIDCARD
   PASSPORT
+}
+
+enum GenderEnum {
+  MALE
+  FEMALE
+}
+
+enum KinshipEnum {
+  BROTHER
+  SISTER
+  FATHER
+  MOTHER
+  COUSIN
+  AUNT
+  OTHER
 }
