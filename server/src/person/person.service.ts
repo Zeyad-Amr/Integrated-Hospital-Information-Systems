@@ -33,7 +33,6 @@ export class PersonService {
 
   async update(id: string, updatePersonDto: UpdatePersonDto) {
     try {
-      updatePersonDto.updatedAt = new Date();
       return await this.personRepo.update(id, updatePersonDto)
     } catch (error) {
       throw error

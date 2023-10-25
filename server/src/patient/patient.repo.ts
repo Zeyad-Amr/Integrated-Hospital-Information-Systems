@@ -20,7 +20,14 @@ export class PatientRepo extends PrismaGenericRepo<Person> {
 
                 const companion = await this.personRepo.createIfNotExist(createPatientDto.companion)
 
-                const visit = await this.prismaService.visit.create({ data: { ...createPatientDto.visit, creatorId: "should be request user id", patientId: patient.id, companionId: companion.id } })
+                const visit = await this.prismaService.visit.create({
+                    data: {
+                        ...createPatientDto.visit,
+                        creatorId: "should be request user id",
+                        patientId: patient.id,
+                        companionId: companion.id
+                    }
+                })
                 return { patient, companion, visit }
             })
         }
@@ -31,8 +38,18 @@ export class PatientRepo extends PrismaGenericRepo<Person> {
 
     async findAll() {
         try {
-            return await this.prismaService.$queryRaw`SELECT DISTINCT ON (p."id") p."firstName", p."secondName", p."thirdName", p."fourthName", p."SSN", p."verificationMethod", p."gender", p."phone", p."email", p."birthDate", p."governate", p."address", p."createdAt", p."updatedAt"
-            FROM "Person" AS "p" INNER JOIN "Visit" AS "v" ON p."id" = v."patientId"`;
+            // why ?? 
+            // return await this.prismaService.$queryRaw`SELECT DISTINCT ON (p."id") p."firstName", p."secondName", p."thirdName", p."fourthName", p."SSN", p."verificationMethod", p."gender", p."phone", p."email", p."birthDate", p."governate", p."address", p."createdAt", p."updatedAt"
+            // FROM "Person" AS "p" INNER JOIN "Visit" AS "v" ON p."id" = v."patientId"`;
+
+            return await this.prismaService.person.findMany({
+                where: {
+                    patientVisits: {
+                        some: {}
+                    }
+                }
+            });
+
 
         } catch (error) {
             throw error
