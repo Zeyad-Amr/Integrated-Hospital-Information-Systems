@@ -19,7 +19,7 @@ model Person {
   SSN                String       @unique
   verificationMethod IdentityEnum
   gender             GenderEnum
-  birthDate          DateTime
+  birthDate          DateTime     @db.Date
   phone              String?      @unique
   email              String?      @unique
   governate          String
@@ -43,13 +43,13 @@ model Employee {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  User              User?
+  user              User?
   person            Person     @relation(fields: [personID], references: [id])
   personID          String     @unique
   createdByEmployee Employee?  @relation("CreatedBy", fields: [createdById], references: [id])
   createdById       String
   createdEmployees  Employee[] @relation("CreatedBy")
-  // visit             Visit[]
+  visit             Visit[]
 }
 
 model User {
@@ -59,7 +59,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  employee   Employee @relation(fields: [employeeId], references: [id])
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   employeeId String   @unique
 }
 
@@ -73,8 +73,8 @@ model Visit {
   updatedAt DateTime @updatedAt
 
   // it has to be commented till the emplopyee api created
-  // creator     Employee  @relation(fields: [creatorId], references: [id])
-  creatorId   String?
+  creator     Employee  @relation(fields: [creatorId], references: [id])
+  creatorId   String
   patient     Person?   @relation("visitPatient", fields: [patientId], references: [id])
   patientId   String?
   companion   Person?   @relation("visitCompanion", fields: [companionId], references: [id])
@@ -91,7 +91,7 @@ model Incident {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Visit Visit[]
+  visits Visit[]
 }
 
 enum IdentityEnum {

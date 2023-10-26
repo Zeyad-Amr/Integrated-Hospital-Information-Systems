@@ -6,7 +6,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { UserService } from './user.service';
+import { AuthService } from './user.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { handleError } from '../shared/http-error';
 import {
@@ -17,28 +17,28 @@ import {
 } from '@nestjs/swagger';
 
 @Controller('user')
-export class UserController {
-  constructor(private readonly userService: UserService) { }
+export class AuthController {
+  constructor(private readonly authService: AuthService) { }
 
-  // // this api for development only MUST be removed in production
-  // @Get()
-  // async findAll() {
-  //   return await this.userService.findAll();
-  // }
+  // this api for development only MUST be removed in production
+  @Get()
+  async findAll() {
+    return await this.authService.findAll();
+  }
 
-  // @ApiOperation({ summary: 'Login user' })
-  // @ApiOkResponse({ description: 'User logged in successfully' })
-  // @ApiBadRequestResponse({ description: 'Bad Request' })
-  // @ApiUnauthorizedResponse({
-  //   description: 'Unauthorized user (invalid username or password)',
-  // })
-  // @HttpCode(HttpStatus.OK)
-  // @Post('login')
-  // async login(@Body() loginUserDto: LoginUserDto) {
-  //   try {
-  //     return { access_token: await this.userService.login(loginUserDto) };
-  //   } catch (error) {
-  //     throw handleError(error);
-  //   }
-  // }
+  @ApiOperation({ summary: 'Login user' })
+  @ApiOkResponse({ description: 'User logged in successfully' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized user (invalid username or password)',
+  })
+  @HttpCode(HttpStatus.OK)
+  @Post('login')
+  async login(@Body() loginUserDto: LoginUserDto) {
+    try {
+      return { access_token: await this.authService.login(loginUserDto) };
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
 }

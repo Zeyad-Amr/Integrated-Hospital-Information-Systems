@@ -70,6 +70,7 @@ export class UpdatePersonDto {
         example: '2000-05-10T00:00:00.000Z',
     })
     @IsDateString()
+    @IsOptional()
 
     birthDate: Date
 
