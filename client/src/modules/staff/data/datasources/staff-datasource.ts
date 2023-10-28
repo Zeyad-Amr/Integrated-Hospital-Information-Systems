@@ -10,10 +10,8 @@ abstract class BaseStaffDataSource {
 }
 
 class StaffDataSource extends BaseStaffDataSource {
-    apiClient: ApiClient;
-    constructor(apiClient: ApiClient) {
+    constructor(private apiClient: ApiClient) {
         super();
-        this.apiClient = apiClient;
     }
 
     async getStaffMemberById(id: string): Promise<Either<ErrorResponse, StaffModel>> {

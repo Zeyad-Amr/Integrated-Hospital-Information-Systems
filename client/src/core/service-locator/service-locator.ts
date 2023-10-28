@@ -1,4 +1,5 @@
 import ServiceKeys from './service-keys';
+
 class ServiceLocator {
     private static instance: ServiceLocator;
 
@@ -16,8 +17,6 @@ class ServiceLocator {
     registerFactory<T>(key: ServiceKeys, factory: () => T): void {
         this.services[key] = factory;
     }
-
-
 
     get<T>(key: ServiceKeys): T {
         const name = ServiceKeys[key];

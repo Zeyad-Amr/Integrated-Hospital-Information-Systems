@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 import { HOST_API } from '@/config/settings/app-config';
 import ErrorResponse from './error-response';
 // ----------------------------------------------------------------
