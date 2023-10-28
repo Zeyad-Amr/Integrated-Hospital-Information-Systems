@@ -9,13 +9,13 @@ const TestPage = ({ label = "Test" }) => {
       }}
     >
       <div>{label}</div>
-      {Array.from(Array(20).keys()).map((item, index) => {
+      {/* {Array.from(Array(20).keys()).map((item, index) => {
         return (
           <div key={index + 1}>
             {label} {index + 1}
           </div>
         );
-      })}
+      })} */}
     </Box>
   );
 };

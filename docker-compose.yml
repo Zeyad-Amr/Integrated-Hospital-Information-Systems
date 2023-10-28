@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   server:
@@ -17,9 +17,9 @@ services:
     ports:
       - "4000:4000"
 
-
   postgres:
     image: postgres:16.0
+    container_name: database
     ports:
       - "35000:5432"
     environment:

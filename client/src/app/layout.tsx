@@ -9,19 +9,13 @@ import {
   SettingsProvider,
   // SettingsDrawer,
 } from "@/core/components/settings";
-
-// auth
-// import { AuthProvider, AuthConsumer } from "@/core/auth/context/jwt";
-
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
+import { AppServicesLocator } from "@/core/service-locator";
 
 // ----------------------------------------------------------------------
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Qasr HIS",
   description:
     "Qasr HIS is a hospital information system that helps you to manage your hospital.",
@@ -63,6 +57,7 @@ type Props = {
 };
 
 export default function RootLayout({ children }: Props) {
+  AppServicesLocator.init();
   return (
     <html lang="en" className={primaryFont.className}>
       <body>
