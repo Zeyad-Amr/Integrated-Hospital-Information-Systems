@@ -39,9 +39,9 @@ class StaffRepository extends BaseStaffRepository {
             return Either.left(errorResponse);
         }
     }
-    override async updateStaffMember(id: string, staff: StaffEntity): Promise<Either<ErrorResponse, StaffEntity | null>> {
+    override async updateStaffMember(staff: StaffEntity): Promise<Either<ErrorResponse, StaffEntity | null>> {
         try {
-            const result = await this.baseStaffDataSource.updateStaffMember(id, StaffMapper.entityToModel(staff));
+            const result = await this.baseStaffDataSource.updateStaffMember(StaffMapper.entityToModel(staff));
             return Either.right(result);
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;

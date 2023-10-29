@@ -5,7 +5,7 @@ import { ErrorMessage } from "@/core/api";
 import BaseStaffRepository from "../repositories/base-staff-repository";
 import { CreateStaffMemberUseCaseParameters } from "./usecase-params";
 
-class createStaffMemberUseCase
+class CreateStaffMemberUseCase
     implements BaseUseCase<StaffEntity, CreateStaffMemberUseCaseParameters> {
     constructor(private baseStaffRepository: BaseStaffRepository) { }
 
@@ -14,6 +14,6 @@ class createStaffMemberUseCase
     }
 }
 
-export default createStaffMemberUseCase;
+export default CreateStaffMemberUseCase;
 
 

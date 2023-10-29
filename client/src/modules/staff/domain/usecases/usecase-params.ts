@@ -1,6 +1,6 @@
 import StaffEntity from "../entities/staff-entity";
 
-class GetStaffMemberByIdUseCaseParameters {
+class GetStaffDetailsUseCaseParameters {
     constructor(public id: string) { }
 }
 
@@ -18,7 +18,7 @@ class DeleteStaffMemberUseCaseParameters {
 
 
 export {
-    GetStaffMemberByIdUseCaseParameters,
+    GetStaffDetailsUseCaseParameters,
     CreateStaffMemberUseCaseParameters,
     UpdateStaffMemberUseCaseParameters,
     DeleteStaffMemberUseCaseParameters
