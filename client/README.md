@@ -54,6 +54,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │   │   ├── api-client/                 # API client
     │   │   └── endpoints/                  # API endpoints
     │   ├── auth/                           # Authentication-related code
+    │   ├── base/                           # Base classes
     │   ├── components/                     # General Shared UI components
     │   ├── layout/                         # Layout components (e.g., header, footer)
     │   ├── redux/                          # Redux store, reducers, and middleware
@@ -62,6 +63,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │   │   ├── middlewares/                # Redux middlewares
     │   │   └── slices/                     # Redux slices
     │   ├── routes/                         # Application routes or navigation paths
+    │   ├── service-locator/                # Service locator
     │   ├── shared/                         # Shared code
     │   │   ├── components/                 # Shared UI components
     │   │   ├── constants/                  # Shared constants
@@ -74,6 +76,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │   └── auth/
     │      ├── data/
     │      │   ├── datasources/             # Data sources (e.g., API, LocalStorage)
+    │      │   ├── mappers/                 # Data mappers (e.g., UserMapper)
     │      │   ├── models/                  # Data models or structures for data transfer without behavior (e.g., User, Post)
     │      │   └── repositories/            # Data access and storage (e.g., UserRepository)
     │      ├── domain/
