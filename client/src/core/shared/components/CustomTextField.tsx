@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 export interface TextFieldProps {
   onChange: (event: React.ChangeEvent<{ value: unknown }>) => void;
   onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
+  hideLabel?: boolean;
   name: string;
   label: string;
   error: string | undefined;
@@ -17,6 +18,7 @@ export interface TextFieldProps {
 const CustomTextField = ({
   onChange,
   onBlur,
+  hideLabel = true,
   name,
   label,
   error,
@@ -25,6 +27,7 @@ const CustomTextField = ({
   props,
   isRequired = false,
   width = 800,
+  
 }: TextFieldProps) => {
   const textfieldProps = {
     FormHelperTextProps: { sx: { color: "red" } },
@@ -39,17 +42,21 @@ const CustomTextField = ({
           maxWidth: "100%",
           marginTop: 0.5,
         },
-        mb: 2,
-        width: { width },
+        width: width,
+        marginBottom: "20px",
         maxWidth: "100%",
       }}
     >
-      <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-        {label} {isRequired && <span style={{ color: "red" }}>*</span>}
-      </Typography>
+      {!hideLabel && (
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          {label} {isRequired && <span style={{ color: "red" }}>*</span>}
+        </Typography>
+      )}
+      
       <TextField
-        hiddenLabel
-        id="filled-hidden-label-small"
+        sx= {{ width: width }}
+        id="outlined-required"
+        label={label}
         required={isRequired}
         onChange={onChange}
         onBlur={onBlur}
@@ -57,7 +64,7 @@ const CustomTextField = ({
         value={value}
         helperText={error && touched ? error : ""}
         error={!!(error && touched)}
-        {...textfieldProps}
+        {...(!hideLabel && textfieldProps)}
         {...props}
       />
     </Box>

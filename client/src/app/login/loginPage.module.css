@@ -1,0 +1,34 @@
+.loginBG{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: url('../../assets/imgs/loginBG.jpg');
+    background-size: cover;
+    opacity: 0.5;
+}
+
+.loginPage{
+    height: 100%;
+    padding-right:10vw;
+    align-items: flex-start !important;
+}
+
+.loginFormContainer{
+    background-color: rgb(255, 255, 255);
+}
+
+.flexCenter{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.loginFormContainer{
+    width: 35%;
+    /* height: 100%; */
+    height: 75%;
+    border-radius: 15px;
+}
