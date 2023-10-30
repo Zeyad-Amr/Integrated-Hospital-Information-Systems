@@ -9,11 +9,15 @@ enum ServiceKeys {
 
 
     //* Use Cases --------------------------------------------------
-    GetStaffListUseCase = 'GetStaffListUseCase',
+    GetAllStaffMembersUseCase = 'GetAllStaffMembersUseCase',
     GetStaffDetailsUseCase = 'GetStaffDetailsUseCase',
     CreateStaffMemberUseCase = 'CreateStaffMemberUseCase',
     UpdateStaffMemberUseCase = 'UpdateStaffMemberUseCase',
     DeleteStaffMemberUseCase = 'DeleteStaffMemberUseCase',
+
+
+    //* Thunks --------------------------------------------------
+    StaffThunks = 'StaffThunks',
 
 
     //* Exnternal Services --------------------------------------------------

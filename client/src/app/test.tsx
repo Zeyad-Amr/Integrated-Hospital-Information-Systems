@@ -1,38 +1,14 @@
-import { ServiceKeys, sl } from "@/core/service-locator";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import TestPage from "@/core/shared/components/test";
-import StaffModel from "@/modules/staff/data/models/staff-model";
-// usecases
-import {
-  CreateStaffMemberUseCase,
-  DeleteStaffMemberUseCase,
-  GetAllStaffMembersUseCase,
-  GetStaffDetailsUseCase,
-  UpdateStaffMemberUseCase,
-  CreateStaffMemberUseCaseParameters,
-  DeleteStaffMemberUseCaseParameters,
-  GetStaffDetailsUseCaseParameters,
-  UpdateStaffMemberUseCaseParameters,
-} from "@/modules/staff/domain/usecases/index";
+// import { sl, ServiceKeys } from "@/core/service-locator";
+import { useAppDispatch, useAppSelector } from "@/core/redux/store";
+import { StaffState } from "../modules/staff/presentation/controllers/types";
+import { getStaffList } from "../modules/staff/presentation/controllers/thunks/staff-thunks";
 const Test = () => {
   const router = useRouter();
-
-  const CreateStaffMemberUseCase = sl.get<CreateStaffMemberUseCase>(
-    ServiceKeys.CreateStaffMemberUseCase
-  );
-  const DeleteStaffMemberUseCase = sl.get<DeleteStaffMemberUseCase>(
-    ServiceKeys.DeleteStaffMemberUseCase
-  );
-  const GetStaffListUseCase = sl.get<GetAllStaffMembersUseCase>(
-    ServiceKeys.GetStaffListUseCase
-  );
-  const GetStaffDetailsUseCase = sl.get<GetStaffDetailsUseCase>(
-    ServiceKeys.GetStaffDetailsUseCase
-  );
-  const UpdateStaffMemberUseCase = sl.get<UpdateStaffMemberUseCase>(
-    ServiceKeys.UpdateStaffMemberUseCase
-  );
+  const dispatch = useAppDispatch();
+  const staffState: StaffState = useAppSelector((state: any) => state.staff);
 
   return (
     <Box
@@ -53,8 +29,7 @@ const Test = () => {
       >
         Go to Dashboard
       </Button>
-
-      <Button
+      {/* <Button
         variant="contained"
         color="primary"
         onClick={async () => {
@@ -78,8 +53,8 @@ const Test = () => {
         }}
       >
         Create Staff
-      </Button>
-      <Button
+      </Button> */}
+      {/* <Button
         variant="contained"
         color="primary"
         onClick={async () => {
@@ -95,21 +70,22 @@ const Test = () => {
         }}
       >
         Get Staff By Id
-      </Button>
+      </Button> */}
       <Button
         variant="contained"
         color="primary"
         onClick={async () => {
-          const result = await GetStaffListUseCase.call();
-          result.fold(
-            (error) => console.log(error),
-            (success) => console.log(success)
-          );
+          dispatch(getStaffList());
         }}
       >
         Get All Staff
       </Button>
-      <Button
+      <Typography>
+        {staffState.staffList.map((staff) => (
+          <div key={staff.id}>{staff.name}</div>
+        ))}
+      </Typography>
+      {/* <Button
         variant="contained"
         color="primary"
         onClick={async () => {
@@ -147,7 +123,7 @@ const Test = () => {
         }}
       >
         delete Staff
-      </Button>
+      </Button> */}
     </Box>
   );
 };

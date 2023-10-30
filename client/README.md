@@ -65,8 +65,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │   ├── redux/                          # Redux store, reducers, and thunk
     │   │   ├── slices/                     # Redux slices
     │   │   ├── thunks/                     # Redux thunks
-    │   │   ├── index.tsx                   # Redux provider
-    │   │   ├── selectors.ts                # Root selector
+    │   │   ├── index.ts                    # Redux provider
+    │   │   ├── types.ts                    # Redux types
     │   │   └── store.ts                    # Redux store
     │   ├── routes/                         # Application routes or navigation paths
     │   ├── service-locator/                # Service locator
@@ -101,7 +101,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │              ├── slices/              # Redux slices
     │              ├── thunks/              # Redux thunk
     │              ├── index.tsx            # Controller for the feature
-    │              └── selectors.ts         # Redux selectors
+    │              └── types.ts              # Redux thunk
     │
     └── services/                           # External services or integrations
 

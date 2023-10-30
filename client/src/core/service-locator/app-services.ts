@@ -13,7 +13,6 @@ import {
     UpdateStaffMemberUseCase,
 } from "@/modules/staff/domain/usecases/index";
 
-
 class AppServicesLocator {
     static init() {
 
@@ -30,7 +29,7 @@ class AppServicesLocator {
 
 
         //* Use Cases --------------------------------------------------
-        sl.registerFactory<GetAllStaffMembersUseCase>(ServiceKeys.GetStaffListUseCase, () => new GetAllStaffMembersUseCase(
+        sl.registerFactory<GetAllStaffMembersUseCase>(ServiceKeys.GetAllStaffMembersUseCase, () => new GetAllStaffMembersUseCase(
             sl.get<BaseStaffRepository>(ServiceKeys.StaffRepository)
         ));
         sl.registerFactory<GetStaffDetailsUseCase>(ServiceKeys.GetStaffDetailsUseCase, () => new GetStaffDetailsUseCase(
@@ -45,6 +44,12 @@ class AppServicesLocator {
         sl.registerFactory<DeleteStaffMemberUseCase>(ServiceKeys.DeleteStaffMemberUseCase, () => new DeleteStaffMemberUseCase(
             sl.get<BaseStaffRepository>(ServiceKeys.StaffRepository)
         ));
+
+
+        //* Thunks --------------------------------------------------
+        // sl.registerFactory<StaffThunks>(ServiceKeys.StaffThunks, () => new StaffThunks(
+        //     sl.get<GetAllStaffMembersUseCase>(ServiceKeys.GetAllStaffMembersUseCase),
+        // ));
 
 
         //* Exnternal Services --------------------------------------------------

@@ -20,6 +20,14 @@ class Either<L, R> {
     fold<T>(leftFn: (l: L) => T, rightFn: (r: R) => T): T {
         return this.isLeft() ? leftFn(this.value as L) : rightFn(this.value as R);
     }
+
+    getRight(): R {
+        return this.value as R;
+    }
+
+    getLeft(): L {
+        return this.value as L;
+    }
 }
 
 class Left<L> {

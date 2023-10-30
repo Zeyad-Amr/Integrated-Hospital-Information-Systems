@@ -5,7 +5,6 @@ import { BaseStaffDataSource } from '../datasources/staff-datasource';
 import StaffEntity from '../../domain/entities/staff-entity';
 import StaffMapper from "../mappers/staff-mapper";
 
-
 class StaffRepository extends BaseStaffRepository {
     constructor(private baseStaffDataSource: BaseStaffDataSource) {
         super();
@@ -20,7 +19,6 @@ class StaffRepository extends BaseStaffRepository {
             return Either.left(errorResponse);
         }
     }
-
     override async getAllStaffMembers(): Promise<Either<ErrorResponse, StaffEntity[]>> {
         try {
             const result = await this.baseStaffDataSource.getAllStaffMembers();
