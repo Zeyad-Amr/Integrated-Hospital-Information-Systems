@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 export interface TextFieldProps {
   onChange: (event: React.ChangeEvent<{ value: unknown }>) => void;
   onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
-  hideLabel?: boolean;
   name: string;
   label: string;
   error: string | undefined;
@@ -27,7 +26,6 @@ const CustomTextField = ({
   value,
   props,
   isRequired = false,
-  hideLabel = true,
   width,
 }: TextFieldProps) => {
   const textfieldProps = {
