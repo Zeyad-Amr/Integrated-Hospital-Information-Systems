@@ -11,7 +11,8 @@ export interface TextFieldProps {
   touched: boolean | undefined;
   value: string | number | undefined | null;
   isRequired?: boolean;
-  width?: number;
+  width?: number | string;
+  hideLabel?: boolean;
   props?: any;
 }
 
@@ -26,8 +27,8 @@ const CustomTextField = ({
   value,
   props,
   isRequired = false,
-  width = 800,
-  
+  hideLabel = true,
+  width,
 }: TextFieldProps) => {
   const textfieldProps = {
     FormHelperTextProps: { sx: { color: "red" } },
@@ -38,9 +39,7 @@ const CustomTextField = ({
     <Box
       sx={{
         "& .MuiTextField-root": {
-          width: 800,
           maxWidth: "100%",
-          marginTop: 0.5,
         },
         width: width,
         marginBottom: "20px",
@@ -51,8 +50,7 @@ const CustomTextField = ({
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           {label} {isRequired && <span style={{ color: "red" }}>*</span>}
         </Typography>
-      )}
-      
+      )}      
       <TextField
         sx= {{ width: width }}
         id="outlined-required"
@@ -62,6 +60,7 @@ const CustomTextField = ({
         onBlur={onBlur}
         name={name}
         value={value}
+        hiddenLabel={hideLabel}
         helperText={error && touched ? error : ""}
         error={!!(error && touched)}
         {...(!hideLabel && textfieldProps)}
