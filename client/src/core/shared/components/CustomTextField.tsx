@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 export interface TextFieldProps {
   onChange: (event: React.ChangeEvent<{ value: unknown }>) => void;
   onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
+  hideLabel?: boolean;
   name: string;
   label: string;
   error: string | undefined;
@@ -18,6 +19,7 @@ export interface TextFieldProps {
 const CustomTextField = ({
   onChange,
   onBlur,
+  hideLabel = true,
   name,
   label,
   error,
@@ -39,7 +41,8 @@ const CustomTextField = ({
         "& .MuiTextField-root": {
           maxWidth: "100%",
         },
-        width: { width },
+        width: width,
+        marginBottom: "20px",
         maxWidth: "100%",
       }}
     >
@@ -47,8 +50,9 @@ const CustomTextField = ({
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           {label} {isRequired && <span style={{ color: "red" }}>*</span>}
         </Typography>
-      )}
+      )}      
       <TextField
+        sx= {{ width: width }}
         id="outlined-required"
         label={label}
         required={isRequired}

@@ -1,8 +1,8 @@
 "use client";
 
-import TestPage from "@/core/shared/components/test";
 import Sidebar from "@/core/layout/sidebar/index";
-import CreateUserComponent from "@/modules/staff/create-user/presentation/controllers";
+import CreateUserForm from "@/modules/staff/create-user/presentation/components/user-form/form";
+
 
 // ----------------------------------------------------------------------
 
@@ -10,7 +10,7 @@ export default function CreateUser() {
   return (
     <div>
       <Sidebar>
-        <CreateUserComponent/>
+        <CreateUserForm />
       </Sidebar>
     </div>
   );
