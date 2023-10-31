@@ -21,12 +21,16 @@ const LoginPage = () => {
     .min(6, "Password must be at least 6 characters long"),
   })
 
+  const onsubmit = (values: { userName: string; password: string; }) => {
+    console.log(values)
+  }
+
   return (
 
     <Box className={`${styles.loginPage} ${styles.flexCenter}`}>
       <Box className={`${styles.loginBG}`}></Box>
       <Box className={`${styles.loginFormContainer} ${styles.flexCenter}`}>
-        <h1 style={{marginBottom: '2rem'}}>تسجيل الدخول</h1>
+        <h1 className={`${styles.title}`}>تسجيــل الدخــول</h1>
         <Formik      
           initialValues={{
           userName: "",
