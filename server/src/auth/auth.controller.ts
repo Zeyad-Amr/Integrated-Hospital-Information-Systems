@@ -13,19 +13,24 @@ import {
   ApiBadRequestResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { Public } from '../shared/decorators/public.decorator';
 
+@ApiTags('user')
 @Controller('user')
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
-  // this api for development only MUST be removed in production
-  @Get()
-  async findAll() {
-    return await this.authService.findAll();
-  }
+  // ******* this api for development only MUST be removed in production *******
+  // @Get()
+  // async findAll(@Request() req) {
+  //   console.log(req.user);
+  //   return await this.authService.findAll();
+  // }
 
+  @Public()
   @ApiOperation({ summary: 'Login user' })
   @ApiOkResponse({ description: 'User logged in successfully' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
