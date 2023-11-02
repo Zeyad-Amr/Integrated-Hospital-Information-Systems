@@ -23,17 +23,9 @@ export class PersonService {
     }
   }
 
-  async findOne(id: string) {
+  async findOne(ssn: string) {
     try {
-      return await this.personRepo.getByID(id)
-    } catch (error) {
-      throw error
-    }
-  }
-
-  async update(id: string, updatePersonDto: UpdatePersonDto) {
-    try {
-      return await this.personRepo.update(id, updatePersonDto)
+      return await this.personRepo.findBySSN(ssn)
     } catch (error) {
       throw error
     }

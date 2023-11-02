@@ -31,6 +31,9 @@ model Person {
   employee        Employee?
   patientVisits   Visit[]   @relation("visitPatient")
   companionVisits Visit[]   @relation("visitCompanion")
+
+  incidentCompanion Incident? @relation(fields: [incidentId], references: [id])
+  incidentId        String?
 }
 
 model Employee {
@@ -64,12 +67,11 @@ model User {
 }
 
 model Visit {
-  id             String       @id @default(uuid())
-  code           String?      @unique
-  sequenceNumber Int
+  code           String       @id
+  sequenceNumber Int?
   kinship        KinshipEnum?
 
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt
 
   // it has to be commented till the emplopyee api created
@@ -84,14 +86,30 @@ model Visit {
 }
 
 model Incident {
-  id               String @id @default(uuid())
-  description      String
+  id               String  @id @default(uuid())
+  description      String?
   numberOfPatients Int
+  isCompleted Boolean    @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  
+  Car         CarNumber? @relation(fields: [carId], references: [id])
+  carId       String?
+  companions  Person[]
 
   Visit Visit[]
+}
+
+model CarNumber {
+  id         String     @id() @default(uuid())
+  firstChar  String     @db.VarChar(1)
+  secondChar String     @db.VarChar(1)
+  thirdChar  String     @db.VarChar(1)
+  number     Int
+  Incident   Incident[]
+
+  @@unique([firstChar, secondChar, thirdChar, number], map: "Car_Unique")
 }
 
 enum IdentityEnum {
