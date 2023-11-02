@@ -3,7 +3,9 @@ import { IncidentService } from './incident.service';
 import { CreateIncidentDto } from './dto/create-incident.dto';
 import { UpdateIncidentDto } from './dto/update-incident.dto';
 import { handleError } from 'src/shared/http-error';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('incident')
 @Controller('incident')
 export class IncidentController {
   constructor(private readonly incidentService: IncidentService) { }
