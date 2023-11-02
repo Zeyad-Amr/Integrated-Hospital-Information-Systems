@@ -81,9 +81,13 @@ const Test = () => {
         Get All Staff
       </Button>
       <Typography>
-        {staffState.staffList.map((staff) => (
-          <div key={staff.id}>{staff.name}</div>
-        ))}
+        {staffState.loading ? (
+          <div>Loading...</div>
+        ) : (
+          staffState.staffList.map((staff) => (
+            <div key={staff.id}>{staff.name}</div>
+          ))
+        )}
       </Typography>
       {/* <Button
         variant="contained"
