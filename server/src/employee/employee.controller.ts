@@ -1,11 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiConflictResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiConflictResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { handleError } from '../shared/http-error';
+import { AuthRequest } from 'src/auth/auth.interface';
 
 @ApiTags('employee')
+@ApiUnauthorizedResponse({ description: "No token provided" })
 @Controller('employee')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) { }
@@ -16,9 +18,10 @@ export class EmployeeController {
   @ApiCreatedResponse({ description: 'created successfully' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiConflictResponse({ description: 'employee already exist' })
-  async create(@Body() createEmployeeDto: CreateEmployeeDto) {
+  async create(@Body() createEmployeeDto: CreateEmployeeDto, @Req() req: AuthRequest) {
     try {
-      return await this.employeeService.create(createEmployeeDto, "36f7390e-dfa4-46ad-ae8d-2bcb5a919c31");
+      const userId = req.user.sub
+      return await this.employeeService.create(createEmployeeDto, userId);
     } catch (error) {
       throw handleError(error);
     }

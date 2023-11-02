@@ -5,8 +5,9 @@ import {
   Body,
   HttpCode,
   HttpStatus,
+  Req,
 } from '@nestjs/common';
-import { AuthService } from './user.service';
+import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { handleError } from '../shared/http-error';
 import {
@@ -24,11 +25,12 @@ export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
   // ******* this api for development only MUST be removed in production *******
-  // @Get()
-  // async findAll(@Request() req) {
-  //   console.log(req.user);
-  //   return await this.authService.findAll();
-  // }
+  @Get()
+  @Public()
+  async findAll(@Req() req) {
+    console.log(req.user);
+    return await this.authService.findAll();
+  }
 
   @Public()
   @ApiOperation({ summary: 'Login user' })

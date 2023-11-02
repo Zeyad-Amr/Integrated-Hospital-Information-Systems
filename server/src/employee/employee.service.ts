@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { EmployeeRepo } from './employee.repo';
-import { AuthService } from '../auth/user.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class EmployeeService {
