@@ -6,6 +6,10 @@ import { Grid, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { json } from "stream/consumers";
 
 const CreateUserForm = () => {
   const onsubmit = (values: any) => {
@@ -40,10 +44,7 @@ const CreateUserForm = () => {
       .min(3, "Address name must be at least 3 characters")
       .max(100, "Address name must be at most 100 characters"),
     role: Yup.string()
-      .required("Role is required")
-      .min(3, "Role must be at least 3 characters")
-      .max(45, "Role must be at most 45 characters")
-      .matches(/^[aA-zZ\s]+$/, "Role must be alphabetic."),
+      .required("Role is required"),
     gender: Yup.string().required("Gender is required"),
     governate: Yup.string().required("Governate is required"),
     SSNtype: Yup.string().required("SSN type is required"),
@@ -82,13 +83,17 @@ const CreateUserForm = () => {
         id: "",
         gender: "",
         governate: "",
-        date: "",
+        date: null,
         address: "",
         SSNtype: "",
         shift: "",
       }}
       validationSchema={handleFormSchema}
-      onSubmit={(values) => onsubmit(values)}
+      onSubmit={(values) => {
+        alert(JSON.stringify(values))
+        console.log(JSON.stringify(values));
+        
+      }}
     >
       {({
         values,
@@ -98,13 +103,18 @@ const CreateUserForm = () => {
         handleBlur,
         handleSubmit,
       }) => (
-        <Box component="form" onSubmit={handleSubmit} noValidate>
-          <Grid container spacing={2}>
+        <Box
+          sx={{ marginTop: "2rem" }}
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+        >
+          <Grid container columns={12} spacing={4}>
             <Grid
+              item
               style={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
                 alignItems: "center",
                 height: "100%",
               }}
@@ -125,24 +135,9 @@ const CreateUserForm = () => {
                 width="100%"
                 props={{
                   type: "text",
-                  className: "input",
                 }}
               />
-              <CustomTextField
-                isRequired
-                name="secondName"
-                label="الاسم الثاني"
-                value={values.secondName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.secondName}
-                touched={touched.secondName}
-                width="100%"
-                props={{
-                  type: "text",
-                  className: "input",
-                }}
-              />
+              
               <CustomTextField
                 isRequired
                 name="thirdName"
@@ -155,44 +150,50 @@ const CreateUserForm = () => {
                 width="100%"
                 props={{
                   type: "text",
-                  className: "input",
+                }}
+              />
+              
+              <CustomTextField
+                isRequired
+                name="SSN"
+                label="الرقم القومي"
+                value={values.SSN}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.SSN}
+                touched={touched.SSN}
+                width="100%"
+                props={{
+                  type: "number",
                 }}
               />
               <CustomTextField
                 isRequired
-                name="forthName"
-                label="الاسم الرابع"
-                value={values.forthName}
+                name="date"
+                label="تاريخ الميلاد"
+                value={values.date}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.forthName}
-                touched={touched.forthName}
+                error={errors.date}
+                touched={touched.date}
+                width="100%"
+                props={{
+                  type: "date",
+                }}
+              />
+              <CustomTextField
+                isRequired
+                name="phone"
+                label="رقم الهاتف"
+                value={values.phone}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.phone}
+                touched={touched.phone}
                 width="100%"
                 props={{
                   type: "text",
-                  className: "input",
                 }}
-              />
-              <CustomSelectField
-                isRequired
-                name="role"
-                label="الوظيفة"
-                value={values.role}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.role}
-                touched={touched.role}
-                width="100%"
-                options={[
-                  {
-                    id: "1",
-                    title: "دكتور",
-                  },
-                  {
-                    id: "2",
-                    title: "ممرض/ة",
-                  },
-                ]}
               />
               <CustomSelectField
                 isRequired
@@ -238,6 +239,134 @@ const CreateUserForm = () => {
               />
               <CustomSelectField
                 isRequired
+                name="role"
+                label="الوظيفة"
+                value={values.role}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.role}
+                touched={touched.role}
+                width="100%"
+                options={[
+                  {
+                    id: "1",
+                    title: "دكتور",
+                  },
+                  {
+                    id: "2",
+                    title: "ممرض/ة",
+                  },
+                ]}
+              />
+            </Grid>
+            <Grid
+              item
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                height: "100%",
+              }}
+              lg={6}
+              md={6}
+              sm={12}
+              xs={12}
+            >
+              <CustomTextField
+                isRequired
+                name="secondName"
+                label="الاسم الثاني"
+                value={values.secondName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.secondName}
+                touched={touched.secondName}
+                width="100%"
+                props={{
+                  type: "text",
+                }}
+              />
+              <CustomTextField
+                isRequired
+                name="forthName"
+                label="الاسم الرابع"
+                value={values.forthName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.forthName}
+                touched={touched.forthName}
+                width="100%"
+                props={{
+                  type: "text",
+                }}
+              />
+              <CustomTextField
+                isRequired
+                name="email"
+                label="الايميل"
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.email}
+                touched={touched.email}
+                width="100%"
+                props={{
+                  type: "email",
+                }}
+              />
+              <CustomTextField
+                isRequired
+                name="address"
+                label="العنوان"
+                value={values.address}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.address}
+                touched={touched.address}
+                width="100%"
+                props={{
+                  type: "text",
+                }}
+              />
+              
+              <CustomTextField
+                isRequired
+                name="id"
+                label="الرقم التعريفي"
+                value={values.id}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.id}
+                touched={touched.id}
+                width="100%"
+                props={{
+                  type: "number",
+                }}
+              />
+              
+              {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="تاريخ الميلاد"
+                  value={values.date}
+                  onChange={handleChange}
+                  slotProps={{
+                    textField: {
+                      helperText:
+                        errors.date && touched.date ? errors.date : "",
+                        id : "outlined-required"
+                      // onblur:  handleBlur ,
+                      // error: errors.date,
+                      // touched: touched.date,
+                      // width: "100%",
+                    },
+                  }}
+                  sx={{width: "100%"}}
+                  
+                />
+              </LocalizationProvider> */}
+              
+              <CustomSelectField
+                isRequired
                 name="governate"
                 label="المحافظة"
                 value={values.governate}
@@ -256,50 +385,6 @@ const CreateUserForm = () => {
                     title: "الجيزة",
                   },
                 ]}
-              />
-            </Grid>
-            <Grid
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-              }}
-              lg={6}
-              md={6}
-              sm={12}
-              xs={12}
-            >
-              <CustomTextField
-                isRequired
-                name="email"
-                label="الايميل"
-                value={values.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.email}
-                touched={touched.email}
-                width="100%"
-                props={{
-                  type: "email",
-                  className: "input",
-                }}
-              />
-              <CustomTextField
-                isRequired
-                name="address"
-                label="العنوان"
-                value={values.address}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.address}
-                touched={touched.address}
-                width="100%"
-                props={{
-                  type: "text",
-                  className: "input",
-                }}
               />
               <CustomSelectField
                 isRequired
@@ -322,77 +407,23 @@ const CreateUserForm = () => {
                   },
                 ]}
               />
-              <CustomTextField
-                isRequired
-                name="id"
-                label="الرقم التعريفي"
-                value={values.id}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.id}
-                touched={touched.id}
-                width="100%"
-                props={{
-                  type: "number",
-                  className: "input",
-                }}
-              />
-              <CustomTextField
-                isRequired
-                name="SSN"
-                label="الرقم القومي"
-                value={values.SSN}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.SSN}
-                touched={touched.SSN}
-                width="100%"
-                props={{
-                  type: "number",
-                  className: "input",
-                }}
-              />
-              <CustomTextField
-                isRequired
-                name="date"
-                label="تاريخ الميلاد"
-                value={values.date}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.date}
-                touched={touched.date}
-                width="100%"
-                props={{
-                  type: "date",
-                  className: "input",
-                }}
-              />
-              <CustomTextField
-                isRequired
-                name="phone"
-                label="رقم الهاتف"
-                value={values.phone}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.phone}
-                touched={touched.phone}
-                width="100%"
-                props={{
-                  type: "text",
-                  className: "input",
-                }}
-              />
             </Grid>
           </Grid>
+          <Box sx={{display:"flex",justifyContent:"center"}}>
           <Button
             type="submit"
             style={{
               color: "#fff",
               backgroundColor: "#232836",
+              width: "40%",
+              fontSize:"0.9rem",
+              margin : "1rem 0rem 2rem 0rem",
+              height: "40px"
             }}
           >
-            تأكيد
+            تأكيــد
           </Button>
+          </Box>
         </Box>
       )}
     </Formik>
