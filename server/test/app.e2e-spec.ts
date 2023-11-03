@@ -25,6 +25,8 @@ describe('AppController (e2e)', () => {
       return request(server)
         .post('/staff')
         .send({
+          username:'diaa23',
+          password:'diaa23',
           name: 'diaa',
           ssn: '123456789',
           email: 'ahmed@gmail.com',
@@ -48,6 +50,8 @@ describe('AppController (e2e)', () => {
       return request(server)
         .post('/staff')
         .send({
+          username:'diaa23',
+          password:'diaa23',
           name: 'diaa',
           ssn: '123456789',
           email: 'ahmed@gmail.com',

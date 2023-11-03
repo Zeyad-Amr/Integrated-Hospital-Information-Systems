@@ -12,9 +12,19 @@ datasource db {
 
 model Staff {
   id    String  @id @default(uuid())
-  ssn   String @unique
+  ssn   String  @unique
   name  String
-  email String @unique
+  email String  @unique
   phone String
   role  String?
+
+  user User?
+}
+
+model User {
+  username String @id @unique
+  password String
+
+  staff   Staff  @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  staffId String @unique
 }
