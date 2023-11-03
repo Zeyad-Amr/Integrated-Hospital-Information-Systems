@@ -13,7 +13,7 @@ const ProfileDialog = (props: any) => {
         marginLeft: '-5rem',
         width: "15rem", 
         backgroundColor:"#fff",
-        filter: "drop-shadow(-2px -2px 6px #000);",
+        filter: "drop-shadow(0px 0px 5px #0000003f);",
         borderRadius:"10px",
         // transition:"0.1s",
         opacity: props.opacity,
