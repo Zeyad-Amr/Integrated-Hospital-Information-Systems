@@ -34,9 +34,7 @@ const Test = () => {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => {
-          router.push("/login");
-        }}
+        onClick={() => {router.push("/login");}}
       >
         Go to Login
       </Button>
