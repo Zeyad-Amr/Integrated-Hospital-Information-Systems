@@ -51,17 +51,29 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     ├── core/
     │   ├── _mock/                          # Mock data
     │   ├── api/
-    │   │   ├── api-client/                 # API client
-    │   │   └── endpoints/                  # API endpoints
+    │   │   ├── api-client.ts               # API client
+    │   │   ├── config.ts                   # API configuration
+    │   │   ├── endpoints.ts                # API endpoints
+    │   │   ├── error-code.ts               # API error codes
+    │   │   ├── error-message.ts            # API error messages
+    │   │   ├── error-response.ts           # API error response
+    │   │   └── index.ts                    # API client
     │   ├── auth/                           # Authentication-related code
+    │   ├── base/                           # Base classes
     │   ├── components/                     # General Shared UI components
     │   ├── layout/                         # Layout components (e.g., header, footer)
-    │   ├── redux/                          # Redux store, reducers, and middleware
-    │   │   ├── store.ts                    # Redux store
-    │   │   ├── reducers.ts                 # Root reducer
-    │   │   ├── middlewares/                # Redux middlewares
-    │   │   └── slices/                     # Redux slices
+    │   ├── redux/                          # Redux store, reducers, and thunk
+    │   │   ├── slices/                     # Redux slices
+    │   │   ├── thunks/                     # Redux thunks
+    │   │   ├── index.ts                    # Redux provider
+    │   │   ├── types.ts                    # Redux types
+    │   │   └── store.ts                    # Redux store
     │   ├── routes/                         # Application routes or navigation paths
+    │   ├── service-locator/                # Service locator
+    │   │   ├── app-service.ts              # Application service
+    │   │   ├── index.ts                    # Service locator
+    │   │   ├── service-keys.ts             # Service keys
+    │   │   └── service-locator.ts          # Service locator
     │   ├── shared/                         # Shared code
     │   │   ├── components/                 # Shared UI components
     │   │   ├── constants/                  # Shared constants
@@ -74,6 +86,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │   └── auth/
     │      ├── data/
     │      │   ├── datasources/             # Data sources (e.g., API, LocalStorage)
+    │      │   ├── mappers/                 # Data mappers (e.g., UserMapper)
     │      │   ├── models/                  # Data models or structures for data transfer without behavior (e.g., User, Post)
     │      │   └── repositories/            # Data access and storage (e.g., UserRepository)
     │      ├── domain/
@@ -85,9 +98,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │          ├── pages/                   # Feature-specific pages
     │          ├── components/              # Feature-specific UI components
     │          └── controllers/             # Feature-specific controllers
-    │              ├── index.tsx            # Controller for the feature
     │              ├── slices/              # Redux slices
-    │              └── middlewares/         # Redux middleware
+    │              ├── thunks/              # Redux thunk
+    │              ├── index.tsx            # Controller for the feature
+    │              └── types.ts              # Redux thunk
     │
     └── services/                           # External services or integrations
 

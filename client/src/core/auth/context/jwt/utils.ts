@@ -1,7 +1,7 @@
 // routes
 import { paths } from '@/core/routes/paths';
 // utils
-import axios from '@/core/api/client';
+import axios from '@/core/api/api-client';
 
 // ----------------------------------------------------------------------
 
