@@ -31,7 +31,7 @@ const CustomSelectField = ({
   options,
   isRequired = false,
   width,
-  hideLabel = true
+  hideLabel = false
 }: SelectFieldProps) => {
   return (
     <Box
@@ -49,16 +49,18 @@ const CustomSelectField = ({
 
       <FormControl
         required={isRequired}
-        sx={{ marginTop: 0.5, width: { width }, maxWidth: "100%" }}
+        sx={{ marginTop: 1.1, width: { width }, maxWidth: "100%" }}
       >
         <Select
-          labelId="demo-simple-select-required-label"
-          id="demo-simple-select-helper"
+          // labelId="demo-simple-select-required-label"
+          // id="demo-simple-select-helper"
           onChange={onChange}
           onBlur={onBlur}
           sx={{
-            backgroundColor: "white",
+            backgroundColor: "#e7e7e7",
+            height: "3.5rem",
           }}
+          label={label}
           value={value}
           name={name}
           error={error && touched ? true : false}
@@ -102,6 +104,7 @@ const CustomSelectField = ({
         <FormHelperText
           sx={{
             color: "#FF5630",
+            fontSize : "12px"
           }}
         >
           {error && touched ? error : ""}

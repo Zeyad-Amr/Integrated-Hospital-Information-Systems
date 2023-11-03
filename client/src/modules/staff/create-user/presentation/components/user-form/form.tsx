@@ -130,24 +130,9 @@ const CreateUserForm = () => {
                 width="100%"
                 props={{
                   type: "text",
-                  className: "input",
                 }}
               />
-              <CustomTextField
-                isRequired
-                name="secondName"
-                label="الاسم الثاني"
-                value={values.secondName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.secondName}
-                touched={touched.secondName}
-                width="100%"
-                props={{
-                  type: "text",
-                  className: "input",
-                }}
-              />
+              
               <CustomTextField
                 isRequired
                 name="thirdName"
@@ -160,44 +145,50 @@ const CreateUserForm = () => {
                 width="100%"
                 props={{
                   type: "text",
-                  className: "input",
+                }}
+              />
+              
+              <CustomTextField
+                isRequired
+                name="SSN"
+                label="الرقم القومي"
+                value={values.SSN}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.SSN}
+                touched={touched.SSN}
+                width="100%"
+                props={{
+                  type: "number",
                 }}
               />
               <CustomTextField
                 isRequired
-                name="forthName"
-                label="الاسم الرابع"
-                value={values.forthName}
+                name="date"
+                label="تاريخ الميلاد"
+                value={values.date}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.forthName}
-                touched={touched.forthName}
+                error={errors.date}
+                touched={touched.date}
+                width="100%"
+                props={{
+                  type: "date",
+                }}
+              />
+              <CustomTextField
+                isRequired
+                name="phone"
+                label="رقم الهاتف"
+                value={values.phone}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.phone}
+                touched={touched.phone}
                 width="100%"
                 props={{
                   type: "text",
-                  className: "input",
                 }}
-              />
-              <CustomSelectField
-                isRequired
-                name="role"
-                label="الوظيفة"
-                value={values.role}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.role}
-                touched={touched.role}
-                width="100%"
-                options={[
-                  {
-                    id: "1",
-                    title: "دكتور",
-                  },
-                  {
-                    id: "2",
-                    title: "ممرض/ة",
-                  },
-                ]}
               />
               <CustomSelectField
                 isRequired
@@ -243,22 +234,22 @@ const CreateUserForm = () => {
               />
               <CustomSelectField
                 isRequired
-                name="governate"
-                label="المحافظة"
-                value={values.governate}
+                name="role"
+                label="الوظيفة"
+                value={values.role}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.governate}
-                touched={touched.governate}
+                error={errors.role}
+                touched={touched.role}
                 width="100%"
                 options={[
                   {
                     id: "1",
-                    title: "القاهرة",
+                    title: "دكتور",
                   },
                   {
                     id: "2",
-                    title: "الجيزة",
+                    title: "ممرض/ة",
                   },
                 ]}
               />
@@ -278,6 +269,34 @@ const CreateUserForm = () => {
             >
               <CustomTextField
                 isRequired
+                name="secondName"
+                label="الاسم الثاني"
+                value={values.secondName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.secondName}
+                touched={touched.secondName}
+                width="100%"
+                props={{
+                  type: "text",
+                }}
+              />
+              <CustomTextField
+                isRequired
+                name="forthName"
+                label="الاسم الرابع"
+                value={values.forthName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.forthName}
+                touched={touched.forthName}
+                width="100%"
+                props={{
+                  type: "text",
+                }}
+              />
+              <CustomTextField
+                isRequired
                 name="email"
                 label="الايميل"
                 value={values.email}
@@ -288,7 +307,6 @@ const CreateUserForm = () => {
                 width="100%"
                 props={{
                   type: "email",
-                  className: "input",
                 }}
               />
               <CustomTextField
@@ -303,8 +321,65 @@ const CreateUserForm = () => {
                 width="100%"
                 props={{
                   type: "text",
-                  className: "input",
                 }}
+              />
+              
+              <CustomTextField
+                isRequired
+                name="id"
+                label="الرقم التعريفي"
+                value={values.id}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.id}
+                touched={touched.id}
+                width="100%"
+                props={{
+                  type: "number",
+                }}
+              />
+              
+              {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="تاريخ الميلاد"
+                  value={values.date}
+                  onChange={handleChange}
+                  slotProps={{
+                    textField: {
+                      helperText:
+                        errors.date && touched.date ? errors.date : "",
+                        id : "outlined-required"
+                      // onblur:  handleBlur ,
+                      // error: errors.date,
+                      // touched: touched.date,
+                      // width: "100%",
+                    },
+                  }}
+                  sx={{width: "100%"}}
+                  
+                />
+              </LocalizationProvider> */}
+              
+              <CustomSelectField
+                isRequired
+                name="governate"
+                label="المحافظة"
+                value={values.governate}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.governate}
+                touched={touched.governate}
+                width="100%"
+                options={[
+                  {
+                    id: "1",
+                    title: "القاهرة",
+                  },
+                  {
+                    id: "2",
+                    title: "الجيزة",
+                  },
+                ]}
               />
               <CustomSelectField
                 isRequired
@@ -326,86 +401,6 @@ const CreateUserForm = () => {
                     title: "جواز سفر",
                   },
                 ]}
-              />
-              <CustomTextField
-                isRequired
-                name="id"
-                label="الرقم التعريفي"
-                value={values.id}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.id}
-                touched={touched.id}
-                width="100%"
-                props={{
-                  type: "number",
-                  className: "input",
-                }}
-              />
-              <CustomTextField
-                isRequired
-                name="SSN"
-                label="الرقم القومي"
-                value={values.SSN}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.SSN}
-                touched={touched.SSN}
-                width="100%"
-                props={{
-                  type: "number",
-                  className: "input",
-                }}
-              />
-              {/* <CustomTextField
-                isRequired
-                name="date"
-                label="تاريخ الميلاد"
-                value={values.date}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.date}
-                touched={touched.date}
-                width="100%"
-                props={{
-                  type: "date",
-                  className: "input",
-                }}
-              /> */}
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="تاريخ الميلاد"
-                  value={values.date}
-                  onChange={handleChange}
-                  slotProps={{
-                    textField: {
-                      helperText:
-                        errors.date && touched.date ? errors.date : "",
-                        id : "outlined-required"
-                      // onblur:  handleBlur ,
-                      // error: errors.date,
-                      // touched: touched.date,
-                      // width: "100%",
-                    },
-                  }}
-                  sx={{width: "100%"}}
-                  
-                />
-              </LocalizationProvider>
-              <CustomTextField
-                isRequired
-                name="phone"
-                label="رقم الهاتف"
-                value={values.phone}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.phone}
-                touched={touched.phone}
-                width="100%"
-                props={{
-                  type: "text",
-                  className: "input",
-                }}
               />
             </Grid>
           </Grid>
