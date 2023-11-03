@@ -8,6 +8,7 @@ import {
   CloseIcon,
   NotificationIcon,
 } from "@/assets/icons/index";
+import ProfileIcon from "@/core/shared/components/ProfileIcon";
 
 interface SidebarHeaderProps {
   height?: string;
@@ -17,6 +18,7 @@ const SidebarHeader = (props: SidebarHeaderProps) => {
   return (
     <Box
       sx={{
+        position: "relative", 
         width: "100%",
         height: props.height || "5vh",
         backgroundColor: "primary.main",
@@ -28,50 +30,56 @@ const SidebarHeader = (props: SidebarHeaderProps) => {
         paddingY: "clamp(0.5rem, 1vw, 1rem)",
       }}
     >
-      <Button
-        onClick={onCollapse}
-        sx={{
-          paddingX: "0.1rem",
-          paddingY: "0.7rem",
-        }}
-      >
-        <Box
+        <Button
+          onClick={onCollapse}
           sx={{
-            width: "1.2rem",
-            height: "1.2rem",
+            paddingX: "0.1rem",
+            paddingY: "0.7rem",
           }}
         >
-          {!collapsed ? (
-            <CloseIcon primary="white" />
-          ) : (
-            <MenuIcon primary="white" />
-          )}
-        </Box>
-      </Button>
+          <Box
+            sx={{
+              width: "0.9rem",
+              height: "0.9rem",
+            }}
+          >
+            {!collapsed ? (
+              <CloseIcon primary="white" />
+            ) : (
+              <MenuIcon primary="white" />
+            )}
+          </Box>
+        </Button>  
       <Box
         sx={{
           width: "3rem",
           height: "3rem",
+
         }}
       >
-        <LogoIcon primary="white" />
+        <Box sx={{position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', width:'2rem'}}>
+          <LogoIcon primary="white"/>
+        </Box>
       </Box>
-      <Button
-        onClick={() => console.log("Notification")}
-        sx={{
-          paddingX: "0.1rem",
-          paddingY: "0.7rem",
-        }}
-      >
-        <Box
+      <Box sx={{display:'flex'}}>
+        <Button
+          onClick={() => console.log("Notification")}
           sx={{
-            width: "1.3rem",
-            height: "1.3rem",
+            paddingX: "0.1rem",
+            paddingY: "0.7rem",
           }}
         >
-          <NotificationIcon primary="white" />
-        </Box>
-      </Button>
+          <Box
+            sx={{
+              width: "1.3rem",
+              height: "1.3rem",
+            }}
+          >
+              <NotificationIcon primary="white" />
+            </Box>
+        </Button>
+          <ProfileIcon name = "عبدالرحمن ياسر" pos = "موظف استقبال"/>
+      </Box>
     </Box>
   );
 };
