@@ -6,6 +6,9 @@ import { Grid, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const CreateUserForm = () => {
   const onsubmit = (values: any) => {
@@ -40,10 +43,7 @@ const CreateUserForm = () => {
       .min(3, "Address name must be at least 3 characters")
       .max(100, "Address name must be at most 100 characters"),
     role: Yup.string()
-      .required("Role is required")
-      .min(3, "Role must be at least 3 characters")
-      .max(45, "Role must be at most 45 characters")
-      .matches(/^[aA-zZ\s]+$/, "Role must be alphabetic."),
+      .required("Role is required"),
     gender: Yup.string().required("Gender is required"),
     governate: Yup.string().required("Governate is required"),
     SSNtype: Yup.string().required("SSN type is required"),
@@ -82,7 +82,7 @@ const CreateUserForm = () => {
         id: "",
         gender: "",
         governate: "",
-        date: "",
+        date: null,
         address: "",
         SSNtype: "",
         shift: "",
@@ -98,13 +98,18 @@ const CreateUserForm = () => {
         handleBlur,
         handleSubmit,
       }) => (
-        <Box component="form" onSubmit={handleSubmit} noValidate>
-          <Grid container spacing={2}>
+        <Box
+          sx={{ marginTop: "2rem" }}
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+        >
+          <Grid container columns={12} spacing={4}>
             <Grid
+              item
               style={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
                 alignItems: "center",
                 height: "100%",
               }}
@@ -259,10 +264,10 @@ const CreateUserForm = () => {
               />
             </Grid>
             <Grid
+              item
               style={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
                 alignItems: "center",
                 height: "100%",
               }}
@@ -352,7 +357,7 @@ const CreateUserForm = () => {
                   className: "input",
                 }}
               />
-              <CustomTextField
+              {/* <CustomTextField
                 isRequired
                 name="date"
                 label="تاريخ الميلاد"
@@ -366,7 +371,27 @@ const CreateUserForm = () => {
                   type: "date",
                   className: "input",
                 }}
-              />
+              /> */}
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="تاريخ الميلاد"
+                  value={values.date}
+                  onChange={handleChange}
+                  slotProps={{
+                    textField: {
+                      helperText:
+                        errors.date && touched.date ? errors.date : "",
+                        id : "outlined-required"
+                      // onblur:  handleBlur ,
+                      // error: errors.date,
+                      // touched: touched.date,
+                      // width: "100%",
+                    },
+                  }}
+                  sx={{width: "100%"}}
+                  
+                />
+              </LocalizationProvider>
               <CustomTextField
                 isRequired
                 name="phone"

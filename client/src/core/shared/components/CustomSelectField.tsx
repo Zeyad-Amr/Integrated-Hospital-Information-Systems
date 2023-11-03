@@ -30,13 +30,15 @@ const CustomSelectField = ({
   value,
   options,
   isRequired = false,
-  width = 800,
+  width,
   hideLabel = true
 }: SelectFieldProps) => {
   return (
     <Box
       sx={{
         mb: 2,
+        width : width,
+        maxWidth: "100%",
       }}
     >
       {!hideLabel && (

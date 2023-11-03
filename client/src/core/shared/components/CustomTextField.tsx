@@ -39,8 +39,12 @@ const CustomTextField = ({
         "& .MuiTextField-root": {
           maxWidth: "100%",
         },
+        ".rtl-gipgzk-MuiInputBase-input-MuiOutlinedInput-input": {
+          backgroundColor: "#e7e7e7",
+          borderRadius : "10px"
+        },
         width: width,
-        marginBottom: "20px",
+        // marginBottom: "20px",
         maxWidth: "100%",
       }}
     >
