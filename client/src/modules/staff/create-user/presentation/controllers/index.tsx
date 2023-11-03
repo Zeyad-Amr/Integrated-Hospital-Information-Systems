@@ -17,7 +17,7 @@ const CreateUserComponent = () => {
         marginLeft: "3%",
       }}
     >
-      <HeaderText title="اضافة مستخدم" />
+      <HeaderText title="اضافـــــــة مستخدم" />
       <CreateStaff />
     </Box>
   );

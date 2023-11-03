@@ -42,8 +42,8 @@ const CustomSelectField = ({
       }}
     >
       {!hideLabel && (
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          {label} {isRequired && <span style={{ color: "red" }}>*</span>}
+        <Typography variant="h6"  component="div" sx={{ flexGrow: 1 , fontSize : "0.9rem !important" , margin : "0rem 0.5rem" }}>
+          {label} {isRequired && <span style={{ color: "#FF5630" }}>*</span>}
         </Typography>
       )}
 
@@ -54,13 +54,14 @@ const CustomSelectField = ({
         <Select
           // labelId="demo-simple-select-required-label"
           // id="demo-simple-select-helper"
+          // defaultValue={options[0].title}
           onChange={onChange}
           onBlur={onBlur}
           sx={{
             backgroundColor: "#e7e7e7",
             height: "3.5rem",
           }}
-          label={label}
+          // label={label}
           value={value}
           name={name}
           error={error && touched ? true : false}
@@ -69,7 +70,6 @@ const CustomSelectField = ({
             PaperProps: {
               style: {
                 maxHeight: 300,
-                transform: "translate3d(0, 0, 0)",
               },
             },
           }}
@@ -79,22 +79,25 @@ const CustomSelectField = ({
               key={option.id}
               value={option.id}
               sx={{
+                backgroundColor : "#232836",
+                opacity : 0.8,
+                color: "#fff",
+                transitionDuration : "0.5s ease",
+                margin: 1,
                 // selected background color
                 "&.Mui-selected": {
-                  // backgroundColor: AppColors.primary[700],
+                  // backgroundColor: "#232836",
                   // color: "white",
                   // margin: 1,
                   // borderRadius: 25,
                 },
                 // hover background color
                 "&:hover": {
-                  // backgroundColor: AppColors.primary[100],
+                  // backgroundColor: "green",
                   // color: "white",
                   // margin: 1,
                   // borderRadius: 25,
                 },
-                margin: 1,
-                // borderRadius: 25,
               }}
             >
               {option.title}

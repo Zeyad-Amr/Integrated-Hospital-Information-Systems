@@ -55,7 +55,7 @@ const CustomTextField = ({
         sx={{ width: { width }, maxWidth: "100%" }}
       >
         <TextField
-          sx={{ width: width, backgroundColor: "#e7e7e7" , borderRadius : "10px"  }}
+          sx={{ width: width, backgroundColor: "#e7e7e7 !important" , borderRadius : "10px"  }}
           // id="outlined-required"
           label={label}
           required={isRequired}

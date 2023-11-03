@@ -9,6 +9,7 @@ import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { json } from "stream/consumers";
 
 const CreateUserForm = () => {
   const onsubmit = (values: any) => {
@@ -88,7 +89,11 @@ const CreateUserForm = () => {
         shift: "",
       }}
       validationSchema={handleFormSchema}
-      onSubmit={(values) => onsubmit(values)}
+      onSubmit={(values) => {
+        alert(JSON.stringify(values))
+        console.log(JSON.stringify(values));
+        
+      }}
     >
       {({
         values,
@@ -404,15 +409,21 @@ const CreateUserForm = () => {
               />
             </Grid>
           </Grid>
+          <Box sx={{display:"flex",justifyContent:"center"}}>
           <Button
             type="submit"
             style={{
               color: "#fff",
               backgroundColor: "#232836",
+              width: "40%",
+              fontSize:"0.9rem",
+              margin : "1rem 0rem 2rem 0rem",
+              height: "40px"
             }}
           >
-            تأكيد
+            تأكيــد
           </Button>
+          </Box>
         </Box>
       )}
     </Formik>
