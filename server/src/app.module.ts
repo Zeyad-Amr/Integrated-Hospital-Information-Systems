@@ -1,14 +1,20 @@
 import { Module } from '@nestjs/common';
-import { StaffModule } from './staff/staff.module';
-import { UserModule } from './auth/auth.module';
+import { AuthModule } from './auth/auth.module';
 import { PatientModule } from './patient/patient.module';
 import { PersonModule } from './person/person.module';
 import { VisitModule } from './visit/visit.module';
 import { IncidentModule } from './incident/incident.module';
+import { EmployeeModule } from './employee/employee.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './auth/auth.guard';
+
 
 @Module({
-  imports: [ UserModule, PatientModule, PersonModule, VisitModule, IncidentModule],
+  imports: [AuthModule, PatientModule, PersonModule, EmployeeModule, VisitModule, IncidentModule],
   controllers: [],
-  providers: [],
+  providers: [{
+    provide: APP_GUARD,
+    useClass: AuthGuard,
+  },],
 })
 export class AppModule { }
