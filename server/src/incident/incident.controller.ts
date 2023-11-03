@@ -3,13 +3,16 @@ import { IncidentService } from './incident.service';
 import { CreateIncidentDto } from './dto/create-incident.dto';
 import { UpdateIncidentDto } from './dto/update-incident.dto';
 import { handleError } from 'src/shared/http-error';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/shared/decorators/public.decorator';
 
+@Public()
 @ApiTags('incident')
 @Controller('incident')
 export class IncidentController {
   constructor(private readonly incidentService: IncidentService) { }
 
+  @ApiOperation({ description: "create a new incident" })
   @Post()
   create(@Body() createIncidentDto: CreateIncidentDto) {
     try {
@@ -19,10 +22,16 @@ export class IncidentController {
     }
   }
 
+  @ApiOperation({ description: "get all incidents" })
   @Get()
   findAll() {
-    return this.incidentService.findAll();
+    try {
+      return this.incidentService.findAll();
+    } catch (error) {
+      throw handleError(error)
+    }
   }
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {

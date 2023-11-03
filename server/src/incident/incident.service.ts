@@ -18,9 +18,8 @@ export class IncidentService {
 
     try {
       return this.incidentRepo.getAll();
-      
     } catch (error) {
-      
+      throw error
     }
    
   }

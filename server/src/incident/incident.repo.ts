@@ -63,12 +63,10 @@ export class IncidentRepo {
                     companionsData.push({ ...companion, incidentId: incident.id })
                 })
 
-                await tx.visit.createMany({ data: visitsData })
-
+                const a = await tx.visit.createMany({ data: visitsData })
                 await tx.person.createMany({ data: companionsData, skipDuplicates: true })
 
-                const visits = await this.prismaService.visit.findMany({})
-                console.log(visits)
+                const visits = await tx.visit.findMany({})
                 const visitsCodes = visitsData.map((visit) => visit.code)
                 return { incident, visitsCodes }
             })

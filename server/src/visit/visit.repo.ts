@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/shared/services/prisma-client/prisma.service";
 import { AnonymousVisitDto, CreateVisitDto } from "./dto/create-visit.dto";
-import { Person } from "@prisma/client";
+import { Person, Visit } from "@prisma/client";
 import { PersonRepo } from "src/person/person.repo";
 
 @Injectable()
@@ -11,21 +11,19 @@ export class VisitRepo {
     async createVisitCode(): Promise<string> {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        const lastCreatedVisit = await this.prismaService.visit.findFirst({
-            where: {
-                createdAt: {
-                    gt: today,
-                    lt: new Date(today.getTime() + 24 * 60 * 60 * 1000)
-                }
-            },
-            orderBy: {
-                createdAt: 'desc'
-            }
-        })
+
+        const lastCreatedVisit: Visit[] = await this.prismaService.$queryRaw`SELECT * FROM "Visit" 
+                                                                                    WHERE "createdAt" >= ${today}
+                                                                                    AND
+                                                                                    "createdAt"< CURRENT_DATE + INTERVAL '1 day'
+                                                                                    ORDER BY CAST(SUBSTRING(code, 9) AS integer) DESC
+                                                                                    LIMIT 1`
+
+
 
         let sequenceNumber = 1
-        if (lastCreatedVisit) {
-            sequenceNumber = parseInt(lastCreatedVisit.code.slice(8)) + 1
+        if (lastCreatedVisit.length != 0) {
+            sequenceNumber = parseInt(lastCreatedVisit[0].code.slice(8)) + 1
         }
         const month = (today.getMonth() + 1).toString().padStart(2, '0')
         const day = today.getDate().toString().padStart(2, '0')
@@ -75,7 +73,7 @@ export class VisitRepo {
                         code: visitCode,
                         sequenceNumber: anonymousVisitDto.sequenceNumber,
                         kinship: anonymousVisitDto.kinship,
-                        
+
                         companion: {
                             connect: {
                                 id: companion?.id
