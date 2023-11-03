@@ -1,7 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const PrismaClient = require("@prisma/client")
+
+const prisma = new PrismaClient.PrismaClient()
 function insert() {
     prisma.user.create({
         data: {
@@ -31,14 +30,14 @@ function insert() {
         }
     })
         .then((res) => {
-        console.log("Init data created");
-        console.log(res);
-    })
+            console.log("Init data created")
+            console.log(res)
+        })
         .catch((err) => {
-        console.log(err);
-    }).finally(() => {
-        prisma.$disconnect();
-    });
+            console.log(err)
+        }).finally(() => {
+            prisma.$disconnect()
+        });
 }
-insert();
-//# sourceMappingURL=app.js.map
+
+insert()
