@@ -28,7 +28,6 @@ export class AuthController {
   @Get()
   @Public()
   async findAll(@Req() req) {
-    console.log(req.user);
     return await this.authService.findAll();
   }
 

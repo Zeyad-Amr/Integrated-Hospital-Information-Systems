@@ -1,5 +1,5 @@
 start-server:
-	docker-compose up -d --build
+	docker-compose up  --build
 stop-server:
 	docker-compose down
 empty-database:

@@ -1,9 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
-import express from 'express';
-
-const app = express();
 const prisma = new PrismaClient()
+function insert(){
 prisma.user.create({
     data: {
         password: "admin",
@@ -33,16 +31,13 @@ prisma.user.create({
 })
     .then((res) => {
         console.log("Init data created")
-        server.close();
+        console.log(res)
     })
     .catch((err) => {
         console.log(err)
-        server.close();
+    }).finally(()=>{
+        prisma.$disconnect()
     });
+}
 
-const PORT = 8080;
-
-
-let server = app.listen(PORT, () => {
-    console.log(`init data server listening to ${PORT}`);
-});
+insert()
