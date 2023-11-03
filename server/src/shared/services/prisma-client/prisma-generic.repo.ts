@@ -51,11 +51,11 @@ export class PrismaGenericRepo<T> {
     }
   }
 
-  async update(id: string, item: Omit<T, 'id'>): Promise<T | null> {
+  async update(id: string, item: Omit<T, 'id' | 'createdAt' >): Promise<T | null> {
     try {
       const res = await this.prisma[this.modelName].update({
         where: { id },
-        data: item as any,
+        data: { ...item as any },
       });
       return res;
     } catch (error) {

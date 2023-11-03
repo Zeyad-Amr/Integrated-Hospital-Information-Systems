@@ -10,21 +10,131 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Staff {
-  id    String  @id @default(uuid())
-  ssn   String  @unique
-  name  String
-  email String  @unique
-  phone String
-  role  String?
+model Person {
+  id                 String       @id @default(uuid())
+  firstName          String
+  secondName         String
+  thirdName          String
+  fourthName         String
+  SSN                String       @unique
+  verificationMethod IdentityEnum
+  gender             GenderEnum
+  birthDate          DateTime     @db.Date
+  phone              String?      @unique
+  email              String?      @unique
+  governate          String
+  address            String
 
-  user User?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employee        Employee?
+  patientVisits   Visit[]   @relation("visitPatient")
+  companionVisits Visit[]   @relation("visitCompanion")
+
+  incidentCompanion Incident? @relation(fields: [incidentId], references: [id])
+  incidentId        String?
+}
+
+model Employee {
+  id   String   @id @default(uuid())
+  role RoleEnum
+  // we should make table for shifts 
+  // shiftStart DateTime
+  // shiftEnd   DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user              User?
+  person            Person     @relation(fields: [personID], references: [id])
+  personID          String     @unique
+  createdByEmployee Employee?  @relation("CreatedBy", fields: [createdById], references: [id])
+  createdById       String?
+  createdEmployees  Employee[] @relation("CreatedBy")
+  visit             Visit[]
 }
 
 model User {
-  username String @id @unique
+  username String @id
   password String
 
-  staff   Staff  @relation(fields: [staffId], references: [id], onDelete: Cascade)
-  staffId String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  employeeId String   @unique
+}
+
+model Visit {
+  code           String       @id
+  sequenceNumber Int?
+  kinship        KinshipEnum?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt
+
+  // it has to be commented till the emplopyee api created
+  creator     Employee?  @relation(fields: [creatorId], references: [id])
+  creatorId   String?
+  patient     Person?   @relation("visitPatient", fields: [patientId], references: [id])
+  patientId   String?
+  companion   Person?   @relation("visitCompanion", fields: [companionId], references: [id])
+  companionId String?
+  incident    Incident? @relation(fields: [incidentId], references: [id])
+  incidentId  String?
+}
+
+model Incident {
+  id               String  @id @default(uuid())
+  description      String?
+  numberOfPatients Int
+  isCompleted Boolean    @default(false)
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  
+  Car         CarNumber? @relation(fields: [carId], references: [id])
+  carId       String?
+  companions  Person[]
+
+  visits Visit[]
+}
+
+model CarNumber {
+  id         String     @id() @default(uuid())
+  firstChar  String     @db.VarChar(1)
+  secondChar String     @db.VarChar(1)
+  thirdChar  String     @db.VarChar(1)
+  number     Int
+  Incident   Incident[]
+
+  @@unique([firstChar, secondChar, thirdChar, number], map: "Car_Unique")
+}
+
+enum IdentityEnum {
+  NATIONALIDCARD
+  PASSPORT
+}
+
+enum GenderEnum {
+  MALE
+  FEMALE
+}
+
+enum KinshipEnum {
+  BROTHER
+  SISTER
+  FATHER
+  MOTHER
+  COUSIN
+  AUNT
+  OTHER
+}
+
+enum RoleEnum {
+  ADMIN
+  RECEPTIONIST
+  DOCTOR
+  NURSE
 }

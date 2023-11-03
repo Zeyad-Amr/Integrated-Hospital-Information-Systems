@@ -5,27 +5,34 @@ import {
   Body,
   HttpCode,
   HttpStatus,
+  Req,
 } from '@nestjs/common';
-import { UserService } from './user.service';
+import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { handleError } from '../shared/http-error';
 import {
   ApiBadRequestResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { Public } from '../shared/decorators/public.decorator';
 
+@ApiTags('user')
 @Controller('user')
-export class UserController {
-  constructor(private readonly userService: UserService) { }
+export class AuthController {
+  constructor(private readonly authService: AuthService) { }
 
-  // this api for development only MUST be removed in production
+  // ******* this api for development only MUST be removed in production *******
   @Get()
-  async findAll() {
-    return await this.userService.findAll();
+  @Public()
+  async findAll(@Req() req) {
+    console.log(req.user);
+    return await this.authService.findAll();
   }
 
+  @Public()
   @ApiOperation({ summary: 'Login user' })
   @ApiOkResponse({ description: 'User logged in successfully' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
@@ -36,7 +43,7 @@ export class UserController {
   @Post('login')
   async login(@Body() loginUserDto: LoginUserDto) {
     try {
-      return { access_token: await this.userService.login(loginUserDto) };
+      return { access_token: await this.authService.login(loginUserDto) };
     } catch (error) {
       throw handleError(error);
     }
