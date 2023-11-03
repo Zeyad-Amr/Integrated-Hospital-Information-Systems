@@ -75,8 +75,8 @@ model Visit {
   updatedAt DateTime @updatedAt
 
   // it has to be commented till the emplopyee api created
-  creator     Employee  @relation(fields: [creatorId], references: [id])
-  creatorId   String
+  creator     Employee?  @relation(fields: [creatorId], references: [id])
+  creatorId   String?
   patient     Person?   @relation("visitPatient", fields: [patientId], references: [id])
   patientId   String?
   companion   Person?   @relation("visitCompanion", fields: [companionId], references: [id])

@@ -20,7 +20,7 @@ CREATE TABLE "Person" (
     "SSN" TEXT NOT NULL,
     "verificationMethod" "IdentityEnum" NOT NULL,
     "gender" "GenderEnum" NOT NULL,
-    "birthDate" TIMESTAMP(3) NOT NULL,
+    "birthDate" DATE NOT NULL,
     "phone" TEXT,
     "email" TEXT,
     "governate" TEXT NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE "Employee" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "personID" TEXT NOT NULL,
-    "createdById" TEXT NOT NULL,
+    "createdById" TEXT,
 
     CONSTRAINT "Employee_pkey" PRIMARY KEY ("id")
 );
@@ -58,11 +58,11 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Visit" (
     "code" TEXT NOT NULL,
-    "sequenceNumber" INTEGER NOT NULL,
+    "sequenceNumber" INTEGER,
     "kinship" "KinshipEnum",
     "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "creatorId" TEXT,
+    "creatorId" TEXT NOT NULL,
     "patientId" TEXT,
     "companionId" TEXT,
     "incidentId" TEXT,
@@ -75,9 +75,9 @@ CREATE TABLE "Incident" (
     "id" TEXT NOT NULL,
     "description" TEXT,
     "numberOfPatients" INTEGER NOT NULL,
+    "isCompleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "isCompleted" BOOLEAN NOT NULL DEFAULT false,
     "carId" TEXT,
 
     CONSTRAINT "Incident_pkey" PRIMARY KEY ("id")
@@ -119,10 +119,13 @@ ALTER TABLE "Person" ADD CONSTRAINT "Person_incidentId_fkey" FOREIGN KEY ("incid
 ALTER TABLE "Employee" ADD CONSTRAINT "Employee_personID_fkey" FOREIGN KEY ("personID") REFERENCES "Person"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Employee" ADD CONSTRAINT "Employee_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "Employee"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Employee" ADD CONSTRAINT "Employee_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "Employee"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "Employee"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "Employee"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Visit" ADD CONSTRAINT "Visit_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "Employee"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Visit" ADD CONSTRAINT "Visit_patientId_fkey" FOREIGN KEY ("patientId") REFERENCES "Person"("id") ON DELETE SET NULL ON UPDATE CASCADE;

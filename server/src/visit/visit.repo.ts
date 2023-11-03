@@ -75,6 +75,7 @@ export class VisitRepo {
                         code: visitCode,
                         sequenceNumber: anonymousVisitDto.sequenceNumber,
                         kinship: anonymousVisitDto.kinship,
+                        
                         companion: {
                             connect: {
                                 id: companion?.id
