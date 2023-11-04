@@ -2,7 +2,10 @@ import React, { useContext } from "react";
 import Box from "@mui/material/Box";
 import SidebarMenuItem from "./menu/sidebar-menu-item";
 import SidebarSubmenuItem from "./menu/sidebar-submenu-item";
-import { LogoIcon } from "@/assets/icons";
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import PeopleIcon from '@mui/icons-material/People';
+import ApartmentIcon from '@mui/icons-material/Apartment';
+
 const SidebarComponent = (props: any) => {
   return (
     <Box
@@ -12,15 +15,15 @@ const SidebarComponent = (props: any) => {
       }}
     >
       <SidebarMenuItem
-        icon={<LogoIcon primary={"white"} />}
-        activeIcon={<LogoIcon />}
+        icon={<DashboardIcon sx={{color:'primary.main', textAlign: 'center'}}/>}
+        activeIcon={<DashboardIcon sx={{color:'white'}}/>}
         text="لوحة التحكم"
         path="/dashboard"
       />
 
       <SidebarMenuItem
-        icon={<LogoIcon primary={"white"} />}
-        activeIcon={<LogoIcon />}
+        icon={<PeopleIcon sx={{color:'primary.main', textAlign: 'center'}}/>}
+        activeIcon={<PeopleIcon sx={{color:'white'}}/>}
         text="المستخدمين"
         path="/users"
       >
@@ -35,8 +38,8 @@ const SidebarComponent = (props: any) => {
       </SidebarMenuItem>
 
       <SidebarMenuItem
-        icon={<LogoIcon primary={"white"} />}
-        activeIcon={<LogoIcon />}
+        icon={<ApartmentIcon sx={{color:'primary.main', textAlign: 'center'}}/>}
+        activeIcon={<ApartmentIcon sx={{color:'white'}}/>}
         text="الأقسام"
         path="/departments"
       >
