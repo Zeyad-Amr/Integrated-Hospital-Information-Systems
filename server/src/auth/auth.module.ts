@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserController } from './auth.controller';
-import { UserRepo } from './auth.repo';
+import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
+import { AuthRepo } from './auth.repo';
 import { PrismaService } from '../shared/services/prisma-client/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
 
@@ -13,8 +13,8 @@ import { JwtModule } from '@nestjs/jwt';
       signOptions: { expiresIn: '7d' },
     }),
   ],
-  controllers: [UserController],
-  providers: [UserService, UserRepo, PrismaService],
-  exports: [UserService],
+  controllers: [AuthController],
+  providers: [AuthService, AuthRepo, PrismaService],
+  exports: [AuthService],
 })
-export class UserModule { }
+export class AuthModule { }

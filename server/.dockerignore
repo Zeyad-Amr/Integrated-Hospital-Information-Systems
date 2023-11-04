@@ -10,3 +10,4 @@ Dockerfile
 .gitlab-*       
 .github        
 *.md           
+dist

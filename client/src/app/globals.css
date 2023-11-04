@@ -19,4 +19,27 @@
 body {
   color: rgb(var(--background-end-rgb));
   background: rgb(var(--foreground-rgb));
+
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 0.5rem;
+  cursor: pointer;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #004B50; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #007867; 
 }

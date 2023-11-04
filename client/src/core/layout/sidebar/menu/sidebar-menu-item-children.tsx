@@ -14,7 +14,7 @@ const SidebarMenuItemChildren = ({ children }: { children: any }) => {
       <Box
         sx={{
           width: "1px",
-          backgroundColor: "common.white",
+          backgroundColor: "primary.main",
           marginX: "1rem",
           marginBottom: "1rem",
         }}

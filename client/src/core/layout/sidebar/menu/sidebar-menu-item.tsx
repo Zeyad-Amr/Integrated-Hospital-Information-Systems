@@ -24,8 +24,6 @@ const SidebarMenuItem = ({
   const router = useRouter();
   const isActive = pathname.startsWith(path);
   const [expanded, setExpanded] = useState(isActive);
-  console.log(pathname);
-  console.log(isActive);
 
   const handleClick = () => {
     console.log("clicked");
@@ -50,13 +48,12 @@ const SidebarMenuItem = ({
           justifyContent: collapsed ? "center" : "space-between",
           flexWrap: "nowrap",
           cursor: "pointer",
-          backgroundColor: isActive ? "common.white" : "transparent",
+          backgroundColor: isActive ? "primary.darker" : "transparent",
           borderRadius: "10px",
           marginY: "1vh",
           marginX: "1vw",
-
           "&:hover": {
-            backgroundColor: isActive ? "secondary.main" : "primary.darker",
+            backgroundColor: isActive ? "none" : "primary.lighter",
           },
         }}
       >
@@ -75,6 +72,7 @@ const SidebarMenuItem = ({
               height: "3rem",
               padding: "0.5rem",
               display: "flex",
+              justifyContent: "center",
               alignItems: "center",
             }}
           >
@@ -84,7 +82,8 @@ const SidebarMenuItem = ({
             variant="body1"
             sx={{
               fontWeight: "bold",
-              color: isActive ? "primary.main" : "common.white",
+              color: isActive ? "white" : "primary.main",
+              // color: 'primary.main',
               display: collapsed ? "none" : "block",
               whiteSpace: "nowrap",
               overflow: "hidden",
@@ -97,14 +96,14 @@ const SidebarMenuItem = ({
         <ExpandMore
           sx={{
             display: !expanded && !collapsed && children ? "block" : "none",
-            color: isActive ? "primary.main" : "common.white",
+            color: isActive ? "white" : "primary.main",
             marginX: "0.5rem",
           }}
         />
         <ExpandLess
           sx={{
             display: expanded && !collapsed && children ? "block" : "none",
-            color: isActive ? "primary.main" : "common.white",
+            color: isActive ? "white" : "primary.main",
             marginX: "0.5rem",
           }}
         />

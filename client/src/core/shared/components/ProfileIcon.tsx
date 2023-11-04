@@ -18,17 +18,17 @@ const ProfileIcon = (props: any) => {
         <Box sx={{display: "flex", alignItems: "center", cursor:"pointer", paddingRight:'20px'}} onClick={toggleProfileDialog}>
             <AccountCircleRoundedIcon 
             sx={{
-                color: "white",
+                color: "primary.main",
                 fontSize: "3.1rem"
             }}
             />
             <Box sx={{
                 marginLeft: ".6rem",
             }}>
-                <Typography sx={{color:"white", fontSize: '0.9rem', fontWeight:"600",textAlign:'left'}}>
+                <Typography sx={{color:"primary.main", fontSize: '0.9rem', fontWeight:"600",textAlign:'left'}}>
                     {props.name}
                 </Typography>
-                <Typography sx={{color:"lightGrey", fontSize: '.7rem',textAlign:'left'}}>
+                <Typography sx={{color:"primary.dark", fontSize: '.7rem',textAlign:'left'}}>
                     {props.pos}
                 </Typography>
             </Box>

@@ -11,7 +11,6 @@ import {
 } from "@/core/components/settings";
 import "./globals.css";
 import type { Metadata } from "next";
-import { AppServicesLocator } from "@/core/service-locator";
 
 // ----------------------------------------------------------------------
 
@@ -57,7 +56,6 @@ type Props = {
 };
 
 export default function RootLayout({ children }: Props) {
-  AppServicesLocator.init();
   return (
     <html lang="en" className={primaryFont.className}>
       <body>

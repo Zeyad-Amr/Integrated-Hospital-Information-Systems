@@ -1,0 +1,46 @@
+import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException } from '@nestjs/common';
+import { PatientService } from './patient.service';
+import { UpdatePatientDto } from './dto/update-patient.dto';
+import { handleError } from 'src/shared/http-error';
+import { ApiBadRequestResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+@ApiTags('patient')
+@Controller('patient')
+export class PatientController {
+  constructor(private readonly patientService: PatientService) { }
+
+  @ApiOperation({ description: "get all patients" })
+  @ApiOkResponse()
+  @Get()
+  findAll() {
+    try {
+      return this.patientService.findAll();
+    } catch (error) {
+      throw handleError(error)
+    }
+  }
+
+  @ApiOperation({ description: "get patient with SSN with their visits" })
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @Get(':ssn')
+  findOne(@Param('ssn') ssn: string) {
+    try {
+      return this.patientService.findOne(ssn);
+    } catch (error) {
+      throw handleError(error)
+    }
+  }
+
+  @ApiOperation({ description: "visit data completion" })
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
+  @Patch()
+  update(@Body() updatePatientDto: UpdatePatientDto) {
+    try {
+      return this.patientService.update(updatePatientDto);
+    } catch (error) {
+      throw handleError(error)
+    }
+  }
+
+}

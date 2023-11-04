@@ -1,0 +1,18 @@
+.create-user-header {
+  margin: 2rem 0rem;
+  font-weight: bold;
+  font-size: 2rem;
+  /* color: #232836; */
+}
+
+.input {
+  font-weight: bold;
+  color: #8c8c8c;
+  margin-bottom: 1rem;
+  /* width: 90%; */
+}
+
+/* .rtl-gipgzk-MuiInputBase-input-MuiOutlinedInput-input {
+  border-radius: 10px;
+  background-color: #e7e7e7;
+} */

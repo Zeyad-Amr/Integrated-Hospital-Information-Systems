@@ -1,10 +1,10 @@
 export default class StaffEntity {
-    private id: string;
-    private name: string;
-    private ssn: string;
-    private email: string;
-    private phone: string;
-    private role: string;
+    private _id: string;
+    private _name: string;
+    private _ssn: string;
+    private _email: string;
+    private _phone: string;
+    private _role: string;
 
     constructor(data: {
         id: string;
@@ -14,63 +14,61 @@ export default class StaffEntity {
         phone: string;
         role: string;
     }) {
-        this.id = data.id;
-        this.name = data.name;
-        this.ssn = data.ssn;
-        this.email = data.email;
-        this.phone = data.phone;
-        this.role = data.role;
+        this._id = data.id;
+        this._name = data.name;
+        this._ssn = data.ssn;
+        this._email = data.email;
+        this._phone = data.phone;
+        this._role = data.role;
     }
 
-    // Getter methods
-    getId(): string {
-        return this.id;
+    // Getter methods using property accessors
+    get id(): string {
+        return this._id;
     }
 
-    getName(): string {
-        return this.name;
+    get name(): string {
+        return this._name;
     }
 
-    getSSN(): string {
-        return this.ssn;
+    get ssn(): string {
+        return this._ssn;
     }
 
-    getEmail(): string {
-        return this.email;
+    get email(): string {
+        return this._email;
     }
 
-    getPhone(): string {
-        return this.phone;
+    get phone(): string {
+        return this._phone;
     }
 
-    getRole(): string {
-        return this.role;
+    get role(): string {
+        return this._role;
     }
 
-
-    // Setter methods
-    setId(id: string): void {
-        this.id = id;
+    // Setter methods using property accessors
+    set id(id: string) {
+        this._id = id;
     }
 
-    setName(name: string): void {
-        this.name = name;
+    set name(name: string) {
+        this._name = name;
     }
 
-    setSSN(ssn: string): void {
-        this.ssn = ssn;
+    set ssn(ssn: string) {
+        this._ssn = ssn;
     }
 
-    setEmail(email: string): void {
-        this.email = email;
+    set email(email: string) {
+        this._email = email;
     }
 
-    setPhone(phone: string): void {
-        this.phone = phone;
+    set phone(phone: string) {
+        this._phone = phone;
     }
 
-    setRole(role: string): void {
-        this.role = role;
+    set role(role: string) {
+        this._role = role;
     }
-
 }
