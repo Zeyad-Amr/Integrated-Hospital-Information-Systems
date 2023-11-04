@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException 
 import { PatientService } from './patient.service';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { handleError } from 'src/shared/http-error';
-import { ApiBadRequestResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+
+@ApiBearerAuth()
 @ApiTags('patient')
 @Controller('patient')
 export class PatientController {

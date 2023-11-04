@@ -1,9 +1,8 @@
 start-server:
-	docker-compose up  --build
+	docker-compose up -d --build
 stop-server:
 	docker-compose down
 empty-database:
 	docker-compose down
 	docker volume rm qasr-his_postgres-data
-all-server: start-server
-	node server/initDB/build/app.js
+empty-start: empty-database start-server

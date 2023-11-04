@@ -3,10 +3,10 @@ import { IncidentService } from './incident.service';
 import { CreateIncidentDto } from './dto/create-incident.dto';
 import { UpdateIncidentDto } from './dto/update-incident.dto';
 import { handleError } from 'src/shared/http-error';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/decorators/public.decorator';
 
-@Public()
+@ApiBearerAuth()
 @ApiTags('incident')
 @Controller('incident')
 export class IncidentController {

@@ -1,10 +1,14 @@
 const PrismaClient = require("@prisma/client")
+const bcrypt = require("bcrypt")
 
 const prisma = new PrismaClient.PrismaClient()
-function insert() {
+
+async function insert() {
+    const salt = await bcrypt.genSalt(10);
+    password = await bcrypt.hash("Admin1234", salt);
     prisma.user.create({
         data: {
-            password: "admin",
+            password: password,
             username: "Admin123",
             employee: {
                 create: {

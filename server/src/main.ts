@@ -10,7 +10,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const config = new DocumentBuilder()
-    .setTitle('Qasr HIS')
+    .addBearerAuth().setTitle('Qasr HIS')
     .setDescription('Qasr APIs Describtion')
     .setVersion('1.0')
     .build();
