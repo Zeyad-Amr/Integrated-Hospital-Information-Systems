@@ -13,11 +13,13 @@ import { Type } from 'class-transformer';
 
 export class CreateEmployeeDto {
 
+    @ApiProperty({ type: CreatePersonDto, required: true })
     @IsObject()
     @ValidateNested()
     @Type(() => CreatePersonDto)
     personalData: CreatePersonDto
 
+    @ApiProperty({ type: LoginUserDto, required: true })
     @IsObject()
     @ValidateNested()
     @Type(() => LoginUserDto)
