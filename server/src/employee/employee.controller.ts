@@ -3,17 +3,18 @@ import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiConflictResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+
 import { handleError } from '../shared/http-error';
 import { AuthRequest } from 'src/auth/auth.interface';
 
 @ApiTags('employee')
 @ApiUnauthorizedResponse({ description: "No token provided" })
+@ApiBearerAuth()
 @Controller('employee')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) { }
 
   @Post()
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Create employee' })
   @ApiCreatedResponse({ description: 'created successfully' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
@@ -28,7 +29,6 @@ export class EmployeeController {
   }
 
   @Get()
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'get all employees' })
   @ApiOkResponse({ description: 'get all employees' })
   async findAll() {
@@ -40,7 +40,6 @@ export class EmployeeController {
   }
 
   @Get(':id')
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'get employee by id' })
   @ApiOkResponse({ description: 'get a employee' })
   @ApiNotFoundResponse({ description: 'employee not found' })
@@ -53,7 +52,6 @@ export class EmployeeController {
   }
 
   @Patch(':id')
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'update employee' })
   @ApiOkResponse({ description: 'updated successfully' })
   @ApiNotFoundResponse({ description: 'employee not found' })
@@ -66,7 +64,6 @@ export class EmployeeController {
   }
 
   @Delete(':id')
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'delete employee by id' })
   @ApiOkResponse({ description: 'deleted successfully' })
   @ApiNotFoundResponse({ description: 'employee not found' })

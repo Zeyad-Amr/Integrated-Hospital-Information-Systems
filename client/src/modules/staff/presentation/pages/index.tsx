@@ -6,6 +6,7 @@ import HeaderText from "../components/create-user/header-text";
 import "../components/create-user/header-text/HeaderText.css";
 import CreateStaff from "../components/create-user/user-form";
 import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
+
 const CreateUserComponent = () => {
   return (
     <Box
@@ -37,6 +38,7 @@ const CreateUserComponent = () => {
           }}/>
         <HeaderText title="اضافـــــــة مستخدم" />
       </Box>
+
       <CreateStaff />
     </Box>
   );

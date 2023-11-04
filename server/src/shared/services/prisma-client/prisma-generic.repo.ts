@@ -24,6 +24,7 @@ export class PrismaGenericRepo<T> {
         where,
         orderBy,
       );
+      console.log(res)
       return res;
     } catch (error) {
       throw error;
