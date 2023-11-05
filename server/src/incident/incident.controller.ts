@@ -6,7 +6,7 @@ import { handleError } from 'src/shared/http-error';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/decorators/public.decorator';
 
-@ApiBearerAuth()
+@Public()
 @ApiTags('incident')
 @Controller('incident')
 export class IncidentController {
@@ -35,7 +35,10 @@ export class IncidentController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.incidentService.findOne(+id);
+    try { return this.incidentService.findOne(id); }
+    catch (error) {
+      throw handleError(error)
+    }
   }
 
   @Patch(':id')
