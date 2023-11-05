@@ -4,6 +4,7 @@ import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiConflictResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/decorators/public.decorator';
+import { handleError } from 'src/shared/http-error';
 
 @ApiBearerAuth()
 @ApiTags('person')
@@ -17,14 +18,22 @@ export class PersonController {
   @ApiConflictResponse({ description: "person already exists" })
   @Post()
   create(@Body() createPersonDto: CreatePersonDto) {
-    return this.personService.create(createPersonDto);
+    try {
+      return this.personService.create(createPersonDto);
+    } catch (error) {
+      throw handleError(error)
+    }
   }
 
   @ApiOperation({ description: "get all persons data" })
   @ApiOkResponse()
   @Get()
   findAll() {
-    return this.personService.findAll();
+    try {
+      return this.personService.findAll();
+    } catch (error) {
+      throw handleError(error)
+    }
   }
 
   @ApiOperation({ description: "get person data by ssn" })
@@ -32,11 +41,19 @@ export class PersonController {
   @ApiBadRequestResponse()
   @Get(':ssn')
   findOne(@Param('ssn') ssn: string) {
-    return this.personService.findOne(ssn);
+    try {
+      return this.personService.findOne(ssn);
+    } catch (error) {
+      throw handleError(error)
+    }
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.personService.remove(id);
+    try {
+      return this.personService.remove(id);
+    } catch (error) {
+      throw handleError(error)
+    }
   }
 }
