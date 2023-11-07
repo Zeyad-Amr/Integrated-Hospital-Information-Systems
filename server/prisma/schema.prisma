@@ -31,9 +31,7 @@ model Person {
   employee        Employee?
   patientVisits   Visit[]   @relation("visitPatient")
   companionVisits Visit[]   @relation("visitCompanion")
-
-  incidentCompanion Incident? @relation(fields: [incidentId], references: [id])
-  incidentId        String?
+  CompanionsOnIncidents CompanionsOnIncidents[]
 }
 
 model Employee {
@@ -66,6 +64,7 @@ model User {
   employeeId String   @unique
 }
 
+
 model Visit {
   code           String       @id
   sequenceNumber Int?
@@ -75,7 +74,7 @@ model Visit {
   updatedAt DateTime @updatedAt
 
   // it has to be commented till the emplopyee api created
-  creator     Employee?  @relation(fields: [creatorId], references: [id])
+  creator     Employee? @relation(fields: [creatorId], references: [id])
   creatorId   String?
   patient     Person?   @relation("visitPatient", fields: [patientId], references: [id])
   patientId   String?
@@ -89,16 +88,26 @@ model Incident {
   id               String  @id @default(uuid())
   description      String?
   numberOfPatients Int
-  isCompleted Boolean    @default(false)
+  isCompleted      Boolean @default(false)
 
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  
-  Car         CarNumber? @relation(fields: [carId], references: [id])
-  carId       String?
-  companions  Person[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  visits Visit[]
+  Car        CarNumber? @relation(fields: [carId], references: [id])
+  carId      String?
+
+  visits                Visit[]
+  CompanionsOnIncidents CompanionsOnIncidents[]
+}
+
+
+model CompanionsOnIncidents {
+  companion   Person   @relation(fields: [companionId], references: [id])
+  companionId String
+  incident    Incident @relation(fields: [incidentId], references: [id])
+  incidentId  String
+
+  @@id([companionId, incidentId])
 }
 
 model CarNumber {

@@ -41,33 +41,44 @@ export class IncidentRepo {
                             },
 
                         }
+                    }, CompanionsOnIncidents: {
+                        createMany: { data: [{ companionId: "fads" }], skipDuplicates: true }
                     }
                 }
             }
 
             return await this.prismaService.$transaction(async (tx) => {
 
-                const incident = await tx.incident.create({ data: incidentData })
+
+                await tx.person.createMany({ data: incidentDto.companions, skipDuplicates: true })
+                const companionsSSNs = incidentDto.companions.map((c) => c.SSN)
+
+                const companions = await this.prismaService.person.findMany({ where: { SSN: { in: companionsSSNs } } })
+
+
+                const companionsIds: Prisma.CompanionsOnIncidentsCreateManyIncidentInput[] = companions.map((c) => { return { companionId: c.id } })
+
+                const incident = await tx.incident.create({
+                    data: {
+                        ...incidentData, CompanionsOnIncidents: {
+                            createMany: { data: companionsIds, skipDuplicates: true }
+                        }
+                    }
+                })
 
                 let visitCode = await this.visitRepo.createVisitCode();
 
                 const visitsData = []
-                const companionsData = []
                 for (let i = 0; i < incidentDto.numerOfPatients; i++) {
                     visitsData.push({ code: visitCode, incidentId: incident.id })
                     const visitNumber = parseInt(visitCode.slice(8)) + 1
                     visitCode = `${visitCode.slice(0, 8)}${visitNumber}`
                 }
 
-                incidentDto.companions.forEach((companion) => {
-                    companionsData.push({ ...companion, incidentId: incident.id })
-                })
+                await tx.visit.createMany({ data: visitsData })
 
-                const a = await tx.visit.createMany({ data: visitsData })
-                await tx.person.createMany({ data: companionsData, skipDuplicates: true })
-
-                const visits = await tx.visit.findMany({})
                 const visitsCodes = visitsData.map((visit) => visit.code)
+
                 return { incident, visitsCodes }
             })
 
@@ -82,11 +93,25 @@ export class IncidentRepo {
             return await this.prismaService.incident.findMany({
                 include: {
                     Car: true,
-                    companions: true
                 }
             })
         } catch (error) {
             throw error
+        }
+    }
+
+    async getById(id: string) {
+        try {
+            return await this.prismaService.incident.findFirst({
+                where: { id: id },
+                include: {
+                    Car: { select: { firstChar: true, secondChar: true, thirdChar: true } }
+                    , visits: { select: { code: true, patient: true, creator: true } }, CompanionsOnIncidents: { select: { companion: true } }
+                }
+            })
+        } catch (error) {
+            throw error
+
         }
     }
 
