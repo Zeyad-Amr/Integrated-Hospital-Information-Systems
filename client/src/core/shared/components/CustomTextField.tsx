@@ -41,7 +41,7 @@ const CustomTextField = ({
           maxWidth: "100%",
         },
         width: width,
-        margin: "0.7rem",
+        margin: "0.7rem 0rem",
         maxWidth: "100%",
       }}
     >
