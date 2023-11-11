@@ -15,7 +15,7 @@ const TablePageTest = () => {
       }}
     >
       <Typography variant="h4">Fully Dynamic Table</Typography>
-      <Typography variant="h5">Exxample 1</Typography>
+      <Typography variant="h5">Example 1</Typography>
       <CustomDataTable
         data={data}
         renderItem={header}
@@ -26,7 +26,7 @@ const TablePageTest = () => {
         sx={{ mb: 5 }}
         onRowClick={(item) => console.log(item)}
       />
-      <Typography variant="h4">Exxample 2</Typography>
+      <Typography variant="h4">Example 2</Typography>
       <CustomDataTable
         data={data}
         renderItem={header}
@@ -38,7 +38,7 @@ const TablePageTest = () => {
         onRowClick={(item) => console.log(item)}
         hover={false}
       />
-      <Typography variant="h4">Exxample 3</Typography>
+      <Typography variant="h4">Example 3</Typography>
       <CustomDataTable
         data={data}
         renderItem={header}
