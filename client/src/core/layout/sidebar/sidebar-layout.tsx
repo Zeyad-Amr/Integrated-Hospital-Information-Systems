@@ -12,12 +12,12 @@ const SidebarLayout = (props: any) => {
         flexDirection: "column",
         height: "100vh",
         width: "100%",
-        backgroundColor: "primary.main",
+        backgroundColor: "white",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <SidebarHeader height="12vh" />
+      <SidebarHeader height="13vh" />
 
       <Box
         flex="1"
@@ -32,12 +32,12 @@ const SidebarLayout = (props: any) => {
       >
         <Box
           sx={{
-            backgroundColor: "primary.main",
+            backgroundColor: "white",
             width: collapsed ? "5rem" : "16rem",
             transition: "width 0.3s ease-in-out",
 
             overflowX: "hidden",
-            overflowY: "scroll",
+            overflowY: "hidden",
           }}
         >
           <SidebarComponent />
@@ -51,6 +51,8 @@ const SidebarLayout = (props: any) => {
             width: "100%",
             borderRadius: "10px 10px 0px 0px",
             backgroundColor: "primary.contrastText",
+            // filter: "box-shadow(0px 0px 6px #0000002f);",
+            boxShadow: 'inset 0px 0px 6px #0000003f',
           }}
         >
           <Box>{props.children}</Box>

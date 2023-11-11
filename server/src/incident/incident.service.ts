@@ -24,8 +24,12 @@ export class IncidentService {
    
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} incident`;
+  findOne(id: string) {
+    try {
+      return this.incidentRepo.getById(id)
+    } catch (error) {
+      throw error
+    }
   }
 
   update(id: number, updateIncidentDto: UpdateIncidentDto) {

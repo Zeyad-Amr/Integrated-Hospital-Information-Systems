@@ -42,7 +42,6 @@ export class VisitController {
       return this.visitService.findAll();
     } catch (error) {
       throw handleError(error)
-
     }
   }
 

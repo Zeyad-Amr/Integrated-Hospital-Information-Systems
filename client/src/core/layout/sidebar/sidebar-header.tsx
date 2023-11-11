@@ -21,15 +21,30 @@ const SidebarHeader = (props: SidebarHeaderProps) => {
         position: "relative", 
         width: "100%",
         height: props.height || "5vh",
-        backgroundColor: "primary.main",
+        backgroundColor: "primary.darker",
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
         paddingX: "1rem",
         paddingY: "clamp(0.5rem, 1vw, 1rem)",
+        // marginBottom: '-1rem',
       }}
     >
+        <Box
+          sx={{
+            position:'absolute',
+            top: '15%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            backgroundColor: 'white',
+            width:'100%',
+            height:'85%',
+            borderRadius:'20px 20px 0 0 ',
+          }}
+        >
+
+        </Box>
         <Button
           onClick={onCollapse}
           sx={{
@@ -44,9 +59,9 @@ const SidebarHeader = (props: SidebarHeaderProps) => {
             }}
           >
             {!collapsed ? (
-              <CloseIcon primary="white" />
+              <CloseIcon primary="#232836" />
             ) : (
-              <MenuIcon primary="white" />
+              <MenuIcon primary="#232836" />
             )}
           </Box>
         </Button>  
@@ -58,7 +73,7 @@ const SidebarHeader = (props: SidebarHeaderProps) => {
         }}
       >
         <Box sx={{position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', width:'2rem'}}>
-          <LogoIcon primary="white"/>
+          <LogoIcon primary="#232836"/>
         </Box>
       </Box>
       <Box sx={{display:'flex'}}>
@@ -75,7 +90,7 @@ const SidebarHeader = (props: SidebarHeaderProps) => {
               height: "1.3rem",
             }}
           >
-              <NotificationIcon primary="white" />
+              <NotificationIcon primary="#232836" />
             </Box>
         </Button>
           <ProfileIcon name = "عبدالرحمن ياسر" pos = "موظف استقبال"/>
