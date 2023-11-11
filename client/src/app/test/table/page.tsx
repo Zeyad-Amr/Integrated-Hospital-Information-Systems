@@ -24,6 +24,7 @@ const TablePageTest = () => {
         boxShadow={10}
         stickyHeader={true}
         sx={{ mb: 5 }}
+        onRowClick={(item) => console.log(item)}
       />
       <Typography variant="h4">Exxample 2</Typography>
       <CustomDataTable
@@ -34,6 +35,8 @@ const TablePageTest = () => {
         boxShadow={30}
         stickyHeader={false}
         sx={{ mb: 5 }}
+        onRowClick={(item) => console.log(item)}
+        hover={false}
       />
       <Typography variant="h4">Exxample 3</Typography>
       <CustomDataTable
@@ -44,6 +47,7 @@ const TablePageTest = () => {
         boxShadow={10}
         stickyHeader={true}
         sx={{ m: 5 }}
+        onRowClick={(item) => console.log(item)}
       />
     </Box>
   );

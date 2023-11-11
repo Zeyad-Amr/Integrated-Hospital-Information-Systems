@@ -21,7 +21,7 @@ export const data: DataItem[] = [
     phone: "1-770-736-8031 x56442",
     address: "Kulas Light",
     description: "description",
-    icon: <AccessibilityIcon />,
+    icon: <AccessibilityIcon onClick={() => console.log("icon clicked")} />,
   },
   {
     id: "2",

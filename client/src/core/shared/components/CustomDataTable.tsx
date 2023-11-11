@@ -33,6 +33,8 @@ interface Props<T> {
   boxShadow?: number;
   stickyHeader?: boolean;
   sx?: any;
+  onRowClick?: (row: T) => void;
+  hover?: boolean;
 }
 
 const CustomDataTable = <T,>({
@@ -43,6 +45,8 @@ const CustomDataTable = <T,>({
   boxShadow = 10,
   stickyHeader = false,
   sx,
+  onRowClick,
+  hover = true,
 }: Props<T>) => {
   return (
     <TableContainer
@@ -71,7 +75,11 @@ const CustomDataTable = <T,>({
         </TableHead>
         <TableBody>
           {data.map((item) => (
-            <TableRow key={(item as any).id}>
+            <TableRow
+              key={(item as any).id}
+              onClick={() => onRowClick && onRowClick(item)}
+              hover={hover}
+            >
               {renderItem.map((headerItem) =>
                 headerItem.isIcon ? (
                   <TableCell
