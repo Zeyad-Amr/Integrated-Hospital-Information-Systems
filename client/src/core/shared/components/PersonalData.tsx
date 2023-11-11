@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Button from "@mui/material/Button";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -8,30 +8,43 @@ import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
 
 export interface PersonalDataValues {
-    firstName: string;
-    secondName: string;
-    thirdName: string;
-    forthName: string;
-    email: string;
-    SSN: string;
-    phone: string;
-    id: string;
-    gender: string;
-    governate: string;
-    date: null | string;
-    address: string;
-    SSNtype: string;
-    search: string;
+  firstName: string;
+  secondName: string;
+  thirdName: string;
+  forthName: string;
+  email: string;
+  SSN: string;
+  phone: string;
+  id: string;
+  gender: string;
+  governate: string;
+  date: null | string;
+  address: string;
+  SSNtype: string;
+  search: string;
 }
 
 interface PersonalDataProps {
-  initialValues: PersonalDataValues
-  onSubmit : (values : PersonalDataValues ) => void;
+  initialValues: PersonalDataValues;
+  onSubmit: (values: PersonalDataValues) => void;
+  isSubmitted: boolean;
 }
 
+const PersonalData = ({
+  initialValues,
+  onSubmit,
+  isSubmitted,
+}: PersonalDataProps) => {
 
+  const refSubmitButton : any = useRef(null);
 
-const PersonalData   = ({ initialValues , onSubmit } : PersonalDataProps) => {
+  useEffect(() => {
+   if (refSubmitButton.current) {
+        refSubmitButton.current.click()
+   }
+  }, [isSubmitted]);
+  
+
   const handleFormSchema = Yup.object({
     firstName: Yup.string()
       .required("First name is required")
@@ -101,7 +114,7 @@ const PersonalData   = ({ initialValues , onSubmit } : PersonalDataProps) => {
       }}
       validationSchema={handleFormSchema}
       onSubmit={(values) => {
-        onSubmit(values)
+        onSubmit(values);
       }}
     >
       {({
@@ -368,21 +381,7 @@ const PersonalData   = ({ initialValues , onSubmit } : PersonalDataProps) => {
               />
             </Grid>
           </Grid>
-          <Box sx={{display:"flex",justifyContent:"center"}}>
-        <Button
-          type="submit"
-          style={{
-            color: "#fff",
-            backgroundColor: "#232836",
-            width: "40%",
-            fontSize:"0.9rem",
-            margin : "1rem 0rem 0rem 0rem",
-            height: "40px"
-          }}
-        >
-          تأكيــد
-        </Button>
-        </Box>
+          <Button type="submit" sx={{ display: "none" }} ref={refSubmitButton}></Button>
         </Box>
       )}
     </Formik>
