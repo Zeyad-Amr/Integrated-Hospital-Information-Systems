@@ -24,7 +24,6 @@ export class PrismaGenericRepo<T> {
         where,
         orderBy,
       );
-      console.log(res)
       return res;
     } catch (error) {
       throw error;
@@ -52,7 +51,7 @@ export class PrismaGenericRepo<T> {
     }
   }
 
-  async update(id: string, item: Omit<T, 'id' | 'createdAt' >): Promise<T | null> {
+  async update(id: string, item: Omit<T, 'id' | 'createdAt'>): Promise<T | null> {
     try {
       const res = await this.prisma[this.modelName].update({
         where: { id },

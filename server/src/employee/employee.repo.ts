@@ -42,7 +42,6 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
     async update(id: string, item: UpdateEmployeeDto): Promise<any> {
         try {
             const { auth, role, personalData } = item;
-            console.log(personalData);
 
             const employee = await this.prismaService.employee.update({
                 where: { id },
@@ -82,7 +81,6 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
             const res = this.prismaService.employee.findMany({
                 include: this.includeObj
             });
-            console.log(res)
             return res;
         } catch (error) {
             throw error;
