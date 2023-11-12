@@ -1,8 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/shared/services/prisma-client/prisma.service";
 import { AnonymousVisitDto, CreateVisitDto } from "./dto/create-visit.dto";
-import { Person, Visit } from "@prisma/client";
+import { Person, Prisma, Visit } from "@prisma/client";
 import { PersonRepo } from "src/person/person.repo";
+import { Pagination } from "src/shared/decorators/pagination.decorator";
+import { PaginatedResource } from "src/shared/types/paginated.resource";
+import { Filter } from "src/shared/decorators/filters.decorator";
+import { getOrder, getWhere } from "src/shared/util.functions.ts/get.where.filter";
+import { Sorting } from "src/shared/decorators/order.decorator";
 
 @Injectable()
 export class VisitRepo {
@@ -61,11 +66,10 @@ export class VisitRepo {
             console.log(error)
         }
     }
-    async createAnonymous(anonymousVisitDto: AnonymousVisitDto) {
+    async createAnonymous(anonymousVisitDto: AnonymousVisitDto, creatorId: string) {
         try {
 
             const visitCode = await this.createVisitCode()
-
             if (anonymousVisitDto.companion) {
                 const companion = await this.personRepo.createIfNotExist(anonymousVisitDto.companion)
                 const visit = await this.prismaService.visit.create({
@@ -77,6 +81,11 @@ export class VisitRepo {
                         companion: {
                             connect: {
                                 id: companion?.id
+                            }
+                        },
+                        creator: {
+                            connect: {
+                                id: creatorId
                             }
                         }
                     }
@@ -90,6 +99,11 @@ export class VisitRepo {
                     code: visitCode,
                     sequenceNumber: anonymousVisitDto.sequenceNumber,
                     kinship: anonymousVisitDto.kinship,
+                    creator: {
+                        connect: {
+                            id: creatorId
+                        }
+                    }
                 }
             })
         } catch (error) {
@@ -104,6 +118,25 @@ export class VisitRepo {
                     code: visitCode
                 }
             })
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async findAll({ page, limit, size, offset }: Pagination, filters: Array<Filter>, sort?: Sorting): Promise<PaginatedResource<Visit>> {
+        try {
+            const whereCondition: Prisma.VisitWhereInput = getWhere(filters)
+            const order: any = getOrder(sort)
+            const visitsData = await this.prismaService.$transaction(async (tx) => {
+                const count = await this.prismaService.visit.count();
+                const visits = await this.prismaService.visit.findMany({
+                    where: whereCondition,
+                    take: limit, skip: offset,
+                    orderBy: order
+                })
+                return { count, visits }
+            })
+            return { items: visitsData.visits, page, size: visitsData.visits.length, total: visitsData.count }
         } catch (error) {
             throw error
         }

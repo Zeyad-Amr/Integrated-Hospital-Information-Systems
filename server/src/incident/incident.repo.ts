@@ -10,7 +10,7 @@ export class IncidentRepo {
     constructor(private readonly prismaService: PrismaService, private readonly visitRepo: VisitRepo) {
     }
 
-    async create(incidentDto: CreateIncidentDto) {
+    async create(incidentDto: CreateIncidentDto, creatorId: string) {
         try {
             let incidentData: Prisma.IncidentCreateInput;
             if (!incidentDto.car) {
@@ -70,7 +70,7 @@ export class IncidentRepo {
 
                 const visitsData = []
                 for (let i = 0; i < incidentDto.numerOfPatients; i++) {
-                    visitsData.push({ code: visitCode, incidentId: incident.id })
+                    visitsData.push({ code: visitCode, incidentId: incident.id, creatorId: creatorId })
                     const visitNumber = parseInt(visitCode.slice(8)) + 1
                     visitCode = `${visitCode.slice(0, 8)}${visitNumber}`
                 }

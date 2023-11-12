@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { IncidentService } from './incident.service';
 import { CreateIncidentDto } from './dto/create-incident.dto';
 import { UpdateIncidentDto } from './dto/update-incident.dto';
@@ -16,9 +16,9 @@ export class IncidentController {
   @ApiCreatedResponse()
   @ApiBadRequestResponse()
   @Post()
-  create(@Body() createIncidentDto: CreateIncidentDto) {
+  create(@Body() createIncidentDto: CreateIncidentDto,@Req() req) {
     try {
-      return this.incidentService.create(createIncidentDto)
+      return this.incidentService.create(createIncidentDto,req.user.sub)
     } catch (error) {
       throw handleError(error)
     }

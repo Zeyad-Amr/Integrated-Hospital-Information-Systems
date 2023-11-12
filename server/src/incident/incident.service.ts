@@ -6,9 +6,9 @@ import { IncidentRepo } from './incident.repo';
 @Injectable()
 export class IncidentService {
   constructor(private readonly incidentRepo: IncidentRepo) { }
-  create(createIncidentDto: CreateIncidentDto) {
+  create(createIncidentDto: CreateIncidentDto, creatorId: string) {
     try {
-      return this.incidentRepo.create(createIncidentDto);
+      return this.incidentRepo.create(createIncidentDto,creatorId);
     } catch (error) {
       throw error
     }
@@ -21,7 +21,7 @@ export class IncidentService {
     } catch (error) {
       throw error
     }
-   
+
   }
 
   findOne(id: string) {

@@ -2,6 +2,11 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { AnonymousVisitDto, CreateVisitDto } from './dto/create-visit.dto';
 import { UpdateVisitDto } from './dto/update-visit.dto';
 import { VisitRepo } from './visit.repo';
+import { Pagination, PaginationParams } from 'src/shared/decorators/pagination.decorator';
+import { Visit } from '@prisma/client';
+import { PaginatedResource } from 'src/shared/types/paginated.resource';
+import { Filter } from 'src/shared/decorators/filters.decorator';
+import { Sorting } from 'src/shared/decorators/order.decorator';
 
 @Injectable()
 export class VisitService {
@@ -18,17 +23,22 @@ export class VisitService {
     }
   }
 
-  async createAnonymous(anonymousVisitDto: AnonymousVisitDto) {
+  async createAnonymous(anonymousVisitDto: AnonymousVisitDto, creatorId: string) {
     try {
-      return await this.visitRepo.createAnonymous(anonymousVisitDto)
+      return await this.visitRepo.createAnonymous(anonymousVisitDto, creatorId)
     } catch (error) {
       throw error
     }
   }
 
   // filters
-  findAll() {
-    return `This action returns all visit`;
+  findAll(paginationParams: Pagination, filters?: Array<Filter>,sort?:Sorting): Promise<PaginatedResource<Visit>> {
+    try {
+      return this.visitRepo.findAll(paginationParams,filters,sort)
+
+    } catch (error) {
+      throw error
+    }
   }
 
 
