@@ -9,21 +9,14 @@ export class PrismaGenericRepo<T> {
     this.modelName = modelName;
   }
 
-  async getAll(
-    skip?: number,
-    take?: number,
-    cursor?: any,
-    where?: any,
-    orderBy?: any,
-  ): Promise<T[]> {
+  async getAll(args?: {
+    skip?: number;
+    take?: number;
+    where?: any;
+    orderBy?: any;
+  }): Promise<T[]> {
     try {
-      const res = this.prisma[this.modelName].findMany(
-        skip,
-        take,
-        cursor,
-        where,
-        orderBy,
-      );
+      const res = this.prisma[this.modelName].findMany(args);
       return res;
     } catch (error) {
       throw error;
@@ -51,11 +44,14 @@ export class PrismaGenericRepo<T> {
     }
   }
 
-  async update(id: string, item: Omit<T, 'id' | 'createdAt'>): Promise<T | null> {
+  async update(
+    id: string,
+    item: Omit<T, 'id' | 'createdAt'>,
+  ): Promise<T | null> {
     try {
       const res = await this.prisma[this.modelName].update({
         where: { id },
-        data: { ...item as any },
+        data: { ...(item as any) },
       });
       return res;
     } catch (error) {

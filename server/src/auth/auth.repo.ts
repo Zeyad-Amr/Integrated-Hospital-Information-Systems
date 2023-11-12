@@ -1,7 +1,7 @@
 import { PrismaGenericRepo } from '../shared/services/prisma-client/prisma-generic.repo';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../shared/services/prisma-client/prisma.service';
-import { Employee, User } from '@prisma/client';
+import { Employee, Prisma, User } from '@prisma/client';
 
 @Injectable()
 export class AuthRepo extends PrismaGenericRepo<User> {
@@ -9,7 +9,9 @@ export class AuthRepo extends PrismaGenericRepo<User> {
     super('user', prismaService);
   }
 
-  async getByUsername(username: string): Promise<User & { employee: Employee }> {
+  async getByUsername(
+    username: string,
+  ): Promise<User & { employee: Employee }> {
     try {
       const user = await this.prismaService.user.findUnique({
         where: {
@@ -18,6 +20,30 @@ export class AuthRepo extends PrismaGenericRepo<User> {
         include: { employee: true },
       });
       return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  getAll(args?: Prisma.UserFindManyArgs): Promise<User[]> {
+    try {
+      const res = this.prismaService.user.findMany(args);
+      return res;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async update(
+    username: string,
+    item: Prisma.UserUpdateInput,
+  ): Promise<User | null> {
+    try {
+      const res = await this.prismaService.user.update({
+        where: { username },
+        data: { ...(item as any) },
+      });
+      return res;
     } catch (error) {
       throw error;
     }

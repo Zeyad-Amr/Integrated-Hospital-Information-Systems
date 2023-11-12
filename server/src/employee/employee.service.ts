@@ -9,14 +9,23 @@ export class EmployeeService {
   constructor(
     private employeeRepo: EmployeeRepo,
     private authService: AuthService,
-  ) { }
+  ) {}
   async create(createEmployeeDto: CreateEmployeeDto, creatorId: string) {
     try {
-      createEmployeeDto.auth.password = await this.authService.hashPassword(
-        createEmployeeDto.auth.password,
+      const username = await this.authService.generateUsername(
+        createEmployeeDto.personalData.firstName,
       );
-      const newEmployee = await this.employeeRepo.createEmployee(createEmployeeDto, creatorId);
-      return newEmployee;
+      const randomPassword = this.authService.generatePassword(5);
+      const password = await this.authService.hashPassword(randomPassword);
+      createEmployeeDto.auth = {
+        username,
+        password,
+      };
+      const newEmployee = await this.employeeRepo.createEmployee(
+        createEmployeeDto,
+        creatorId,
+      );
+      return { ...newEmployee, auth: { username, randomPassword } };
     } catch (error) {
       throw error;
     }
@@ -55,4 +64,4 @@ export class EmployeeService {
       throw error;
     }
   }
-}   
+}
