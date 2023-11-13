@@ -18,10 +18,10 @@ export class PersonService {
     }
   }
 
-  async findAll( pagination: Pagination, sort?: Sorting, filters?: Array<Filter>) {
+  async findAll(paginationParams: Pagination, sort?: Sorting, filters?: Array<Filter>) {
     try {
 
-      return this.personRepo.getAll(pagination,filters,sort)
+      return this.personRepo.getAll({ paginationParams, filters, sort })
     } catch (error) {
       throw error
     }

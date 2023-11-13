@@ -24,6 +24,7 @@ export class EmployeeService {
 
   async findAll() {
     try {
+      
       return await this.employeeRepo.getAll();
     } catch (error) {
       throw error;

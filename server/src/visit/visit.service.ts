@@ -36,9 +36,8 @@ export class VisitService {
     try {
 
 
-      // const visitsData = this.visitRepo.findAll(limit, offset, order, whereCondition)
-      // return null
-      return this.visitRepo.getAll(paginationParams, filters, sort)
+
+      return this.visitRepo.getAll({ paginationParams, filters, sort })
 
     } catch (error) {
       throw error

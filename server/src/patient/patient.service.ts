@@ -11,10 +11,10 @@ export class PatientService {
   constructor(private readonly patientRepo: PatientRepo, private personRepo: PersonRepo) { }
 
 
-  async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>) {
+  async findAll(paginationParams: Pagination, sort: Sorting, filters: Array<Filter>) {
     try {
       const additionalWhereConditions = [{ patientVisits: { some: {} } }]
-      return await this.personRepo.getAll(pagination, filters, sort, additionalWhereConditions);
+      return await this.personRepo.getAll({paginationParams, filters, sort, additionalWhereConditions});
     } catch (error) {
       throw error
     }

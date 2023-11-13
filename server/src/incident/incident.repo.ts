@@ -9,11 +9,12 @@ import { Filter } from "src/shared/decorators/filters.decorator";
 import { Pagination } from "src/shared/decorators/pagination.decorator";
 
 @Injectable()
-export class IncidentRepo {
+export class IncidentRepo extends PrismaGenericRepo<Incident>{
     constructor(private readonly prismaService: PrismaService, private readonly visitRepo: VisitRepo) {
+        super('incident', prismaService)
     }
 
-    async create(incidentDto: CreateIncidentDto, creatorId: string) {
+    async createIncident(incidentDto: CreateIncidentDto, creatorId: string) {
         try {
             let incidentData: Prisma.IncidentCreateInput;
             if (!incidentDto.car) {
@@ -87,21 +88,6 @@ export class IncidentRepo {
 
         }
         catch (error) {
-            throw error
-        }
-    }
-
-    async getAll(paginationParams: Pagination, filters: Array<Filter>, sort: Sorting) {
-        try {
-
-
-            return await this.prismaService.incident.findMany({
-
-                include: {
-                    Car: true,
-                }
-            })
-        } catch (error) {
             throw error
         }
     }

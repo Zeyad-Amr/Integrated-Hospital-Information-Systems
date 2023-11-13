@@ -13,7 +13,7 @@ export class IncidentService {
   constructor(private readonly incidentRepo: IncidentRepo) { }
   create(createIncidentDto: CreateIncidentDto, creatorId: string) {
     try {
-      return this.incidentRepo.create(createIncidentDto, creatorId);
+      return this.incidentRepo.createIncident(createIncidentDto, creatorId);
     } catch (error) {
       throw error
     }
@@ -21,12 +21,11 @@ export class IncidentService {
 
   findAll(paginationParams: Pagination, filters: Array<Filter>, sort: Sorting): Promise<PaginatedResource<Incident>> {
     try {
-      // return this.incidentRepo.getAll(paginationParams,filters,sort);
-      return null
+      const include = { Car: true }
+      return this.incidentRepo.getAll({ paginationParams: undefined, filters, sort });
     } catch (error) {
       throw error
     }
-
   }
 
   findOne(id: string) {
