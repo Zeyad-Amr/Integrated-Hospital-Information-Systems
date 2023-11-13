@@ -1,7 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { VisitService } from './visit.service';
 import { AnonymousVisitDto, CreateVisitDto } from './dto/create-visit.dto';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+
+import { UpdateVisitDto } from './dto/update-visit.dto';
+import { ApiAcceptedResponse, ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { handleError } from 'src/shared/http-error';
 import { Pagination, PaginationParams } from 'src/shared/decorators/pagination.decorator';
 import { PaginatedResource } from 'src/shared/types/paginated.resource';

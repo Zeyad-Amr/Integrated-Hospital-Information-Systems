@@ -15,32 +15,33 @@ export class PrismaGenericRepo<T> {
     this.modelName = modelName;
   }
 
-  async getAll(args?: {
+  async getAll(
     paginationParams?: Pagination,
     filters?: Array<Filter>,
     sort?: Sorting,
     include?: any,
     select?: any,
     additionalWhereConditions?: Array<any>,
-  }): Promise<PaginatedResource<T>> {
+  ): Promise<PaginatedResource<T>> {
     try {
-      const whereCondition = getWhere(args.filters, args.additionalWhereConditions)
-      const order: any = getOrder(args.sort)
+      const whereCondition = getWhere(filters, additionalWhereConditions)
+      const order: any = getOrder(sort)
       console.log(whereCondition)
       const res = await this.prisma.$transaction(async (tx) => {
         const count = await tx[this.modelName].count({ where: whereCondition });
         const visits = await tx[this.modelName].findMany({
           where: whereCondition,
           orderBy: order,
-          skip: args?.paginationParams?.offset ? args.paginationParams.offset : undefined,
-          take: args?.paginationParams?.limit ? args.paginationParams.limit : undefined,
-          include: args.include,
-          select: args.select
+          skip: paginationParams?.offset ? paginationParams.offset : undefined,
+          take: paginationParams?.limit ? paginationParams.limit : undefined,
+          include: include,
+          select: select
         })
         return { count, visits }
       })
 
-      return { total: res.count, items: res.visits, page: args.paginationParams?.page, size: res.visits.length };
+      return { total: res.count, items: res.visits, page: paginationParams?.page, size: res.visits.length };
+
     } catch (error) {
       throw error;
     }
@@ -67,11 +68,15 @@ export class PrismaGenericRepo<T> {
     }
   }
 
-  async update(id: string, item: Omit<T, 'id' | 'createdAt'>): Promise<T | null> {
+
+  async update(
+    id: string,
+    item: Omit<T, 'id' | 'createdAt'>,
+  ): Promise<T | null> {
     try {
       const res = await this.prisma[this.modelName].update({
         where: { id },
-        data: { ...item as any },
+        data: { ...(item as any) },
       });
       return res;
     } catch (error) {
