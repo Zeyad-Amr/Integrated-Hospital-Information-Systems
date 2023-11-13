@@ -59,7 +59,8 @@ function getFilterProperties(filter: string) {
         if (!property || !rule) {
             throw new BadRequestException('Invalid filter parameter');
         }
-        if (!value && (rule as FilterRule != FilterRule.IS_NULL || rule as FilterRule != FilterRule.IS_NOT_NULL)) {
+        if (!value && (rule as FilterRule != FilterRule.IS_NULL && rule as FilterRule != FilterRule.IS_NOT_NULL)) {
+            console.log(rule as FilterRule!=FilterRule.IS_NOT_NULL)
             throw new BadRequestException('Invalid filter parameter');
         }
         return { property, rule, value }
