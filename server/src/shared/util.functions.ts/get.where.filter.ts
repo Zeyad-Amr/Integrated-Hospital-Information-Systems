@@ -13,7 +13,9 @@ export const getWhere = (filters: Array<Filter>, additionalWhereConditions?: Arr
     if (!filters || filters.length == 0) {
         return whereCondition
     }
-
+    if (!additionalWhereConditions) {
+        whereCondition.AND = []
+    }
 
     filters.forEach(filter => {
         if (filter.rule === FilterRule.IS_NULL) {
@@ -23,6 +25,7 @@ export const getWhere = (filters: Array<Filter>, additionalWhereConditions?: Arr
             whereCondition.AND.push({ NOT: { [filter.property]: null } })
         }
         if (filter.rule == FilterRule.EQUALS) {
+
             if (filter.property == 'createdAt' || filter.property == 'updatedAt') {
                 const startOfTheDay = new Date(filter.value)
                 startOfTheDay.setHours(0, 0, 0, 0);
@@ -37,7 +40,10 @@ export const getWhere = (filters: Array<Filter>, additionalWhereConditions?: Arr
                 whereCondition.AND.push({ [filter.property]: { lte: filter.value } })
             }
             else {
-                whereCondition.AND.push({ [filter.property]: filter.value })
+                if (filter.property == 'isCompleted')
+                    whereCondition.AND.push({ [filter.property]: filter.value == 'true' })
+                else
+                    whereCondition.AND.push({ [filter.property]: filter.value })
             }
 
         };

@@ -16,31 +16,31 @@ export class PrismaGenericRepo<T> {
   }
 
   async getAll(
-    paginationParams?: Pagination,
-    filters?: Array<Filter>,
-    sort?: Sorting,
-    include?: any,
-    select?: any,
-    additionalWhereConditions?: Array<any>,
-  ): Promise<PaginatedResource<T>> {
+    args?: {
+      paginationParams?: Pagination,
+      filters?: Array<Filter>,
+      sort?: Sorting,
+      include?: any,
+      select?: any,
+      additionalWhereConditions?: Array<any>,
+    }): Promise<PaginatedResource<T>> {
     try {
-      const whereCondition = getWhere(filters, additionalWhereConditions)
-      const order: any = getOrder(sort)
-      console.log(whereCondition)
+      const whereCondition = getWhere(args.filters, args.additionalWhereConditions)
+      const order: any = getOrder(args.sort)
       const res = await this.prisma.$transaction(async (tx) => {
         const count = await tx[this.modelName].count({ where: whereCondition });
         const visits = await tx[this.modelName].findMany({
           where: whereCondition,
           orderBy: order,
-          skip: paginationParams?.offset ? paginationParams.offset : undefined,
-          take: paginationParams?.limit ? paginationParams.limit : undefined,
-          include: include,
-          select: select
+          skip: args?.paginationParams?.offset ? args.paginationParams.offset : undefined,
+          take: args?.paginationParams?.limit ? args.paginationParams.limit : undefined,
+          include: args?.include,
+          select: args?.select
         })
         return { count, visits }
       })
 
-      return { total: res.count, items: res.visits, page: paginationParams?.page, size: res.visits.length };
+      return { total: res.count, items: res.visits, page: args.paginationParams?.page, size: res.visits.length };
 
     } catch (error) {
       throw error;

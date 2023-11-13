@@ -25,15 +25,6 @@ export class AuthRepo extends PrismaGenericRepo<User> {
     }
   }
 
-  getAll(args?: Prisma.UserFindManyArgs): Promise<User[]> {
-    try {
-      const res = this.prismaService.user.findMany(args);
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async update(
     username: string,
     item: Prisma.UserUpdateInput,

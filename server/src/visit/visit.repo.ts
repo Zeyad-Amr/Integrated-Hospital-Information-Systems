@@ -65,7 +65,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
             })
         }
         catch (error) {
-            console.log(error)
+            throw error
         }
     }
     async createAnonymous(anonymousVisitDto: AnonymousVisitDto, creatorId: string) {

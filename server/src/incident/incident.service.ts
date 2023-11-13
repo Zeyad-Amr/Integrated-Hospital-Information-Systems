@@ -21,8 +21,8 @@ export class IncidentService {
 
   findAll(paginationParams: Pagination, filters: Array<Filter>, sort: Sorting): Promise<PaginatedResource<Incident>> {
     try {
-      const include = { Car: true }
-      return this.incidentRepo.getAll({ paginationParams: undefined, filters, sort });
+      const include = { Car: true }   
+      return this.incidentRepo.getAll({paginationParams, filters, sort, include});
     } catch (error) {
       throw error
     }

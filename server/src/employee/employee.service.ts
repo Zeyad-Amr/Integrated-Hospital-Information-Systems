@@ -3,13 +3,16 @@ import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { EmployeeRepo } from './employee.repo';
 import { AuthService } from '../auth/auth.service';
+import { Pagination } from 'src/shared/decorators/pagination.decorator';
+import { Sorting } from 'src/shared/decorators/order.decorator';
+import { Filter } from 'src/shared/decorators/filters.decorator';
 
 @Injectable()
 export class EmployeeService {
   constructor(
     private employeeRepo: EmployeeRepo,
     private authService: AuthService,
-  ) {}
+  ) { }
   async create(createEmployeeDto: CreateEmployeeDto, creatorId: string) {
     try {
       const username = await this.authService.generateUsername(
@@ -31,10 +34,10 @@ export class EmployeeService {
     }
   }
 
-  async findAll() {
+  async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>) {
     try {
-      
-      return await this.employeeRepo.getAll();
+
+      return await this.employeeRepo.findAll(pagination, sort, filters);
     } catch (error) {
       throw error;
     }

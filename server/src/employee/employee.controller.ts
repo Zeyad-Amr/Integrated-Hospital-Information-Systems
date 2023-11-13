@@ -25,6 +25,9 @@ import {
 import { handleError } from '../shared/http-error';
 import { AuthRequest } from 'src/auth/auth.interface';
 import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
+import { Pagination, PaginationParams } from 'src/shared/decorators/pagination.decorator';
+import { Sorting, SortingParams } from 'src/shared/decorators/order.decorator';
+import { Filter, FilteringParams } from 'src/shared/decorators/filters.decorator';
 
 @ApiTags('employee')
 @ApiUnauthorizedResponse({ description: 'No token provided' })
@@ -54,9 +57,10 @@ export class EmployeeController {
   @Get()
   @ApiOperation({ summary: 'get all employees' })
   @ApiOkResponse({ description: 'get all employees' })
-  async findAll() {
+  @CustomGetAllParamDecorator()
+  async findAll(@PaginationParams() pagination: Pagination, @SortingParams() sort: Sorting, @FilteringParams() filters: Array<Filter>) {
     try {
-      return await this.employeeService.findAll();
+      return await this.employeeService.findAll(pagination, sort, filters);
     } catch (error) {
       throw handleError(error);
     }

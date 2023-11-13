@@ -4,6 +4,10 @@ import { PrismaService } from '../shared/services/prisma-client/prisma.service';
 import { Employee, Prisma } from '@prisma/client';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { Pagination } from 'src/shared/decorators/pagination.decorator';
+import { Sorting } from 'src/shared/decorators/order.decorator';
+import { Filter } from 'src/shared/decorators/filters.decorator';
+import { PaginatedResource } from 'src/shared/types/paginated.resource';
 
 @Injectable()
 export class EmployeeRepo extends PrismaGenericRepo<any> {
@@ -76,12 +80,9 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
         }
     }
 
-    getAll(): Promise<Employee[]> {
+    findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>): Promise<PaginatedResource<Employee>> {
         try {
-            const res = this.prismaService.employee.findMany({
-                include: this.includeObj
-            });
-            return res;
+            return this.getAll({ paginationParams: pagination, filters, sort, include: this.includeObj })
         } catch (error) {
             throw error;
         }

@@ -36,7 +36,7 @@ export class IncidentController {
   @Get()
   findAll(
     @PaginationParams() paginationParams: Pagination,
-    @FilteringParams(['createdAt', 'creatorId', 'companionId', 'patientId', 'sequenceNumber']) filters?: Array<Filter>,
+    @FilteringParams(['isCompleted','createdAt','numberOfPatients']) filters?: Array<Filter>,
     @SortingParams(['createdAt', 'sequenceNumber', 'code']) sort?: Sorting
   ): Promise<PaginatedResource<Incident>> {
     try {

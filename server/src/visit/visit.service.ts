@@ -31,12 +31,8 @@ export class VisitService {
     }
   }
 
-  // filters
   findAll(paginationParams: Pagination, filters?: Array<Filter>, sort?: Sorting): Promise<PaginatedResource<Visit>> {
     try {
-
-
-
       return this.visitRepo.getAll({ paginationParams, filters, sort })
 
     } catch (error) {

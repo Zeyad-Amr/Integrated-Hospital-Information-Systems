@@ -24,7 +24,6 @@ export class VisitController {
   @Post()
   create(@Body() createVisitDto: CreateVisitDto, @Req() req) {
     try {
-      console.log(req.user)
       return this.visitService.create(createVisitDto, req.user.sub)
     } catch (error) {
       throw handleError(error)

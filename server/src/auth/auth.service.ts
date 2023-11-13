@@ -14,7 +14,7 @@ export class AuthService {
   constructor(
     private authRepo: AuthRepo,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async login(loginUserDto: LoginUserDto) {
     try {
@@ -67,9 +67,8 @@ export class AuthService {
     name = name.toLowerCase();
     let usernames: User[];
     try {
-      usernames = await this.authRepo.getAll({
-        select: { username: true },
-      });
+      const { items } = await this.authRepo.getAll({ select: { username: true } });
+      usernames = items
     } catch (error) {
       throw error;
     }
@@ -96,7 +95,7 @@ export class AuthService {
   };
 
   async findAll() {
-    // return await this.authRepo.getAll({});
+    return await this.authRepo.getAll();
     return null
   }
 
