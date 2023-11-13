@@ -5,6 +5,10 @@ import { UpdatePersonDto } from './dto/update-person.dto';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiConflictResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/decorators/public.decorator';
 import { handleError } from 'src/shared/http-error';
+import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
+import { Pagination, PaginationParams } from 'src/shared/decorators/pagination.decorator';
+import { Sorting, SortingParams } from 'src/shared/decorators/order.decorator';
+import { Filter, FilteringParams } from 'src/shared/decorators/filters.decorator';
 
 @ApiBearerAuth()
 @ApiTags('person')
@@ -27,10 +31,11 @@ export class PersonController {
 
   @ApiOperation({ description: "get all persons data" })
   @ApiOkResponse()
+  @CustomGetAllParamDecorator()
   @Get()
-  findAll() {
+  findAll(@PaginationParams() pagination: Pagination, @SortingParams(['firstName', 'createdAt']) sort?: Sorting, @FilteringParams(['firstName', 'secondName', 'thirdName', 'fourthName', 'gender', 'email', 'phone', 'governate', 'createdAt']) filters?: Array<Filter>) {
     try {
-      return this.personService.findAll();
+      return this.personService.findAll(pagination, sort, filters);
     } catch (error) {
       throw handleError(error)
     }

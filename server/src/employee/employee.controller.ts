@@ -5,6 +5,7 @@ import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiConflictResponse, ApiCreatedResponse, ApiHeader, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { handleError } from '../shared/http-error';
 import { AuthRequest } from 'src/auth/auth.interface';
+import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
 
 @ApiTags('employee')
 @ApiUnauthorizedResponse({ description: "No token provided" })
@@ -27,6 +28,7 @@ export class EmployeeController {
     }
   }
 
+  @CustomGetAllParamDecorator()
   @Get()
   @ApiOperation({ summary: 'get all employees' })
   @ApiOkResponse({ description: 'get all employees' })

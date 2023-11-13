@@ -6,12 +6,14 @@ import { PersonRepo } from "src/person/person.repo";
 import { Pagination } from "src/shared/decorators/pagination.decorator";
 import { PaginatedResource } from "src/shared/types/paginated.resource";
 import { Filter } from "src/shared/decorators/filters.decorator";
-import { getOrder, getWhere } from "src/shared/util.functions.ts/get.where.filter";
 import { Sorting } from "src/shared/decorators/order.decorator";
+import { PrismaGenericRepo } from "src/shared/services/prisma-client/prisma-generic.repo";
 
 @Injectable()
-export class VisitRepo {
-    constructor(private readonly prismaService: PrismaService, private readonly personRepo: PersonRepo) { }
+export class VisitRepo extends PrismaGenericRepo<Visit>{
+    constructor(private readonly prismaService: PrismaService, private readonly personRepo: PersonRepo) {
+        super('visit', prismaService)
+    }
 
     async createVisitCode(): Promise<string> {
         const today = new Date();
@@ -37,7 +39,7 @@ export class VisitRepo {
 
     }
 
-    async createPatientWithVisit(createPatientDto: CreateVisitDto): Promise<any> {
+    async createPatientWithVisit(createPatientDto: CreateVisitDto, creatorId: string): Promise<any> {
         try {
 
             return await this.prismaService.$transaction(async (tx) => {
@@ -49,11 +51,11 @@ export class VisitRepo {
                 }
 
                 const visitCode = await this.createVisitCode()
-                const visit = await this.prismaService.visit.create({
+                const visit = await tx.visit.create({
                     data: {
                         ...createPatientDto.visit,
                         code: visitCode,
-                        creatorId: "should be request user id",
+                        creatorId: creatorId,
                         patientId: patient.id,
                         companionId: companion?.id
                     }
@@ -123,10 +125,8 @@ export class VisitRepo {
         }
     }
 
-    async findAll({ page, limit, size, offset }: Pagination, filters: Array<Filter>, sort?: Sorting): Promise<PaginatedResource<Visit>> {
+    async findAll(limit: number, offset: number, order, whereCondition) {
         try {
-            const whereCondition: Prisma.VisitWhereInput = getWhere(filters)
-            const order: any = getOrder(sort)
             const visitsData = await this.prismaService.$transaction(async (tx) => {
                 const count = await this.prismaService.visit.count();
                 const visits = await this.prismaService.visit.findMany({
@@ -136,7 +136,7 @@ export class VisitRepo {
                 })
                 return { count, visits }
             })
-            return { items: visitsData.visits, page, size: visitsData.visits.length, total: visitsData.count }
+            return { items: visitsData.visits, size: visitsData.visits.length, total: visitsData.count }
         } catch (error) {
             throw error
         }

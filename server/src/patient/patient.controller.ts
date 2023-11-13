@@ -3,6 +3,10 @@ import { PatientService } from './patient.service';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { handleError } from 'src/shared/http-error';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
+import { Pagination, PaginationParams } from 'src/shared/decorators/pagination.decorator';
+import { Sorting, SortingParams } from 'src/shared/decorators/order.decorator';
+import { Filter, FilteringParams } from 'src/shared/decorators/filters.decorator';
 
 @ApiBearerAuth()
 @ApiTags('patient')
@@ -12,10 +16,11 @@ export class PatientController {
 
   @ApiOperation({ description: "get all patients" })
   @ApiOkResponse()
+  @CustomGetAllParamDecorator()
   @Get()
-  findAll() {
+  findAll(@PaginationParams() pagination: Pagination, @SortingParams(['firstName', 'createdAt']) sort?: Sorting, @FilteringParams(['firstName', 'secondName', 'thirdName', 'fourthName', 'gender', 'email', 'phone', 'governate', 'createdAt']) filters?: Array<Filter>) {
     try {
-      return this.patientService.findAll();
+      return this.patientService.findAll(pagination,sort,filters);
     } catch (error) {
       throw handleError(error)
     }

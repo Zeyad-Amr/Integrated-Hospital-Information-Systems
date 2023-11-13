@@ -4,6 +4,9 @@ import { CreateIncidentDto } from "./dto/create-incident.dto";
 import { CarNumber, Incident, Prisma, Visit } from "@prisma/client";
 import { PrismaGenericRepo } from "src/shared/services/prisma-client/prisma-generic.repo";
 import { VisitRepo } from "src/visit/visit.repo";
+import { Sorting } from "src/shared/decorators/order.decorator";
+import { Filter } from "src/shared/decorators/filters.decorator";
+import { Pagination } from "src/shared/decorators/pagination.decorator";
 
 @Injectable()
 export class IncidentRepo {
@@ -88,9 +91,12 @@ export class IncidentRepo {
         }
     }
 
-    async getAll() {
+    async getAll(paginationParams: Pagination, filters: Array<Filter>, sort: Sorting) {
         try {
+
+
             return await this.prismaService.incident.findMany({
+
                 include: {
                     Car: true,
                 }

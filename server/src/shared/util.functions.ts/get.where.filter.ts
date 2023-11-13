@@ -1,16 +1,20 @@
 import { Filter } from "../decorators/filters.decorator";
 import { FilterRule } from "../decorators/filters.decorator";
-import { Sorting } from "../decorators/order.decorator";
 
+export const getWhere = (filters: Array<Filter>, additionalWhereConditions?: Array<any>) => {
+    let whereCondition: any = {}
+    if (additionalWhereConditions) {
+        whereCondition.AND = []
+        additionalWhereConditions.forEach((cond) => {
+            whereCondition.AND.push(cond)
+        })
+    }
 
-export const getWhere = (filters: Array<Filter>) => {
     if (!filters || filters.length == 0) {
-        return {}
+        return whereCondition
     }
-    let whereCondition: any = {
-        AND:
-            []
-    }
+
+
     filters.forEach(filter => {
         if (filter.rule === FilterRule.IS_NULL) {
             whereCondition.AND.push({ [filter.property]: null })
@@ -73,18 +77,14 @@ export const getWhere = (filters: Array<Filter>) => {
             whereCondition.AND.push({ [filter.property]: { lte: filter.value } })
         }
         if (filter.rule == FilterRule.LIKE) {
-            whereCondition.AND.push({ [filter.property]: { contains: filter.value } })
+            whereCondition.AND.push({ [filter.property]: { contains: filter.value, mode: 'insensitive', } })
         }
         if (filter.rule == FilterRule.STARTS_WITH) {
-            whereCondition.AND.push({ [filter.property]: { startsWith: filter.value } })
+            whereCondition.AND.push({ [filter.property]: { startsWith: filter.value, mode: 'insensitive', } })
         }
     });
+
     return whereCondition
 }
 
-
-export const getOrder = (sort: Sorting) => {
-    if (!sort) return {}
-    return { [sort.property]: sort.direction }
-}
 

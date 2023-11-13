@@ -11,21 +11,6 @@ export class PatientRepo {
 
     constructor(private prismaService: PrismaService, private readonly personRepo: PersonRepo, private readonly visitRepo: VisitRepo) { }
 
-    async findAll() {
-        try {
-
-            return await this.prismaService.person.findMany({
-                where: {
-                    patientVisits: {
-                        some: {}
-                    }
-                }
-            });
-
-        } catch (error) {
-            throw error
-        }
-    }
 
     async findBySSN(ssn: string) {
         try {
