@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { PersonRepo } from './person.repo';
+import { Sorting } from 'src/shared/decorators/order.decorator';
+import { Pagination } from 'src/shared/decorators/pagination.decorator';
+import { Filter } from 'src/shared/decorators/filters.decorator';
 
 @Injectable()
 export class PersonService {
@@ -15,9 +18,10 @@ export class PersonService {
     }
   }
 
-  async findAll() {
+  async findAll(paginationParams: Pagination, sort?: Sorting, filters?: Array<Filter>) {
     try {
-      return await this.personRepo.getAll()
+
+      return this.personRepo.getAll({ paginationParams, filters, sort })
     } catch (error) {
       throw error
     }

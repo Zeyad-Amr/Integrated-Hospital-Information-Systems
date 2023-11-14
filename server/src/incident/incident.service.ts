@@ -2,26 +2,30 @@ import { Injectable } from '@nestjs/common';
 import { CreateIncidentDto } from './dto/create-incident.dto';
 import { UpdateIncidentDto } from './dto/update-incident.dto';
 import { IncidentRepo } from './incident.repo';
+import { Pagination } from 'src/shared/decorators/pagination.decorator';
+import { Filter } from 'src/shared/decorators/filters.decorator';
+import { Sorting } from 'src/shared/decorators/order.decorator';
+import { PaginatedResource } from 'src/shared/types/paginated.resource';
+import { Incident } from '@prisma/client';
 
 @Injectable()
 export class IncidentService {
   constructor(private readonly incidentRepo: IncidentRepo) { }
-  create(createIncidentDto: CreateIncidentDto) {
+  create(createIncidentDto: CreateIncidentDto, creatorId: string) {
     try {
-      return this.incidentRepo.create(createIncidentDto);
+      return this.incidentRepo.createIncident(createIncidentDto, creatorId);
     } catch (error) {
       throw error
     }
   }
 
-  findAll() {
-
+  findAll(paginationParams: Pagination, filters: Array<Filter>, sort: Sorting): Promise<PaginatedResource<Incident>> {
     try {
-      return this.incidentRepo.getAll();
+      const include = { Car: true }   
+      return this.incidentRepo.getAll({paginationParams, filters, sort, include});
     } catch (error) {
       throw error
     }
-   
   }
 
   findOne(id: string) {

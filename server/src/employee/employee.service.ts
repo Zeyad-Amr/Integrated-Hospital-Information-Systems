@@ -3,6 +3,9 @@ import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { EmployeeRepo } from './employee.repo';
 import { AuthService } from '../auth/auth.service';
+import { Pagination } from 'src/shared/decorators/pagination.decorator';
+import { Sorting } from 'src/shared/decorators/order.decorator';
+import { Filter } from 'src/shared/decorators/filters.decorator';
 
 @Injectable()
 export class EmployeeService {
@@ -12,19 +15,29 @@ export class EmployeeService {
   ) { }
   async create(createEmployeeDto: CreateEmployeeDto, creatorId: string) {
     try {
-      createEmployeeDto.auth.password = await this.authService.hashPassword(
-        createEmployeeDto.auth.password,
+      const username = await this.authService.generateUsername(
+        createEmployeeDto.personalData.firstName,
       );
-      const newEmployee = await this.employeeRepo.createEmployee(createEmployeeDto, creatorId);
-      return newEmployee;
+      const randomPassword = this.authService.generatePassword(5);
+      const password = await this.authService.hashPassword(randomPassword);
+      createEmployeeDto.auth = {
+        username,
+        password,
+      };
+      const newEmployee = await this.employeeRepo.createEmployee(
+        createEmployeeDto,
+        creatorId,
+      );
+      return { ...newEmployee, auth: { username, randomPassword } };
     } catch (error) {
       throw error;
     }
   }
 
-  async findAll() {
+  async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>) {
     try {
-      return await this.employeeRepo.getAll();
+
+      return await this.employeeRepo.findAll(pagination, sort, filters);
     } catch (error) {
       throw error;
     }
@@ -55,4 +68,4 @@ export class EmployeeService {
       throw error;
     }
   }
-}   
+}

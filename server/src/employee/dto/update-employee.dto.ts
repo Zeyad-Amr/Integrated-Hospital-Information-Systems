@@ -12,6 +12,8 @@ import { Type } from 'class-transformer';
 import { UpdatePersonDto } from 'src/person/dto/update-person.dto';
 
 export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
+
+    @ApiProperty({ type: UpdatePersonDto, required: false })
     @IsObject()
     @ValidateNested()
     @Type(() => UpdatePersonDto)
@@ -25,5 +27,4 @@ export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
     @Validate(IsValidEnumValue, [RoleEnum])
     role: RoleEnum
 
-    creatorId: string
 }
