@@ -4,13 +4,17 @@ import { CreateIncidentDto } from "./dto/create-incident.dto";
 import { CarNumber, Incident, Prisma, Visit } from "@prisma/client";
 import { PrismaGenericRepo } from "src/shared/services/prisma-client/prisma-generic.repo";
 import { VisitRepo } from "src/visit/visit.repo";
+import { Sorting } from "src/shared/decorators/order.decorator";
+import { Filter } from "src/shared/decorators/filters.decorator";
+import { Pagination } from "src/shared/decorators/pagination.decorator";
 
 @Injectable()
-export class IncidentRepo {
+export class IncidentRepo extends PrismaGenericRepo<Incident>{
     constructor(private readonly prismaService: PrismaService, private readonly visitRepo: VisitRepo) {
+        super('incident', prismaService)
     }
 
-    async create(incidentDto: CreateIncidentDto) {
+    async createIncident(incidentDto: CreateIncidentDto, creatorId: string) {
         try {
             let incidentData: Prisma.IncidentCreateInput;
             if (!incidentDto.car) {
@@ -70,7 +74,7 @@ export class IncidentRepo {
 
                 const visitsData = []
                 for (let i = 0; i < incidentDto.numerOfPatients; i++) {
-                    visitsData.push({ code: visitCode, incidentId: incident.id })
+                    visitsData.push({ code: visitCode, incidentId: incident.id, creatorId: creatorId })
                     const visitNumber = parseInt(visitCode.slice(8)) + 1
                     visitCode = `${visitCode.slice(0, 8)}${visitNumber}`
                 }
@@ -84,18 +88,6 @@ export class IncidentRepo {
 
         }
         catch (error) {
-            throw error
-        }
-    }
-
-    async getAll() {
-        try {
-            return await this.prismaService.incident.findMany({
-                include: {
-                    Car: true,
-                }
-            })
-        } catch (error) {
             throw error
         }
     }

@@ -1,9 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { VisitService } from './visit.service';
 import { AnonymousVisitDto, CreateVisitDto } from './dto/create-visit.dto';
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { handleError } from 'src/shared/http-error';
 
+import { UpdateVisitDto } from './dto/update-visit.dto';
+import { ApiAcceptedResponse, ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { handleError } from 'src/shared/http-error';
+import { Pagination, PaginationParams } from 'src/shared/decorators/pagination.decorator';
+import { PaginatedResource } from 'src/shared/types/paginated.resource';
+import { Visit } from '@prisma/client';
+import { Filter, FilteringParams } from 'src/shared/decorators/filters.decorator';
+import { SortingParams, Sorting } from 'src/shared/decorators/order.decorator';
+import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
+
+@ApiBearerAuth()
 @ApiTags('visit')
 @Controller('visit')
 export class VisitController {
@@ -13,9 +22,9 @@ export class VisitController {
   @ApiCreatedResponse({ description: "visit has been created successfully" })
   @ApiBadRequestResponse({ description: "body has missed some data" })
   @Post()
-  create(@Body() createVisitDto: CreateVisitDto) {
+  create(@Body() createVisitDto: CreateVisitDto, @Req() req) {
     try {
-      return this.visitService.create(createVisitDto)
+      return this.visitService.create(createVisitDto, req.user.sub)
     } catch (error) {
       throw handleError(error)
     }
@@ -25,19 +34,24 @@ export class VisitController {
   @ApiCreatedResponse({ description: "visit has been created successfully" })
   @ApiBadRequestResponse({ description: "body has missed some data" })
   @Post('anonymous')
-  createAnonymous(@Body() anonymousVisitDto: AnonymousVisitDto) {
+  createAnonymous(@Body() anonymousVisitDto: AnonymousVisitDto, @Req() req) {
     try {
-      return this.visitService.createAnonymous(anonymousVisitDto);
+      return this.visitService.createAnonymous(anonymousVisitDto, req.user.sub);
     } catch (error) {
       throw handleError(error)
     }
   }
 
   @ApiOperation({ description: "this for visits with filters (not finished yet)" })
+  @CustomGetAllParamDecorator()
   @Get()
-  findAll() {
+  findAll(
+    @PaginationParams() paginationParams: Pagination,
+    @FilteringParams(['code', 'createdAt', 'creatorId', 'companionId', 'patientId', 'sequenceNumber']) filters?: Array<Filter>,
+    @SortingParams(['createdAt', 'sequenceNumber', 'code']) sort?: Sorting
+  ): Promise<PaginatedResource<Visit>> {
     try {
-      return this.visitService.findAll();
+      return this.visitService.findAll(paginationParams, filters, sort);
     } catch (error) {
       throw handleError(error)
     }
