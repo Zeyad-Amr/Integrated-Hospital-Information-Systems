@@ -17,12 +17,16 @@ export class AuthRepo extends PrismaGenericRepo<User> {
         where: {
           username,
         },
-        include: { employee: true },
+        include: { employee: { include: { person: true } } },
       });
       return user;
     } catch (error) {
       throw error;
     }
+  }
+
+  async findAll(): Promise<User[]> {
+    return await this.prismaService.user.findMany()
   }
 
   async update(
