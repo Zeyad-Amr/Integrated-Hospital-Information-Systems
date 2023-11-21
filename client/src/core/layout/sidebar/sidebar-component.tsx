@@ -11,7 +11,6 @@ const SidebarComponent = (props: any) => {
     <Box
       sx={{
         width: "100%",
-        height: "100%",
       }}
     >
       <SidebarMenuItem
@@ -44,8 +43,16 @@ const SidebarComponent = (props: any) => {
         path="/departments"
       >
         <SidebarSubmenuItem text="إضافة قسم" path="/departments/create" />
-
         <SidebarSubmenuItem text="عرض الأقسام" path="/departments/all" />
+      </SidebarMenuItem>
+      <SidebarMenuItem
+        icon={<ApartmentIcon sx={{color:'primary.main', textAlign: 'center'}}/>}
+        activeIcon={<ApartmentIcon sx={{color:'white'}}/>}
+        text="الحوادث"
+        path="/incident"
+      >
+        <SidebarSubmenuItem text="إضافة حادث" path="/incident/add" />
+        <SidebarSubmenuItem text="استكمال الحوادث" path="/incident/complete" />
       </SidebarMenuItem>
     </Box>
   );

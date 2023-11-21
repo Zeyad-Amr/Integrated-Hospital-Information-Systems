@@ -6,7 +6,7 @@ import { useState } from 'react';
 const ProfileIcon = (props: any) => {
     const [dialogVisibility, setDialogVisibility] = useState({
         opacity: 0,
-        display: 'none',
+        display: 'hidden',
     })
     const toggleProfileDialog = () => {
         dialogVisibility.opacity ? setDialogVisibility({opacity: 0, display: 'hidden'}) : setDialogVisibility({opacity: 1, display: 'visible'})
