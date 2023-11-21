@@ -2,7 +2,7 @@
 
 import { AppServicesLocator } from "@/core/service-locator";
 
-import Test from "./test";
+import Test from "@/core/shared/components/test";
 import { Provider } from "react-redux";
 import store from "@/core/redux/store";
 // ----------------------------------------------------------------------
