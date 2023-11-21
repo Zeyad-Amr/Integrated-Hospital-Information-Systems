@@ -21,7 +21,6 @@ const SidebarComponent = () => {
         text="لوحة التحكم"
         path="/dashboard"
       />
-
       <SidebarMenuItem
         icon={
           <PeopleIcon sx={{ color: "primary.main", textAlign: "center" }} />
@@ -36,7 +35,6 @@ const SidebarComponent = () => {
         />
         <SidebarSubmenuItem text="عرض المستخدمين" path="/dashboard/users/all" />
       </SidebarMenuItem>
-
       <SidebarMenuItem
         icon={
           <ApartmentIcon sx={{ color: "primary.main", textAlign: "center" }} />

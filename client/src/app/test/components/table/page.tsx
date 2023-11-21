@@ -1,6 +1,6 @@
 "use client";
 
-import CustomDataTable from "../../../core/shared/components/CustomDataTable";
+import CustomDataTable from "../../../../core/shared/components/CustomDataTable";
 import { Box, Typography } from "@mui/material";
 import { data, header } from "./data";
 const TablePageTest = () => {
