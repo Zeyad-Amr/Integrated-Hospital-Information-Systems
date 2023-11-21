@@ -2,7 +2,7 @@ import AccessibleIcon from "@mui/icons-material/Accessible";
 import AccessibilityIcon from "@mui/icons-material/Accessibility";
 import HealingIcon from "@mui/icons-material/Healing";
 import DescriptionIcon from "@mui/icons-material/Description";
-import { HeaderItem } from "../../../core/shared/components/CustomDataTable";
+import { HeaderItem } from "../../../../core/shared/components/CustomDataTable";
 export interface DataItem {
   id: string;
   name: string;
