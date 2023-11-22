@@ -5,6 +5,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -28,9 +32,9 @@ model Person {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  employee        Employee?
-  patientVisits   Visit[]   @relation("visitPatient")
-  companionVisits Visit[]   @relation("visitCompanion")
+  employee              Employee?
+  patientVisits         Visit[]                 @relation("visitPatient")
+  companionVisits       Visit[]                 @relation("visitCompanion")
   CompanionsOnIncidents CompanionsOnIncidents[]
 }
 
@@ -64,7 +68,6 @@ model User {
   employeeId String   @unique
 }
 
-
 model Visit {
   code           String       @id
   sequenceNumber Int?
@@ -74,7 +77,7 @@ model Visit {
   updatedAt DateTime @updatedAt
 
   // it has to be commented till the emplopyee api created
-  creator     Employee @relation(fields: [creatorId], references: [id])
+  creator     Employee  @relation(fields: [creatorId], references: [id])
   creatorId   String
   patient     Person?   @relation("visitPatient", fields: [patientId], references: [id])
   patientId   String?
@@ -93,13 +96,12 @@ model Incident {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Car        CarNumber? @relation(fields: [carId], references: [id])
-  carId      String?
-  
+  Car   CarNumber? @relation(fields: [carId], references: [id])
+  carId String?
+
   visits                Visit[]
   CompanionsOnIncidents CompanionsOnIncidents[]
 }
-
 
 model CompanionsOnIncidents {
   companion   Person   @relation(fields: [companionId], references: [id])

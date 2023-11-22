@@ -13,6 +13,7 @@ import { handleError } from '../shared/http-error';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -33,7 +34,6 @@ export class AuthController {
   @Get()
   @Public()
   async findAll() {
-    console.log(this.authService.generatePassword(8));
     return await this.authService.findAll();
   }
 
@@ -54,6 +54,22 @@ export class AuthController {
     }
   }
 
+
+  @Get('me')
+  @ApiOperation({ summary: 'get user\'s data' })
+  @ApiOkResponse({ description: 'get logged in user' })
+  @ApiNotFoundResponse({ description: 'user not found' })
+  async findMe(@Req() req: AuthRequest) {
+    try {
+      const { username } = req.user
+      return (await this.authService.findOne(username)).employee
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+
+
   @ApiOperation({ summary: "Change user's password" })
   @ApiOkResponse({ description: 'change the password of the user' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
@@ -67,9 +83,9 @@ export class AuthController {
     @Req() req: AuthRequest,
   ) {
     try {
-      const user = req.user;
+      const { username } = req.user;
       await this.authService.changePassword(
-        user.username,
+        username,
         changePasswordDto.newPassword,
         changePasswordDto.oldPassword,
       );
