@@ -1,4 +1,7 @@
 const Endpoints = {
+    user: {
+        login: '/user/login',
+    },
     staff: {
         list: '/staff',
         details: '/staff/:id',
