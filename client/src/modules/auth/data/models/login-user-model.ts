@@ -8,7 +8,7 @@ export default class LoginUserModel extends LoginUserEntity {
         super(data);
     }
 
-    // Serialization: Convert the model to JSON
+    //* --------------------- Serialization: Convert the model to JSON ---------------------
     toJson(): any {
         return {
             username: this.username,
@@ -16,7 +16,7 @@ export default class LoginUserModel extends LoginUserEntity {
         };
     }
 
-    // Deserialization: Create a model from JSON data
+    //* --------------------- Deserialization: Create a model from JSON data ---------------------
     static fromJson(json: any): LoginUserModel {
         return new LoginUserModel({
             username: json.username,

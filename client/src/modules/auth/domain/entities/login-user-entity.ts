@@ -10,7 +10,7 @@ export default class LoginUserEntity {
         this._password = data.password;
     }
 
-    // Getter methods using property accessors
+    //* --------------------- Getters ---------------------
     get username(): string {
         return this._username;
     }
@@ -19,7 +19,7 @@ export default class LoginUserEntity {
         return this._password;
     }
 
-    // Setter methods using property accessors
+    //* --------------------- Setters ---------------------
     set username(username: string) {
         this.username = username;
     }
@@ -28,4 +28,11 @@ export default class LoginUserEntity {
         this.password = password;
     }
 
+    //* --------------------- Methods ---------------------
+    static defaultValue(): LoginUserEntity {
+        return new LoginUserEntity({
+            username: '',
+            password: '',
+        });
+    }
 }

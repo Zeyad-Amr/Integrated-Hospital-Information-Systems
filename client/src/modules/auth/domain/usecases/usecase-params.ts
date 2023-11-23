@@ -1,25 +1,11 @@
-import StaffEntity from "../entities/login-user-entity";
+import LoginUserEntity from "../entities/login-user-entity";
 
-class GetStaffDetailsUseCaseParameters {
-    constructor(public id: string) { }
+class LoginUseCaseParameters {
+    constructor(public loginUser: LoginUserEntity) { }
 }
 
-class CreateStaffMemberUseCaseParameters {
-    constructor(public staff: StaffEntity) { }
-}
-
-class UpdateStaffMemberUseCaseParameters {
-    constructor(public staff: StaffEntity) { }
-}
-
-class DeleteStaffMemberUseCaseParameters {
-    constructor(public id: string) { }
-}
-
+class NoParams { }
 
 export {
-    GetStaffDetailsUseCaseParameters,
-    CreateStaffMemberUseCaseParameters,
-    UpdateStaffMemberUseCaseParameters,
-    DeleteStaffMemberUseCaseParameters
+    LoginUseCaseParameters, NoParams
 };

@@ -1,6 +1,7 @@
 const Endpoints = {
     user: {
         login: '/user/login',
+        me: '/user/me',
     },
     staff: {
         list: '/staff',
