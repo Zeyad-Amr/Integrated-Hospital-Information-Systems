@@ -12,6 +12,11 @@ import {
     DeleteStaffMemberUseCase,
     UpdateStaffMemberUseCase,
 } from "@/modules/staff/domain/usecases/index";
+import { AuthDataSource, BaseAuthDataSource } from "@/modules/auth/data/datasources/auth-datasource";
+import BaseAuthRepository from "@/modules/auth/domain/repositories/base-auth-repository";
+import AuthRepository from "@/modules/auth/data/repositories/auth-repository";
+import { LoginUseCase } from "@/modules/auth/domain/usecases";
+import GetMeUseCase from "@/modules/auth/domain/usecases/get-me-usecase";
 
 class AppServicesLocator {
     static init() {
@@ -20,11 +25,17 @@ class AppServicesLocator {
         sl.registerFactory<BaseStaffDataSource>(ServiceKeys.StaffDataSource, () => new StaffDataSource(
             sl.get<ApiClient>(ServiceKeys.ApiClient)
         ));
+        sl.registerFactory<BaseAuthDataSource>(ServiceKeys.AuthDataSources, () => new AuthDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
 
 
         //* Repositories ----------------------------------------------
         sl.registerFactory<BaseStaffRepository>(ServiceKeys.StaffRepository, () => new StaffRepository(
             sl.get<BaseStaffDataSource>(ServiceKeys.StaffDataSource)
+        ));
+        sl.registerFactory<BaseAuthRepository>(ServiceKeys.AuthRepository, () => new AuthRepository(
+            sl.get<BaseAuthDataSource>(ServiceKeys.AuthDataSources)
         ));
 
 
@@ -45,11 +56,14 @@ class AppServicesLocator {
             sl.get<BaseStaffRepository>(ServiceKeys.StaffRepository)
         ));
 
+        sl.registerFactory<LoginUseCase>(ServiceKeys.LoginUseCase, () => new LoginUseCase(
+            sl.get<BaseAuthRepository>(ServiceKeys.AuthRepository)
+        ));
+        sl.registerFactory<GetMeUseCase>(ServiceKeys.GetMeUseCase, () => new GetMeUseCase(
+            sl.get<BaseAuthRepository>(ServiceKeys.AuthRepository)
+        ));
 
-        //* Thunks --------------------------------------------------
-        // sl.registerFactory<StaffThunks>(ServiceKeys.StaffThunks, () => new StaffThunks(
-        //     sl.get<GetAllStaffMembersUseCase>(ServiceKeys.GetAllStaffMembersUseCase),
-        // ));
+
 
 
         //* Exnternal Services --------------------------------------------------
