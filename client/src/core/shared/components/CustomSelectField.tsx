@@ -2,7 +2,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { SelectChangeEvent } from "@mui/material";
+import { InputLabel, SelectChangeEvent } from "@mui/material";
 import { ReactNode } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -31,7 +31,7 @@ const CustomSelectField = ({
   options,
   isRequired = false,
   width,
-  hideLabel = false
+  hideLabel = true
 }: SelectFieldProps) => {
   return (
     <Box
@@ -51,14 +51,17 @@ const CustomSelectField = ({
         required={isRequired}
         sx={{ marginTop: 1.1, width: { width }, maxWidth: "100%" }}
       >
+        <InputLabel>{label}</InputLabel>
+
         <Select
           // labelId="demo-simple-select-required-label"
           // id="demo-simple-select-helper"
           // defaultValue={options[0].title}
+          label={label}
           onChange={onChange}
           onBlur={onBlur}
           sx={{
-            backgroundColor: "#e7e7e7",
+            backgroundColor: "#fff ",
             height: "3.5rem",
           }}
           // label={label}
@@ -79,9 +82,9 @@ const CustomSelectField = ({
               key={option.id}
               value={option.id}
               sx={{
-                backgroundColor : "#232836",
+                // backgroundColor : "#232836",
                 opacity : 0.8,
-                color: "#fff",
+                color: "#232836",
                 transitionDuration : "0.5s ease",
                 margin: 1,
                 // selected background color

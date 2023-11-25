@@ -2,10 +2,12 @@ enum ServiceKeys {
 
     //* Data Sources ----------------------------------------------
     StaffDataSource = 'StaffDataSource',
+    AuthDataSources = 'AuthDataSources',
 
 
     //* Repositories ----------------------------------------------
     StaffRepository = 'StaffRepository',
+    AuthRepository = 'AuthRepository',
 
 
     //* Use Cases --------------------------------------------------
@@ -15,10 +17,8 @@ enum ServiceKeys {
     UpdateStaffMemberUseCase = 'UpdateStaffMemberUseCase',
     DeleteStaffMemberUseCase = 'DeleteStaffMemberUseCase',
 
-
-    //* Thunks --------------------------------------------------
-    StaffThunks = 'StaffThunks',
-
+    LoginUseCase = 'LoginUseCase',
+    GetMeUseCase = 'GetMeUseCase',
 
     //* Exnternal Services --------------------------------------------------
     ApiClient = 'ApiClient',

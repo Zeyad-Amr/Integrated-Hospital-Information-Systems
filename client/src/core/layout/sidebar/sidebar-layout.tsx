@@ -37,7 +37,7 @@ const SidebarLayout = (props: any) => {
             transition: "width 0.3s ease-in-out",
 
             overflowX: "hidden",
-            overflowY: "hidden",
+            overflowY: "auto",
           }}
         >
           <SidebarComponent />

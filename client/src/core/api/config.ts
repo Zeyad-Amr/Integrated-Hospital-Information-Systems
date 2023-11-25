@@ -9,7 +9,12 @@ const axiosInstance = axios.create({ baseURL: HOST_API });
 //* Add a request interceptor
 axiosInstance.interceptors.request.use(
     (config) => {
-        // Modify the request configuration here (e.g., add headers, authentication tokens, etc.)      
+        // Modify the request configuration here (e.g., add headers, authentication tokens, etc.)  
+        const token: string = localStorage.getItem('token') ?? '';
+        if (token.length > 0) {
+            config.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+        }
+
         return config;
     },
     (error) => {

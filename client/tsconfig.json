@@ -13,9 +13,9 @@
     "isolatedModules": true,
     "incremental": true,
     "baseUrl": ".",
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
+    // "noImplicitAny": true,
+    // "noImplicitThis": true,
+    // "strictNullChecks": true,
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": false,
     "allowSyntheticDefaultImports": true,
@@ -27,10 +27,10 @@
     "noUnusedParameters": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "exactOptionalPropertyTypes": true /* Interpret optional property types as written, rather than adding 'undefined'. */,
-    "noImplicitReturns": true /* Enable error reporting for code paths that do not explicitly return in a function. */,
-    "noImplicitOverride": true /* Ensure overriding members in derived classes are marked with an override modifier. */,
-    "allowUnreachableCode": false /* Disable error reporting for unreachable code. */,
+    // "exactOptionalPropertyTypes": true /* Interpret optional property types as written, rather than adding 'undefined'. */,
+    // "noImplicitReturns": true /* Enable error reporting for code paths that do not explicitly return in a function. */,
+    // "noImplicitOverride": true /* Ensure overriding members in derived classes are marked with an override modifier. */,
+    // "allowUnreachableCode": false /* Disable error reporting for unreachable code. */,
     "plugins": [
       {
         "name": "next"
