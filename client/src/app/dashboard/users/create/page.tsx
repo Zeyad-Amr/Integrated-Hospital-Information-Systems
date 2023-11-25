@@ -1,7 +1,7 @@
 "use client";
 
 import Sidebar from "@/core/layout/sidebar/index";
-import CreateUserComponent from "@/modules/staff/presentation/pages";
+import CreateUserComponent from "@/modules/employees/presentation/pages";
 
 // ----------------------------------------------------------------------
 

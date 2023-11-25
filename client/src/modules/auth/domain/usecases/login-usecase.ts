@@ -9,7 +9,7 @@ class LoginUseCase
     constructor(private baseAuthRepository: BaseAuthRepository) { }
 
     async call(param: LoginUseCaseParameters): Promise<Either<ErrorMessage, boolean>> {
-        return await this.baseAuthRepository.login(param.loginUser);
+        return await this.baseAuthRepository.login(param.authData);
     }
 }
 

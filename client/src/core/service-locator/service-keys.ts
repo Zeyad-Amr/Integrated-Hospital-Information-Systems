@@ -1,21 +1,21 @@
 enum ServiceKeys {
 
     //* Data Sources ----------------------------------------------
-    StaffDataSource = 'StaffDataSource',
+    EmployeeDataSource = 'EmployeeDataSource',
     AuthDataSources = 'AuthDataSources',
 
 
     //* Repositories ----------------------------------------------
-    StaffRepository = 'StaffRepository',
+    EmployeeRepository = 'EmployeeRepository',
     AuthRepository = 'AuthRepository',
 
 
     //* Use Cases --------------------------------------------------
-    GetAllStaffMembersUseCase = 'GetAllStaffMembersUseCase',
-    GetStaffDetailsUseCase = 'GetStaffDetailsUseCase',
-    CreateStaffMemberUseCase = 'CreateStaffMemberUseCase',
-    UpdateStaffMemberUseCase = 'UpdateStaffMemberUseCase',
-    DeleteStaffMemberUseCase = 'DeleteStaffMemberUseCase',
+    GetAllEmployeesUseCase = 'GetAllEmployeesUseCase',
+    GetEmployeeByIdUseCase = 'GetEmployeeByIdUseCase',
+    CreateEmployeeUseCase = 'CreateEmployeeUseCase',
+    UpdateEmployeeUseCase = 'UpdateEmployeeUseCase',
+    DeleteEmployeeUseCase = 'DeleteEmployeeUseCase',
 
     LoginUseCase = 'LoginUseCase',
     GetMeUseCase = 'GetMeUseCase',
