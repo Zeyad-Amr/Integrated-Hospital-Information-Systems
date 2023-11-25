@@ -18,7 +18,7 @@ axiosInstance.interceptors.request.use(
             config.params = {
                 ...config.params,
                 page: 1,
-                size: 10
+                size: 100
             }
         }
         return config;
