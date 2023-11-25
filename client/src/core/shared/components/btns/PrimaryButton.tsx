@@ -6,6 +6,7 @@ const PrimaryButton = (props: any) => {
     <Button
         type={props.type}
         style={{
+            display: props.display,
             color: "#fff",
             backgroundColor: '#004B50',
             width: "15rem",

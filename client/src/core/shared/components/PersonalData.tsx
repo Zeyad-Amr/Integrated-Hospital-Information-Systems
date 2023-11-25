@@ -38,11 +38,11 @@ const PersonalData = ({
 
   const refSubmitButton : any = useRef(null);
 
-  // useEffect(() => {
-  //  if (refSubmitButton.current) {
-  //       refSubmitButton.current.click()
-  //  }
-  // }, [isSubmitted]);
+  useEffect(() => {
+   if (refSubmitButton.current) {
+        refSubmitButton.current.click()
+   }
+  }, [isSubmitted]);
   
 
   const handleFormSchema = Yup.object({
