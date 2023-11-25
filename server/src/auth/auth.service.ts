@@ -8,6 +8,8 @@ import { AuthRepo } from './auth.repo';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
+import * as crypto from 'crypto';
+
 
 @Injectable()
 export class AuthService {
@@ -85,6 +87,7 @@ export class AuthService {
     const charset =
       'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const randomValues = new Uint8Array(length);
+
 
     crypto.getRandomValues(randomValues);
 
