@@ -8,6 +8,7 @@ import {
   TableHead,
   TableRow,
   TableCellProps,
+  SxProps,
 } from "@mui/material";
 
 export interface HeaderItem {
@@ -32,7 +33,7 @@ interface Props<T> {
   height?: string;
   boxShadow?: number;
   stickyHeader?: boolean;
-  sx?: any;
+  sx?: SxProps;
   onRowClick?: (row: T) => void;
   hover?: boolean;
 }
@@ -40,9 +41,9 @@ interface Props<T> {
 const CustomDataTable = <T,>({
   data,
   renderItem,
-  width = "80vw",
-  height = "70vh",
-  boxShadow = 10,
+  width,
+  height,
+  boxShadow,
   stickyHeader = false,
   sx,
   onRowClick,
@@ -54,7 +55,6 @@ const CustomDataTable = <T,>({
       sx={{
         width: width,
         height: height,
-        overflow: "scroll",
         boxShadow: boxShadow,
         ...sx,
       }}
