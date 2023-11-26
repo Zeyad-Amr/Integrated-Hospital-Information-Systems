@@ -14,11 +14,12 @@ const AddVisitForm = () => {
   const refSubmitFirstStepButton: any = useRef(null);
   const refSubmitSecondStepButton: any = useRef(null);
   const sequenceNumberValue: any = useRef("");
+  const kinshipValue : any = useRef("");
   const patientData: any = useRef({});
 
   const onTest = () => {
-    setShowCompanionFlag(false)
-  }
+    setShowCompanionFlag(false);
+  };
 
   // useState
   const [submitPatientFlag, setSubmitPatientFlag] = useState<boolean>(false);
@@ -53,16 +54,19 @@ const AddVisitForm = () => {
 
   const handlePatientSubmit = (values: PersonalDataValues) => {
     console.log("testSubmit", values);
-    setCombinedValues((prevValues: any) => ({
-      ...prevValues,
-      patient: values,
-      visit: {
-        sequenceNumber: sequenceNumberValue.current,
-      },
-    }));
-    console.log(sequenceNumberValue.current);
-    patientData.current = values
-    setShowCompanionFlag(true)
+    if (!showCompanionFlag) {
+      setCombinedValues((prevValues: any) => ({
+        ...prevValues,
+        patient: values,
+        visit: {
+          sequenceNumber: sequenceNumberValue.current,
+        },
+      }));
+      console.log(sequenceNumberValue.current);
+      setShowCompanionFlag(true);
+    } else {
+      patientData.current = values;
+    }
   };
 
   const handleRestPatientSubmit = (values: { frequencyNumber: string }) => {
@@ -74,6 +78,11 @@ const AddVisitForm = () => {
   const onTriggerRestAndPatientForm = () => {
     if (refSubmitFirstStepButton.current) {
       refSubmitFirstStepButton.current.click();
+      if (showCompanionFlag) {
+        if (refSubmitSecondStepButton.current) {
+          refSubmitSecondStepButton.current.click();
+        }
+      }
     }
   };
 
@@ -94,10 +103,21 @@ const AddVisitForm = () => {
 
   const handleRestCompanionSubmit = (values: { kinship: string }) => {
     console.log("testRestCompanionSubmit", values);
+    setSubmitCompanionFlag(!submitCompanionFlag)
+    kinshipValue.current = values.kinship
   };
 
   const handleCompanionSubmit = (values: PersonalDataValues) => {
-    console.log("testCompanionSubmit", values);
+    console.log("totalSubmit", values);
+    setCombinedValues((prevValues: any) => ({
+      ...prevValues,
+      patient: patientData.current,
+      companion : values,
+      visit: {
+        sequenceNumber: sequenceNumberValue.current,
+        kinship : kinshipValue.current
+      },
+    }));
   };
 
   return (
@@ -156,7 +176,7 @@ const AddVisitForm = () => {
 
       {/* second step */}
       {/* start rest companion form */}
-      <Box sx={{ display : showCompanionFlag === true ? 'block' : 'none' }}>
+      <Box sx={{ display: showCompanionFlag === true ? "block" : "none" }}>
         <Formik
           initialValues={{ kinship: "" }}
           validationSchema={restCompanionFormSchema}
@@ -217,8 +237,16 @@ const AddVisitForm = () => {
           type="button"
           onClick={() => onTriggerRestAndPatientForm()}
         />
-        <SecondaryButton title="اضــــافة مـــرافق" type="button" onClick={() => onTriggerRestAndPatientForm()}  />
-        <SecondaryButton title="حذف مـــرافق" type="button" onClick={() => onTest()} />
+        <SecondaryButton
+          title="اضــــافة مـــرافق"
+          type="button"
+          onClick={() => onTriggerRestAndPatientForm()}
+        />
+        <SecondaryButton
+          title="حذف مـــرافق"
+          type="button"
+          onClick={() => onTest()}
+        />
       </Box>
     </Box>
   );
