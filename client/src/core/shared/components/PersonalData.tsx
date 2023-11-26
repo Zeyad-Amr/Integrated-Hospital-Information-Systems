@@ -21,7 +21,7 @@ export interface PersonalDataValues {
   date: null | string;
   address: string;
   SSNtype: string;
-  search: string;
+  search?: string;
 }
 
 interface PersonalDataProps {
@@ -35,15 +35,22 @@ const PersonalData = ({
   onSubmit,
   isSubmitted,
 }: PersonalDataProps) => {
-
-  const refSubmitButton : any = useRef(null);
-
+  const refSubmitButton: any = useRef(null);
+  const checkFirstRender = useRef(true);
+  const checkFirstRender2 = useRef(true);
   useEffect(() => {
-   if (refSubmitButton.current) {
-        refSubmitButton.current.click()
-   }
+    if (checkFirstRender.current) {
+      checkFirstRender.current = false;
+    } else {
+      if (checkFirstRender2.current) {
+        checkFirstRender2.current = false;
+      } else {
+        if (refSubmitButton.current) {
+          refSubmitButton.current.click();
+        }
+      }
+    }
   }, [isSubmitted]);
-  
 
   const handleFormSchema = Yup.object({
     firstName: Yup.string()
@@ -96,6 +103,7 @@ const PersonalData = ({
 
   return (
     <Formik
+    enableReinitialize
       initialValues={{
         firstName: initialValues.firstName,
         secondName: initialValues.secondName,
@@ -125,11 +133,7 @@ const PersonalData = ({
         handleBlur,
         handleSubmit,
       }) => (
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          noValidate
-        >
+        <Box component="form" onSubmit={handleSubmit} noValidate>
           <CustomTextField
             isRequired
             name="search"
@@ -380,7 +384,11 @@ const PersonalData = ({
               />
             </Grid>
           </Grid>
-          <Button type="submit" sx={{ display: "none" }} ref={refSubmitButton}></Button>
+          <Button
+            type="submit"
+            sx={{ display: "none" }}
+            ref={refSubmitButton}
+          ></Button>
         </Box>
       )}
     </Formik>
