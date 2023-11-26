@@ -36,7 +36,7 @@ export class PatientRepo {
                     companion = await this.personRepo.createIfNotExist(updatePatientDto.companion)
                 }
 
-                return await this.prismaService.visit.update({
+                return await tx.visit.update({
                     where: {
                         code: updatePatientDto.visitCode,
                     }, data: {
