@@ -142,7 +142,6 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
                     incident: true
                 }
             })
-
         } catch (error) {
             throw error
         }
