@@ -1,6 +1,5 @@
 import TextField from "@mui/material/TextField";
 import { Box } from "@mui/system";
-import Typography from "@mui/material/Typography";
 import { FormControl, FormHelperText } from "@mui/material";
 export interface TextFieldProps {
   onChange: (event: React.ChangeEvent<{ value: unknown }>) => void;
@@ -10,13 +9,16 @@ export interface TextFieldProps {
   error: string | undefined;
   touched: boolean | undefined;
   value: string | number | undefined | null;
+  id?: number | string;
   isRequired?: boolean;
   width?: number | string;
   hideLabel?: boolean;
   props?: any;
+  onKeyDown?: (event: React.KeyboardEvent<{ value: unknown }>) => void;
 }
 
 const CustomTextField = ({
+  onKeyDown,
   onChange,
   onBlur,
   hideLabel = false,
@@ -28,6 +30,8 @@ const CustomTextField = ({
   props,
   isRequired = false,
   width,
+  id,
+  
 }: TextFieldProps) => {
   const textfieldProps = {
     FormHelperTextProps: { sx: { color: "red" } },
@@ -55,12 +59,18 @@ const CustomTextField = ({
         sx={{ width: { width }, maxWidth: "100%" }}
       >
         <TextField
-          sx={{ width: width, backgroundColor: "#e7e7e7 !important" , borderRadius : "10px"  }}
+          id={id}
+          sx={{
+            width: width,
+            backgroundColor: "#e7e7e7 !important",
+            borderRadius: "10px",
+          }}
           // id="outlined-required"
           label={label}
           required={isRequired}
           onChange={onChange}
           onBlur={onBlur}
+          onKeyDown={onKeyDown}
           name={name}
           value={value}
           hiddenLabel={hideLabel}
@@ -72,7 +82,7 @@ const CustomTextField = ({
         <FormHelperText
           sx={{
             color: "#FF5630",
-            fontSize : "12px"
+            fontSize: "12px",
           }}
         >
           {error && touched ? error : ""}
