@@ -11,7 +11,7 @@ import { RoleEnum } from '@prisma/client';
 import { Type } from 'class-transformer';
 import { UpdatePersonDto } from 'src/person/dto/update-person.dto';
 
-export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
+export class UpdateEmployeeDto {
 
     @ApiProperty({ type: UpdatePersonDto, required: false })
     @IsObject()
