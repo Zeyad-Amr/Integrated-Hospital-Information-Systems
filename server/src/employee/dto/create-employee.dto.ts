@@ -6,7 +6,7 @@ import {
   Validate,
   ValidateNested,
 } from 'class-validator';
-import { LoginUserDto } from '../../auth/dto/login-user.dto';
+import { AuthDataDto } from '../../auth/dto/login-user.dto';
 import { CreatePersonDto } from 'src/person/dto/create-person.dto';
 import { IsValidEnumValue } from 'src/shared/special-validator';
 import { RoleEnum } from '@prisma/client';
@@ -19,11 +19,11 @@ export class CreateEmployeeDto {
   @Type(() => CreatePersonDto)
   personalData: CreatePersonDto;
 
-  @ApiProperty({ type: LoginUserDto, required: true })
+  @ApiProperty({ type: AuthDataDto, required: true })
   @IsObject()
   @ValidateNested()
-  @Type(() => LoginUserDto)
-  auth: LoginUserDto
+  @Type(() => AuthDataDto)
+  auth: AuthDataDto
 
   @ApiProperty({
     type: String,

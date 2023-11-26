@@ -45,13 +45,12 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
     }
     async update(id: string, item: UpdateEmployeeDto): Promise<any> {
         try {
-            const { auth, role, personalData } = item;
+            const { role, personalData } = item;
 
             const employee = await this.prismaService.employee.update({
                 where: { id },
                 data: {
                     role,
-                    user: { update: { ...auth } },
                     person: {
                         update: {
                             data: {

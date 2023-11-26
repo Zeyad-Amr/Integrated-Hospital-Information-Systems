@@ -29,7 +29,7 @@ export class PersonRepo extends PrismaGenericRepo<Person>{
     async findBySSN(ssn: string) {
         try {
             return await this.prismaService.person.findFirst({
-                where: { SSN: ssn }
+                where: { SSN: ssn },
             })
         } catch (error) {
             throw error

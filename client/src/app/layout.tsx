@@ -56,7 +56,7 @@ type Props = {
 
 export default function RootLayout({ children }: Props) {
   return (
-    <html lang="en" className={primaryFont.className}>
+    <html className={primaryFont.className}>
       <body>
         <ServiceLocatorProvider>
           <StoreProvider>

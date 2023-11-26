@@ -18,7 +18,11 @@ export class EmployeeService {
       let auth: { username?: string, password?: string } = {};
       auth.username = createEmployeeDto.auth.username
 
-      auth.password = this.authService.generateRandom(5);
+      if (!createEmployeeDto.auth.password) {
+        auth.password = this.authService.generateRandom(5);
+      } else {
+        auth.password = createEmployeeDto.auth.password
+      }
       createEmployeeDto.auth.password = await this.authService.hashPassword(auth.password);
       const newEmployee = await this.employeeRepo.createEmployee(
         createEmployeeDto,

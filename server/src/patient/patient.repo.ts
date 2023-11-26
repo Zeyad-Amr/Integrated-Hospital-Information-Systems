@@ -16,7 +16,9 @@ export class PatientRepo {
         try {
             return await this.prismaService.person.findFirst({
                 where: { SSN: ssn }, include: {
-                    patientVisits: {}
+                    patientVisits: true,
+                    CompanionsOnIncidents:true,
+                    companionVisits:true,
                 }
             })
         } catch (error) {
@@ -34,7 +36,7 @@ export class PatientRepo {
                     companion = await this.personRepo.createIfNotExist(updatePatientDto.companion)
                 }
 
-                return await this.prismaService.visit.update({
+                return await tx.visit.update({
                     where: {
                         code: updatePatientDto.visitCode,
                     }, data: {

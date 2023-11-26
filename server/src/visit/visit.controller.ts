@@ -22,9 +22,9 @@ export class VisitController {
   @ApiCreatedResponse({ description: "visit has been created successfully" })
   @ApiBadRequestResponse({ description: "body has missed some data" })
   @Post()
-  create(@Body() createVisitDto: CreateVisitDto, @Req() req) {
+  async create(@Body() createVisitDto: CreateVisitDto, @Req() req) {
     try {
-      return this.visitService.create(createVisitDto, req.user.sub)
+      return await this.visitService.create(createVisitDto, req.user.sub)
     } catch (error) {
       throw handleError(error)
     }
@@ -47,7 +47,7 @@ export class VisitController {
   @Get()
   findAll(
     @PaginationParams() paginationParams: Pagination,
-    @FilteringParams(['code', 'createdAt', 'creatorId', 'companionId', 'patientId', 'sequenceNumber']) filters?: Array<Filter>,
+    @FilteringParams(['code', 'createdAt', 'creatorId', 'companionId', 'patientId', 'sequenceNumber','incidentId']) filters?: Array<Filter>,
     @SortingParams(['createdAt', 'sequenceNumber', 'code']) sort?: Sorting
   ): Promise<PaginatedResource<Visit>> {
     try {
@@ -62,7 +62,7 @@ export class VisitController {
   @ApiNotFoundResponse()
   @ApiCreatedResponse()
   @Get(':visitcode')
-  findOne(@Param('visit-code') visitCode: string) {
+  findOne(@Param('visitcode') visitCode: string) {
     try {
       return this.visitService.findOne(visitCode);
     } catch (error) {
