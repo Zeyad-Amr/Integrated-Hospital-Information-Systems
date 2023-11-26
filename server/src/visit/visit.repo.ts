@@ -43,38 +43,42 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
         try {
 
             const visit = await this.prismaService.$transaction(async (tx) => {
-                const patient = await this.personRepo.createIfNotExist(createPatientDto.patient)
+                try {
 
-                let companion: Person;
-                if (createPatientDto.companion) {
-                    companion = await this.personRepo.createIfNotExist(createPatientDto.companion)
-                }
+                    const patient = await this.personRepo.createIfNotExist(createPatientDto.patient)
 
-                const visitCode = await this.createVisitCode()
-                const visit = await tx.visit.create({
-                    data: {
-                        ...createPatientDto.visit,
-                        code: visitCode,
-                        creator: {
-                            connect: { id: creatorId }
-                        },
-                        patient: {
-                            connect: {
-                                id: patient.id
-                            }
-                        },
-                        companion: {
-                            connect: {
-                                id: companion?.id
+                    let companion: Person;
+                    if (createPatientDto.companion) {
+                        companion = await this.personRepo.createIfNotExist(createPatientDto.companion)
+                    }
+
+                    const visitCode = await this.createVisitCode()
+                    const visit = await tx.visit.create({
+                        data: {
+                            ...createPatientDto.visit,
+                            code: visitCode,
+                            creator: {
+                                connect: { id: creatorId }
+                            },
+                            patient: {
+                                connect: {
+                                    id: patient.id
+                                }
+                            },
+                            companion: {
+                                connect: {
+                                    id: companion?.id
+                                }
                             }
                         }
-                    }
-                })
+                    })
 
-                return { patient, companion, visit }
+                    return { patient, companion, visit }
+                } catch (error) {
+                    throw error
+                }
             })
-            console.log(visit.visit)
-            return ""
+            return visit
         }
         catch (error) {
             throw error
