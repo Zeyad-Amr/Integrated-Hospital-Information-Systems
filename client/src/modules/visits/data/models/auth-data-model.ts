@@ -1,4 +1,4 @@
-import AuthDataEntity from '../../domain/entities/auth-data-entity';
+import AuthDataEntity from '../../domain/entities/visit-entity';
 
 export default class AuthDataModel extends AuthDataEntity {
     constructor(data: {

@@ -2,7 +2,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/core/redux/store";
 import { AuthState } from "../controllers/types";
 import { login, getMe } from "../controllers/thunks/reception-thunks";
-import AuthDataEntity from "../../domain/entities/auth-data-entity";
+import AuthDataEntity from "../../domain/entities/visit-entity";
 const Test = () => {
   const dispatch = useAppDispatch();
   const authState: AuthState = useAppSelector((state: any) => state.auth);

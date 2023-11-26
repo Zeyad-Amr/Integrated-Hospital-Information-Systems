@@ -1,6 +1,6 @@
 
 import AuthDataModel from "../models/auth-data-model";
-import AuthDataEntity from "../../domain/entities/auth-data-entity";
+import AuthDataEntity from "../../domain/entities/visit-entity";
 
 class AuthDataMapper {
     static entityToModel(entity: AuthDataEntity): AuthDataModel {

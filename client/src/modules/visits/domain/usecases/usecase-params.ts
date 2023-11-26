@@ -1,4 +1,4 @@
-import AuthDataEntity from "../entities/auth-data-entity";
+import AuthDataEntity from "../entities/visit-entity";
 
 class LoginUseCaseParameters {
     constructor(public authData: AuthDataEntity) { }

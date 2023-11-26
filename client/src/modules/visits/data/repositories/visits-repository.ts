@@ -2,7 +2,7 @@ import { ErrorResponse, ErrorMessage } from "@/core/api";
 import { Either } from "@/core/shared/utils/either";
 import BaseAuthRepository from "../../domain/repositories/base-reception-repository";
 import { BaseAuthDataSource } from "../datasources/reception-datasource";
-import AuthDataEntity from "../../domain/entities/auth-data-entity";
+import AuthDataEntity from "../../domain/entities/visit-entity";
 import AuthDataMapper from "../mappers/login-user-mapper";
 import UserEntity from "../../domain/entities/user-entity";
 

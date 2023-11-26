@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, getMe } from "../thunks/reception-thunks";
+import { login, getMe } from "../thunks/visits-thunks";
 import { AuthState } from "../types";
 import UserEntity from "@/modules/auth/domain/entities/user-entity";
 import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
