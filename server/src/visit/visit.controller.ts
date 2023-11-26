@@ -22,9 +22,9 @@ export class VisitController {
   @ApiCreatedResponse({ description: "visit has been created successfully" })
   @ApiBadRequestResponse({ description: "body has missed some data" })
   @Post()
-  create(@Body() createVisitDto: CreateVisitDto, @Req() req) {
+  async create(@Body() createVisitDto: CreateVisitDto, @Req() req) {
     try {
-      return this.visitService.create(createVisitDto, req.user.sub)
+      return await this.visitService.create(createVisitDto, req.user.sub)
     } catch (error) {
       throw handleError(error)
     }

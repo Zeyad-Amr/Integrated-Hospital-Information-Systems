@@ -19,10 +19,10 @@ export class IncidentService {
     }
   }
 
-  findAll(paginationParams: Pagination, filters: Array<Filter>, sort: Sorting): Promise<PaginatedResource<Incident>> {
+  async findAll(paginationParams: Pagination, filters: Array<Filter>, sort: Sorting) {
     try {
-      const include = { Car: true }   
-      return this.incidentRepo.getAll({paginationParams, filters, sort, include});
+      return this.incidentRepo.findAll(paginationParams, filters, sort)
+
     } catch (error) {
       throw error
     }
