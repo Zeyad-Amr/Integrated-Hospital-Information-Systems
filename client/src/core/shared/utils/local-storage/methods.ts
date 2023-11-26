@@ -1,15 +1,15 @@
 export class LocalStorage {
-  private static _localStorage: Storage = localStorage;
+
   static store<T>(key: string, value: T): void {
     try {
       if (typeof value === 'string') {
-        this._localStorage.setItem(key, value);
+        localStorage.setItem(key, value);
       } else if (typeof value === 'number') {
-        this._localStorage.setItem(key, value.toString());
+        localStorage.setItem(key, value.toString());
       } else if (typeof value === 'boolean') {
-        this._localStorage.setItem(key, value.toString());
+        localStorage.setItem(key, value.toString());
       } else if (Array.isArray(value)) {
-        this._localStorage.setItem(key, JSON.stringify(value));
+        localStorage.setItem(key, JSON.stringify(value));
       } else {
         throw new NotAllowedDataTypeException();
       }
@@ -20,7 +20,7 @@ export class LocalStorage {
 
   static fetch<T>(key: string): T | null {
     try {
-      const storedValue = this._localStorage.getItem(key);
+      const storedValue = localStorage.getItem(key);
 
       if (storedValue === null) {
         return null;
