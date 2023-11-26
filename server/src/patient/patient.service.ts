@@ -14,7 +14,8 @@ export class PatientService {
   async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>) {
     try {
       const additionalWhereConditions = [{ patientVisits: { some: {} } }]
-      return await this.personRepo.getAll({ paginationParams: pagination, filters, sort,additionalWhereConditions });
+      const includeObj = { CompanionsOnIncidents: true, companionVisits: true, patientVisits: true }
+      return await this.personRepo.getAll({ paginationParams: pagination, filters, sort, additionalWhereConditions, include: includeObj });
     } catch (error) {
       throw error
     }

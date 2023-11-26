@@ -38,7 +38,7 @@ export class IncidentController {
     @PaginationParams() paginationParams: Pagination,
     @FilteringParams(['isCompleted','createdAt','numberOfPatients']) filters?: Array<Filter>,
     @SortingParams(['createdAt', 'sequenceNumber', 'code']) sort?: Sorting
-  ): Promise<PaginatedResource<Incident>> {
+  ) {
     try {
       return this.incidentService.findAll(paginationParams, filters, sort);
     } catch (error) {

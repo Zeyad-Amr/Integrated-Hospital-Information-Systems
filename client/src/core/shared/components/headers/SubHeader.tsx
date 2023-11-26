@@ -3,7 +3,6 @@ import React from 'react'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 const SubHeader = (props:any) => {
-  console.log(props.stateChanger )
   return (
         <Box sx={{width:'100%', marginBottom:'2rem'}}>
             <Box sx={{width:'100%', height:'0.3rem', backgroundColor:'primary.darker'}}></Box>
@@ -16,6 +15,7 @@ const SubHeader = (props:any) => {
               onClick={()=>{
                 props.compStateChanger('none');
                 props.compBtnStateChanger('block');
+                props.setAddCompanionKey(false)
                 }}
               >
                 <CloseRoundedIcon sx={{color:'white'}}/>
