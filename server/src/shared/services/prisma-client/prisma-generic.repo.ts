@@ -29,7 +29,7 @@ export class PrismaGenericRepo<T> {
       const order: any = getOrder(args.sort)
       const res = await this.prisma.$transaction(async (tx) => {
         const count = await tx[this.modelName].count({ where: whereCondition });
-        const visits = await tx[this.modelName].findMany({
+        const data = await tx[this.modelName].findMany({
           where: whereCondition,
           orderBy: order,
           skip: args?.paginationParams?.offset ? args.paginationParams.offset : undefined,
@@ -37,10 +37,10 @@ export class PrismaGenericRepo<T> {
           include: args?.include,
           select: args?.select
         })
-        return { count, visits }
+        return { count, data }
       })
 
-      return { total: res.count, items: res.visits, page: args.paginationParams?.page, size: res.visits.length };
+      return { total: res.count, items: res.data, page: args.paginationParams?.page, size: res.data.length };
 
     } catch (error) {
       throw error;

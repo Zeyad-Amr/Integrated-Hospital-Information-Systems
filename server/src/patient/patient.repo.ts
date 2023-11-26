@@ -16,7 +16,9 @@ export class PatientRepo {
         try {
             return await this.prismaService.person.findFirst({
                 where: { SSN: ssn }, include: {
-                    patientVisits: {}
+                    patientVisits: true,
+                    CompanionsOnIncidents:true,
+                    companionVisits:true,
                 }
             })
         } catch (error) {

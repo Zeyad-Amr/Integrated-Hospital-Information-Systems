@@ -42,7 +42,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
     async createPatientWithVisit(createPatientDto: CreateVisitDto, creatorId: string): Promise<any> {
         try {
 
-            return await this.prismaService.$transaction(async (tx) => {
+            const visit = await this.prismaService.$transaction(async (tx) => {
                 const patient = await this.personRepo.createIfNotExist(createPatientDto.patient)
 
                 let companion: Person;
@@ -55,14 +55,26 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
                     data: {
                         ...createPatientDto.visit,
                         code: visitCode,
-                        creatorId: creatorId,
-                        patientId: patient.id,
-                        companionId: companion?.id
+                        creator: {
+                            connect: { id: creatorId }
+                        },
+                        patient: {
+                            connect: {
+                                id: patient.id
+                            }
+                        },
+                        companion: {
+                            connect: {
+                                id: companion?.id
+                            }
+                        }
                     }
                 })
 
                 return { patient, companion, visit }
             })
+            console.log(visit.visit)
+            return ""
         }
         catch (error) {
             throw error
@@ -115,28 +127,18 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
 
     async findByVisitCode(visitCode: string) {
         try {
+
             return await this.prismaService.visit.findFirst({
                 where: {
                     code: visitCode
+                }, include: {
+                    patient: true,
+                    companion: true,
+                    creator: true,
+                    incident: true
                 }
             })
-        } catch (error) {
-            throw error
-        }
-    }
 
-    async findAll(limit: number, offset: number, order, whereCondition) {
-        try {
-            const visitsData = await this.prismaService.$transaction(async (tx) => {
-                const count = await this.prismaService.visit.count();
-                const visits = await this.prismaService.visit.findMany({
-                    where: whereCondition,
-                    take: limit, skip: offset,
-                    orderBy: order
-                })
-                return { count, visits }
-            })
-            return { items: visitsData.visits, size: visitsData.visits.length, total: visitsData.count }
         } catch (error) {
             throw error
         }

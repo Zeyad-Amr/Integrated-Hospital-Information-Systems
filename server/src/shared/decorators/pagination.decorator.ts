@@ -11,8 +11,11 @@ export interface Pagination {
 export const PaginationParams = createParamDecorator((data, ctx: ExecutionContext): Pagination => {
 
     const req: Request = ctx.switchToHttp().getRequest();
-    const page = parseInt(req.query.page as string)
-    const size = parseInt(req.query.size as string)
+    let page = parseInt(req.query.page as string)
+    let size = parseInt(req.query.size as string)
+    if (!page) { page = 1 }
+    if (!size) { size = 10 }
+
 
     if (isNaN(page) || page < 0 || isNaN(size) || size <= 0) {
         throw new BadRequestException('Invalid pagination params')
