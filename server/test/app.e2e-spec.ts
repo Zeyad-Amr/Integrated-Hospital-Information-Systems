@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { plainToClass } from 'class-transformer';
-import { CreateStaffDto } from '../src/staff/dto/create-staff.dto';
+import { CreateEmployeeDto } from '../src/employee/dto/create-employee.dto';
 import { validate } from 'class-validator';
 
 describe('AppController (e2e)', () => {
@@ -20,13 +20,13 @@ describe('AppController (e2e)', () => {
     server = app.getHttpServer();
   });
 
-  describe('POST /staff', () => {
-    it('should add staff successfully', () => {
+  describe('POST /employee', () => {
+    it('should add employee successfully', () => {
       return request(server)
-        .post('/staff')
+        .post('/employee')
         .send({
-          username:'diaa23',
-          password:'diaa23',
+          username: 'diaa23',
+          password: 'diaa23',
           name: 'diaa',
           ssn: '123456789',
           email: 'ahmed@gmail.com',
@@ -48,10 +48,10 @@ describe('AppController (e2e)', () => {
 
     it('should get conflict because member already exists', async () => {
       return request(server)
-        .post('/staff')
+        .post('/employee')
         .send({
-          username:'diaa23',
-          password:'diaa23',
+          username: 'diaa23',
+          password: 'diaa23',
           name: 'diaa',
           ssn: '123456789',
           email: 'ahmed@gmail.com',
@@ -61,84 +61,84 @@ describe('AppController (e2e)', () => {
     });
 
     it('checking that validator works with invalid data', async () => {
-      const invalidStaffData = {
+      const invalidEmployeeData = {
         name: 'diaa',
         ssn: '123456789',
         email: 'ahmed@gmail.com',
       };
-      const createStaffDto = plainToClass(CreateStaffDto, invalidStaffData);
-      const errors = await validate(createStaffDto);
+      const createEmployeeDto = plainToClass(CreateEmployeeDto, invalidEmployeeData);
+      const errors = await validate(createEmployeeDto);
       expect(errors.length).toBeGreaterThan(0);
     });
   });
 
-  describe('GET /staff/:id', () => {
+  describe('GET /employee/:id', () => {
     let testID;
-    it('/staff (GET)', () => {
+    it('/employee (GET)', () => {
       return request(server)
-        .get('/staff')
+        .get('/employee')
         .expect(200)
         .then((response) => {
           testID = response.body[0].id;
         });
     });
 
-    it('/staff/:id testing with valid ID', () => {
-      return request(server).get(`/staff/${testID}`).expect(200);
+    it('/employee/:id testing with valid ID', () => {
+      return request(server).get(`/employee/${testID}`).expect(200);
     });
 
-    it('/staff/:id testing with valid ID', () => {
-      return request(server).get(`/staff/wrong-id`).expect(404);
+    it('/employee/:id testing with valid ID', () => {
+      return request(server).get(`/employee/wrong-id`).expect(404);
     });
   });
 
-  describe('PATCH /staff/:id', () => {
+  describe('PATCH /employee/:id', () => {
     it('should update successfully', async () => {
       let testID;
       await request(server)
-        .get('/staff')
+        .get('/employee')
         .then((response) => {
           testID = response.body[0].id;
         });
 
       return request(server)
-        .patch(`/staff/${testID}`)
+        .patch(`/employee/${testID}`)
         .send({ email: 'diaa@gmail.com' })
         .expect(200);
     });
 
     it('should get not found id', () => {
       return request(server)
-        .patch(`/staff/wrong-id`)
+        .patch(`/employee/wrong-id`)
         .send({ email: 'diaa@gmail.com' })
         .expect(404);
     });
   });
 
-  describe('DELETE /staff/:id', () => {
+  describe('DELETE /employee/:id', () => {
     it('should delete successfully', async () => {
       let testID;
       await request(server)
-        .get('/staff')
+        .get('/employee')
         .then((response) => {
           testID = response.body[0].id;
         });
 
-      return request(server).delete(`/staff/${testID}`).expect(200);
+      return request(server).delete(`/employee/${testID}`).expect(200);
     });
 
     it('should get not found id', () => {
-      return request(server).delete(`/staff/wrong-id`).expect(404);
+      return request(server).delete(`/employee/wrong-id`).expect(404);
     });
   });
 
   afterAll(async () => {
     await request(server)
-      .get('/staff')
+      .get('/employee')
       .expect(200)
       .then(async (response) => {
         for (const member of response.body) {
-          await request(server).delete(`/staff/${member.id}`).expect(200);
+          await request(server).delete(`/employee/${member.id}`).expect(200);
         }
       });
     await app.close();

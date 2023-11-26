@@ -2,8 +2,8 @@ import { ErrorResponse, ErrorMessage } from "@/core/api";
 import { Either } from "@/core/shared/utils/either";
 import BaseAuthRepository from "../../domain/repositories/base-auth-repository";
 import { BaseAuthDataSource } from "../datasources/auth-datasource";
-import LoginUserEntity from "../../domain/entities/login-user-entity";
-import LoginUserMapper from "../mappers/login-user-mapper";
+import AuthDataEntity from "../../domain/entities/auth-data-entity";
+import AuthDataMapper from "../mappers/login-user-mapper";
 import UserEntity from "../../domain/entities/user-entity";
 
 class AuthRepository extends BaseAuthRepository {
@@ -11,9 +11,9 @@ class AuthRepository extends BaseAuthRepository {
         super();
     }
 
-    override async login(loginUser: LoginUserEntity): Promise<Either<ErrorResponse, boolean>> {
+    override async login(authData: AuthDataEntity): Promise<Either<ErrorResponse, boolean>> {
         try {
-            const result = await this.baseAuthDataSource.login(LoginUserMapper.entityToModel(loginUser));
+            const result = await this.baseAuthDataSource.login(AuthDataMapper.entityToModel(authData));
             return Either.right(result);
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;

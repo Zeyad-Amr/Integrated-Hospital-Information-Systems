@@ -1,21 +1,21 @@
 
-import LoginUserModel from "../models/login-user-model";
-import LoginUserEntity from "../../domain/entities/login-user-entity";
+import AuthDataModel from "../models/auth-data-model";
+import AuthDataEntity from "../../domain/entities/auth-data-entity";
 
-class LoginUserMapper {
-    static entityToModel(entity: LoginUserEntity): LoginUserModel {
-        return new LoginUserModel({
+class AuthDataMapper {
+    static entityToModel(entity: AuthDataEntity): AuthDataModel {
+        return new AuthDataModel({
             username: entity.username,
             password: entity.password,
         });
     }
 
-    static modelToEntity(model: LoginUserModel): LoginUserEntity {
-        return new LoginUserEntity({
+    static modelToEntity(model: AuthDataModel): AuthDataEntity {
+        return new AuthDataEntity({
             username: model.username,
             password: model.password,
         });
     }
 }
 
-export default LoginUserMapper;
+export default AuthDataMapper;

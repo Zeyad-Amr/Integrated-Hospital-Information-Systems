@@ -3,7 +3,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { LoginUserDto } from './dto/login-user.dto';
+import { AuthDataDto } from './dto/login-user.dto';
 import { AuthRepo } from './auth.repo';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -19,17 +19,17 @@ export class AuthService {
     private jwtService: JwtService,
   ) { }
 
-  async login(loginUserDto: LoginUserDto) {
+  async login(authDataDto: AuthDataDto) {
     try {
       const errInvalidCredentials = 'Invalid username or password';
-      const user = await this.authRepo.getByUsername(loginUserDto.username);
+      const user = await this.authRepo.getByUsername(authDataDto.username);
       if (!user) {
         throw new UnauthorizedException(errInvalidCredentials);
       }
       // console.log(user);
 
       const validPass = await bcrypt.compare(
-        loginUserDto.password,
+        authDataDto.password,
         user.password,
       );
       // console.log(validPass);
@@ -49,7 +49,7 @@ export class AuthService {
 
   async changePassword(
     username: string,
-    newPassword: LoginUserDto['password'],
+    newPassword: AuthDataDto['password'],
     oldPassword: string,
   ) {
     try {

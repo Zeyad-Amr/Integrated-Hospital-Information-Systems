@@ -35,10 +35,10 @@ export default class UserModel extends UserEntity {
     //* --------------------- Serialization: Convert the model to JSON ---------------------
     toJson(): any {
         return {
-            id: this.id,
+            // id: this.id,
             role: this.role,
-            createdAt: this.createdAt,
-            updatedAt: this.updatedAt,
+            // createdAt: this.createdAt,
+            // updatedAt: this.updatedAt,
             personID: this.personID,
             createdById: this.createdById,
             person: (this.person as PersonModel).toJson(),

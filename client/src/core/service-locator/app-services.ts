@@ -1,17 +1,17 @@
 import sl from "./service-locator";
 import ServiceKeys from "./service-keys";
 //---------------------------------------------------------
-import { StaffDataSource, BaseStaffDataSource } from "@/modules/staff/data/datasources/staff-datasource";
+import { EmployeeDataSource, BaseEmployeeDataSource } from "@/modules/employees/data/datasources/employee-datasource";
 import { ApiClient } from "@/core/api/index";
-import BaseStaffRepository from "@/modules/staff/domain/repositories/base-staff-repository";
-import StaffRepository from "@/modules/staff/data/repositories/staff-repository";
+import BaseEmployeeRepository from "@/modules/employees/domain/repositories/base-employee-repository";
+import EmployeeRepository from "@/modules/employees/data/repositories/employee-repository";
 import {
-    GetStaffDetailsUseCase,
-    GetAllStaffMembersUseCase,
-    CreateStaffMemberUseCase,
-    DeleteStaffMemberUseCase,
-    UpdateStaffMemberUseCase,
-} from "@/modules/staff/domain/usecases/index";
+    GetEmployeeByIdUseCase,
+    GetAllEmployeesUseCase,
+    CreateEmployeeUseCase,
+    DeleteEmployeeUseCase,
+    UpdateEmployeeUseCase,
+} from "@/modules/employees/domain/usecases/index";
 import { AuthDataSource, BaseAuthDataSource } from "@/modules/auth/data/datasources/auth-datasource";
 import BaseAuthRepository from "@/modules/auth/domain/repositories/base-auth-repository";
 import AuthRepository from "@/modules/auth/data/repositories/auth-repository";
@@ -22,7 +22,7 @@ class AppServicesLocator {
     static init() {
 
         //* Data Sources ----------------------------------------------
-        sl.registerFactory<BaseStaffDataSource>(ServiceKeys.StaffDataSource, () => new StaffDataSource(
+        sl.registerFactory<BaseEmployeeDataSource>(ServiceKeys.EmployeeDataSource, () => new EmployeeDataSource(
             sl.get<ApiClient>(ServiceKeys.ApiClient)
         ));
         sl.registerFactory<BaseAuthDataSource>(ServiceKeys.AuthDataSources, () => new AuthDataSource(
@@ -31,8 +31,8 @@ class AppServicesLocator {
 
 
         //* Repositories ----------------------------------------------
-        sl.registerFactory<BaseStaffRepository>(ServiceKeys.StaffRepository, () => new StaffRepository(
-            sl.get<BaseStaffDataSource>(ServiceKeys.StaffDataSource)
+        sl.registerFactory<BaseEmployeeRepository>(ServiceKeys.EmployeeRepository, () => new EmployeeRepository(
+            sl.get<BaseEmployeeDataSource>(ServiceKeys.EmployeeDataSource)
         ));
         sl.registerFactory<BaseAuthRepository>(ServiceKeys.AuthRepository, () => new AuthRepository(
             sl.get<BaseAuthDataSource>(ServiceKeys.AuthDataSources)
@@ -40,20 +40,20 @@ class AppServicesLocator {
 
 
         //* Use Cases --------------------------------------------------
-        sl.registerFactory<GetAllStaffMembersUseCase>(ServiceKeys.GetAllStaffMembersUseCase, () => new GetAllStaffMembersUseCase(
-            sl.get<BaseStaffRepository>(ServiceKeys.StaffRepository)
+        sl.registerFactory<GetAllEmployeesUseCase>(ServiceKeys.GetAllEmployeesUseCase, () => new GetAllEmployeesUseCase(
+            sl.get<BaseEmployeeRepository>(ServiceKeys.EmployeeRepository)
         ));
-        sl.registerFactory<GetStaffDetailsUseCase>(ServiceKeys.GetStaffDetailsUseCase, () => new GetStaffDetailsUseCase(
-            sl.get<BaseStaffRepository>(ServiceKeys.StaffRepository)
+        sl.registerFactory<GetEmployeeByIdUseCase>(ServiceKeys.GetEmployeeByIdUseCase, () => new GetEmployeeByIdUseCase(
+            sl.get<BaseEmployeeRepository>(ServiceKeys.EmployeeRepository)
         ));
-        sl.registerFactory<CreateStaffMemberUseCase>(ServiceKeys.CreateStaffMemberUseCase, () => new CreateStaffMemberUseCase(
-            sl.get<BaseStaffRepository>(ServiceKeys.StaffRepository)
+        sl.registerFactory<CreateEmployeeUseCase>(ServiceKeys.CreateEmployeeUseCase, () => new CreateEmployeeUseCase(
+            sl.get<BaseEmployeeRepository>(ServiceKeys.EmployeeRepository)
         ));
-        sl.registerFactory<UpdateStaffMemberUseCase>(ServiceKeys.UpdateStaffMemberUseCase, () => new UpdateStaffMemberUseCase(
-            sl.get<BaseStaffRepository>(ServiceKeys.StaffRepository)
+        sl.registerFactory<UpdateEmployeeUseCase>(ServiceKeys.UpdateEmployeeUseCase, () => new UpdateEmployeeUseCase(
+            sl.get<BaseEmployeeRepository>(ServiceKeys.EmployeeRepository)
         ));
-        sl.registerFactory<DeleteStaffMemberUseCase>(ServiceKeys.DeleteStaffMemberUseCase, () => new DeleteStaffMemberUseCase(
-            sl.get<BaseStaffRepository>(ServiceKeys.StaffRepository)
+        sl.registerFactory<DeleteEmployeeUseCase>(ServiceKeys.DeleteEmployeeUseCase, () => new DeleteEmployeeUseCase(
+            sl.get<BaseEmployeeRepository>(ServiceKeys.EmployeeRepository)
         ));
 
         sl.registerFactory<LoginUseCase>(ServiceKeys.LoginUseCase, () => new LoginUseCase(

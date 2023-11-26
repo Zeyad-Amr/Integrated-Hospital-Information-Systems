@@ -24,7 +24,7 @@ export default class PersonModel extends PersonEntity {
     //* --------------------- Serialization: Convert the model to JSON ---------------------
     toJson(): any {
         return {
-            id: this.id,
+            // id: this.id,
             firstName: this.firstName,
             secondName: this.secondName,
             thirdName: this.thirdName,
@@ -37,8 +37,8 @@ export default class PersonModel extends PersonEntity {
             email: this.email,
             governate: this.governate,
             address: this.address,
-            createdAt: this.createdAt,
-            updatedAt: this.updatedAt,
+            // createdAt: this.createdAt,
+            // updatedAt: this.updatedAt,
         };
     }
 

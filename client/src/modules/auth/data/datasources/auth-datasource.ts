@@ -1,9 +1,9 @@
-import LoginUserModel from '../models/login-user-model';
+import AuthDataModel from '../models/auth-data-model';
 import { ApiClient, Endpoints } from "@/core/api";
 import UserModel from '../models/user-model';
 
 abstract class BaseAuthDataSource {
-    abstract login(loginUser: LoginUserModel): Promise<boolean>;
+    abstract login(authData: AuthDataModel): Promise<boolean>;
     abstract getMe(): Promise<UserModel>;
 }
 
@@ -12,8 +12,8 @@ class AuthDataSource extends BaseAuthDataSource {
         super();
     }
 
-    override async login(loginUser: LoginUserModel): Promise<boolean> {
-        const response = await this.apiClient.post(Endpoints.user.login, loginUser.toJson());
+    override async login(authData: AuthDataModel): Promise<boolean> {
+        const response = await this.apiClient.post(Endpoints.user.login, authData.toJson());
         localStorage.setItem('token', response.data.access_token);
         return true;
     }

@@ -3,12 +3,12 @@ const Endpoints = {
         login: '/user/login',
         me: '/user/me',
     },
-    staff: {
-        list: '/staff',
-        details: '/staff/:id',
-        create: '/staff',
-        update: '/staff/:id',
-        delete: '/staff/:id',
+    employee: {
+        list: '/employee',
+        details: '/employee/:id',
+        create: '/employee',
+        update: '/employee/:id',
+        delete: '/employee/:id',
     },
 };
 export default Endpoints;

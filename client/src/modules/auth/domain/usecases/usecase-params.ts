@@ -1,7 +1,7 @@
-import LoginUserEntity from "../entities/login-user-entity";
+import AuthDataEntity from "../entities/auth-data-entity";
 
 class LoginUseCaseParameters {
-    constructor(public loginUser: LoginUserEntity) { }
+    constructor(public authData: AuthDataEntity) { }
 }
 
 class NoParams { }

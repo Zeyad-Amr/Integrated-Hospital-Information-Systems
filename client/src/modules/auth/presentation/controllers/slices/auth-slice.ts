@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { login, getMe } from "../thunks/auth-thunks";
 import { AuthState } from "../types";
 import UserEntity from "@/modules/auth/domain/entities/user-entity";
-import LoginUserEntity from "@/modules/auth/domain/entities/login-user-entity";
+import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
 
 //* Initial State
 const initialState: AuthState = {
     me: UserEntity.defaultValue(),
-    loginUser: LoginUserEntity.defaultValue(),
+    authData: AuthDataEntity.defaultValue(),
     loading: false,
     error: "",
 };
@@ -25,11 +25,11 @@ const authSlice = createSlice({
         clearMe(state) {
             state.me = UserEntity.defaultValue();
         },
-        clearLoginUser(state) {
-            state.loginUser = LoginUserEntity.defaultValue();
+        clearAuthData(state) {
+            state.authData = AuthDataEntity.defaultValue();
         },
-        setLoginUser(state, action: { payload: LoginUserEntity, type: string }) {
-            state.loginUser = action.payload;
+        setAuthData(state, action: { payload: AuthDataEntity, type: string }) {
+            state.authData = action.payload;
         },
         setMe(state, action: { payload: UserEntity, type: string }) {
             state.me = action.payload;
@@ -72,9 +72,9 @@ const authSlice = createSlice({
 export const {
     clearAuthError,
     setLoading,
-    clearLoginUser,
+    clearAuthData,
     clearMe,
-    setLoginUser,
+    setAuthData,
     setMe
 } = authSlice.actions;
 export default authSlice.reducer;
