@@ -41,12 +41,12 @@ const SidebarComponent = () => {
         }
         activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
         text="الحوادث"
-        path="/incident"
+        path="/dashboard/incidents/"
       >
         <SidebarSubmenuItem text="إضافة حادث" path="/dashboard/incidents/add" />
         <SidebarSubmenuItem
           text="استكمال الحوادث"
-          path="/dashboard/incidents/complete"
+          path="/dashboard/incidents/all"
         />
       </SidebarMenuItem>
       <SidebarMenuItem
@@ -55,10 +55,13 @@ const SidebarComponent = () => {
         }
         activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
         text="الزيارات"
-        path="/visits"
+        path="/dashboard/visits"
       >
         <SidebarSubmenuItem text="إضافة زيارة" path="/dashboard/visits/add" />
-        <SidebarSubmenuItem text="الزيارات المجهولة" path="/dashboard/visits/anonymous-visits" />
+        <SidebarSubmenuItem
+          text="الزيارات المجهولة"
+          path="/dashboard/visits/anonymous"
+        />
       </SidebarMenuItem>
     </Box>
   );
