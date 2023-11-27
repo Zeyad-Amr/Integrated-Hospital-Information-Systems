@@ -40,13 +40,11 @@ const AddIncidentForm = () => {
     email: "",
     SSN: "",
     phone: "",
-    id: "",
     gender: "",
     governate: "",
-    date: "",
+    birthDate: "",
     address: "",
-    SSNtype: "",
-    search: "",
+    verificationMethod: "",
   };
 
   const handleCompanionSubmission = (values: PersonalDataValues) => {
@@ -309,7 +307,7 @@ const AddIncidentForm = () => {
                             value={values.firstChar}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            onKeyDown={(e) =>
+                            onKeyDown={(e : any) =>
                               handleKeyDown(
                                 e.target.id,
                                 e.keyCode,
@@ -333,7 +331,7 @@ const AddIncidentForm = () => {
                             value={values.secondChar}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            onKeyDown={(e) =>
+                            onKeyDown={(e : any) =>
                               handleKeyDown(
                                 e.target.id,
                                 e.keyCode,
@@ -356,7 +354,7 @@ const AddIncidentForm = () => {
                             value={values.thirdChar}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            onKeyDown={(e) =>
+                            onKeyDown={(e : any) =>
                               handleKeyDown(
                                 e.target.id,
                                 e.keyCode,
@@ -380,7 +378,7 @@ const AddIncidentForm = () => {
                             value={values.carNum}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            onKeyDown={(e) =>
+                            onKeyDown={(e : any) =>
                               handleKeyDown(
                                 e.target.id,
                                 e.keyCode,

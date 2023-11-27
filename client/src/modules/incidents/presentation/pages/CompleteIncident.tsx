@@ -7,8 +7,26 @@ import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
 
+interface incidentData {
+  id: string;
+  firstName: string;
+  secondName: string;
+  thirdName: string;
+  forthName: string;
+  email: string;
+  SSN: string;
+  phone: string;
+  gender: string;
+  governate: string;
+  birthDate: string;
+  address: string;
+  verificationMethod: string;
+  status: string;
+}
+
 const CompleteIncident = (props: any) => {
-  const [intialValues, setIntialValues] = useState<PersonalDataValues>({
+  const [intialValues, setIntialValues] = useState<incidentData>({
+    id: "",
     firstName: "",
     secondName: "",
     thirdName: "",
@@ -16,13 +34,12 @@ const CompleteIncident = (props: any) => {
     email: "",
     SSN: "",
     phone: "",
-    id: "",
     gender: "",
     governate: "",
-    date: "",
+    birthDate: "",
     address: "",
-    SSNtype: "",
-    search: "",
+    verificationMethod: "",
+    status: "",
   });
 
   const [submitFlag, setSubmitFlag] = useState<boolean>(false);
@@ -35,7 +52,7 @@ const CompleteIncident = (props: any) => {
     });
   };
 
-  const [patients, setPatients] = useState([
+  const [patients, setPatients] = useState<incidentData[]>([
     {
       id: "1",
       firstName: "احمد",
@@ -47,9 +64,9 @@ const CompleteIncident = (props: any) => {
       phone: "01211035528",
       gender: "1",
       governate: "1",
-      date: "2000-12-12",
+      birthDate: "2000-12-12",
       address: "حلولي",
-      SSNtype: "1",
+      verificationMethod: "1",
       status: "completed",
     },
     {
@@ -63,9 +80,9 @@ const CompleteIncident = (props: any) => {
       phone: "",
       gender: "",
       governate: "",
-      date: "",
+      birthDate: "",
       address: "",
-      SSNtype: "",
+      verificationMethod: "",
       status: "empty",
     },
     {
@@ -79,9 +96,9 @@ const CompleteIncident = (props: any) => {
       phone: "",
       gender: "",
       governate: "",
-      date: "",
+      birthDate: "",
       address: "",
-      SSNtype: "",
+      verificationMethod: "",
       status: "notCompleted",
     },
     {
@@ -95,9 +112,9 @@ const CompleteIncident = (props: any) => {
       phone: "",
       gender: "",
       governate: "",
-      date: "",
+      birthDate: "",
       address: "",
-      SSNtype: "",
+      verificationMethod: "",
       status: "empty",
     },
     {
@@ -111,9 +128,9 @@ const CompleteIncident = (props: any) => {
       phone: "01211035528",
       gender: "1",
       governate: "1",
-      date: "2000-12-12",
+      birthDate: "2000-12-12",
       address: "حلولي",
-      SSNtype: "1",
+      verificationMethod: "1",
       status: "completed",
     },
     {
@@ -127,9 +144,9 @@ const CompleteIncident = (props: any) => {
       phone: "",
       gender: "",
       governate: "",
-      date: "",
+      birthDate: "",
       address: "",
-      SSNtype: "",
+      verificationMethod: "",
       status: "empty",
     },
     {
@@ -143,9 +160,9 @@ const CompleteIncident = (props: any) => {
       phone: "",
       gender: "",
       governate: "",
-      date: "",
+      birthDate: "",
       address: "",
-      SSNtype: "",
+      verificationMethod: "",
       status: "notCompleted",
     },
   ]);
@@ -160,7 +177,7 @@ const CompleteIncident = (props: any) => {
     } else if (checkFirstRender2.current) {
       checkFirstRender2.current = false;
     } else {
-      setIntialValues(patients[parseInt(selectedId)-1]);
+      setIntialValues(patients[parseInt(selectedId) - 1]);
     }
   }, [intialValues, patients, selectedId]);
 
@@ -172,12 +189,11 @@ const CompleteIncident = (props: any) => {
     email: string;
     SSN: string;
     phone: string;
-    id: string;
     gender: string;
     governate: string;
-    date: null | string;
+    birthDate: null | string;
     address: string;
-    SSNtype: string;
+    verificationMethod: string;
     status: string;
   }
 
@@ -283,7 +299,7 @@ const CompleteIncident = (props: any) => {
             overflow: "auto",
           }}
         >
-          {arraySort(patients).map((patient) => (
+          {arraySort(patients).map((patient : any) => (
             <Box
               key={patient.id}
               id={patient.id}
@@ -300,7 +316,7 @@ const CompleteIncident = (props: any) => {
                 marginBottom: "1rem",
                 cursor: "pointer",
               }}
-              onClick={(e) => setSelectedId(e.target.id)}
+              onClick={(e: any) => setSelectedId(e.target.id)}
             >
               <Box
                 sx={{
