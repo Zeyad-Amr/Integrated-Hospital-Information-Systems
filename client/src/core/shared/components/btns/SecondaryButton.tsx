@@ -16,6 +16,7 @@ const SecondaryButton = (props: any) => {
         height: "40px",
         border: "1px solid #004B50",
       }}
+      sx={...props.sx}
       onClick={props.onClick}
     >
       {props.title}

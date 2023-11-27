@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import CustomTextField from "@/core/shared/components/CustomTextField";
+import CustomSelectField from "@/core/shared/components/CustomSelectField";
 
 const AddVisitForm = () => {
   // useRef
@@ -17,13 +18,15 @@ const AddVisitForm = () => {
   const kinshipValue : any = useRef("");
   const patientData: any = useRef({});
 
-  const onTest = () => {
+  const onDeleteCompanion = () => {
     setShowCompanionFlag(false);
+    setAddCompanionClicked(false)
   };
 
   // useState
   const [submitPatientFlag, setSubmitPatientFlag] = useState<boolean>(false);
   const [showCompanionFlag, setShowCompanionFlag] = useState<boolean>(false);
+  const [addCompanionClicked, setAddCompanionClicked] = useState<boolean>(false);
   const [submitCompanionFlag, setSubmitCompanionFlag] =
     useState<boolean>(false);
   const [combinedValues, setCombinedValues] = useState<any>({
@@ -46,33 +49,32 @@ const AddVisitForm = () => {
     id: "",
     gender: "",
     governate: "",
-    date: null,
+    birthDate: null,
     address: "",
-    SSNtype: "",
+    verificationMethod: "",
     search: "",
   };
 
   const handlePatientSubmit = (values: PersonalDataValues) => {
-    console.log("testSubmit", values);
-    if (!showCompanionFlag) {
+    if (addCompanionClicked) {
+      setShowCompanionFlag(true)
+      patientData.current = values;
+    } else {
       setCombinedValues((prevValues: any) => ({
         ...prevValues,
         patient: values,
+        companion : {},
         visit: {
           sequenceNumber: sequenceNumberValue.current,
+          kinship : ''
         },
       }));
-      console.log(sequenceNumberValue.current);
-      setShowCompanionFlag(true);
-    } else {
-      patientData.current = values;
     }
   };
 
-  const handleRestPatientSubmit = (values: { frequencyNumber: string }) => {
-    console.log("testRestSubmit", values);
+  const handleRestPatientSubmit = (values: { sequenceNumber: string }) => {
     setSubmitPatientFlag(!submitPatientFlag);
-    sequenceNumberValue.current = values.frequencyNumber;
+    sequenceNumberValue.current = values.sequenceNumber;
   };
 
   const onTriggerRestAndPatientForm = () => {
@@ -87,22 +89,17 @@ const AddVisitForm = () => {
   };
 
   const restPatientFormSchema = Yup.object({
-    frequencyNumber: Yup.string().required("يجب ادخال رقم التردد"),
+    sequenceNumber: Yup.string().required("يجب ادخال رقم التردد")
+    .matches(/^[0-9]+$/, "رقم التردد يجب ان يكون ارقام عددية"),
   });
 
-  useEffect(() => {
-    // post request
-    console.log(combinedValues);
-  }, [combinedValues]);
 
   // second step
-
   const restCompanionFormSchema = Yup.object({
     kinship: Yup.string().required("يجب اختيار درجة القرابة"),
   });
 
   const handleRestCompanionSubmit = (values: { kinship: string }) => {
-    console.log("testRestCompanionSubmit", values);
     setSubmitCompanionFlag(!submitCompanionFlag)
     kinshipValue.current = values.kinship
   };
@@ -120,11 +117,16 @@ const AddVisitForm = () => {
     }));
   };
 
+  useEffect(() => {
+    // post request
+    console.log(combinedValues);
+  }, [combinedValues]);
+
   return (
     <Box sx={{ marginTop: "2.5rem" }}>
       {/* start rest patient form */}
       <Formik
-        initialValues={{ frequencyNumber: "" }}
+        initialValues={{ sequenceNumber: "" }}
         validationSchema={restPatientFormSchema}
         onSubmit={(values) => {
           handleRestPatientSubmit(values);
@@ -141,13 +143,13 @@ const AddVisitForm = () => {
           <Box component="form" onSubmit={handleSubmit} noValidate>
             <CustomTextField
               isRequired
-              name="frequencyNumber"
+              name="sequenceNumber"
               label="رقم التردد"
-              value={values.frequencyNumber}
+              value={values.sequenceNumber}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={errors.frequencyNumber}
-              touched={touched.frequencyNumber}
+              error={errors.sequenceNumber}
+              touched={touched.sequenceNumber}
               width="100%"
               props={{
                 type: "text",
@@ -169,9 +171,8 @@ const AddVisitForm = () => {
         isSubmitted={submitPatientFlag}
       />
 
+      <br />
       <hr />
-      <br />
-      <br />
       <br />
 
       {/* second step */}
@@ -193,7 +194,7 @@ const AddVisitForm = () => {
             handleSubmit,
           }) => (
             <Box component="form" onSubmit={handleSubmit} noValidate>
-              <CustomTextField
+              <CustomSelectField
                 isRequired
                 name="kinship"
                 label="درجة القرابة"
@@ -203,9 +204,36 @@ const AddVisitForm = () => {
                 error={errors.kinship}
                 touched={touched.kinship}
                 width="100%"
-                props={{
-                  type: "text",
-                }}
+                options={[
+                  {
+                    id: "BROTHER",
+                    title: "أخ",
+                  },
+                  {
+                    id: "SISTER",
+                    title: "أخت",
+                  },
+                  {
+                    id: "FATHER",
+                    title: "أب",
+                  },
+                  {
+                    id: "MOTHER",
+                    title: "أم",
+                  },
+                  {
+                    id: "COUSIN",
+                    title: "ابن/ة عم - ابن/ة خال",
+                  },
+                  {
+                    id: "AUNT",
+                    title: "عمة / خالة",
+                  },
+                  {
+                    id: "OTHER",
+                    title: "آخر",
+                  },
+                ]}
               />
               <Button
                 type="submit"
@@ -240,12 +268,17 @@ const AddVisitForm = () => {
         <SecondaryButton
           title="اضــــافة مـــرافق"
           type="button"
-          onClick={() => onTriggerRestAndPatientForm()}
+          onClick={() => {
+            setAddCompanionClicked(true);
+            onTriggerRestAndPatientForm()
+          }}
+          sx={{ display : showCompanionFlag ? 'none' : 'block'}}
         />
         <SecondaryButton
           title="حذف مـــرافق"
           type="button"
-          onClick={() => onTest()}
+          onClick={() => onDeleteCompanion()}
+          sx={{ display : showCompanionFlag ? 'block' : 'none'}}
         />
       </Box>
     </Box>
