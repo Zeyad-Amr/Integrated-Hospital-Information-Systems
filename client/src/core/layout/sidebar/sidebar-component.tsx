@@ -58,6 +58,7 @@ const SidebarComponent = () => {
         path="/visits"
       >
         <SidebarSubmenuItem text="إضافة زيارة" path="/dashboard/visits/add" />
+        <SidebarSubmenuItem text="الزيارات المجهولة" path="/dashboard/visits/anonymous-visits" />
       </SidebarMenuItem>
     </Box>
   );
