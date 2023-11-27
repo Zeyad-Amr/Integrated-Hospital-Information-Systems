@@ -15,13 +15,11 @@ export interface PersonalDataValues {
   email: string;
   SSN: string;
   phone: string;
-  id: string;
   gender: string;
   governate: string;
-  date: null | string;
+  birthDate: null | string;
   address: string;
-  SSNtype: string;
-  search?: string;
+  verificationMethod: string;
 }
 
 interface PersonalDataProps {
@@ -79,13 +77,8 @@ const PersonalData = ({
       .max(100, "Address name must be at most 100 characters"),
     gender: Yup.string().required("Gender is required"),
     governate: Yup.string().required("Governate is required"),
-    SSNtype: Yup.string().required("SSN type is required"),
-    date: Yup.string().required("Date is required"),
-    search: Yup.string().required("Search is required"),
-    id: Yup.string()
-      .required("Id is required")
-      .length(14, "Id must be 14 number")
-      .matches(/^[0-9]+$/, "Id must be numeric."),
+    verificationMethod: Yup.string().required("SSN type is required"),
+    birthDate: Yup.string().required("Date is required"),
     email: Yup.string()
       .required("Email is required")
       .min(3, "Enter a valid email")
@@ -103,7 +96,7 @@ const PersonalData = ({
 
   return (
     <Formik
-    enableReinitialize
+      enableReinitialize
       initialValues={{
         firstName: initialValues.firstName,
         secondName: initialValues.secondName,
@@ -112,13 +105,11 @@ const PersonalData = ({
         email: initialValues.email,
         SSN: initialValues.SSN,
         phone: initialValues.phone,
-        id: initialValues.id,
         gender: initialValues.gender,
         governate: initialValues.governate,
-        date: initialValues.date,
+        birthDate: initialValues.birthDate,
         address: initialValues.address,
-        SSNtype: initialValues.SSNtype,
-        search: initialValues.search,
+        verificationMethod: initialValues.verificationMethod,
       }}
       validationSchema={handleFormSchema}
       onSubmit={(values) => {
@@ -134,20 +125,6 @@ const PersonalData = ({
         handleSubmit,
       }) => (
         <Box component="form" onSubmit={handleSubmit} noValidate>
-          <CustomTextField
-            isRequired
-            name="search"
-            label="البحث"
-            value={values.search}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={errors.search}
-            touched={touched.search}
-            width="100%"
-            props={{
-              type: "text",
-            }}
-          />
           <Grid container columns={12} spacing={4}>
             <Grid
               item
@@ -162,6 +139,20 @@ const PersonalData = ({
               sm={12}
               xs={12}
             >
+              <CustomTextField
+                isRequired
+                name="SSN"
+                label="الرقم القومي"
+                value={values.SSN}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.SSN}
+                touched={touched.SSN}
+                width="100%"
+                props={{
+                  type: "number",
+                }}
+              />
               <CustomTextField
                 isRequired
                 name="firstName"
@@ -194,27 +185,13 @@ const PersonalData = ({
 
               <CustomTextField
                 isRequired
-                name="SSN"
-                label="الرقم القومي"
-                value={values.SSN}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.SSN}
-                touched={touched.SSN}
-                width="100%"
-                props={{
-                  type: "number",
-                }}
-              />
-              <CustomTextField
-                isRequired
-                name="date"
+                name="birthDate"
                 label="تاريخ الميلاد"
-                value={values.date}
+                value={values.birthDate}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.date}
-                touched={touched.date}
+                error={errors.birthDate}
+                touched={touched.birthDate}
                 width="100%"
                 props={{
                   type: "date",
@@ -246,33 +223,12 @@ const PersonalData = ({
                 width="100%"
                 options={[
                   {
-                    id: "1",
+                    id: "MALE",
                     title: "ذكر",
                   },
                   {
-                    id: "2",
+                    id: "FEMALE",
                     title: "أنثي",
-                  },
-                ]}
-              />
-              <CustomSelectField
-                isRequired
-                name="SSNtype"
-                label="نوع الهوية"
-                value={values.SSNtype}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.SSNtype}
-                touched={touched.SSNtype}
-                width="100%"
-                options={[
-                  {
-                    id: "1",
-                    title: "بطاقة",
-                  },
-                  {
-                    id: "2",
-                    title: "جواز سفر",
                   },
                 ]}
               />
@@ -290,6 +246,27 @@ const PersonalData = ({
               sm={12}
               xs={12}
             >
+              <CustomSelectField
+                isRequired
+                name="verificationMethod"
+                label="نوع الهوية"
+                value={values.verificationMethod}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.verificationMethod}
+                touched={touched.verificationMethod}
+                width="100%"
+                options={[
+                  {
+                    id: "NATIONALIDCARD",
+                    title: "بطاقة",
+                  },
+                  {
+                    id: "PASSPORT",
+                    title: "جواز سفر",
+                  },
+                ]}
+              />
               <CustomTextField
                 isRequired
                 name="secondName"
@@ -344,21 +321,6 @@ const PersonalData = ({
                 width="100%"
                 props={{
                   type: "text",
-                }}
-              />
-
-              <CustomTextField
-                isRequired
-                name="id"
-                label="الرقم التعريفي"
-                value={values.id}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.id}
-                touched={touched.id}
-                width="100%"
-                props={{
-                  type: "number",
                 }}
               />
               <CustomSelectField
