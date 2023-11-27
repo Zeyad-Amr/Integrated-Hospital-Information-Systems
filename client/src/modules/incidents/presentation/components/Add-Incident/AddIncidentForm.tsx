@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
@@ -220,7 +220,12 @@ const AddIncidentForm = () => {
                   sm={12}
                   xs={12}
                 >
-                  <Grid container columns={6} spacing={4} sx={{marginBottom:'-5px'}}>
+                  <Grid
+                    container
+                    columns={6}
+                    spacing={4}
+                    sx={{ marginBottom: "-5px" }}
+                  >
                     <Grid item lg={3} md={3} sm={6} xs={6}>
                       <CustomTextField
                         isRequired
@@ -280,23 +285,56 @@ const AddIncidentForm = () => {
                           },
                         ]}
                       />
-                      
                     </Grid>
                   </Grid>
                   <CustomTextField
+                    isRequired
+                    name="paramedicName"
+                    label="اسم المسعف"
+                    value={values.paramedicName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={errors.paramedicName}
+                    touched={touched.paramedicName}
+                    width="100%"
+                    props={{
+                      type: "text",
+                    }}
+                  />
+                  <Typography
+                    sx={{
+                      width: "100%",
+                      marginLeft: "1rem",
+                      marginTop: ".55rem",
+                    }}
+                  >
+                    رقم سيارة الاسعاف
+                  </Typography>
+                  <Grid container columns={9} spacing={2}>
+                    <Grid item lg={2} md={2} sm={2} xs={2}>
+                      <CustomTextField
                         isRequired
-                        name="paramedicName"
-                        label="اسم المسعف"
-                        value={values.paramedicName}
+                        name="firstChar"
+                        label=""
+                        value={values.firstChar}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        error={errors.paramedicName}
-                        touched={touched.paramedicName}
-                        width="100%"
+                        error={errors.firstChar}
+                        touched={touched.firstChar}
+                        width="200%"
                         props={{
+                          onKeyDown: (e: any) =>
+                            handleKeyDown(
+                              e.target.id,
+                              e.keyCode,
+                              e.target.value
+                            ),
+                          id: "amb-car-1",
                           type: "text",
+                          placeholder: "الحرف الاول",
                         }}
                       />
+<<<<<<< Updated upstream
                       <Grid container columns={9} spacing={2}>
                         <Grid item lg={2} md={2} sm={2} xs={2}>
                           <CustomTextField
@@ -394,6 +432,82 @@ const AddIncidentForm = () => {
                           />
                         </Grid>
                       </Grid>
+=======
+                    </Grid>
+                    <Grid item lg={2} md={2} sm={2} xs={2}>
+                      <CustomTextField
+                        isRequired
+                        name="secondChar"
+                        label=""
+                        value={values.secondChar}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={errors.secondChar}
+                        touched={touched.secondChar}
+                        width="200%"
+                        props={{
+                          onKeyDown: (e: any) =>
+                            handleKeyDown(
+                              e.target.id,
+                              e.keyCode,
+                              e.target.value
+                            ),
+
+                          id: "amb-car-2",
+                          type: "text",
+                          placeholder: "الحرف الثاني",
+                        }}
+                      />
+                    </Grid>
+                    <Grid item lg={2} md={2} sm={2} xs={2}>
+                      <CustomTextField
+                        name="thirdChar"
+                        label=""
+                        value={values.thirdChar}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={errors.thirdChar}
+                        touched={touched.thirdChar}
+                        width="100%"
+                        props={{
+                          onKeyDown: (e: any) =>
+                            handleKeyDown(
+                              e.target.id,
+                              e.keyCode,
+                              e.target.value
+                            ),
+                          id: "amb-car-3",
+                          type: "text",
+                          placeholder: "الحرف الثالث",
+                        }}
+                      />
+                    </Grid>
+                    <Grid item lg={3} md={3} sm={3} xs={3}>
+                      <CustomTextField
+                        isRequired
+                        name="carNum"
+                        label=""
+                        value={values.carNum}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={errors.carNum}
+                        touched={touched.carNum}
+                        width="100%"
+                        props={{
+                          onKeyDown: (e: any) =>
+                            handleKeyDown(
+                              e.target.id,
+                              e.keyCode,
+                              e.target.value
+                            ),
+                          id: "amb-car-4",
+                          type: "text",
+                          placeholder: "الرقم",
+                        }}
+                      />
+                    </Grid>
+                  </Grid>
+>>>>>>> Stashed changes
                 </Grid>
                 <Grid
                   item
@@ -447,6 +561,8 @@ const AddIncidentForm = () => {
                     props={{
                       type: "text",
                     }}
+                    multiline
+                    rows={2}
                   />
                 </Grid>
               </Grid>
@@ -485,7 +601,7 @@ const AddIncidentForm = () => {
       </Box>
       <Box
         sx={{
-          marginTop:'2.5rem',
+          marginTop: "2.5rem",
           display: "flex",
           justifyContent: "flex-start",
           alignItems: "center",
