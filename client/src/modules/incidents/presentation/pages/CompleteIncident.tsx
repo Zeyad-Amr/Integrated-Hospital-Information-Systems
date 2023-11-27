@@ -26,6 +26,7 @@ interface incidentData {
 }
 
 const CompleteIncident = (props: any) => {
+  console.log(props.id)
   const [intialValues, setIntialValues] = useState<incidentData>({
     visitCode: "",
     id: "",
@@ -308,7 +309,7 @@ const CompleteIncident = (props: any) => {
             overflow: "auto",
           }}
         >
-          {arraySort(patients).map((patient : any) => (
+          {arraySort(patients).map((patient: any) => (
             <Box
               key={patient.id}
               id={patient.id}
@@ -337,8 +338,8 @@ const CompleteIncident = (props: any) => {
                     patient.status === "completed"
                       ? "success.main"
                       : patient.status === "notCompleted"
-                      ? "warning.main"
-                      : "error.main",
+                        ? "warning.main"
+                        : "error.main",
                   marginRight: "1rem",
                 }}
               ></Box>
