@@ -1,7 +1,7 @@
-import TextField from "@mui/material/TextField";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { Box } from "@mui/system";
 import { FormControl, FormHelperText } from "@mui/material";
-export interface TextFieldProps {
+export interface CustomTextFieldProps {
   onChange: (event: React.ChangeEvent<{ value: unknown }>) => void;
   onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
   name: string;
@@ -9,16 +9,15 @@ export interface TextFieldProps {
   error: string | undefined;
   touched: boolean | undefined;
   value: string | number | undefined | null;
-  id?: number | string;
+  multiline?: boolean | undefined;
+  rows?: number;
   isRequired?: boolean;
   width?: number | string;
   hideLabel?: boolean;
-  props?: any;
-  onKeyDown?: (event: React.KeyboardEvent<{ value: unknown }>) => void;
+  props?: TextFieldProps;
 }
 
 const CustomTextField = ({
-  onKeyDown,
   onChange,
   onBlur,
   hideLabel = false,
@@ -30,9 +29,10 @@ const CustomTextField = ({
   props,
   isRequired = false,
   width,
-  id,
+  multiline,
+  rows
   
-}: TextFieldProps) => {
+}: CustomTextFieldProps) => {
   const textfieldProps = {
     FormHelperTextProps: { sx: { color: "red" } },
     InputProps: { sx: { backgroundColor: "white" } },
@@ -59,7 +59,8 @@ const CustomTextField = ({
         sx={{ width: { width }, maxWidth: "100%" }}
       >
         <TextField
-          id={id}
+          multiline={multiline?true:false}
+          rows={rows}
           sx={{
             width: width,
             backgroundColor: "#e7e7e7 !important",
@@ -70,7 +71,6 @@ const CustomTextField = ({
           required={isRequired}
           onChange={onChange}
           onBlur={onBlur}
-          onKeyDown={onKeyDown}
           name={name}
           value={value}
           hiddenLabel={hideLabel}

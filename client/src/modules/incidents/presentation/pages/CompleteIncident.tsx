@@ -7,8 +7,33 @@ import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
 
+<<<<<<< Updated upstream
 const CompleteIncident = (props: any) => {
   const [intialValues, setIntialValues] = useState<PersonalDataValues>({
+=======
+interface incidentData {
+  id: string;
+  visitCode: string;
+  firstName: string;
+  secondName: string;
+  thirdName: string;
+  forthName: string;
+  email: string;
+  SSN: string;
+  phone: string;
+  gender: string;
+  governate: string;
+  birthDate: string;
+  address: string;
+  verificationMethod: string;
+  status: string;
+}
+
+const CompleteIncident = (props: any) => {
+  const [intialValues, setIntialValues] = useState<incidentData>({
+    id: "",
+    visitCode: "",
+>>>>>>> Stashed changes
     firstName: "",
     secondName: "",
     thirdName: "",
@@ -38,6 +63,7 @@ const CompleteIncident = (props: any) => {
   const [patients, setPatients] = useState([
     {
       id: "1",
+      visitCode:'256498',
       firstName: "احمد",
       secondName: "طلعت",
       thirdName: "محمد",
@@ -54,6 +80,7 @@ const CompleteIncident = (props: any) => {
     },
     {
       id: "2",
+      visitCode:'262584',
       firstName: "",
       secondName: "",
       thirdName: "",
@@ -70,6 +97,7 @@ const CompleteIncident = (props: any) => {
     },
     {
       id: "3",
+      visitCode:'221478',
       firstName: "نور",
       secondName: "فؤاد",
       thirdName: "",
@@ -86,6 +114,7 @@ const CompleteIncident = (props: any) => {
     },
     {
       id: "4",
+      visitCode:'595855',
       firstName: "",
       secondName: "",
       thirdName: "",
@@ -102,6 +131,7 @@ const CompleteIncident = (props: any) => {
     },
     {
       id: "5",
+      visitCode:'156498',
       firstName: "احمد",
       secondName: "مروان",
       thirdName: "محمد",
@@ -118,6 +148,7 @@ const CompleteIncident = (props: any) => {
     },
     {
       id: "6",
+      visitCode:'285724',
       firstName: "",
       secondName: "",
       thirdName: "",
@@ -134,6 +165,7 @@ const CompleteIncident = (props: any) => {
     },
     {
       id: "7",
+      visitCode:'215524',
       firstName: "هاني",
       secondName: "نسيم",
       thirdName: "",
@@ -317,10 +349,13 @@ const CompleteIncident = (props: any) => {
                   marginRight: "1rem",
                 }}
               ></Box>
-              <Typography sx={{ pointerEvents: "none" }}>
-                {patient.firstName ? patient.firstName : "مريض"}&nbsp;
-                {patient.secondName ? patient.secondName : "جديد"}
-              </Typography>
+              <Box sx={{display:'flex',flexDirection:'column', pointerEvents: "none" }}>
+                <Typography sx={{ fontWeight: '600'}}>
+                  {patient.firstName ? patient.firstName : "مريض"}&nbsp;
+                  {patient.secondName ? patient.secondName : "جديد"}
+                </Typography>
+                <Typography>{patient.visitCode}</Typography>
+              </Box>
             </Box>
           ))}
         </Box>
