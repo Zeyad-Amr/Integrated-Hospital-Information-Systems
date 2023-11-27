@@ -1,6 +1,12 @@
-export { default as LoginUseCase } from './login-usecase';
-export { default as GetMeUseCase } from './get-me-usecase';
+
+export { default as CreateVisitUseCase } from './create-visit-usecase';
+export { default as UpdateVisitUseCase } from './update-visit-usecase';
+export { default as GetVisitByCodeUseCase } from './get-visit-by-code-usecase';
+export { default as GetAnonymousVisitsUseCase } from './get-anonymous-visits-usecase';
 
 export {
-    LoginUseCaseParameters
+    CreateVisitUseCaseParameters,
+    UpdateVisitUseCaseParameters,
+    GetVisitByCodeUseCaseParameters,
+    NoParams
 } from './usecase-params';

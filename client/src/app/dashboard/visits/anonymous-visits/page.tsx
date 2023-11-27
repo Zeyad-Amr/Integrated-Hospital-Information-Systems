@@ -1,7 +1,7 @@
 "use client";
 
 import Sidebar from "@/core/layout/sidebar/index";
-import VisitsTableComponent from "@/modules/visit/presentation/pages/anomynous-visit";
+import VisitsTableComponent from "@/modules/visits/presentation/pages/anomynous-visit";
 
 // ----------------------------------------------------------------------
 

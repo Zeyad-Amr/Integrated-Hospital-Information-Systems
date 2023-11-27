@@ -3,11 +3,13 @@ enum ServiceKeys {
     //* Data Sources ----------------------------------------------
     EmployeeDataSource = 'EmployeeDataSource',
     AuthDataSources = 'AuthDataSources',
+    VisitsDataSource = 'VisitsDataSource',
 
 
     //* Repositories ----------------------------------------------
     EmployeeRepository = 'EmployeeRepository',
     AuthRepository = 'AuthRepository',
+    VisitsRepository = 'VisitsRepository',
 
 
     //* Use Cases --------------------------------------------------
@@ -19,6 +21,11 @@ enum ServiceKeys {
 
     LoginUseCase = 'LoginUseCase',
     GetMeUseCase = 'GetMeUseCase',
+
+    CreateVisitUseCase = 'CreateVisitUseCase',
+    UpdateVisitUseCase = 'UpdateVisitUseCase',
+    GetAnonymousVisitsUseCase = 'GetAnonymousVisitsUseCase',
+    GetVisitByCodeUseCase = 'GetVisitByCodeUseCase',
 
     //* Exnternal Services --------------------------------------------------
     ApiClient = 'ApiClient',

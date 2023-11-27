@@ -1,10 +1,9 @@
-import AuthDataEntity from "../../domain/entities/visit-entity";
-import UserEntity from "../../domain/entities/user-entity";
+import VisitEntity from "../../domain/entities/visit-entity";
 
 // Define the initial state using that type
-export interface AuthState {
-    me: UserEntity;
-    authData: AuthDataEntity;
+export interface VisitsState {
+    visits: VisitEntity[];
+    currentVisit: VisitEntity;
     loading: boolean;
     error: string;
 }

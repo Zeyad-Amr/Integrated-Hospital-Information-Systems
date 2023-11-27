@@ -2,13 +2,11 @@ import UserEntity from '../../domain/entities/user-entity';
 import PersonModel from './person-model';
 
 export default class UserModel extends UserEntity {
-
     constructor(data: {
         id: string;
         role: string;
         createdAt: Date;
         updatedAt: Date;
-        personID: string;
         createdById: string | null;
         person: {
             id: string;
@@ -29,7 +27,7 @@ export default class UserModel extends UserEntity {
         };
     }) {
         super(data);
-        this.person = PersonModel.fromJson(data.person);
+        this.person = new PersonModel(data.person);
     }
 
     //* --------------------- Serialization: Convert the model to JSON ---------------------
@@ -39,7 +37,6 @@ export default class UserModel extends UserEntity {
             role: this.role,
             // createdAt: this.createdAt,
             // updatedAt: this.updatedAt,
-            personID: this.personID,
             createdById: this.createdById,
             person: (this.person as PersonModel).toJson(),
         };
@@ -52,7 +49,6 @@ export default class UserModel extends UserEntity {
             role: json.role,
             createdAt: json.createdAt,
             updatedAt: json.updatedAt,
-            personID: json.personID,
             createdById: json.createdById,
             person: PersonModel.fromJson(json.person),
         });

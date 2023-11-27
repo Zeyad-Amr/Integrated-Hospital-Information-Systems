@@ -6,7 +6,7 @@ abstract class BaseEmployeeRepository {
     abstract getEmployeeById(id: string): Promise<Either<ErrorResponse, EmployeeEntity>>;
     abstract getAllEmployees(): Promise<Either<ErrorResponse, EmployeeEntity[]>>;
     abstract createEmployee(employee: EmployeeEntity, authData: AuthDataEntity): Promise<Either<ErrorResponse, EmployeeEntity>>;
-    abstract updateEmployee(employee: EmployeeEntity, authData: AuthDataEntity): Promise<Either<ErrorResponse, EmployeeEntity | null>>;
+    abstract updateEmployee(employee: EmployeeEntity, authData: AuthDataEntity): Promise<Either<ErrorResponse, EmployeeEntity>>;
     abstract deleteEmployee(id: string): Promise<Either<ErrorResponse, boolean>>;
 }
 

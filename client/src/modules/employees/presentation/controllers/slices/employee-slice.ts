@@ -12,7 +12,7 @@ const initialState: EmployeeState = {
 };
 
 const employeeSlice = createSlice({
-    name: "employee",
+    name: "employees",
     initialState,
     reducers: {
         clearEmployeeError(state) {

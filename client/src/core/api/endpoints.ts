@@ -10,5 +10,12 @@ const Endpoints = {
         update: '/employee/:id',
         delete: '/employee/:id',
     },
+    visit: {
+        list: '/visit',
+        details: '/visit/:visitcode',
+        create: '/visit',
+        createAnonymously: '/visit/anonymous',
+        update: '/patient',
+    },
 };
 export default Endpoints;

@@ -1,80 +1,113 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, getMe } from "../thunks/visits-thunks";
-import { AuthState } from "../types";
-import UserEntity from "@/modules/auth/domain/entities/user-entity";
-import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
+import {
+    createVisit,
+    updateVisit,
+    getAnonymousVisits,
+    getVisitByCode,
+} from "../thunks/visits-thunks";
+import { VisitsState } from "../types";
+import VisitEntity from "@/modules/visits/domain/entities/visit-entity";
 
 //* Initial State
-const initialState: AuthState = {
-    me: UserEntity.defaultValue(),
-    authData: AuthDataEntity.defaultValue(),
+const initialState: VisitsState = {
+    visits: [],
+    currentVisit: VisitEntity.defaultValue(),
     loading: false,
     error: "",
 };
 
 const authSlice = createSlice({
-    name: "auth",
+    name: "visits",
     initialState,
     reducers: {
         setLoading(state, action: { payload: boolean, type: string }) {
             state.loading = action.payload;
         },
         clearAuthError(state) {
-            state.error = "";
+            state.error = initialState.error;
         },
-        clearMe(state) {
-            state.me = UserEntity.defaultValue();
+        clearVisits(state) {
+            state.visits = initialState.visits;
         },
-        clearAuthData(state) {
-            state.authData = AuthDataEntity.defaultValue();
+        clearCurrentVisit(state) {
+            state.currentVisit = initialState.currentVisit;
         },
-        setAuthData(state, action: { payload: AuthDataEntity, type: string }) {
-            state.authData = action.payload;
+        setVisits(state, action: { payload: VisitEntity[], type: string }) {
+            state.visits = action.payload;
         },
-        setMe(state, action: { payload: UserEntity, type: string }) {
-            state.me = action.payload;
+        setCurrentVisit(state, action: { payload: VisitEntity, type: string }) {
+            state.currentVisit = action.payload;
         }
+
     },
     extraReducers(builder) {
-        //* login 
-        builder.addCase(login.pending, (state, _action) => {
+        //* Create Visit
+        builder.addCase(createVisit.pending, (state, _action) => {
             state.loading = true;
             state.error = "";
         });
-        builder.addCase(login.fulfilled, (state, _action) => {
+        builder.addCase(createVisit.fulfilled, (state, _action) => {
             state.loading = false;
             state.error = "";
         });
-        builder.addCase(login.rejected, (state, action) => {
+        builder.addCase(createVisit.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string;
         });
 
-        //* get me 
-        builder.addCase(getMe.pending, (state, _action) => {
+        //* Update Visit
+        builder.addCase(updateVisit.pending, (state, _action) => {
             state.loading = true;
             state.error = "";
         });
-        builder.addCase(getMe.fulfilled, (state, action) => {
+        builder.addCase(updateVisit.fulfilled, (state, _action) => {
             state.loading = false;
-            state.me = action.payload;
             state.error = "";
         });
-        builder.addCase(getMe.rejected, (state, action) => {
+        builder.addCase(updateVisit.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string;
         });
 
+        //* Get Anonymous Visits
+        builder.addCase(getAnonymousVisits.pending, (state, _action) => {
+            state.loading = true;
+            state.error = "";
+        });
+        builder.addCase(getAnonymousVisits.fulfilled, (state, action) => {
+            state.loading = false;
+            state.visits = action.payload;
+            state.error = "";
+        });
+        builder.addCase(getAnonymousVisits.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
+        });
 
+        //* Get Visit By Code
+        builder.addCase(getVisitByCode.pending, (state, _action) => {
+            state.loading = true;
+            state.error = "";
+        });
+        builder.addCase(getVisitByCode.fulfilled, (state, action) => {
+            state.loading = false;
+            state.currentVisit = action.payload;
+            state.error = "";
+        });
+        builder.addCase(getVisitByCode.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
+        });
     },
 });
 
 export const {
     clearAuthError,
     setLoading,
-    clearAuthData,
-    clearMe,
-    setAuthData,
-    setMe
+    clearVisits,
+    setVisits,
+    clearCurrentVisit,
+    setCurrentVisit
+
 } = authSlice.actions;
 export default authSlice.reducer;

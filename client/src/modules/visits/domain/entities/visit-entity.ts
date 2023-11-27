@@ -1,15 +1,16 @@
 import PersonEntity from "@/modules/auth/domain/entities/person-entity";
+import EmployeeEntity from "@/modules/employees/domain/entities/employee-entity";
 
 export default class VisitEntity {
-    code: string;
-    sequenceNumber: number | null;
-    kinship: string | null;
-    createdAt: Date;
-    updatedAt: Date;
-    creator: PersonEntity;
-    patient: PersonEntity;
-    companion: PersonEntity;
-    incidentId: string;
+    private _code: string;
+    private _sequenceNumber: number | null;
+    private _kinship: string | null;
+    private _createdAt: Date;
+    private _updatedAt: Date;
+    private _creator: EmployeeEntity;
+    private _patient: PersonEntity;
+    private _companion: PersonEntity;
+    private _incidentId: string | null;
 
     constructor(data: {
         code: string;
@@ -17,97 +18,169 @@ export default class VisitEntity {
         kinship: string | null;
         createdAt: Date;
         updatedAt: Date;
-        creator: PersonEntity;
-        patient: PersonEntity;
-        companion: PersonEntity;
-        incidentId: string;
+        creator: {
+            id: string;
+            role: string;
+            createdAt: Date;
+            updatedAt: Date;
+            createdById: string | null;
+            person: {
+                id: string;
+                firstName: string;
+                secondName: string;
+                thirdName: string;
+                fourthName: string;
+                SSN: string;
+                verificationMethod: string;
+                gender: string;
+                birthDate: Date;
+                phone: string;
+                email: string;
+                governate: string;
+                address: string;
+                createdAt: Date;
+                updatedAt: Date;
+            };
+        };
+        patient: {
+            id: string;
+            firstName: string;
+            secondName: string;
+            thirdName: string;
+            fourthName: string;
+            SSN: string;
+            verificationMethod: string;
+            gender: string;
+            birthDate: Date;
+            phone: string;
+            email: string;
+            governate: string;
+            address: string;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+        companion: {
+            id: string;
+            firstName: string;
+            secondName: string;
+            thirdName: string;
+            fourthName: string;
+            SSN: string;
+            verificationMethod: string;
+            gender: string;
+            birthDate: Date;
+            phone: string;
+            email: string;
+            governate: string;
+            address: string;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+        incidentId: string | null;
     }) {
-        this.code = data.code;
-        this.sequenceNumber = data.sequenceNumber;
-        this.kinship = data.kinship;
-        this.createdAt = data.createdAt;
-        this.updatedAt = data.updatedAt;
-        this.creator = data.creator;
-        this.patient = data.patient;
-        this.companion = data.companion;
-        this.incidentId = data.incidentId;
+        this._code = data.code;
+        this._sequenceNumber = data.sequenceNumber;
+        this._kinship = data.kinship;
+        this._createdAt = data.createdAt;
+        this._updatedAt = data.updatedAt;
+        this._creator = new EmployeeEntity(data.creator);
+        this._patient = new PersonEntity(data.patient);
+        this._companion = new PersonEntity(data.companion);
+        this._incidentId = data.incidentId;
     }
 
     //* --------------------- Getters ---------------------
-    getCode(): string {
-        return this.code;
+    get code(): string {
+        return this._code;
     }
 
-    getSequenceNumber(): number | null {
-        return this.sequenceNumber;
+    get sequenceNumber(): number | null {
+        return this._sequenceNumber;
     }
 
-    getKinship(): string | null {
-        return this.kinship;
+    get kinship(): string | null {
+        return this._kinship;
     }
 
-    getCreatedAt(): Date {
-        return this.createdAt;
+    get createdAt(): Date {
+        return this._createdAt;
     }
 
-    getUpdatedAt(): Date {
-        return this.updatedAt;
+    get updatedAt(): Date {
+        return this._updatedAt;
     }
 
-    getCreator(): PersonEntity {
-        return this.creator;
+    get creator(): EmployeeEntity {
+        return this._creator;
     }
 
-    getPatient(): PersonEntity {
-        return this.patient;
+    get patient(): PersonEntity {
+        return this._patient;
     }
 
-    getCompanion(): PersonEntity {
-        return this.companion;
+    get companion(): PersonEntity {
+        return this._companion;
     }
 
-    getIncidentId(): string {
-        return this.incidentId;
+    get incidentId(): string | null {
+        return this._incidentId;
     }
 
     //* --------------------- Setters ---------------------
 
-    setCode(code: string): void {
-        this.code = code;
+    set code(code: string) {
+        this._code = code;
     }
 
-    setSequenceNumber(sequenceNumber: number | null): void {
-        this.sequenceNumber = sequenceNumber;
+    set sequenceNumber(sequenceNumber: number | null) {
+        this._sequenceNumber = sequenceNumber;
     }
 
-    setKinship(kinship: string | null): void {
-        this.kinship = kinship;
+    set kinship(kinship: string | null) {
+        this._kinship = kinship;
     }
 
-    setCreatedAt(createdAt: Date): void {
-        this.createdAt = createdAt;
+    set createdAt(createdAt: Date) {
+        this._createdAt = createdAt;
     }
 
-    setUpdatedAt(updatedAt: Date): void {
-        this.updatedAt = updatedAt;
+    set updatedAt(updatedAt: Date) {
+        this._updatedAt = updatedAt;
     }
 
-    setCreator(creator: PersonEntity): void {
-        this.creator = creator;
+    set creator(creator: EmployeeEntity) {
+        this._creator = creator;
     }
 
-    setPatient(patient: PersonEntity): void {
-        this.patient = patient;
+    set patient(patient: PersonEntity) {
+        this._patient = patient;
     }
 
-    setCompanion(companion: PersonEntity): void {
-        this.companion = companion;
+    set companion(companion: PersonEntity) {
+        this._companion = companion;
     }
 
-    setIncidentId(incidentId: string): void {
-        this.incidentId = incidentId;
+    set incidentId(incidentId: string) {
+        this._incidentId = incidentId;
     }
     //* --------------------- Methods ---------------------
+    static defaultValue(): VisitEntity {
+        const defaultDate = new Date();
+        const defaultPerson = PersonEntity.defaultValue(); // Getting default PersonEntity
+        const defaultEmployee = EmployeeEntity.defaultValue(); // Getting default PersonEntity
+
+        return new VisitEntity({
+            code: "",
+            sequenceNumber: null,
+            kinship: null,
+            createdAt: defaultDate,
+            updatedAt: defaultDate,
+            creator: defaultEmployee,
+            patient: defaultPerson,
+            companion: defaultPerson,
+            incidentId: null,
+        });
+    }
 
 }
 

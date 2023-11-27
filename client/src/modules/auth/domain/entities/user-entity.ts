@@ -5,7 +5,6 @@ export default class UserEntity {
     private _role: string;
     private _createdAt: Date;
     private _updatedAt: Date;
-    private _personID: string;
     private _createdById: string | null;
     private _person: PersonEntity;
 
@@ -14,7 +13,6 @@ export default class UserEntity {
         role: string;
         createdAt: Date;
         updatedAt: Date;
-        personID: string;
         createdById: string | null;
         person: {
             id: string;
@@ -38,7 +36,6 @@ export default class UserEntity {
         this._role = data.role;
         this._createdAt = data.createdAt;
         this._updatedAt = data.updatedAt;
-        this._personID = data.personID;
         this._createdById = data.createdById;
         this._person = new PersonEntity(data.person);
     }
@@ -58,10 +55,6 @@ export default class UserEntity {
 
     get updatedAt(): Date {
         return this._updatedAt;
-    }
-
-    get personID(): string {
-        return this._personID;
     }
 
     get createdById(): string | null {
@@ -89,9 +82,6 @@ export default class UserEntity {
         this._updatedAt = updatedAt;
     }
 
-    set personID(personID: string) {
-        this._personID = personID;
-    }
 
     set createdById(createdById: string | null) {
         this._createdById = createdById;
@@ -110,7 +100,6 @@ export default class UserEntity {
             role: '',
             createdAt: defaultDate,
             updatedAt: defaultDate,
-            personID: '',
             createdById: null,
             person: defaultPerson,
         });
