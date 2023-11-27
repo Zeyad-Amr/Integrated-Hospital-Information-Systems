@@ -1,15 +1,15 @@
 "use client";
 
 import Sidebar from "@/core/layout/sidebar/index";
-import IncidentTableComponent from "@/modules/incidents/presentation/pages/uncompleted-incident";
+import VisitsTableComponent from "@/modules/visit/presentation/pages/anomynous-visit";
 
 // ----------------------------------------------------------------------
 
-export default function CreateDepartment() {
+export default function AllUsers() {
   return (
     <div>
       <Sidebar>
-        <IncidentTableComponent />
+        <VisitsTableComponent />
       </Sidebar>
     </div>
   );

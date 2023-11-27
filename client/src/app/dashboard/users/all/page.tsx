@@ -1,7 +1,7 @@
 "use client";
 
 import Sidebar from "@/core/layout/sidebar/index";
-import VisitsTableComponent from "@/modules/receptionist/presentation/pages/anomynous-visit";
+import TestPage from "@/core/shared/components/test";
 
 // ----------------------------------------------------------------------
 
@@ -9,7 +9,7 @@ export default function AllUsers() {
   return (
     <div>
       <Sidebar>
-        <VisitsTableComponent />
+      <TestPage label={"Users"} />
       </Sidebar>
     </div>
   );

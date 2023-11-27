@@ -7,8 +7,29 @@ import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
 
+interface incidentData {
+  id: string;
+  visitCode: string;
+  firstName: string;
+  secondName: string;
+  thirdName: string;
+  forthName: string;
+  email: string;
+  SSN: string;
+  phone: string;
+  gender: string;
+  governate: string;
+  birthDate: string;
+  address: string;
+  verificationMethod: string;
+  status: string;
+}
+
 const CompleteIncident = (props: any) => {
-  const [intialValues, setIntialValues] = useState<PersonalDataValues>({
+  console.log(props.id)
+  const [intialValues, setIntialValues] = useState<incidentData>({
+    visitCode: "",
+    id: "",
     firstName: "",
     secondName: "",
     thirdName: "",
@@ -16,13 +37,12 @@ const CompleteIncident = (props: any) => {
     email: "",
     SSN: "",
     phone: "",
-    id: "",
     gender: "",
     governate: "",
-    date: "",
+    birthDate: "",
     address: "",
-    SSNtype: "",
-    search: "",
+    verificationMethod: "",
+    status: "",
   });
 
   const [submitFlag, setSubmitFlag] = useState<boolean>(false);
@@ -35,9 +55,10 @@ const CompleteIncident = (props: any) => {
     });
   };
 
-  const [patients, setPatients] = useState([
+  const [patients, setPatients] = useState<incidentData[]>([
     {
       id: "1",
+      visitCode:'256498',
       firstName: "احمد",
       secondName: "طلعت",
       thirdName: "محمد",
@@ -47,13 +68,14 @@ const CompleteIncident = (props: any) => {
       phone: "01211035528",
       gender: "1",
       governate: "1",
-      date: "2000-12-12",
+      birthDate: "2000-12-12",
       address: "حلولي",
-      SSNtype: "1",
+      verificationMethod: "1",
       status: "completed",
     },
     {
       id: "2",
+      visitCode:'262584',
       firstName: "",
       secondName: "",
       thirdName: "",
@@ -63,13 +85,14 @@ const CompleteIncident = (props: any) => {
       phone: "",
       gender: "",
       governate: "",
-      date: "",
+      birthDate: "",
       address: "",
-      SSNtype: "",
+      verificationMethod: "",
       status: "empty",
     },
     {
       id: "3",
+      visitCode:'221478',
       firstName: "نور",
       secondName: "فؤاد",
       thirdName: "",
@@ -79,13 +102,14 @@ const CompleteIncident = (props: any) => {
       phone: "",
       gender: "",
       governate: "",
-      date: "",
+      birthDate: "",
       address: "",
-      SSNtype: "",
+      verificationMethod: "",
       status: "notCompleted",
     },
     {
       id: "4",
+      visitCode:'595855',
       firstName: "",
       secondName: "",
       thirdName: "",
@@ -95,13 +119,14 @@ const CompleteIncident = (props: any) => {
       phone: "",
       gender: "",
       governate: "",
-      date: "",
+      birthDate: "",
       address: "",
-      SSNtype: "",
+      verificationMethod: "",
       status: "empty",
     },
     {
       id: "5",
+      visitCode:'156498',
       firstName: "احمد",
       secondName: "مروان",
       thirdName: "محمد",
@@ -111,13 +136,14 @@ const CompleteIncident = (props: any) => {
       phone: "01211035528",
       gender: "1",
       governate: "1",
-      date: "2000-12-12",
+      birthDate: "2000-12-12",
       address: "حلولي",
-      SSNtype: "1",
+      verificationMethod: "1",
       status: "completed",
     },
     {
       id: "6",
+      visitCode:'285724',
       firstName: "",
       secondName: "",
       thirdName: "",
@@ -127,13 +153,14 @@ const CompleteIncident = (props: any) => {
       phone: "",
       gender: "",
       governate: "",
-      date: "",
+      birthDate: "",
       address: "",
-      SSNtype: "",
+      verificationMethod: "",
       status: "empty",
     },
     {
       id: "7",
+      visitCode:'215524',
       firstName: "هاني",
       secondName: "نسيم",
       thirdName: "",
@@ -143,9 +170,9 @@ const CompleteIncident = (props: any) => {
       phone: "",
       gender: "",
       governate: "",
-      date: "",
+      birthDate: "",
       address: "",
-      SSNtype: "",
+      verificationMethod: "",
       status: "notCompleted",
     },
   ]);
@@ -160,7 +187,7 @@ const CompleteIncident = (props: any) => {
     } else if (checkFirstRender2.current) {
       checkFirstRender2.current = false;
     } else {
-      setIntialValues(patients[parseInt(selectedId)-1]);
+      setIntialValues(patients[parseInt(selectedId) - 1]);
     }
   }, [intialValues, patients, selectedId]);
 
@@ -172,12 +199,11 @@ const CompleteIncident = (props: any) => {
     email: string;
     SSN: string;
     phone: string;
-    id: string;
     gender: string;
     governate: string;
-    date: null | string;
+    birthDate: null | string;
     address: string;
-    SSNtype: string;
+    verificationMethod: string;
     status: string;
   }
 
@@ -283,7 +309,7 @@ const CompleteIncident = (props: any) => {
             overflow: "auto",
           }}
         >
-          {arraySort(patients).map((patient) => (
+          {arraySort(patients).map((patient: any) => (
             <Box
               key={patient.id}
               id={patient.id}
@@ -300,7 +326,7 @@ const CompleteIncident = (props: any) => {
                 marginBottom: "1rem",
                 cursor: "pointer",
               }}
-              onClick={(e) => setSelectedId(e.target.id)}
+              onClick={(e: any) => setSelectedId(e.target.id)}
             >
               <Box
                 sx={{
@@ -312,15 +338,18 @@ const CompleteIncident = (props: any) => {
                     patient.status === "completed"
                       ? "success.main"
                       : patient.status === "notCompleted"
-                      ? "warning.main"
-                      : "error.main",
+                        ? "warning.main"
+                        : "error.main",
                   marginRight: "1rem",
                 }}
               ></Box>
-              <Typography sx={{ pointerEvents: "none" }}>
-                {patient.firstName ? patient.firstName : "مريض"}&nbsp;
-                {patient.secondName ? patient.secondName : "جديد"}
-              </Typography>
+              <Box sx={{display:'flex',flexDirection:'column', pointerEvents: "none" }}>
+                <Typography sx={{ fontWeight: '600'}}>
+                  {patient.firstName ? patient.firstName : "مريض"}&nbsp;
+                  {patient.secondName ? patient.secondName : "جديد"}
+                </Typography>
+                <Typography>{patient.visitCode}</Typography>
+              </Box>
             </Box>
           ))}
         </Box>

@@ -2,9 +2,9 @@ import PageHeader from '@/core/shared/components/headers/PageHeader'
 import { Box } from '@mui/system'
 import React from 'react'
 import HealthAndSafetyOutlinedIcon from '@mui/icons-material/HealthAndSafetyOutlined';
-import AddIncidentForm from '../components/add-incident/AddIncidentForm';
+import AddVisitForm from '../components/add-visit-form/AddVisitForm';
 
-const AddIncident = () => {
+const AddVisit = () => {
     return (
     <Box
       sx={{
@@ -13,13 +13,12 @@ const AddIncident = () => {
         margin: "3% auto 0",
       }}
     >
-      <PageHeader title="اضافـــــــة حـــادث">
+      <PageHeader title="اضافـــــــة زيـــارة">
         <HealthAndSafetyOutlinedIcon />
       </PageHeader>
-
-      <AddIncidentForm />
+      <AddVisitForm/>
     </Box>
   )}
 
 
-export default AddIncident
+export default AddVisit

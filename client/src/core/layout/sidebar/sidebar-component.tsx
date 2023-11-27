@@ -49,6 +49,17 @@ const SidebarComponent = () => {
           path="/dashboard/incidents/complete"
         />
       </SidebarMenuItem>
+      <SidebarMenuItem
+        icon={
+          <PeopleIcon sx={{ color: "primary.main", textAlign: "center" }} />
+        }
+        activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
+        text="الزيارات"
+        path="/visits"
+      >
+        <SidebarSubmenuItem text="إضافة زيارة" path="/dashboard/visits/add" />
+        <SidebarSubmenuItem text="الزيارات المجهولة" path="/dashboard/visits/anonymous-visits" />
+      </SidebarMenuItem>
     </Box>
   );
 };
