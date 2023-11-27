@@ -14,11 +14,13 @@ import Dialog from "@/core/shared/components/Dialog";
 interface CompleteVisitProps {
   display: string;
   DialogStateController: React.Dispatch<React.SetStateAction<string>>;
+  id?:string
 }
 
 const CompleteVisit = ({
   display,
   DialogStateController,
+  id,
 }: CompleteVisitProps) => {
   // useRef
   const refSubmitFirstStepButton: any = useRef(null);

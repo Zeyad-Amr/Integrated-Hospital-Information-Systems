@@ -2,8 +2,17 @@ import CustomDataTable from "@/core/shared/components/CustomDataTable";
 import { Button, } from "@mui/material";
 import { DataItem, data, header } from "./data";
 import { Box } from "@mui/system";
+import CompleteVisit from "../complete-visit-data/CompleteVisit";
+import { useRef, useState } from "react";
 
 const VisitsTable = () => {
+
+    // useRef
+    const refIdValue = useRef("");
+
+    // useState
+    const [showDialog, setShawDialog] = useState("none");
+
     //* data that in the state 
     const apiData: any[] = data
     let tableData: DataItem[] = []
@@ -23,7 +32,10 @@ const VisitsTable = () => {
                 color="info"
                 variant="outlined"
                 fullWidth
-                onClick={() => (console.log(item.code))}
+                onClick={() => {
+                    refIdValue.current = item.code
+                    setShawDialog("block");
+                }}
             >استكمال بيانات</Button>
         })
     })
@@ -34,13 +46,16 @@ const VisitsTable = () => {
                 p: 3
             }}
         >
-
-
             <CustomDataTable
                 data={tableData}
                 renderItem={header}
                 stickyHeader={true}
                 boxShadow={5}
+            />
+            <CompleteVisit
+                display={showDialog}
+                DialogStateController={setShawDialog}
+                id={refIdValue.current}
             />
         </Box>
     );

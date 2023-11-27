@@ -1,8 +1,16 @@
 import CustomDataTable from "@/core/shared/components/CustomDataTable";
 import { Box, Button, } from "@mui/material";
 import { DataItem, IncidentType, data, header } from "./data";
+import CompleteIncident from "../../pages/CompleteIncident";
+import { useRef, useState } from "react";
 
 const IncidentTable = () => {
+    // useRef
+    const refIdValue = useRef("");
+
+    // useState
+    const [showDialog, setShawDialog] = useState("none");
+
     //* data that in the state 
     const apiData: any[] = data
     let tableData: DataItem[] = []
@@ -22,10 +30,10 @@ const IncidentTable = () => {
                     color="primary"
                     variant="contained"
                     fullWidth
-                    onClick={() => (
-                        //* 
-                        console.log(item.code)
-                    )}
+                    onClick={() => {
+                        refIdValue.current = item.id
+                        setShawDialog("block")
+                    }}
                 >استكمال بيانات</Button>
         })
     })
@@ -37,6 +45,12 @@ const IncidentTable = () => {
                 renderItem={header}
                 stickyHeader={true}
                 boxShadow={5}
+            />
+
+            <CompleteIncident
+                display={showDialog}
+                DialogStateController={setShawDialog}
+                id={refIdValue.current}
             />
         </Box>
     );
