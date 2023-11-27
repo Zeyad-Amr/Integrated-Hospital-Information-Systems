@@ -12,6 +12,8 @@ class VisitsRepository extends BaseVisitsRepository {
 
     override async createVisit(visit: VisitEntity): Promise<Either<ErrorResponse, VisitEntity>> {
         try {
+            console.log("Creating Visit");
+            console.log(VisitMapper.entityToModel(visit));
             const result = await this.baseVisitsDataSource.createVisit(VisitMapper.entityToModel(visit));
             return Either.right(VisitMapper.modelToEntity(result));
         } catch (error) {
@@ -32,7 +34,9 @@ class VisitsRepository extends BaseVisitsRepository {
 
     override async getAllAnonymousVisits(): Promise<Either<ErrorResponse, VisitEntity[]>> {
         try {
+            console.log("getAllAnonymousVisits");
             const result = await this.baseVisitsDataSource.getAllAnonymousVisits();
+            console.log(result);
             return Either.right(result.map((item) => VisitMapper.modelToEntity(item)));
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;

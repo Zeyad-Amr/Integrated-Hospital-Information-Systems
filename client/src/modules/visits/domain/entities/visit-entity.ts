@@ -1,5 +1,5 @@
 import PersonEntity from "@/modules/auth/domain/entities/person-entity";
-import EmployeeEntity from "@/modules/employees/domain/entities/employee-entity";
+// import EmployeeEntity from "@/modules/employees/domain/entities/employee-entity";
 
 export default class VisitEntity {
     private _code: string;
@@ -7,10 +7,9 @@ export default class VisitEntity {
     private _kinship: string | null;
     private _createdAt: Date;
     private _updatedAt: Date;
-    private _creator: EmployeeEntity;
+    // private _creator: EmployeeEntity;
     private _patient: PersonEntity;
     private _companion: PersonEntity;
-    private _incidentId: string | null;
 
     constructor(data: {
         code: string;
@@ -18,30 +17,30 @@ export default class VisitEntity {
         kinship: string | null;
         createdAt: Date;
         updatedAt: Date;
-        creator: {
-            id: string;
-            role: string;
-            createdAt: Date;
-            updatedAt: Date;
-            createdById: string | null;
-            person: {
-                id: string;
-                firstName: string;
-                secondName: string;
-                thirdName: string;
-                fourthName: string;
-                SSN: string;
-                verificationMethod: string;
-                gender: string;
-                birthDate: Date;
-                phone: string;
-                email: string;
-                governate: string;
-                address: string;
-                createdAt: Date;
-                updatedAt: Date;
-            };
-        };
+        // creator: {
+        //     id: string;
+        //     role: string;
+        //     createdAt: Date;
+        //     updatedAt: Date;
+        //     createdById: string | null;
+        //     person: {
+        //         id: string;
+        //         firstName: string;
+        //         secondName: string;
+        //         thirdName: string;
+        //         fourthName: string;
+        //         SSN: string;
+        //         verificationMethod: string;
+        //         gender: string;
+        //         birthDate: Date;
+        //         phone: string;
+        //         email: string;
+        //         governate: string;
+        //         address: string;
+        //         createdAt: Date;
+        //         updatedAt: Date;
+        //     };
+        // };
         patient: {
             id: string;
             firstName: string;
@@ -76,17 +75,15 @@ export default class VisitEntity {
             createdAt: Date;
             updatedAt: Date;
         };
-        incidentId: string | null;
     }) {
         this._code = data.code;
         this._sequenceNumber = data.sequenceNumber;
         this._kinship = data.kinship;
         this._createdAt = data.createdAt;
         this._updatedAt = data.updatedAt;
-        this._creator = new EmployeeEntity(data.creator);
+        // this._creator = new EmployeeEntity(data.creator);
         this._patient = new PersonEntity(data.patient);
         this._companion = new PersonEntity(data.companion);
-        this._incidentId = data.incidentId;
     }
 
     //* --------------------- Getters ---------------------
@@ -110,9 +107,9 @@ export default class VisitEntity {
         return this._updatedAt;
     }
 
-    get creator(): EmployeeEntity {
-        return this._creator;
-    }
+    // get creator(): EmployeeEntity {
+    //     return this._creator;
+    // }
 
     get patient(): PersonEntity {
         return this._patient;
@@ -120,10 +117,6 @@ export default class VisitEntity {
 
     get companion(): PersonEntity {
         return this._companion;
-    }
-
-    get incidentId(): string | null {
-        return this._incidentId;
     }
 
     //* --------------------- Setters ---------------------
@@ -148,9 +141,9 @@ export default class VisitEntity {
         this._updatedAt = updatedAt;
     }
 
-    set creator(creator: EmployeeEntity) {
-        this._creator = creator;
-    }
+    // set creator(creator: EmployeeEntity) {
+    //     this._creator = creator;
+    // }
 
     set patient(patient: PersonEntity) {
         this._patient = patient;
@@ -160,14 +153,11 @@ export default class VisitEntity {
         this._companion = companion;
     }
 
-    set incidentId(incidentId: string) {
-        this._incidentId = incidentId;
-    }
     //* --------------------- Methods ---------------------
     static defaultValue(): VisitEntity {
         const defaultDate = new Date();
         const defaultPerson = PersonEntity.defaultValue(); // Getting default PersonEntity
-        const defaultEmployee = EmployeeEntity.defaultValue(); // Getting default PersonEntity
+        // const defaultEmployee = EmployeeEntity.defaultValue(); // Getting default PersonEntity
 
         return new VisitEntity({
             code: "",
@@ -175,10 +165,10 @@ export default class VisitEntity {
             kinship: null,
             createdAt: defaultDate,
             updatedAt: defaultDate,
-            creator: defaultEmployee,
+            // creator: defaultEmployee,
             patient: defaultPerson,
             companion: defaultPerson,
-            incidentId: null,
+
         });
     }
 
