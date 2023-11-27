@@ -334,105 +334,6 @@ const AddIncidentForm = () => {
                           placeholder: "الحرف الاول",
                         }}
                       />
-<<<<<<< Updated upstream
-                      <Grid container columns={9} spacing={2}>
-                        <Grid item lg={2} md={2} sm={2} xs={2}>
-                          <CustomTextField
-                            isRequired
-                            id="amb-car-1"
-                            name="firstChar"
-                            label="الحرف الاول"
-                            value={values.firstChar}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            onKeyDown={(e : any) =>
-                              handleKeyDown(
-                                e.target.id,
-                                e.keyCode,
-                                e.target.value
-                              )
-                            }
-                            error={errors.firstChar}
-                            touched={touched.firstChar}
-                            width="200%"
-                            props={{
-                              type: "text",
-                            }}
-                          />
-                        </Grid>
-                        <Grid item lg={2} md={2} sm={2} xs={2}>
-                          <CustomTextField
-                            id="amb-car-2"
-                            isRequired
-                            name="secondChar"
-                            label="الحرف الثاني"
-                            value={values.secondChar}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            onKeyDown={(e : any) =>
-                              handleKeyDown(
-                                e.target.id,
-                                e.keyCode,
-                                e.target.value
-                              )
-                            }
-                            error={errors.secondChar}
-                            touched={touched.secondChar}
-                            width="200%"
-                            props={{
-                              type: "text",
-                            }}
-                          />
-                        </Grid>
-                        <Grid item lg={2} md={2} sm={2} xs={2}>
-                          <CustomTextField
-                            id="amb-car-3"
-                            name="thirdChar"
-                            label="الحرف الثالث"
-                            value={values.thirdChar}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            onKeyDown={(e : any) =>
-                              handleKeyDown(
-                                e.target.id,
-                                e.keyCode,
-                                e.target.value
-                              )
-                            }
-                            error={errors.thirdChar}
-                            touched={touched.thirdChar}
-                            width="100%"
-                            props={{
-                              type: "text",
-                            }}
-                          />
-                        </Grid>
-                        <Grid item lg={3} md={3} sm={3} xs={3}>
-                          <CustomTextField
-                            isRequired
-                            id="amb-car-4"
-                            name="carNum"
-                            label="الرقم"
-                            value={values.carNum}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            onKeyDown={(e : any) =>
-                              handleKeyDown(
-                                e.target.id,
-                                e.keyCode,
-                                e.target.value
-                              )
-                            }
-                            error={errors.carNum}
-                            touched={touched.carNum}
-                            width="100%"
-                            props={{
-                              type: "text",
-                            }}
-                          />
-                        </Grid>
-                      </Grid>
-=======
                     </Grid>
                     <Grid item lg={2} md={2} sm={2} xs={2}>
                       <CustomTextField
@@ -507,7 +408,6 @@ const AddIncidentForm = () => {
                       />
                     </Grid>
                   </Grid>
->>>>>>> Stashed changes
                 </Grid>
                 <Grid
                   item
