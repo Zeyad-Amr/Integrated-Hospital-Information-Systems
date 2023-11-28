@@ -6,7 +6,6 @@ export default class EmployeeEntity extends UserEntity {
         role: string;
         createdAt: Date;
         updatedAt: Date;
-        personID: string;
         createdById: string | null;
         person: {
             id: string;

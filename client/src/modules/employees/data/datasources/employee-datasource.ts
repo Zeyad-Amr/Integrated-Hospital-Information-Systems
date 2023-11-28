@@ -6,7 +6,7 @@ abstract class BaseEmployeeDataSource {
     abstract getEmployeeById(id: string): Promise<EmployeeModel>;
     abstract getAllEmployees(): Promise<EmployeeModel[]>;
     abstract createEmployee(employee: EmployeeModel, authData: AuthDataModel): Promise<EmployeeModel>;
-    abstract updateEmployee(employee: EmployeeModel, authData: AuthDataModel): Promise<EmployeeModel | null>;
+    abstract updateEmployee(employee: EmployeeModel, authData: AuthDataModel): Promise<EmployeeModel>;
     abstract deleteEmployee(id: string): Promise<boolean>;
 }
 
@@ -35,7 +35,7 @@ class EmployeeDataSource extends BaseEmployeeDataSource {
         return EmployeeModel.fromJson(response.data);
     }
 
-    override async updateEmployee(employee: EmployeeModel, authData: AuthDataModel): Promise<EmployeeModel | null> {
+    override async updateEmployee(employee: EmployeeModel, authData: AuthDataModel): Promise<EmployeeModel> {
         const response = await this.apiClient.patch(Endpoints.employee.update, employee.toJsonWithAuthData(authData), {
             pathVariables: { id: employee.id },
         });

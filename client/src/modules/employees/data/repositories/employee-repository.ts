@@ -41,7 +41,7 @@ class EmployeeRepository extends BaseEmployeeRepository {
             return Either.left(errorResponse);
         }
     }
-    override async updateEmployee(employee: EmployeeEntity, authData: AuthDataEntity): Promise<Either<ErrorResponse, EmployeeEntity | null>> {
+    override async updateEmployee(employee: EmployeeEntity, authData: AuthDataEntity): Promise<Either<ErrorResponse, EmployeeEntity>> {
         try {
             const result = await this.baseEmployeeDataSource.updateEmployee(EmployeeMapper.entityToModel(employee), AuthDataMapper.entityToModel(authData));
             return Either.right(result);
