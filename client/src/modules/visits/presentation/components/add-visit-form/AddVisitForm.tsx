@@ -41,7 +41,7 @@ const AddVisitForm = () => {
     firstName: "",
     secondName: "",
     thirdName: "",
-    forthName: "",
+    fourthName: "",
     email: "",
     SSN: "",
     phone: "",

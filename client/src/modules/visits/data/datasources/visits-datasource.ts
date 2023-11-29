@@ -15,6 +15,7 @@ class VisitsDataSource extends BaseVisitsDataSource {
 
     override async createVisit(visit: VisitModel): Promise<VisitModel> {
         console.log("Create Data Visit");
+        console.log(visit);
         console.log(visit.toJson());
         const response = await this.apiClient.post(Endpoints.visit.create, visit.toJson());
         console.log(response.data);

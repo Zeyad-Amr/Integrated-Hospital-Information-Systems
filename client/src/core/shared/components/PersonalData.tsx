@@ -11,7 +11,7 @@ export interface PersonalDataValues {
   firstName: string;
   secondName: string;
   thirdName: string;
-  forthName: string;
+  fourthName: string;
   email: string;
   SSN: string;
   phone: string;
@@ -54,23 +54,23 @@ const PersonalData = ({
     firstName: Yup.string()
       .required("First name is required")
       .min(3, "First name must be at least 3 characters")
-      .max(45, "First name must be at most 45 characters")
-      .matches(/^[aA-zZ\s]+$/, "First name must be alphabetic."),
+      .max(45, "First name must be at most 45 characters"),
+    // .matches(/^[aA-zZ\s]+$/, "First name must be alphabetic."),
     secondName: Yup.string()
       .required("Second name is required")
       .min(3, "Second name must be at least 3 characters")
-      .max(45, "Second name must be at most 45 characters")
-      .matches(/^[aA-zZ\s]+$/, "Second name must be alphabetic."),
+      .max(45, "Second name must be at most 45 characters"),
+    // .matches(/^[aA-zZ\s]+$/, "Second name must be alphabetic."),
     thirdName: Yup.string()
       .required("Third name is required")
       .min(3, "Third name must be at least 3 characters")
-      .max(45, "Third name must be at most 45 characters")
-      .matches(/^[aA-zZ\s]+$/, "Third name must be alphabetic."),
-    forthName: Yup.string()
+      .max(45, "Third name must be at most 45 characters"),
+    // .matches(/^[aA-zZ\s]+$/, "Third name must be alphabetic."),
+    fourthName: Yup.string()
       .required("Forth name is required")
       .min(3, "Forth name must be at least 3 characters")
-      .max(45, "Forth name must be at most 45 characters")
-      .matches(/^[aA-zZ\s]+$/, "Forth name must be alphabetic."),
+      .max(45, "Forth name must be at most 45 characters"),
+    // .matches(/^[aA-zZ\s]+$/, "Forth name must be alphabetic."),
     address: Yup.string()
       .required("Address name is required")
       .min(3, "Address name must be at least 3 characters")
@@ -80,7 +80,6 @@ const PersonalData = ({
     verificationMethod: Yup.string().required("SSN type is required"),
     birthDate: Yup.string().required("Date is required"),
     email: Yup.string()
-      .required("Email is required")
       .min(3, "Enter a valid email")
       .max(45, "Enter a valid email")
       .email("Enter a valid email"),
@@ -89,7 +88,6 @@ const PersonalData = ({
       .length(14, "SSN must be 14 numbers")
       .matches(/^[0-9]+$/, "Phone number must be numeric."),
     phone: Yup.string()
-      .required("Phone number is required")
       .length(11, "Phone number must be 11 characters")
       .matches(/^[0-9]+$/, "Phone number must be numeric."),
   });
@@ -101,7 +99,7 @@ const PersonalData = ({
         firstName: initialValues.firstName,
         secondName: initialValues.secondName,
         thirdName: initialValues.thirdName,
-        forthName: initialValues.forthName,
+        fourthName: initialValues.fourthName,
         email: initialValues.email,
         SSN: initialValues.SSN,
         phone: initialValues.phone,
@@ -150,7 +148,7 @@ const PersonalData = ({
                 touched={touched.SSN}
                 width="100%"
                 props={{
-                  type: "number",
+                  type: "text",
                 }}
               />
               <CustomTextField
@@ -198,7 +196,6 @@ const PersonalData = ({
                 }}
               />
               <CustomTextField
-                isRequired
                 name="phone"
                 label="رقم الهاتف"
                 value={values.phone}
@@ -283,20 +280,19 @@ const PersonalData = ({
               />
               <CustomTextField
                 isRequired
-                name="forthName"
+                name="fourthName"
                 label="الاسم الرابع"
-                value={values.forthName}
+                value={values.fourthName}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.forthName}
-                touched={touched.forthName}
+                error={errors.fourthName}
+                touched={touched.fourthName}
                 width="100%"
                 props={{
                   type: "text",
                 }}
               />
               <CustomTextField
-                isRequired
                 name="email"
                 label="الايميل"
                 value={values.email}
