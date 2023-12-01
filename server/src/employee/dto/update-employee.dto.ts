@@ -3,11 +3,12 @@ import { CreateEmployeeDto } from './create-employee.dto';
 import {
     IsObject,
     IsOptional,
+    IsUUID,
     Validate,
     ValidateNested,
 } from 'class-validator';
 import { IsValidEnumValue } from 'src/shared/special-validator';
-import { RoleEnum } from '@prisma/client';
+import { RoleEnum, ShiftEnum } from '@prisma/client';
 import { Type } from 'class-transformer';
 import { UpdatePersonDto } from 'src/person/dto/update-person.dto';
 
@@ -26,5 +27,21 @@ export class UpdateEmployeeDto {
     @IsOptional()
     @Validate(IsValidEnumValue, [RoleEnum])
     role: RoleEnum
+
+    @ApiProperty({
+        type: String,
+        example: 'MORNING12',
+    })
+    @IsOptional()
+    @Validate(IsValidEnumValue, [ShiftEnum])
+    shift: ShiftEnum;
+
+    @ApiProperty({
+        type: String,
+        example: 'RECEPTIONIST',
+    })
+    @IsOptional()
+    @IsUUID()
+    departmentId: string;
 
 }

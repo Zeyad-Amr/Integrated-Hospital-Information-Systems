@@ -7,10 +7,11 @@ import { IncidentModule } from './incident/incident.module';
 import { EmployeeModule } from './employee/employee.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
+import { DepartmentModule } from './department/department.module';
 
 
 @Module({
-  imports: [AuthModule, PatientModule, PersonModule, EmployeeModule, VisitModule, IncidentModule],
+  imports: [AuthModule, PatientModule, PersonModule, EmployeeModule, VisitModule, IncidentModule, DepartmentModule],
   controllers: [],
   providers: [{
     provide: APP_GUARD,
