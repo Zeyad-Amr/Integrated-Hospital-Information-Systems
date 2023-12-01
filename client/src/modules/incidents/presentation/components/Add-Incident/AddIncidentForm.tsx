@@ -51,9 +51,10 @@ const AddIncidentForm = () => {
   };
 
   const intialAdditionalValues: AdditionalDataValues = {
-    numOfPatients: "",
     comeFromString: "",
-    paramedicName: "",
+    attendantName: "",
+    attendantSSN: "",
+    attendantSerialNumber: "",
     carNum: "",
     firstChar: "",
     secondChar: "",
@@ -136,7 +137,6 @@ const AddIncidentForm = () => {
   }, [clickedBtnId, incidentData]);
   const handleFormSchema = Yup.object({
     numOfPatients: Yup.number().required("يجب إدخال عدد المرضى"),
-    comeFromString: Yup.string().required("يجب إدخال جهة القدوم"),
   });
   return (
     <>
@@ -147,7 +147,6 @@ const AddIncidentForm = () => {
       <Formik
         initialValues={{
           numOfPatients: "",
-          comeFromString: "",
         }}
         validationSchema={handleFormSchema}
         onSubmit={() => {
@@ -171,58 +170,20 @@ const AddIncidentForm = () => {
             <Box
               sx={{ display: showIncidentForm ? showIncidentForm : "block" }}
             >
-              <Grid
-                container
-                columns={6}
-                spacing={4}
-                sx={{ marginBottom: "-5px" }}
-              >
-                <Grid item lg={3} md={3} sm={6} xs={6}>
-                  <CustomTextField
-                    isRequired
-                    name="numOfPatients"
-                    label="عدد المرضى"
-                    value={values.numOfPatients}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={errors.numOfPatients}
-                    touched={touched.numOfPatients}
-                    width="100%"
-                    props={{
-                      type: "number",
-                    }}
-                  />
-                </Grid>
-                <Grid item lg={3} md={3} sm={6} xs={6}>
-                  <CustomSelectField
-                    isRequired
-                    name="comeFromString"
-                    label="قادم من"
-                    value={values.comeFromString}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    onBlur={handleBlur}
-                    error={errors.comeFromString}
-                    touched={touched.comeFromString}
-                    width="100%"
-                    options={[
-                      {
-                        id: "1",
-                        title: "منــــزل",
-                      },
-                      {
-                        id: "2",
-                        title: "حـــادث",
-                      },
-                      {
-                        id: "3",
-                        title: "سجــــن",
-                      },
-                    ]}
-                  />
-                </Grid>
-              </Grid>
+              <CustomTextField
+                isRequired
+                name="numOfPatients"
+                label="عدد المرضى"
+                value={values.numOfPatients}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.numOfPatients}
+                touched={touched.numOfPatients}
+                width="100%"
+                props={{
+                  type: "number",
+                }}
+              />
             </Box>
           </Box>
         )}

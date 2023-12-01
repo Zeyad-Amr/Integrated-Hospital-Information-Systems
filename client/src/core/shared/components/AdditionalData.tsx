@@ -4,8 +4,8 @@ import * as Yup from "yup";
 
 import React, { useEffect, useRef } from "react";
 import CustomTextField from "./CustomTextField";
+import CustomSelectField from "./CustomSelectField";
 export interface AdditionalDataValues {
-  numOfPatients: string;
   comeFromString: string;
   attendantName: string;
   attendantSSN: string;
@@ -50,6 +50,7 @@ const AdditionalData = ({
   }, [isSubmitted]);
 
   const handleFormSchema = Yup.object({
+    comeFromString: Yup.string().required("يجب إدخال جهة القدوم"),
     attendantName: Yup.string()
       .required("يجب إدخال اسم المسعف")
       .min(3, "First name must be at least 3 characters")
@@ -94,6 +95,7 @@ const AdditionalData = ({
   return (
     <Formik
       initialValues={{
+        comeFromString: initialValues.comeFromString,
         attendantName: initialValues.attendantName,
         attendantSSN: initialValues.attendantSSN,
         attendantSerialNumber: initialValues.attendantSerialNumber,
@@ -139,7 +141,33 @@ const AdditionalData = ({
                 sm={12}
                 xs={12}
               >
-  
+                <CustomSelectField
+                  isRequired
+                  name="comeFromString"
+                  label="قادم من"
+                  value={values.comeFromString}
+                  onChange={(e) => {
+                    handleChange(e);
+                  }}
+                  onBlur={handleBlur}
+                  error={errors.comeFromString}
+                  touched={touched.comeFromString}
+                  width="100%"
+                  options={[
+                    {
+                      id: "1",
+                      title: "منــــزل",
+                    },
+                    {
+                      id: "2",
+                      title: "حـــادث",
+                    },
+                    {
+                      id: "3",
+                      title: "سجــــن",
+                    },
+                  ]}
+                />
                 <CustomTextField
                   isRequired
                   name="attendantName"
