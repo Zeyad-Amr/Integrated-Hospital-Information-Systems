@@ -26,10 +26,13 @@ import { AuthRequest } from './auth.interface';
 @ApiBearerAuth()
 @Controller('user')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   // ******* this api for development only MUST be removed in production *******
-  @ApiOperation({ summary: 'get all users (used for debugging *should be removed in production*)' })
+  @ApiOperation({
+    summary:
+      'get all users (used for debugging *should be removed in production*)',
+  })
   @Get()
   @Public()
   async findAll() {

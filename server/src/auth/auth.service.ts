@@ -10,13 +10,12 @@ import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
 import * as crypto from 'crypto';
 
-
 @Injectable()
 export class AuthService {
   constructor(
     private authRepo: AuthRepo,
     private jwtService: JwtService,
-  ) { }
+  ) {}
 
   async login(loginUserDto: LoginUserDto) {
     try {
@@ -69,8 +68,10 @@ export class AuthService {
     name = name.toLowerCase();
     let usernames: User[];
     try {
-      const { items } = await this.authRepo.getAll({ select: { username: true } });
-      usernames = items
+      const { items } = await this.authRepo.getAll({
+        select: { username: true },
+      });
+      usernames = items;
     } catch (error) {
       throw error;
     }
@@ -88,7 +89,6 @@ export class AuthService {
       'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const randomValues = new Uint8Array(length);
 
-
     crypto.getRandomValues(randomValues);
 
     return Array.from(
@@ -99,7 +99,7 @@ export class AuthService {
 
   async findAll() {
     return await this.authRepo.getAll();
-    return null
+    return null;
   }
 
   hashPassword = async (password: string) => {

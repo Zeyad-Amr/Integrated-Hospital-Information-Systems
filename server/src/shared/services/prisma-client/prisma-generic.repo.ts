@@ -4,8 +4,8 @@ import { Injectable } from '@nestjs/common';
 import { Pagination } from 'src/shared/decorators/pagination.decorator';
 import { Filter } from 'src/shared/decorators/filters.decorator';
 import { Sorting } from 'src/shared/decorators/order.decorator';
-import { getWhere } from 'src/shared/util.functions.ts/get.where.filter';
-import { getOrder } from 'src/shared/util.functions.ts/get.order';
+import { getWhere } from '../../util.functions.ts/get.where.filter';
+import { getOrder } from '../../util.functions.ts/get.order';
 @Injectable()
 export class PrismaGenericRepo<T> {
   constructor(
@@ -15,33 +15,43 @@ export class PrismaGenericRepo<T> {
     this.modelName = modelName;
   }
 
-  async getAll(
-    args?: {
-      paginationParams?: Pagination,
-      filters?: Array<Filter>,
-      sort?: Sorting,
-      include?: any,
-      select?: any,
-      additionalWhereConditions?: Array<any>,
-    }): Promise<PaginatedResource<T>> {
+  async getAll(args?: {
+    paginationParams?: Pagination;
+    filters?: Array<Filter>;
+    sort?: Sorting;
+    include?: any;
+    select?: any;
+    additionalWhereConditions?: Array<any>;
+  }): Promise<PaginatedResource<T>> {
     try {
-      const whereCondition = getWhere(args.filters, args.additionalWhereConditions)
-      const order: any = getOrder(args.sort)
+      const whereCondition = getWhere(
+        args.filters,
+        args.additionalWhereConditions,
+      );
+      const order: any = getOrder(args.sort);
       const res = await this.prisma.$transaction(async (tx) => {
         const count = await tx[this.modelName].count({ where: whereCondition });
         const data = await tx[this.modelName].findMany({
           where: whereCondition,
           orderBy: order,
-          skip: args?.paginationParams?.offset ? args.paginationParams.offset : undefined,
-          take: args?.paginationParams?.limit ? args.paginationParams.limit : undefined,
+          skip: args?.paginationParams?.offset
+            ? args.paginationParams.offset
+            : undefined,
+          take: args?.paginationParams?.limit
+            ? args.paginationParams.limit
+            : undefined,
           include: args?.include,
-          select: args?.select
-        })
-        return { count, data }
-      })
+          select: args?.select,
+        });
+        return { count, data };
+      });
 
-      return { total: res.count, items: res.data, page: args.paginationParams?.page, size: res.data.length };
-
+      return {
+        total: res.count,
+        items: res.data,
+        page: args.paginationParams?.page,
+        size: res.data.length,
+      };
     } catch (error) {
       throw error;
     }
@@ -67,7 +77,6 @@ export class PrismaGenericRepo<T> {
       throw error;
     }
   }
-
 
   async update(
     id: string,

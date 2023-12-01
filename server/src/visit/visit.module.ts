@@ -9,4 +9,4 @@ import { PersonRepo } from 'src/person/person.repo';
   controllers: [VisitController],
   providers: [VisitRepo, VisitService, PrismaService, PersonRepo],
 })
-export class VisitModule { }
+export class VisitModule {}

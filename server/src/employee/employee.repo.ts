@@ -11,83 +11,94 @@ import { PaginatedResource } from 'src/shared/types/paginated.resource';
 
 @Injectable()
 export class EmployeeRepo extends PrismaGenericRepo<any> {
-    constructor(private prismaService: PrismaService) {
-        super('employee', prismaService);
+  constructor(private prismaService: PrismaService) {
+    super('employee', prismaService);
+  }
+
+  async createEmployee(
+    item: CreateEmployeeDto,
+    creatorId: string,
+  ): Promise<Employee> {
+    try {
+      const { auth, role, personalData } = item;
+      const employee = await this.prismaService.employee.create({
+        data: {
+          role,
+          user: { create: { ...auth } },
+          person: {
+            connectOrCreate: {
+              where: { SSN: personalData.SSN },
+              create: {
+                ...personalData,
+              },
+            },
+          },
+          createdByEmployee: {
+            connect: {
+              id: creatorId,
+            },
+          },
+        },
+        include: this.includeObj,
+      });
+      return employee;
+    } catch (error) {
+      throw error;
     }
+  }
+  async update(id: string, item: UpdateEmployeeDto): Promise<any> {
+    try {
+      const { auth, role, personalData } = item;
 
-    async createEmployee(item: CreateEmployeeDto, creatorId: string): Promise<Employee> {
-        try {
-            const { auth, role, personalData } = item;
-            const employee = await this.prismaService.employee.create({
-                data: {
-                    role,
-                    user: { create: { ...auth } },
-                    person: {
-                        connectOrCreate: {
-                            where: { SSN: personalData.SSN },
-                            create: {
-                                ...personalData
-                            }
-                        }
-                    },
-                    createdByEmployee: {
-                        connect: {
-                            id: creatorId
-                        }
-                    }
-                },
-                include: this.includeObj
-            });
-            return employee;
-        } catch (error) {
-            throw error;
-        }
+      const employee = await this.prismaService.employee.update({
+        where: { id },
+        data: {
+          role,
+          user: { update: { ...auth } },
+          person: {
+            update: {
+              data: {
+                ...personalData,
+              },
+            },
+          },
+        },
+        include: { person: true },
+      });
+      return employee;
+    } catch (error) {
+      throw error;
     }
-    async update(id: string, item: UpdateEmployeeDto): Promise<any> {
-        try {
-            const { auth, role, personalData } = item;
+  }
 
-            const employee = await this.prismaService.employee.update({
-                where: { id },
-                data: {
-                    role,
-                    user: { update: { ...auth } },
-                    person: {
-                        update: {
-                            data: {
-                                ...personalData
-                            }
-                        }
-                    },
-                },
-                include: { person: true, }
-            });
-            return employee
-        } catch (error) {
-            throw error;
-        }
+  async getByID(id: string): Promise<Employee> {
+    try {
+      const res = await this.prismaService.employee.findUniqueOrThrow({
+        where: { id },
+        include: this.includeObj,
+      });
+      return res;
+    } catch (error) {
+      throw error;
     }
+  }
 
-    async getByID(id: string): Promise<Employee> {
-        try {
-            const res = await this.prismaService.employee.findUniqueOrThrow({
-                where: { id },
-                include: this.includeObj
-            });
-            return res;
-        } catch (error) {
-            throw error;
-        }
+  findAll(
+    pagination: Pagination,
+    sort: Sorting,
+    filters: Array<Filter>,
+  ): Promise<PaginatedResource<Employee>> {
+    try {
+      return this.getAll({
+        paginationParams: pagination,
+        filters,
+        sort,
+        include: this.includeObj,
+      });
+    } catch (error) {
+      throw error;
     }
+  }
 
-    findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>): Promise<PaginatedResource<Employee>> {
-        try {
-            return this.getAll({ paginationParams: pagination, filters, sort, include: this.includeObj })
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    private includeObj: Prisma.EmployeeInclude = { person: true }
-
+  private includeObj: Prisma.EmployeeInclude = { person: true };
 }

@@ -12,7 +12,7 @@ export class EmployeeService {
   constructor(
     private employeeRepo: EmployeeRepo,
     private authService: AuthService,
-  ) { }
+  ) {}
   async create(createEmployeeDto: CreateEmployeeDto, creatorId: string) {
     try {
       const username = await this.authService.generateUsername(
@@ -36,7 +36,6 @@ export class EmployeeService {
 
   async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>) {
     try {
-
       return await this.employeeRepo.findAll(pagination, sort, filters);
     } catch (error) {
       throw error;

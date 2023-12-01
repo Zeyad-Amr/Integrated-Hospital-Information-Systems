@@ -8,6 +8,12 @@ import { VisitRepo } from 'src/visit/visit.repo';
 
 @Module({
   controllers: [PatientController],
-  providers: [PatientService, PatientRepo, PrismaService, PersonRepo,VisitRepo],
+  providers: [
+    PatientService,
+    PatientRepo,
+    PrismaService,
+    PersonRepo,
+    VisitRepo,
+  ],
 })
-export class PatientModule { }
+export class PatientModule {}

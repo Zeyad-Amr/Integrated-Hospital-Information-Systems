@@ -8,13 +8,21 @@ import { EmployeeModule } from './employee/employee.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 
-
 @Module({
-  imports: [AuthModule, PatientModule, PersonModule, EmployeeModule, VisitModule, IncidentModule],
+  imports: [
+    AuthModule,
+    PatientModule,
+    PersonModule,
+    EmployeeModule,
+    VisitModule,
+    IncidentModule,
+  ],
   controllers: [],
-  providers: [{
-    provide: APP_GUARD,
-    useClass: AuthGuard,
-  },],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
-export class AppModule { }
+export class AppModule {}
