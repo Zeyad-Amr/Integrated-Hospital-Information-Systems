@@ -19,7 +19,7 @@ const SidebarComponent = () => {
         }
         activeIcon={<DashboardIcon sx={{ color: "white" }} />}
         text="لوحة التحكم"
-        path="/dashboard"
+        path="/dashboard/home"
       />
       <SidebarMenuItem
         icon={
@@ -27,7 +27,7 @@ const SidebarComponent = () => {
         }
         activeIcon={<PeopleIcon sx={{ color: "white" }} />}
         text="المستخدمين"
-        path="/users"
+        path="/dashboard/users"
       >
         <SidebarSubmenuItem
           text="إضافة مستخدم"
