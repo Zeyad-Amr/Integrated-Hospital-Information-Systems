@@ -37,7 +37,7 @@ export class VisitService {
 
   findAll(paginationParams: Pagination, filters?: Array<Filter>, sort?: Sorting): Promise<PaginatedResource<Visit>> {
     try {
-      const includeObj = { companion: true, creator: true, incident: true, patient: true }
+      const includeObj = { companion: true, creator:{include:{person:true}}, incident: true, patient: true }
 
       return this.visitRepo.getAll({ paginationParams, filters, sort, include: includeObj })
 

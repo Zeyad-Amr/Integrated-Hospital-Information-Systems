@@ -4,7 +4,7 @@ import { IsArray, IsIn, IsInt, IsNotEmpty, IsNumber, IsObject, IsOptional, IsStr
 import { CreatePersonDto } from "src/person/dto/create-person.dto";
 
 
-class CarNumber {
+export class CarNumber {
     @ApiProperty({ type: String, example: "و" })
     @IsString()
     @Length(1)

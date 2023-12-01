@@ -41,6 +41,29 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
 
     async createPatientWithVisit(createPatientDto: CreateVisitDto, creatorId: string): Promise<any> {
         try {
+            let car = undefined
+            if (createPatientDto.car) {
+                console.log(createPatientDto.car)
+                car = {
+                    connectOrCreate: {
+                        create: {
+                            firstChar: createPatientDto.car.firstChar,
+                            secondChar: createPatientDto.car.secondChar,
+                            thirdChar: createPatientDto.car.thirdChar,
+                            number: createPatientDto.car.number
+                        },
+                        where: {
+                            firstChar_secondChar_thirdChar_number: {
+                                firstChar: createPatientDto.car.firstChar,
+                                secondChar: createPatientDto.car.secondChar,
+                                thirdChar: createPatientDto.car.thirdChar,
+                                number: createPatientDto.car.number
+                            }
+                        },
+
+                    }
+                }
+            }
 
             const visit = await this.prismaService.$transaction(async (tx) => {
                 try {
@@ -69,7 +92,8 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
                                 connect: {
                                     id: companion?.id
                                 }
-                            }
+                            }, Car:car, attendantName: createPatientDto.attendantName,
+                            attendantID: createPatientDto.attendantId
                         }
                     })
 
@@ -86,6 +110,30 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
     }
     async createAnonymous(anonymousVisitDto: AnonymousVisitDto, creatorId: string) {
         try {
+
+            let car = undefined
+            if (anonymousVisitDto.car) {
+                console.log(anonymousVisitDto.car)
+                car = {
+                    connectOrCreate: {
+                        create: {
+                            firstChar: anonymousVisitDto.car.firstChar,
+                            secondChar: anonymousVisitDto.car.secondChar,
+                            thirdChar: anonymousVisitDto.car.thirdChar,
+                            number: anonymousVisitDto.car.number
+                        },
+                        where: {
+                            firstChar_secondChar_thirdChar_number: {
+                                firstChar: anonymousVisitDto.car.firstChar,
+                                secondChar: anonymousVisitDto.car.secondChar,
+                                thirdChar: anonymousVisitDto.car.thirdChar,
+                                number: anonymousVisitDto.car.number
+                            }
+                        },
+
+                    }
+                }
+            }
 
             const visitCode = await this.createVisitCode()
             if (anonymousVisitDto.companion) {
@@ -105,7 +153,9 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
                             connect: {
                                 id: creatorId
                             }
-                        }
+                        },
+                        Car: car, attendantName: anonymousVisitDto.attendantName,
+                        attendantID: anonymousVisitDto.attendantId
                     }
                 })
                 return { companion, visit }
@@ -142,7 +192,6 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
                     incident: true
                 }
             })
-
         } catch (error) {
             throw error
         }
