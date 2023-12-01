@@ -39,6 +39,22 @@ export class LocalStorage {
       throw new SomethingWrongException();
     }
   }
+
+  static clear(key: string): void {
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      throw new SomethingWrongException();
+    }
+  }
+
+  static clearAll(): void {
+    try {
+      localStorage.clear();
+    } catch (error) {
+      throw new SomethingWrongException();
+    }
+  }
 }
 
 class NotAllowedDataTypeException extends Error {

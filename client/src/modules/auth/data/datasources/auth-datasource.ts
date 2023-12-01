@@ -14,15 +14,24 @@ class AuthDataSource extends BaseAuthDataSource {
     }
 
     override async login(authData: AuthDataModel): Promise<boolean> {
-        const response = await this.apiClient.post(Endpoints.user.login, authData.toJson());
-        // localStorage.setItem('token', response.data.access_token);
-        LocalStorage.store<string>(LocalStorageKeys.token, response.data.access_token);
-        return true;
+        try {
+            const response = await this.apiClient.post(Endpoints.user.login, authData.toJson());
+            LocalStorage.store<string>(LocalStorageKeys.token, response.data.access_token);
+            return true;
+        } catch (error) {
+            LocalStorage.clearAll();
+            throw error;
+        }
     }
 
     override async getMe(): Promise<UserModel> {
-        const response = await this.apiClient.get(Endpoints.user.me);
-        return UserModel.fromJson(response.data);
+        try {
+            const response = await this.apiClient.get(Endpoints.user.me);
+            const user = UserModel.fromJson(response.data);
+            return user;
+        } catch (error) {
+            throw error;
+        }
     }
 
 }

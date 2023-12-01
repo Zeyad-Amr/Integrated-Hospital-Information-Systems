@@ -3,10 +3,15 @@ import { useAppDispatch, useAppSelector } from "@/core/redux/store";
 import { AuthState } from "../controllers/types";
 import { login, getMe } from "../controllers/thunks/auth-thunks";
 import AuthDataEntity from "../../domain/entities/auth-data-entity";
+import { useEffect } from "react";
 const Test = () => {
   const dispatch = useAppDispatch();
   const authState: AuthState = useAppSelector((state: any) => state.auth);
 
+  // one time after first render call dispatch
+  useEffect(() => {
+    dispatch(getMe());
+  }, []);
   return (
     <Box
       sx={{
@@ -51,7 +56,11 @@ const Test = () => {
           textAlign: "end",
         }}
       >
-        {authState.loading ? "Loading..." : JSON.stringify(authState.me)}
+        {authState.loading
+          ? "Loading..."
+          : authState.error.length > 0
+          ? authState.error
+          : authState.me.id}
       </Typography>
     </Box>
   );

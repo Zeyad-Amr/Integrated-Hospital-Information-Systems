@@ -3,6 +3,7 @@ import { login, getMe } from "../thunks/auth-thunks";
 import { AuthState } from "../types";
 import UserEntity from "@/modules/auth/domain/entities/user-entity";
 import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
+import { ErrorResponse } from "@/core/api";
 
 //* Initial State
 const initialState: AuthState = {
@@ -47,7 +48,7 @@ const authSlice = createSlice({
         });
         builder.addCase(login.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
         });
 
         //* get me 
@@ -62,7 +63,7 @@ const authSlice = createSlice({
         });
         builder.addCase(getMe.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
         });
 
 
