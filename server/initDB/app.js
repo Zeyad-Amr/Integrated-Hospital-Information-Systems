@@ -2,7 +2,7 @@ const PrismaClient = require("@prisma/client")
 const bcrypt = require("bcrypt")
 const prisma = new PrismaClient.PrismaClient()
 
-async function insert() {
+async function insertAdmin() {
     const salt = await bcrypt.genSalt(10);
     password = await bcrypt.hash("Admin1234", salt);
     prisma.user.create({
@@ -27,6 +27,17 @@ async function insert() {
                             "governate": "Giza",
                             "address": "Fasil"
                         }
+                    },
+                    shift: "LONG",
+                    department: {
+                        connectOrCreate: {
+                            where: {
+                                name: "Administration",
+                            },
+                            create: {
+                                name: "Administration",
+                            }
+                        }
                     }
                 }
             }
@@ -43,4 +54,29 @@ async function insert() {
         });
 }
 
-insert()
+async function insertDepartments() {
+    prisma.department.createMany({
+        data: [
+            { name: 'Administration' },
+            { name: 'Reception' },
+            { name: 'Triage A' },
+            { name: 'Triage B' },
+            { name: 'Polytrauma' },
+            { name: 'Short Stay A' },
+            { name: 'Short Stay B' },
+            { name: 'Minor surgery' },
+        ]
+    })
+        .then((res) => {
+            console.log("Init data created")
+            console.log(res)
+        })
+        .catch((err) => {
+            console.log(err)
+        }).finally(() => {
+            prisma.$disconnect()
+        });
+}
+
+insertDepartments()
+insertAdmin()
