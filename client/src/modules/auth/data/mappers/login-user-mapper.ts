@@ -1,20 +1,20 @@
 
 import AuthDataModel from "../models/auth-data-model";
-import AuthDataEntity from "../../domain/entities/auth-data-entity";
+import AuthInterface from "../../domain/interfaces/auth-interface";
 
 class AuthDataMapper {
-    static entityToModel(entity: AuthDataEntity): AuthDataModel {
+    static toModel(entity: AuthInterface): AuthDataModel {
         return new AuthDataModel({
             username: entity.username,
             password: entity.password,
         });
     }
 
-    static modelToEntity(model: AuthDataModel): AuthDataEntity {
-        return new AuthDataEntity({
+    static fromModel(model: AuthDataModel): AuthInterface {
+        return {
             username: model.username,
             password: model.password,
-        });
+        };
     }
 }
 

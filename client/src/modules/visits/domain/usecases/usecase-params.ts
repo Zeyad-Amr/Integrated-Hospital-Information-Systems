@@ -1,13 +1,13 @@
-import VisitEntity from "../entities/visit-entity";
+import VisitInterface from "../interfaces/visit-interface";
 
 class NoParams { }
 
 class CreateVisitUseCaseParameters {
-    constructor(public visit: VisitEntity) { }
+    constructor(public visit: VisitInterface) { }
 }
 
 class UpdateVisitUseCaseParameters {
-    constructor(public visit: VisitEntity) { }
+    constructor(public visit: VisitInterface) { }
 }
 
 class GetVisitByCodeUseCaseParameters {

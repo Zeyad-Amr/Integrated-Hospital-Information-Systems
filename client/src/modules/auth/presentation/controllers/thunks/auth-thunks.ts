@@ -5,13 +5,13 @@ import {
     GetMeUseCase,
     LoginUseCaseParameters
 } from "../../../domain/usecases";
-import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
+import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
 
 
 //* Login
 export const login = createAsyncThunk(
     "auth/login",
-    async (_data: AuthDataEntity, thunkApi) => {
+    async (_data: AuthInterface, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
             const result = await sl.get<LoginUseCase>(ServiceKeys.LoginUseCase).call(

@@ -1,8 +1,8 @@
-import PersonEntity from "../../domain/entities/person-entity";
+import PersonInterface from "../../domain/interfaces/person-interface";
 import PersonModel from "../models/person-model";
 
 class PersonMapper {
-    static entityToModel(entity: PersonEntity): PersonModel {
+    static toModel(entity: PersonInterface): PersonModel {
         return new PersonModel({
             id: entity.id,
             firstName: entity.firstName,
@@ -22,8 +22,8 @@ class PersonMapper {
         });
     }
 
-    static modelToEntity(model: PersonModel): PersonEntity {
-        return new PersonEntity({
+    static fromModel(model: PersonModel): PersonInterface {
+        return {
             id: model.id,
             firstName: model.firstName,
             secondName: model.secondName,
@@ -39,7 +39,7 @@ class PersonMapper {
             address: model.address,
             createdAt: model.createdAt,
             updatedAt: model.updatedAt,
-        });
+        };
     }
 }
 
