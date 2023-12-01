@@ -159,6 +159,8 @@ const VisitsTest = () => {
       <Typography>
         {visitsState.loading
           ? "Loading..."
+          : visitsState.error.length > 0
+          ? visitsState.error
           : visitsState.visits.length > 0
           ? visitsState.visits.map((v) => <div key={v.code}>{v.code}</div>)
           : "No Data"}

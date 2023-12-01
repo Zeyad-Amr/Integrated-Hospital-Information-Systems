@@ -78,7 +78,7 @@ const DataTable = ({
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row: typeof rows) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1}>
+                  <TableRow key={row.id} hover role="checkbox" tabIndex={-1}>
                     {columns.map((column) => {
                       const value = row[column.id as keyof typeof row];
                       if (column.id === "icon") {

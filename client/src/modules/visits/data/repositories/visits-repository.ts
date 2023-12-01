@@ -1,5 +1,4 @@
 import { ErrorResponse, ErrorMessage } from "@/core/api";
-import { Either } from "@/core/shared/utils/either";
 import BaseVisitsRepository from "../../domain/repositories/base-visits-repository";
 import VisitEntity from "../../domain/entities/visit-entity";
 import VisitMapper from "../mappers/visit-mapper";
@@ -10,48 +9,48 @@ class VisitsRepository extends BaseVisitsRepository {
         super();
     }
 
-    override async createVisit(visit: VisitEntity): Promise<Either<ErrorResponse, VisitEntity>> {
+    override async createVisit(visit: VisitEntity): Promise<VisitEntity> {
         try {
             console.log("Creating Visit");
             console.log(VisitMapper.entityToModel(visit));
             const result = await this.baseVisitsDataSource.createVisit(VisitMapper.entityToModel(visit));
-            return Either.right(VisitMapper.modelToEntity(result));
+            return VisitMapper.modelToEntity(result)
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;
-            return Either.left(errorResponse);
+            throw errorResponse;
         }
     }
 
-    override async updateVisit(visit: VisitEntity): Promise<Either<ErrorResponse, boolean>> {
+    override async updateVisit(visit: VisitEntity): Promise<boolean> {
         try {
             await this.baseVisitsDataSource.updateVisit(VisitMapper.entityToModel(visit));
-            return Either.right(true);
+            return true;
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;
-            return Either.left(errorResponse);
+            throw errorResponse;
         }
     }
 
-    override async getAllAnonymousVisits(): Promise<Either<ErrorResponse, VisitEntity[]>> {
+    override async getAllAnonymousVisits(): Promise<VisitEntity[]> {
         try {
             console.log("getAllAnonymousVisits");
             const result = await this.baseVisitsDataSource.getAllAnonymousVisits();
             console.log(result);
-            return Either.right(result.map((item) => VisitMapper.modelToEntity(item)));
+            return result.map((item) => VisitMapper.modelToEntity(item));
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;
-            return Either.left(errorResponse);
+            throw errorResponse;
         }
     }
 
 
-    override async getVisitByCode(visitcode: string): Promise<Either<ErrorResponse, VisitEntity>> {
+    override async getVisitByCode(visitcode: string): Promise<VisitEntity> {
         try {
             const result = await this.baseVisitsDataSource.getVisitByCode(visitcode);
-            return Either.right(VisitMapper.modelToEntity(result));
+            return VisitMapper.modelToEntity(result);
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;
-            return Either.left(errorResponse);
+            throw errorResponse;
         }
     }
 }

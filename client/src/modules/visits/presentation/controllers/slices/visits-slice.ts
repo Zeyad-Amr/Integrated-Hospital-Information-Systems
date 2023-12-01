@@ -7,6 +7,7 @@ import {
 } from "../thunks/visits-thunks";
 import { VisitsState } from "../types";
 import VisitEntity from "@/modules/visits/domain/entities/visit-entity";
+import { ErrorResponse } from "@/core/api";
 
 //* Initial State
 const initialState: VisitsState = {
@@ -52,7 +53,7 @@ const authSlice = createSlice({
         });
         builder.addCase(createVisit.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
         });
 
         //* Update Visit
@@ -66,7 +67,7 @@ const authSlice = createSlice({
         });
         builder.addCase(updateVisit.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
         });
 
         //* Get Anonymous Visits
@@ -81,7 +82,7 @@ const authSlice = createSlice({
         });
         builder.addCase(getAnonymousVisits.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
         });
 
         //* Get Visit By Code
@@ -96,7 +97,7 @@ const authSlice = createSlice({
         });
         builder.addCase(getVisitByCode.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
         });
     },
 });

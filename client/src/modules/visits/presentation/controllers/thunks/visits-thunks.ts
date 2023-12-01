@@ -21,12 +21,10 @@ export const createVisit = createAsyncThunk(
             const result = await sl.get<CreateVisitUseCase>(ServiceKeys.CreateVisitUseCase).call(
                 new CreateVisitUseCaseParameters(_data)
             );
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
@@ -42,12 +40,10 @@ export const updateVisit = createAsyncThunk(
                 new UpdateVisitUseCaseParameters(_data)
 
             );
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
@@ -61,12 +57,10 @@ export const getAnonymousVisits = createAsyncThunk(
         const { rejectWithValue } = thunkApi;
         try {
             const result = await sl.get<GetAnonymousVisitsUseCase>(ServiceKeys.GetAnonymousVisitsUseCase).call();
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
@@ -81,12 +75,10 @@ export const getVisitByCode = createAsyncThunk(
             const result = await sl.get<GetVisitByCodeUseCase>(ServiceKeys.GetVisitByCodeUseCase).call(
                 new GetVisitByCodeUseCaseParameters(_data)
             );
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
