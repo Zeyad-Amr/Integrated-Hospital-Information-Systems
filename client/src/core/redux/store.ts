@@ -1,9 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import staff from "@/modules/staff/presentation/controllers/slices/staff-slice";
+import employees from "@/modules/employees/presentation/controllers/slices/employee-slice";
+import auth from "@/modules/auth/presentation/controllers/slices/auth-slice";
+import visits from "@/modules/visits/presentation/controllers/slices/visits-slice";
 const store = configureStore({
     reducer: {
-        staff,
+        employees: employees,
+        auth: auth,
+        visits: visits
     },
 });
 

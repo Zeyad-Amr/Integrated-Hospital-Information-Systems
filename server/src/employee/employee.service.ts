@@ -15,20 +15,20 @@ export class EmployeeService {
   ) { }
   async create(createEmployeeDto: CreateEmployeeDto, creatorId: string) {
     try {
-      const username = await this.authService.generateUsername(
-        createEmployeeDto.personalData.firstName,
-      );
-      const randomPassword = this.authService.generatePassword(5);
-      const password = await this.authService.hashPassword(randomPassword);
-      createEmployeeDto.auth = {
-        username,
-        password,
-      };
+      let auth: { username?: string, password?: string } = {};
+      auth.username = createEmployeeDto.auth.username
+
+      if (!createEmployeeDto.auth.password) {
+        auth.password = this.authService.generateRandom(5);
+      } else {
+        auth.password = createEmployeeDto.auth.password
+      }
+      createEmployeeDto.auth.password = await this.authService.hashPassword(auth.password);
       const newEmployee = await this.employeeRepo.createEmployee(
         createEmployeeDto,
         creatorId,
       );
-      return { ...newEmployee, auth: { username, randomPassword } };
+      return { ...newEmployee, auth };
     } catch (error) {
       throw error;
     }

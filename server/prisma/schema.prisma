@@ -5,6 +5,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -72,8 +76,8 @@ model Visit {
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt
 
-  // it has to be commented till the emplopyee api created
   creator     Employee   @relation(fields: [creatorId], references: [id])
+
   creatorId   String
   patient     Person?    @relation("visitPatient", fields: [patientId], references: [id])
   patientId   String?

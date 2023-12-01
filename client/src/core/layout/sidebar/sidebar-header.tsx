@@ -8,7 +8,7 @@ import {
   CloseIcon,
   NotificationIcon,
 } from "@/assets/icons/index";
-import ProfileIcon from "@/core/shared/components/ProfileIcon";
+import ProfileIcon from "@/core/shared/components/profile/ProfileIcon";
 
 interface SidebarHeaderProps {
   height?: string;

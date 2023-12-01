@@ -8,11 +8,12 @@ import {
   Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginUserDto } from './dto/login-user.dto';
+import { AuthDataDto } from './dto/login-user.dto';
 import { handleError } from '../shared/http-error';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -33,7 +34,6 @@ export class AuthController {
   @Get()
   @Public()
   async findAll() {
-    console.log(this.authService.generatePassword(8));
     return await this.authService.findAll();
   }
 
@@ -46,13 +46,29 @@ export class AuthController {
   })
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async login(@Body() loginUserDto: LoginUserDto) {
+  async login(@Body() authDataDto: AuthDataDto) {
     try {
-      return { access_token: await this.authService.login(loginUserDto) };
+      return { access_token: await this.authService.login(authDataDto) };
     } catch (error) {
       throw handleError(error);
     }
   }
+
+
+  @Get('me')
+  @ApiOperation({ summary: 'get user\'s data' })
+  @ApiOkResponse({ description: 'get logged in user' })
+  @ApiNotFoundResponse({ description: 'user not found' })
+  async findMe(@Req() req: AuthRequest) {
+    try {
+      const { username } = req.user
+      return (await this.authService.findOne(username)).employee
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+
 
   @ApiOperation({ summary: "Change user's password" })
   @ApiOkResponse({ description: 'change the password of the user' })
@@ -67,9 +83,9 @@ export class AuthController {
     @Req() req: AuthRequest,
   ) {
     try {
-      const user = req.user;
+      const { username } = req.user;
       await this.authService.changePassword(
-        user.username,
+        username,
         changePasswordDto.newPassword,
         changePasswordDto.oldPassword,
       );

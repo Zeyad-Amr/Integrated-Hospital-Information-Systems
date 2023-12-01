@@ -3,12 +3,13 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { LoginUserDto } from './dto/login-user.dto';
+import { AuthDataDto } from './dto/login-user.dto';
 import { AuthRepo } from './auth.repo';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
 import * as crypto from 'crypto';
+
 
 
 @Injectable()
@@ -18,20 +19,20 @@ export class AuthService {
     private jwtService: JwtService,
   ) { }
 
-  async login(loginUserDto: LoginUserDto) {
+  async login(authDataDto: AuthDataDto) {
     try {
       const errInvalidCredentials = 'Invalid username or password';
-      const user = await this.authRepo.getByUsername(loginUserDto.username);
+      const user = await this.authRepo.getByUsername(authDataDto.username);
       if (!user) {
         throw new UnauthorizedException(errInvalidCredentials);
       }
-      console.log(user);
+      // console.log(user);
 
       const validPass = await bcrypt.compare(
-        loginUserDto.password,
+        authDataDto.password,
         user.password,
       );
-      console.log(validPass);
+      // console.log(validPass);
       if (!validPass) {
         throw new UnauthorizedException(errInvalidCredentials);
       }
@@ -48,7 +49,7 @@ export class AuthService {
 
   async changePassword(
     username: string,
-    newPassword: LoginUserDto['password'],
+    newPassword: AuthDataDto['password'],
     oldPassword: string,
   ) {
     try {
@@ -65,25 +66,16 @@ export class AuthService {
     }
   }
 
-  generateUsername = async (name: string) => {
-    name = name.toLowerCase();
-    let usernames: User[];
+  async findOne(username: string) {
     try {
-      const { items } = await this.authRepo.getAll({ select: { username: true } });
-      usernames = items
+      const user = await this.authRepo.getByUsername(username)
+      return user
     } catch (error) {
       throw error;
     }
-    let exist = usernames.find(({ username }) => username === name);
+  }
 
-    while (exist) {
-      name = name + Math.round(Math.random() * 100);
-      exist = usernames.find(({ username }) => username === name);
-    }
-    return name;
-  };
-
-  generatePassword = (length: number) => {
+  generateRandom = (length: number) => {
     const charset =
       'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const randomValues = new Uint8Array(length);
@@ -98,8 +90,7 @@ export class AuthService {
   };
 
   async findAll() {
-    return await this.authRepo.getAll();
-    return null
+    return await this.authRepo.findAll();
   }
 
   hashPassword = async (password: string) => {

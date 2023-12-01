@@ -1,55 +1,92 @@
 import sl from "./service-locator";
 import ServiceKeys from "./service-keys";
 //---------------------------------------------------------
-import { StaffDataSource, BaseStaffDataSource } from "@/modules/staff/data/datasources/staff-datasource";
+import { EmployeeDataSource, BaseEmployeeDataSource } from "@/modules/employees/data/datasources/employee-datasource";
 import { ApiClient } from "@/core/api/index";
-import BaseStaffRepository from "@/modules/staff/domain/repositories/base-staff-repository";
-import StaffRepository from "@/modules/staff/data/repositories/staff-repository";
+import BaseEmployeeRepository from "@/modules/employees/domain/repositories/base-employee-repository";
+import EmployeeRepository from "@/modules/employees/data/repositories/employee-repository";
 import {
-    GetStaffDetailsUseCase,
-    GetAllStaffMembersUseCase,
-    CreateStaffMemberUseCase,
-    DeleteStaffMemberUseCase,
-    UpdateStaffMemberUseCase,
-} from "@/modules/staff/domain/usecases/index";
+    GetEmployeeByIdUseCase,
+    GetAllEmployeesUseCase,
+    CreateEmployeeUseCase,
+    DeleteEmployeeUseCase,
+    UpdateEmployeeUseCase,
+} from "@/modules/employees/domain/usecases/index";
+import { AuthDataSource, BaseAuthDataSource } from "@/modules/auth/data/datasources/auth-datasource";
+import BaseAuthRepository from "@/modules/auth/domain/repositories/base-auth-repository";
+import AuthRepository from "@/modules/auth/data/repositories/auth-repository";
+import { LoginUseCase } from "@/modules/auth/domain/usecases";
+import GetMeUseCase from "@/modules/auth/domain/usecases/get-me-usecase";
+import { BaseVisitsDataSource, VisitsDataSource } from "@/modules/visits/data/datasources/visits-datasource";
+import VisitsRepository from "@/modules/visits/data/repositories/visits-repository";
+import BaseVisitsRepository from "@/modules/visits/domain/repositories/base-visits-repository";
+import { CreateVisitUseCase, GetAnonymousVisitsUseCase, GetVisitByCodeUseCase, UpdateVisitUseCase } from "@/modules/visits/domain/usecases";
 
 class AppServicesLocator {
     static init() {
 
         //* Data Sources ----------------------------------------------
-        sl.registerFactory<BaseStaffDataSource>(ServiceKeys.StaffDataSource, () => new StaffDataSource(
+        sl.registerFactory<BaseEmployeeDataSource>(ServiceKeys.EmployeeDataSource, () => new EmployeeDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
+        sl.registerFactory<BaseAuthDataSource>(ServiceKeys.AuthDataSources, () => new AuthDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
+        sl.registerFactory<BaseVisitsDataSource>(ServiceKeys.VisitsDataSource, () => new VisitsDataSource(
             sl.get<ApiClient>(ServiceKeys.ApiClient)
         ));
 
 
         //* Repositories ----------------------------------------------
-        sl.registerFactory<BaseStaffRepository>(ServiceKeys.StaffRepository, () => new StaffRepository(
-            sl.get<BaseStaffDataSource>(ServiceKeys.StaffDataSource)
+        sl.registerFactory<BaseEmployeeRepository>(ServiceKeys.EmployeeRepository, () => new EmployeeRepository(
+            sl.get<BaseEmployeeDataSource>(ServiceKeys.EmployeeDataSource)
+        ));
+        sl.registerFactory<BaseAuthRepository>(ServiceKeys.AuthRepository, () => new AuthRepository(
+            sl.get<BaseAuthDataSource>(ServiceKeys.AuthDataSources)
+        ));
+        sl.registerFactory<BaseVisitsRepository>(ServiceKeys.VisitsRepository, () => new VisitsRepository(
+            sl.get<BaseVisitsDataSource>(ServiceKeys.VisitsDataSource)
         ));
 
 
         //* Use Cases --------------------------------------------------
-        sl.registerFactory<GetAllStaffMembersUseCase>(ServiceKeys.GetAllStaffMembersUseCase, () => new GetAllStaffMembersUseCase(
-            sl.get<BaseStaffRepository>(ServiceKeys.StaffRepository)
+        sl.registerFactory<GetAllEmployeesUseCase>(ServiceKeys.GetAllEmployeesUseCase, () => new GetAllEmployeesUseCase(
+            sl.get<BaseEmployeeRepository>(ServiceKeys.EmployeeRepository)
         ));
-        sl.registerFactory<GetStaffDetailsUseCase>(ServiceKeys.GetStaffDetailsUseCase, () => new GetStaffDetailsUseCase(
-            sl.get<BaseStaffRepository>(ServiceKeys.StaffRepository)
+        sl.registerFactory<GetEmployeeByIdUseCase>(ServiceKeys.GetEmployeeByIdUseCase, () => new GetEmployeeByIdUseCase(
+            sl.get<BaseEmployeeRepository>(ServiceKeys.EmployeeRepository)
         ));
-        sl.registerFactory<CreateStaffMemberUseCase>(ServiceKeys.CreateStaffMemberUseCase, () => new CreateStaffMemberUseCase(
-            sl.get<BaseStaffRepository>(ServiceKeys.StaffRepository)
+        sl.registerFactory<CreateEmployeeUseCase>(ServiceKeys.CreateEmployeeUseCase, () => new CreateEmployeeUseCase(
+            sl.get<BaseEmployeeRepository>(ServiceKeys.EmployeeRepository)
         ));
-        sl.registerFactory<UpdateStaffMemberUseCase>(ServiceKeys.UpdateStaffMemberUseCase, () => new UpdateStaffMemberUseCase(
-            sl.get<BaseStaffRepository>(ServiceKeys.StaffRepository)
+        sl.registerFactory<UpdateEmployeeUseCase>(ServiceKeys.UpdateEmployeeUseCase, () => new UpdateEmployeeUseCase(
+            sl.get<BaseEmployeeRepository>(ServiceKeys.EmployeeRepository)
         ));
-        sl.registerFactory<DeleteStaffMemberUseCase>(ServiceKeys.DeleteStaffMemberUseCase, () => new DeleteStaffMemberUseCase(
-            sl.get<BaseStaffRepository>(ServiceKeys.StaffRepository)
+        sl.registerFactory<DeleteEmployeeUseCase>(ServiceKeys.DeleteEmployeeUseCase, () => new DeleteEmployeeUseCase(
+            sl.get<BaseEmployeeRepository>(ServiceKeys.EmployeeRepository)
+        ));
+
+        sl.registerFactory<LoginUseCase>(ServiceKeys.LoginUseCase, () => new LoginUseCase(
+            sl.get<BaseAuthRepository>(ServiceKeys.AuthRepository)
+        ));
+        sl.registerFactory<GetMeUseCase>(ServiceKeys.GetMeUseCase, () => new GetMeUseCase(
+            sl.get<BaseAuthRepository>(ServiceKeys.AuthRepository)
+        ));
+
+        sl.registerFactory<CreateVisitUseCase>(ServiceKeys.CreateVisitUseCase, () => new CreateVisitUseCase(
+            sl.get<BaseVisitsRepository>(ServiceKeys.VisitsRepository)
+        ));
+        sl.registerFactory<UpdateVisitUseCase>(ServiceKeys.UpdateVisitUseCase, () => new UpdateVisitUseCase(
+            sl.get<BaseVisitsRepository>(ServiceKeys.VisitsRepository)
+        ));
+        sl.registerFactory<GetVisitByCodeUseCase>(ServiceKeys.GetVisitByCodeUseCase, () => new GetVisitByCodeUseCase(
+            sl.get<BaseVisitsRepository>(ServiceKeys.VisitsRepository)
+        ));
+        sl.registerFactory<GetAnonymousVisitsUseCase>(ServiceKeys.GetAnonymousVisitsUseCase, () => new GetAnonymousVisitsUseCase(
+            sl.get<BaseVisitsRepository>(ServiceKeys.VisitsRepository)
         ));
 
 
-        //* Thunks --------------------------------------------------
-        // sl.registerFactory<StaffThunks>(ServiceKeys.StaffThunks, () => new StaffThunks(
-        //     sl.get<GetAllStaffMembersUseCase>(ServiceKeys.GetAllStaffMembersUseCase),
-        // ));
 
 
         //* Exnternal Services --------------------------------------------------

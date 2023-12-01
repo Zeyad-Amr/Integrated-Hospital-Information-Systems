@@ -2,10 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsObject,
+  IsString,
   Validate,
   ValidateNested,
 } from 'class-validator';
-import { LoginUserDto } from '../../auth/dto/login-user.dto';
+import { AuthDataDto } from '../../auth/dto/login-user.dto';
 import { CreatePersonDto } from 'src/person/dto/create-person.dto';
 import { IsValidEnumValue } from 'src/shared/special-validator';
 import { RoleEnum } from '@prisma/client';
@@ -18,7 +19,11 @@ export class CreateEmployeeDto {
   @Type(() => CreatePersonDto)
   personalData: CreatePersonDto;
 
-  auth: LoginUserDto;
+  @ApiProperty({ type: AuthDataDto, required: true })
+  @IsObject()
+  @ValidateNested()
+  @Type(() => AuthDataDto)
+  auth: AuthDataDto
 
   @ApiProperty({
     type: String,
