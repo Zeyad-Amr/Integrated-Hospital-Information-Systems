@@ -140,7 +140,7 @@ const PersonalData = ({
               <CustomTextField
                 isRequired
                 name="SSN"
-                label="الرقم القومي"
+                label="رقم الهوية"
                 value={values.SSN}
                 onChange={handleChange}
                 onBlur={handleBlur}
