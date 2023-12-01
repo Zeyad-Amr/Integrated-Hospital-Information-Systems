@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -9,8 +9,32 @@ import PersonalData, {
 } from "@/core/shared/components/PersonalData";
 import { Grid } from "@mui/material";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
+import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 
 // User interfaces
+interface allCombinedUserDataInterface {
+  personalData: {
+    firstName: string;
+    secondName: string;
+    thirdName: string;
+    fourthName: string;
+    email: string;
+    SSN: string;
+    phone: string;
+    gender: string;
+    governate: string;
+    birthDate: null | string;
+    address: string;
+    verificationMethod: string;
+  };
+  auth: {
+    username: string;
+    password: string;
+  };
+  role: string;
+  departmentId: string;
+  shift: string;
+}
 interface restUserDataInterface {
   role: string;
   department: string;
@@ -23,9 +47,34 @@ interface restUserDataInterface {
 const CreateUserForm = () => {
   // useRef
   const refSubmitUserDataButton: any = useRef(null);
+  const refRestUserDataValues: any = useRef(null);
+  const checkFirstRender = useRef(true);
 
   // useState
   const [submitUserFlag, setSubmitUserFlag] = useState<boolean>(false);
+  const [combinedValues, setCombinedValues] = useState<allCombinedUserDataInterface>({
+    personalData: {
+      firstName: "",
+      secondName: "",
+      thirdName: "",
+      fourthName: "",
+      SSN: "",
+      verificationMethod: "",
+      gender: "",
+      birthDate: "",
+      phone: "",
+      email: "",
+      governate: "",
+      address: "",
+    },
+    auth: {
+      username: "",
+      password: "",
+    },
+    role: "",
+    shift: "",
+    departmentId: "",
+  });
 
   const userInitialValues: PersonalDataValues = {
     firstName: "",
@@ -42,6 +91,32 @@ const CreateUserForm = () => {
     verificationMethod: "",
   };
 
+  const handleAllUserDataSubmit = (values: PersonalDataValues) => {
+    setCombinedValues((prevValues: allCombinedUserDataInterface) => ({
+      ...prevValues,
+      personalData: { ...values, email: refRestUserDataValues.current.email },
+      auth: {
+        username: refRestUserDataValues.current.userName,
+        password: refRestUserDataValues.current.password,
+      },
+      role: refRestUserDataValues.current.role,
+      shift: refRestUserDataValues.current.shift,
+      departmentId: refRestUserDataValues.current.department,
+    }));
+  };
+
+  const onTriggerAllUserForm = () => {
+    if (refSubmitUserDataButton.current) {
+      refSubmitUserDataButton.current.click();
+    }
+  };
+
+  // rest user functions and variables
+  const handleRestUserSubmit = (values: restUserDataInterface) => {
+    setSubmitUserFlag(!submitUserFlag);
+    refRestUserDataValues.current = values;
+  };
+
   const restUserInitialValues: restUserDataInterface = {
     role: "",
     shift: "",
@@ -51,36 +126,30 @@ const CreateUserForm = () => {
     department: "",
   };
 
-  const handleAllUserDataSubmit = (values: PersonalDataValues) => {
-    console.log(values);
-  };
-
-  const handleRestUserSubmit = (values: restUserDataInterface) => {
-    setSubmitUserFlag(!submitUserFlag);
-    // sequenceNumberValue.current = values.sequenceNumber;
-  };
-
-  const onTriggerAllUserForm = () => {
-    if (refSubmitUserDataButton.current) {
-      refSubmitUserDataButton.current.click();
-    }
-  };
-
   const restUserFormSchema = Yup.object({
     email: Yup.string()
-      .required("Email is required")
-      .email("Enter a valid email"),
-    role: Yup.string().required("Role is required"),
-    shift: Yup.string().required("Shift is required"),
-    department: Yup.string().required("Department is required"),
+      .required("البريد الألكتروني مطلوب")
+      .email("البريد الألكتروني غير صحيح"),
+    role: Yup.string().required("الوظيفة مطلوبة"),
+    shift: Yup.string().required("موعد العمل مطلوب"),
+    department: Yup.string().required("القسم مطلوب"),
     userName: Yup.string()
-      .required("Username is required")
-      .min(3, "Username must be at least 3 characters")
-      .max(45, "Username must be at most 45 characters"),
+      .required("اسم المستخدم مطلوب")
+      .min(3, "اسم المستخدم لا يقل عن 3 حروف")
+      .max(45, "اسم المستخدم لا يزيد عن 45 حرف"),
     password: Yup.string()
-      .required("Password is required")
-      .min(6, "Password must be at least 6 characters long"),
+      .required("الرقم السري مطلوب")
+      .min(6, "الرقم السري لا يقل عن 6 حروف"),
   });
+
+  useEffect(() => {
+    if (checkFirstRender.current) {
+      checkFirstRender.current = false;
+    } else {
+      // post request
+      console.log(combinedValues);
+    }
+  }, [combinedValues]);
 
   return (
     <Box sx={{ marginTop: "2.5rem" }}>
@@ -130,17 +199,11 @@ const CreateUserForm = () => {
                   touched={touched.password}
                   width="100%"
                   props={{
-                    type: "text",
+                    type: "password",
                   }}
                 />
               </Grid>
-              <Grid item lg={3} md={3} sm={12} xs={12}></Grid>
-
-              <Grid item lg={3} md={3} sm={12} xs={12}></Grid>
-            </Grid>
-            {/*  */}
-            <Grid container columns={12} spacing={2}>
-              <Grid item lg={3} md={3} sm={12} xs={12}>
+              <Grid item lg={6} md={6} sm={12} xs={12}>
                 <CustomTextField
                   isRequired
                   name="email"
@@ -154,6 +217,36 @@ const CreateUserForm = () => {
                   props={{
                     type: "email",
                   }}
+                />
+              </Grid>
+            </Grid>
+            {/*  */}
+            <Grid container columns={12} spacing={2}>
+              <Grid item lg={3} md={3} sm={12} xs={12}>
+                <CustomSelectField
+                  isRequired
+                  name="role"
+                  label="الوظيفة"
+                  value={values.role}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.role}
+                  touched={touched.role}
+                  width="100%"
+                  options={[
+                    {
+                      id: "1",
+                      title: "طبيب",
+                    },
+                    {
+                      id: "2",
+                      title: "تمريض",
+                    },
+                    {
+                      id: "2",
+                      title: "موظف",
+                    },
+                  ]}
                 />
               </Grid>
               <Grid item lg={3} md={3} sm={12} xs={12}>
@@ -170,16 +263,32 @@ const CreateUserForm = () => {
                   options={[
                     {
                       id: "1",
-                      title: "صباحي",
+                      title: "12 صباحي",
                     },
                     {
                       id: "2",
-                      title: "مسائي",
+                      title: "8 صباحي",
+                    },
+                    {
+                      id: "3",
+                      title: "12 مسائي",
+                    },
+                    {
+                      id: "4",
+                      title: "8 سهر",
+                    },
+                    {
+                      id: "5",
+                      title: "8 ظهر",
+                    },
+                    {
+                      id: "6",
+                      title: "24 يوم كامل",
                     },
                   ]}
                 />
               </Grid>
-              <Grid item lg={3} md={3} sm={12} xs={12}>
+              <Grid item lg={6} md={6} sm={12} xs={12}>
                 <CustomSelectField
                   isRequired
                   name="department"
@@ -202,29 +311,6 @@ const CreateUserForm = () => {
                   ]}
                 />
               </Grid>
-              <Grid item lg={3} md={3} sm={12} xs={12}>
-                <CustomSelectField
-                  isRequired
-                  name="role"
-                  label="الوظيفة"
-                  value={values.role}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.role}
-                  touched={touched.role}
-                  width="100%"
-                  options={[
-                    {
-                      id: "1",
-                      title: "دكتور",
-                    },
-                    {
-                      id: "2",
-                      title: "ممرض/ة",
-                    },
-                  ]}
-                />
-              </Grid>
             </Grid>
 
             <Button
@@ -242,6 +328,22 @@ const CreateUserForm = () => {
         isSubmitted={submitUserFlag}
         onSubmit={handleAllUserDataSubmit}
       />
+
+      {/* submit button */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          height: "4rem",
+        }}
+      >
+        <PrimaryButton
+          title="تأكيــد"
+          type="button"
+          onClick={() => onTriggerAllUserForm()}
+        />
+      </Box>
     </Box>
   );
 };
