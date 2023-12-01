@@ -37,21 +37,18 @@ const AddVisitForm = () => {
     },
   });
 
-  const sharedInitialValues = {
+  const sharedInitialValues : PersonalDataValues = {
     firstName: "",
     secondName: "",
     thirdName: "",
     fourthName: "",
-    email: "",
     SSN: "",
     phone: "",
-    id: "",
     gender: "",
     governate: "",
     birthDate: null,
     address: "",
     verificationMethod: "",
-    search: "",
   };
 
   const handlePatientSubmit = (values: PersonalDataValues) => {
