@@ -81,7 +81,6 @@ const CreateUserForm = () => {
     secondName: "",
     thirdName: "",
     fourthName: "",
-    email: "",
     SSN: "",
     phone: "",
     gender: "",
