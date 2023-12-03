@@ -44,7 +44,7 @@ export class CreateEmployeeDto {
 
   @ApiProperty({
     type: String,
-    example: 'RECEPTIONIST',
+    example: '561f2a03-b28b-4080-b83a-583cc985cf52',
   })
   @IsNotEmpty()
   @IsUUID()

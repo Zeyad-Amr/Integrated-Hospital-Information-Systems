@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, Matches, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, Matches, MinLength } from 'class-validator';
 
 export class AuthDataDto {
   @ApiProperty({
@@ -27,4 +27,14 @@ export class AuthDataDto {
     message: 'password must contain at least one uppercase letter',
   })
   password: string;
+
+
+  @ApiProperty({
+    type: String,
+    example: 'ahmedraouf@gmail.com',
+  })
+  @IsOptional()
+  @IsString()
+  @IsEmail()
+  email: string
 }

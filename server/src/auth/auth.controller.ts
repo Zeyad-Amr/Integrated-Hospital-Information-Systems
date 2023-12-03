@@ -62,7 +62,8 @@ export class AuthController {
   async findMe(@Req() req: AuthRequest) {
     try {
       const { username } = req.user
-      return (await this.authService.findOne(username)).employee
+      const { email, employee } = await this.authService.findOne(username)
+      return { email, ...employee }
     } catch (error) {
       throw handleError(error);
     }
