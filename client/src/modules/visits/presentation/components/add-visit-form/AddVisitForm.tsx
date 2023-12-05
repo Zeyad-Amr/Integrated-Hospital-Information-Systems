@@ -9,7 +9,7 @@ import { Formik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
-import CompleteVisit from "../complete-visit-data/CompleteVisit";
+import CustomAccordion from "@/core/shared/components/CustomAccordion";
 
 const AddVisitForm = () => {
   // useRef
@@ -21,8 +21,13 @@ const AddVisitForm = () => {
   const checkFirstRender = useRef(true);
 
   // useState
-  const [showDialog, setShawDialog] = useState("none");
   const [submitPatientFlag, setSubmitPatientFlag] = useState<boolean>(false);
+  const [patientDataAccordion, setPatientDataAccordion] =
+    useState<boolean>(true);
+  const [companionDataAccordion, setCompanionDataAccordion] =
+    useState<boolean>(false);
+  // const [companionDataDisabled, setCompanionDataDisabled] =
+  //   useState<boolean>(true);
   const [showCompanionFlag, setShowCompanionFlag] = useState<boolean>(false);
   const [addCompanionClicked, setAddCompanionClicked] =
     useState<boolean>(false);
@@ -37,7 +42,7 @@ const AddVisitForm = () => {
     },
   });
 
-  const sharedInitialValues : PersonalDataValues = {
+  const sharedInitialValues: PersonalDataValues = {
     firstName: "",
     secondName: "",
     thirdName: "",
@@ -54,6 +59,9 @@ const AddVisitForm = () => {
   const handlePatientSubmit = (values: PersonalDataValues) => {
     if (addCompanionClicked) {
       setShowCompanionFlag(true);
+      setPatientDataAccordion(false);
+      // setCompanionDataDisabled(false);
+      setCompanionDataAccordion(true);
       patientData.current = values;
     } else {
       setCombinedValues((prevValues: any) => ({
@@ -127,66 +135,22 @@ const AddVisitForm = () => {
   }, [combinedValues]);
 
   return (
-    <Box sx={{ marginTop: "1rem" }}>
-      {/* start rest patient form */}
-      <Formik
-        initialValues={{ sequenceNumber: "" }}
-        validationSchema={restPatientFormSchema}
-        onSubmit={(values) => {
-          handleRestPatientSubmit(values);
-        }}
+    <Box sx={{ marginTop: "2.5rem" }}>
+      <CustomAccordion
+        title="بيانات المريض"
+        isDisabled={false}
+        isExpanded={patientDataAccordion}
+        setExpanded={setPatientDataAccordion}
       >
-        {({
-          values,
-          touched,
-          errors,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-        }) => (
-          <Box component="form" onSubmit={handleSubmit} noValidate>
-            <CustomTextField
-              isRequired
-              name="sequenceNumber"
-              label="رقم التردد"
-              value={values.sequenceNumber}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={errors.sequenceNumber}
-              touched={touched.sequenceNumber}
-              width="100%"
-              props={{
-                type: "text",
-              }}
-            />
-            <Button
-              type="submit"
-              sx={{ display: "none" }}
-              ref={refSubmitFirstStepButton}
-            ></Button>
-          </Box>
-        )}
-      </Formik>
-
-      {/* start patient form */}
-      <PersonalData
-        initialValues={sharedInitialValues}
-        onSubmit={handlePatientSubmit}
-        isSubmitted={submitPatientFlag}
-      />
-
-      <br />
-      <hr />
-      <br />
-
-      {/* second step */}
-      {/* start rest companion form */}
-      <Box sx={{ display: showCompanionFlag === true ? "block" : "none" }}>
+        {/* start rest patient form */}
         <Formik
-          initialValues={{ kinship: "" }}
-          validationSchema={restCompanionFormSchema}
+          initialValues={{ sequenceNumber: "" }}
+          validationSchema={() => {
+            setPatientDataAccordion(true)
+           return restPatientFormSchema
+          }}
           onSubmit={(values) => {
-            handleRestCompanionSubmit(values);
+            handleRestPatientSubmit(values);
           }}
         >
           {({
@@ -198,62 +162,124 @@ const AddVisitForm = () => {
             handleSubmit,
           }) => (
             <Box component="form" onSubmit={handleSubmit} noValidate>
-              <CustomSelectField
+              <CustomTextField
                 isRequired
-                name="kinship"
-                label="درجة القرابة"
-                value={values.kinship}
+                name="sequenceNumber"
+                label="رقم التردد"
+                value={values.sequenceNumber}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.kinship}
-                touched={touched.kinship}
+                error={errors.sequenceNumber}
+                touched={touched.sequenceNumber}
                 width="100%"
-                options={[
-                  {
-                    id: "BROTHER",
-                    title: "أخ",
-                  },
-                  {
-                    id: "SISTER",
-                    title: "أخت",
-                  },
-                  {
-                    id: "FATHER",
-                    title: "أب",
-                  },
-                  {
-                    id: "MOTHER",
-                    title: "أم",
-                  },
-                  {
-                    id: "COUSIN",
-                    title: "ابن/ة عم - ابن/ة خال",
-                  },
-                  {
-                    id: "AUNT",
-                    title: "عمة / خالة",
-                  },
-                  {
-                    id: "OTHER",
-                    title: "آخر",
-                  },
-                ]}
+                props={{
+                  type: "text",
+                }}
               />
               <Button
                 type="submit"
                 sx={{ display: "none" }}
-                ref={refSubmitSecondStepButton}
+                ref={refSubmitFirstStepButton}
               ></Button>
             </Box>
           )}
         </Formik>
 
-        {/* start companion form */}
+        {/* start patient form */}
         <PersonalData
           initialValues={sharedInitialValues}
-          onSubmit={handleCompanionSubmit}
-          isSubmitted={submitCompanionFlag}
+          onSubmit={handlePatientSubmit}
+          isSubmitted={submitPatientFlag}
         />
+      </CustomAccordion>
+
+      {/* second step */}
+      <Box sx={{ display: showCompanionFlag === true ? "block" : "none" }}>
+        <CustomAccordion
+          title="بيانات المرافق"
+          isDisabled={false}
+          isExpanded={companionDataAccordion}
+          setExpanded={setCompanionDataAccordion}
+        >
+          {/* start rest companion form */}
+          <Box>
+            <Formik
+              initialValues={{ kinship: "" }}
+              validationSchema={() => {
+                setCompanionDataAccordion(true)
+                return restCompanionFormSchema
+              }}
+              onSubmit={(values) => {
+                handleRestCompanionSubmit(values);
+              }}
+            >
+              {({
+                values,
+                touched,
+                errors,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+              }) => (
+                <Box component="form" onSubmit={handleSubmit} noValidate>
+                  <CustomSelectField
+                    isRequired
+                    name="kinship"
+                    label="درجة القرابة"
+                    value={values.kinship}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={errors.kinship}
+                    touched={touched.kinship}
+                    width="100%"
+                    options={[
+                      {
+                        id: "BROTHER",
+                        title: "أخ",
+                      },
+                      {
+                        id: "SISTER",
+                        title: "أخت",
+                      },
+                      {
+                        id: "FATHER",
+                        title: "أب",
+                      },
+                      {
+                        id: "MOTHER",
+                        title: "أم",
+                      },
+                      {
+                        id: "COUSIN",
+                        title: "ابن/ة عم - ابن/ة خال",
+                      },
+                      {
+                        id: "AUNT",
+                        title: "عمة / خالة",
+                      },
+                      {
+                        id: "OTHER",
+                        title: "آخر",
+                      },
+                    ]}
+                  />
+                  <Button
+                    type="submit"
+                    sx={{ display: "none" }}
+                    ref={refSubmitSecondStepButton}
+                  ></Button>
+                </Box>
+              )}
+            </Formik>
+
+            {/* start companion form */}
+            <PersonalData
+              initialValues={sharedInitialValues}
+              onSubmit={handleCompanionSubmit}
+              isSubmitted={submitCompanionFlag}
+            />
+          </Box>
+        </CustomAccordion>
       </Box>
 
       <Box
@@ -262,6 +288,7 @@ const AddVisitForm = () => {
           justifyContent: "flex-start",
           alignItems: "center",
           height: "4rem",
+          marginTop :"1.5rem"
         }}
       >
         <PrimaryButton
@@ -283,18 +310,6 @@ const AddVisitForm = () => {
           type="button"
           onClick={() => onDeleteCompanion()}
           sx={{ display: showCompanionFlag ? "block" : "none" }}
-        />
-
-        <SecondaryButton
-          title="استكمال البيانات"
-          type="button"
-          onClick={() => {
-            setShawDialog("block");
-          }}
-        />
-        <CompleteVisit
-          display={showDialog}
-          DialogStateController={setShawDialog}
         />
       </Box>
     </Box>

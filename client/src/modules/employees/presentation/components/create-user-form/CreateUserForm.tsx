@@ -19,7 +19,6 @@ interface allCombinedUserDataInterface {
     secondName: string;
     thirdName: string;
     fourthName: string;
-    email: string;
     SSN: string;
     phone: string;
     gender: string;
@@ -31,6 +30,7 @@ interface allCombinedUserDataInterface {
   auth: {
     username: string;
     password: string;
+    email: string;
   };
   role: string;
   departmentId: string;
@@ -54,7 +54,8 @@ const CreateUserForm = () => {
   // useState
   const [submitUserFlag, setSubmitUserFlag] = useState<boolean>(false);
   const [userDataAccordion, setUserDataAccordion] = useState<boolean>(true);
-  const [restUserDataAccordion, setRestUserDataAccordion] = useState<boolean>(true);
+  const [restUserDataAccordion, setRestUserDataAccordion] =
+    useState<boolean>(true);
   const [combinedValues, setCombinedValues] =
     useState<allCombinedUserDataInterface>({
       personalData: {
@@ -67,13 +68,13 @@ const CreateUserForm = () => {
         gender: "",
         birthDate: "",
         phone: "",
-        email: "",
         governate: "",
         address: "",
       },
       auth: {
         username: "",
         password: "",
+        email: "",
       },
       role: "",
       shift: "",
@@ -97,10 +98,11 @@ const CreateUserForm = () => {
   const handleAllUserDataSubmit = (values: PersonalDataValues) => {
     setCombinedValues((prevValues: allCombinedUserDataInterface) => ({
       ...prevValues,
-      personalData: { ...values, email: refRestUserDataValues.current.email },
+      personalData: values,
       auth: {
         username: refRestUserDataValues.current.userName,
         password: refRestUserDataValues.current.password,
+        email: refRestUserDataValues.current.email,
       },
       role: refRestUserDataValues.current.role,
       shift: refRestUserDataValues.current.shift,
@@ -157,7 +159,12 @@ const CreateUserForm = () => {
   return (
     <Box sx={{ marginTop: "2.5rem" }}>
       {/* start user personal data */}
-      <CustomAccordion isDisabled={false} isExpanded={userDataAccordion} setExpanded={setUserDataAccordion} title="البيانات الشخصية">
+      <CustomAccordion
+        isDisabled={false}
+        isExpanded={userDataAccordion}
+        setExpanded={setUserDataAccordion}
+        title="البيانات الشخصية"
+      >
         <PersonalData
           initialValues={userInitialValues}
           isSubmitted={submitUserFlag}
@@ -166,7 +173,12 @@ const CreateUserForm = () => {
       </CustomAccordion>
 
       {/* start rest user form */}
-      <CustomAccordion isDisabled={false} isExpanded={restUserDataAccordion} setExpanded={setRestUserDataAccordion}  title="بيانات المستخدم">
+      <CustomAccordion
+        isDisabled={false}
+        isExpanded={restUserDataAccordion}
+        setExpanded={setRestUserDataAccordion}
+        title="بيانات المستخدم"
+      >
         <Formik
           initialValues={restUserInitialValues}
           validationSchema={restUserFormSchema}
