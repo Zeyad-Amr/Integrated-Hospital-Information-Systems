@@ -13,7 +13,7 @@ const AddVisit = () => {
         margin: "3% auto 0",
       }}
     >
-      <PageHeader title="اضافـــــــة زيـــارة">
+      <PageHeader title="اضافـــــــة مريض">
         <HealthAndSafetyOutlinedIcon />
       </PageHeader>
       <AddVisitForm/>
