@@ -9,24 +9,22 @@ import {
     GetAnonymousVisitsUseCase,
     GetVisitByCodeUseCase
 } from "../../../domain/usecases";
-import VisitEntity from "@/modules/visits/domain/entities/visit-entity";
+import VisitInterface from "@/modules/visits/domain/interfaces/visit-interface";
 
 
 //* Create Visit
 export const createVisit = createAsyncThunk(
     "visits/create",
-    async (_data: VisitEntity, thunkApi) => {
+    async (_data: VisitInterface, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
             const result = await sl.get<CreateVisitUseCase>(ServiceKeys.CreateVisitUseCase).call(
                 new CreateVisitUseCaseParameters(_data)
             );
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
@@ -35,19 +33,17 @@ export const createVisit = createAsyncThunk(
 //* Update Visit
 export const updateVisit = createAsyncThunk(
     "visits/update",
-    async (_data: VisitEntity, thunkApi) => {
+    async (_data: VisitInterface, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
             const result = await sl.get<UpdateVisitUseCase>(ServiceKeys.UpdateVisitUseCase).call(
                 new UpdateVisitUseCaseParameters(_data)
 
             );
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
@@ -61,12 +57,10 @@ export const getAnonymousVisits = createAsyncThunk(
         const { rejectWithValue } = thunkApi;
         try {
             const result = await sl.get<GetAnonymousVisitsUseCase>(ServiceKeys.GetAnonymousVisitsUseCase).call();
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
@@ -81,12 +75,10 @@ export const getVisitByCode = createAsyncThunk(
             const result = await sl.get<GetVisitByCodeUseCase>(ServiceKeys.GetVisitByCodeUseCase).call(
                 new GetVisitByCodeUseCaseParameters(_data)
             );
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }

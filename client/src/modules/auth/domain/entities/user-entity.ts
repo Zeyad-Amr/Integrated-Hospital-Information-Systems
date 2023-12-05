@@ -1,43 +1,22 @@
-import PersonEntity from './person-entity';
+import PersonInterface from "../interfaces/person-interface";
+import UserInterface from "../interfaces/user-interface";
+import PersonEntity from "./person-entity";
 
 export default class UserEntity {
     private _id: string;
     private _role: string;
-    private _createdAt: Date;
-    private _updatedAt: Date;
-    private _createdById: string | null;
-    private _person: PersonEntity;
+    private _createdAt?: Date;
+    private _updatedAt?: Date;
+    private _createdById?: string;
+    private _person: PersonInterface;
 
-    constructor(data: {
-        id: string;
-        role: string;
-        createdAt: Date;
-        updatedAt: Date;
-        createdById: string | null;
-        person: {
-            id: string;
-            firstName: string;
-            secondName: string;
-            thirdName: string;
-            fourthName: string;
-            SSN: string;
-            verificationMethod: string;
-            gender: string;
-            birthDate: Date;
-            phone: string;
-            email: string;
-            governate: string;
-            address: string;
-            createdAt: Date;
-            updatedAt: Date;
-        };
-    }) {
+    constructor(data: UserInterface) {
         this._id = data.id;
         this._role = data.role;
         this._createdAt = data.createdAt;
         this._updatedAt = data.updatedAt;
         this._createdById = data.createdById;
-        this._person = new PersonEntity(data.person);
+        this._person = data.person;
     }
 
     //* --------------------- Getters ---------------------
@@ -49,19 +28,19 @@ export default class UserEntity {
         return this._role;
     }
 
-    get createdAt(): Date {
+    get createdAt(): Date | undefined {
         return this._createdAt;
     }
 
-    get updatedAt(): Date {
+    get updatedAt(): Date | undefined {
         return this._updatedAt;
     }
 
-    get createdById(): string | null {
+    get createdById(): string | undefined {
         return this._createdById;
     }
 
-    get person(): PersonEntity {
+    get person(): PersonInterface {
         return this._person;
     }
 
@@ -83,25 +62,25 @@ export default class UserEntity {
     }
 
 
-    set createdById(createdById: string | null) {
+    set createdById(createdById: string | undefined) {
         this._createdById = createdById;
     }
 
-    set person(person: PersonEntity) {
+    set person(person: PersonInterface) {
         this._person = person;
     }
 
     //* --------------------- Methods ---------------------
-    static defaultValue(): UserEntity {
+    static defaultValue(): UserInterface {
         const defaultDate = new Date();
         const defaultPerson = PersonEntity.defaultValue(); // Getting default PersonEntity
-        return new UserEntity({
+        return {
             id: '',
             role: '',
             createdAt: defaultDate,
             updatedAt: defaultDate,
-            createdById: null,
+            createdById: undefined,
             person: defaultPerson,
-        });
+        };
     }
 }

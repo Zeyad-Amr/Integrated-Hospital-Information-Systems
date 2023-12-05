@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getEmployeeList, createEmployee, updateEmployee, deleteEmployee, getEmployeeDetails } from "../thunks/employee-thunks";
 import { EmployeeState } from "../types";
 import EmployeeEntity from "@/modules/employees/domain/entities/employee-entity";
+import { ErrorResponse } from "@/core/api";
 
 //* Initial State
 const initialState: EmployeeState = {
@@ -47,7 +48,7 @@ const employeeSlice = createSlice({
         });
         builder.addCase(getEmployeeList.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
             state.employeeList = [];
         });
 
@@ -63,7 +64,7 @@ const employeeSlice = createSlice({
         });
         builder.addCase(createEmployee.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
         });
 
         //* update employee member
@@ -78,7 +79,7 @@ const employeeSlice = createSlice({
         });
         builder.addCase(updateEmployee.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
         });
 
         //* delete employee member
@@ -94,7 +95,7 @@ const employeeSlice = createSlice({
         });
         builder.addCase(deleteEmployee.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
         });
 
         //* get employee details
@@ -109,7 +110,7 @@ const employeeSlice = createSlice({
         });
         builder.addCase(getEmployeeDetails.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
             state.currentEmployee = null;
         });
 

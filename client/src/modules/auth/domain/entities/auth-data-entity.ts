@@ -1,11 +1,10 @@
-export default class AuthDataEntity {
+import AuthInterface from "../interfaces/auth-interface";
+
+export default class AuthDataEntity implements AuthInterface {
     private _username: string;
     private _password: string;
 
-    constructor(data: {
-        username: string;
-        password: string;
-    }) {
+    constructor(data: AuthInterface) {
         this._username = data.username;
         this._password = data.password;
     }
@@ -29,11 +28,11 @@ export default class AuthDataEntity {
     }
 
     //* --------------------- Methods ---------------------
-    static defaultValue(): AuthDataEntity {
-        return new AuthDataEntity({
+    static defaultValue(): AuthInterface {
+        return {
             username: '',
             password: '',
-        });
+        };
     }
 }
 

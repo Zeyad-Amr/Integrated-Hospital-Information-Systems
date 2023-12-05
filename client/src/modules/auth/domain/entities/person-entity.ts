@@ -1,37 +1,23 @@
-export default class PersonEntity {
-    private _id: string;
-    private _firstName: string;
-    private _secondName: string;
-    private _thirdName: string;
-    private _fourthName: string;
+import PersonInterface from "../interfaces/person-interface";
+
+export default class PersonEntity implements PersonInterface {
+    private _id?: string;
+    private _firstName?: string;
+    private _secondName?: string;
+    private _thirdName?: string;
+    private _fourthName?: string;
     private _SSN: string;
     private _verificationMethod: string;
-    private _gender: string;
-    private _birthDate: Date;
-    private _phone: string;
-    private _email: string;
-    private _governate: string;
-    private _address: string;
-    private _createdAt: Date;
-    private _updatedAt: Date;
+    private _gender?: string;
+    private _birthDate?: Date;
+    private _phone?: string;
+    private _email?: string;
+    private _governate?: string;
+    private _address?: string;
+    private _createdAt?: Date;
+    private _updatedAt?: Date;
 
-    constructor(data: {
-        id: string;
-        firstName: string;
-        secondName: string;
-        thirdName: string;
-        fourthName: string;
-        SSN: string;
-        verificationMethod: string;
-        gender: string;
-        birthDate: Date;
-        phone: string;
-        email: string;
-        governate: string;
-        address: string;
-        createdAt: Date;
-        updatedAt: Date;
-    }) {
+    constructor(data: PersonInterface) {
         this._id = data.id;
         this._firstName = data.firstName;
         this._secondName = data.secondName;
@@ -50,23 +36,24 @@ export default class PersonEntity {
     }
 
     //* --------------------- Getters ---------------------
-    get id(): string {
+
+    get id(): string | undefined {
         return this._id;
     }
 
-    get firstName(): string {
+    get firstName(): string | undefined {
         return this._firstName;
     }
 
-    get secondName(): string {
+    get secondName(): string | undefined {
         return this._secondName;
     }
 
-    get thirdName(): string {
+    get thirdName(): string | undefined {
         return this._thirdName;
     }
 
-    get fourthName(): string {
+    get fourthName(): string | undefined {
         return this._fourthName;
     }
 
@@ -78,56 +65,55 @@ export default class PersonEntity {
         return this._verificationMethod;
     }
 
-    get gender(): string {
+    get gender(): string | undefined {
         return this._gender;
     }
 
-    get birthDate(): Date {
+    get birthDate(): Date | undefined {
         return this._birthDate;
     }
 
-    get phone(): string {
+    get phone(): string | undefined {
         return this._phone;
     }
 
-    get email(): string {
+    get email(): string | undefined {
         return this._email;
     }
 
-    get governate(): string {
+    get governate(): string | undefined {
         return this._governate;
     }
 
-    get address(): string {
+    get address(): string | undefined {
         return this._address;
     }
-
-    get createdAt(): Date {
+    get createdAt(): Date | undefined {
         return this._createdAt;
     }
 
-    get updatedAt(): Date {
+    get updatedAt(): Date | undefined {
         return this._updatedAt;
     }
 
     //* --------------------- Setters ---------------------
-    set id(id: string) {
+    set id(id: string | undefined) {
         this._id = id;
     }
 
-    set firstName(firstName: string) {
+    set firstName(firstName: string | undefined) {
         this._firstName = firstName;
     }
 
-    set secondName(secondName: string) {
+    set secondName(secondName: string | undefined) {
         this._secondName = secondName;
     }
 
-    set thirdName(thirdName: string) {
+    set thirdName(thirdName: string | undefined) {
         this._thirdName = thirdName;
     }
 
-    set fourthName(fourthName: string) {
+    set fourthName(fourthName: string | undefined) {
         this._fourthName = fourthName;
     }
 
@@ -139,57 +125,56 @@ export default class PersonEntity {
         this._verificationMethod = verificationMethod;
     }
 
-    set gender(gender: string) {
+    set gender(gender: string | undefined) {
         this._gender = gender;
     }
 
-    set birthDate(birthDate: Date) {
+    set birthDate(birthDate: Date | undefined) {
         this._birthDate = birthDate;
     }
 
-    set phone(phone: string) {
+    set phone(phone: string | undefined) {
         this._phone = phone;
     }
 
-    set email(email: string) {
+    set email(email: string | undefined) {
         this._email = email;
     }
 
-    set governate(governate: string) {
+    set governate(governate: string | undefined) {
         this._governate = governate;
     }
 
-    set address(address: string) {
+    set address(address: string | undefined) {
         this._address = address;
     }
 
-    set createdAt(createdAt: Date) {
+    set createdAt(createdAt: Date | undefined) {
         this._createdAt = createdAt;
     }
 
-    set updatedAt(updatedAt: Date) {
+    set updatedAt(updatedAt: Date | undefined) {
         this._updatedAt = updatedAt;
     }
 
     //* --------------------- Methods ---------------------
-    static defaultValue(): PersonEntity {
-        const defaultDate = new Date();
-        return new PersonEntity({
-            id: '',
-            firstName: '',
-            secondName: '',
-            thirdName: '',
-            fourthName: '',
+    static defaultValue(): PersonInterface {
+        return {
+            id: undefined,
+            firstName: undefined,
+            secondName: undefined,
+            thirdName: undefined,
+            fourthName: undefined,
             SSN: '',
             verificationMethod: '',
-            gender: '',
-            birthDate: defaultDate,
-            phone: '',
-            email: '',
-            governate: '',
-            address: '',
-            createdAt: defaultDate,
-            updatedAt: defaultDate,
-        });
+            gender: undefined,
+            birthDate: undefined,
+            phone: undefined,
+            email: undefined,
+            governate: undefined,
+            address: undefined,
+            createdAt: undefined,
+            updatedAt: undefined,
+        };
     }
 }

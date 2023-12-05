@@ -3,6 +3,9 @@ import { login, getMe } from "../thunks/auth-thunks";
 import { AuthState } from "../types";
 import UserEntity from "@/modules/auth/domain/entities/user-entity";
 import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
+import { ErrorResponse } from "@/core/api";
+import UserInterface from "@/modules/auth/domain/interfaces/user-interface";
+import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
 
 //* Initial State
 const initialState: AuthState = {
@@ -28,10 +31,10 @@ const authSlice = createSlice({
         clearAuthData(state) {
             state.authData = AuthDataEntity.defaultValue();
         },
-        setAuthData(state, action: { payload: AuthDataEntity, type: string }) {
+        setAuthData(state, action: { payload: AuthInterface, type: string }) {
             state.authData = action.payload;
         },
-        setMe(state, action: { payload: UserEntity, type: string }) {
+        setMe(state, action: { payload: UserInterface, type: string }) {
             state.me = action.payload;
         }
     },
@@ -47,7 +50,7 @@ const authSlice = createSlice({
         });
         builder.addCase(login.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
         });
 
         //* get me 
@@ -62,7 +65,7 @@ const authSlice = createSlice({
         });
         builder.addCase(getMe.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
         });
 
 

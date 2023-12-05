@@ -13,7 +13,7 @@ const Endpoints = {
     visit: {
         list: '/visit',
         details: '/visit/:visitcode',
-        create: '/visit',
+        create: '/visit/',
         createAnonymously: '/visit/anonymous',
         update: '/patient',
     },
