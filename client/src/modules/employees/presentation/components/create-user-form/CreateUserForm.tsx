@@ -10,6 +10,7 @@ import PersonalData, {
 import { Grid } from "@mui/material";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
+import CustomAccordion from "@/core/shared/components/CustomAccordion";
 
 // User interfaces
 interface allCombinedUserDataInterface {
@@ -52,29 +53,32 @@ const CreateUserForm = () => {
 
   // useState
   const [submitUserFlag, setSubmitUserFlag] = useState<boolean>(false);
-  const [combinedValues, setCombinedValues] = useState<allCombinedUserDataInterface>({
-    personalData: {
-      firstName: "",
-      secondName: "",
-      thirdName: "",
-      fourthName: "",
-      SSN: "",
-      verificationMethod: "",
-      gender: "",
-      birthDate: "",
-      phone: "",
-      email: "",
-      governate: "",
-      address: "",
-    },
-    auth: {
-      username: "",
-      password: "",
-    },
-    role: "",
-    shift: "",
-    departmentId: "",
-  });
+  const [userDataAccordion, setUserDataAccordion] = useState<boolean>(true);
+  const [restUserDataAccordion, setRestUserDataAccordion] = useState<boolean>(true);
+  const [combinedValues, setCombinedValues] =
+    useState<allCombinedUserDataInterface>({
+      personalData: {
+        firstName: "",
+        secondName: "",
+        thirdName: "",
+        fourthName: "",
+        SSN: "",
+        verificationMethod: "",
+        gender: "",
+        birthDate: "",
+        phone: "",
+        email: "",
+        governate: "",
+        address: "",
+      },
+      auth: {
+        username: "",
+        password: "",
+      },
+      role: "",
+      shift: "",
+      departmentId: "",
+    });
 
   const userInitialValues: PersonalDataValues = {
     firstName: "",
@@ -152,181 +156,185 @@ const CreateUserForm = () => {
 
   return (
     <Box sx={{ marginTop: "2.5rem" }}>
-      {/* start rest user form */}
-      <Formik
-        initialValues={restUserInitialValues}
-        validationSchema={restUserFormSchema}
-        onSubmit={(values) => {
-          handleRestUserSubmit(values);
-        }}
-      >
-        {({
-          values,
-          touched,
-          errors,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-        }) => (
-          <Box component="form" onSubmit={handleSubmit} noValidate>
-            <Grid container columns={12} spacing={2}>
-              <Grid item lg={3} md={3} sm={12} xs={12}>
-                <CustomTextField
-                  isRequired
-                  name="userName"
-                  label="اسم المستخدم"
-                  value={values.userName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.userName}
-                  touched={touched.userName}
-                  width="100%"
-                  props={{
-                    type: "text",
-                  }}
-                />
-              </Grid>
-              <Grid item lg={3} md={3} sm={12} xs={12}>
-                <CustomTextField
-                  isRequired
-                  name="password"
-                  label="الرقم السري"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.password}
-                  touched={touched.password}
-                  width="100%"
-                  props={{
-                    type: "password",
-                  }}
-                />
-              </Grid>
-              <Grid item lg={6} md={6} sm={12} xs={12}>
-                <CustomTextField
-                  isRequired
-                  name="email"
-                  label="الايميل"
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.email}
-                  touched={touched.email}
-                  width="100%"
-                  props={{
-                    type: "email",
-                  }}
-                />
-              </Grid>
-            </Grid>
-            {/*  */}
-            <Grid container columns={12} spacing={2}>
-              <Grid item lg={3} md={3} sm={12} xs={12}>
-                <CustomSelectField
-                  isRequired
-                  name="role"
-                  label="الوظيفة"
-                  value={values.role}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.role}
-                  touched={touched.role}
-                  width="100%"
-                  options={[
-                    {
-                      id: "1",
-                      title: "طبيب",
-                    },
-                    {
-                      id: "2",
-                      title: "تمريض",
-                    },
-                    {
-                      id: "2",
-                      title: "موظف",
-                    },
-                  ]}
-                />
-              </Grid>
-              <Grid item lg={3} md={3} sm={12} xs={12}>
-                <CustomSelectField
-                  isRequired
-                  name="shift"
-                  label="موعد العمل"
-                  value={values.shift}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.shift}
-                  touched={touched.shift}
-                  width="100%"
-                  options={[
-                    {
-                      id: "1",
-                      title: "12 صباحي",
-                    },
-                    {
-                      id: "2",
-                      title: "8 صباحي",
-                    },
-                    {
-                      id: "3",
-                      title: "12 مسائي",
-                    },
-                    {
-                      id: "4",
-                      title: "8 سهر",
-                    },
-                    {
-                      id: "5",
-                      title: "8 ظهر",
-                    },
-                    {
-                      id: "6",
-                      title: "24 يوم كامل",
-                    },
-                  ]}
-                />
-              </Grid>
-              <Grid item lg={6} md={6} sm={12} xs={12}>
-                <CustomSelectField
-                  isRequired
-                  name="department"
-                  label="القسم"
-                  value={values.department}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.department}
-                  touched={touched.department}
-                  width="100%"
-                  options={[
-                    {
-                      id: "1",
-                      title: "قلب",
-                    },
-                    {
-                      id: "2",
-                      title: "باطنة",
-                    },
-                  ]}
-                />
-              </Grid>
-            </Grid>
-
-            <Button
-              type="submit"
-              sx={{ display: "none" }}
-              ref={refSubmitUserDataButton}
-            ></Button>
-          </Box>
-        )}
-      </Formik>
-
       {/* start user personal data */}
-      <PersonalData
-        initialValues={userInitialValues}
-        isSubmitted={submitUserFlag}
-        onSubmit={handleAllUserDataSubmit}
-      />
+      <CustomAccordion isDisabled={false} isExpanded={userDataAccordion} setExpanded={setUserDataAccordion} title="البيانات الشخصية">
+        <PersonalData
+          initialValues={userInitialValues}
+          isSubmitted={submitUserFlag}
+          onSubmit={handleAllUserDataSubmit}
+        />
+      </CustomAccordion>
+
+      {/* start rest user form */}
+      <CustomAccordion isDisabled={false} isExpanded={restUserDataAccordion} setExpanded={setRestUserDataAccordion}  title="بيانات المستخدم">
+        <Formik
+          initialValues={restUserInitialValues}
+          validationSchema={restUserFormSchema}
+          onSubmit={(values) => {
+            handleRestUserSubmit(values);
+          }}
+        >
+          {({
+            values,
+            touched,
+            errors,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+          }) => (
+            <Box component="form" onSubmit={handleSubmit} noValidate>
+              <Grid container columns={12} spacing={2}>
+                <Grid item lg={3} md={3} sm={12} xs={12}>
+                  <CustomTextField
+                    isRequired
+                    name="userName"
+                    label="اسم المستخدم"
+                    value={values.userName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={errors.userName}
+                    touched={touched.userName}
+                    width="100%"
+                    props={{
+                      type: "text",
+                    }}
+                  />
+                </Grid>
+                <Grid item lg={3} md={3} sm={12} xs={12}>
+                  <CustomTextField
+                    isRequired
+                    name="password"
+                    label="الرقم السري"
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={errors.password}
+                    touched={touched.password}
+                    width="100%"
+                    props={{
+                      type: "password",
+                    }}
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <CustomTextField
+                    isRequired
+                    name="email"
+                    label="الايميل"
+                    value={values.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={errors.email}
+                    touched={touched.email}
+                    width="100%"
+                    props={{
+                      type: "email",
+                    }}
+                  />
+                </Grid>
+              </Grid>
+              {/*  */}
+              <Grid container columns={12} spacing={2}>
+                <Grid item lg={3} md={3} sm={12} xs={12}>
+                  <CustomSelectField
+                    isRequired
+                    name="role"
+                    label="الوظيفة"
+                    value={values.role}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={errors.role}
+                    touched={touched.role}
+                    width="100%"
+                    options={[
+                      {
+                        id: "1",
+                        title: "طبيب",
+                      },
+                      {
+                        id: "2",
+                        title: "تمريض",
+                      },
+                      {
+                        id: "2",
+                        title: "موظف",
+                      },
+                    ]}
+                  />
+                </Grid>
+                <Grid item lg={3} md={3} sm={12} xs={12}>
+                  <CustomSelectField
+                    isRequired
+                    name="shift"
+                    label="موعد العمل"
+                    value={values.shift}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={errors.shift}
+                    touched={touched.shift}
+                    width="100%"
+                    options={[
+                      {
+                        id: "1",
+                        title: "12 صباحي",
+                      },
+                      {
+                        id: "2",
+                        title: "8 صباحي",
+                      },
+                      {
+                        id: "3",
+                        title: "12 مسائي",
+                      },
+                      {
+                        id: "4",
+                        title: "8 سهر",
+                      },
+                      {
+                        id: "5",
+                        title: "8 ظهر",
+                      },
+                      {
+                        id: "6",
+                        title: "24 يوم كامل",
+                      },
+                    ]}
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <CustomSelectField
+                    isRequired
+                    name="department"
+                    label="القسم"
+                    value={values.department}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={errors.department}
+                    touched={touched.department}
+                    width="100%"
+                    options={[
+                      {
+                        id: "1",
+                        title: "قلب",
+                      },
+                      {
+                        id: "2",
+                        title: "باطنة",
+                      },
+                    ]}
+                  />
+                </Grid>
+              </Grid>
+
+              <Button
+                type="submit"
+                sx={{ display: "none" }}
+                ref={refSubmitUserDataButton}
+              ></Button>
+            </Box>
+          )}
+        </Formik>
+      </CustomAccordion>
 
       {/* submit button */}
       <Box
