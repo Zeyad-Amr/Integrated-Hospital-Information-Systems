@@ -127,7 +127,7 @@ const AddVisitForm = () => {
   }, [combinedValues]);
 
   return (
-    <Box sx={{ marginTop: "2.5rem" }}>
+    <Box sx={{ marginTop: "1rem" }}>
       {/* start rest patient form */}
       <Formik
         initialValues={{ sequenceNumber: "" }}

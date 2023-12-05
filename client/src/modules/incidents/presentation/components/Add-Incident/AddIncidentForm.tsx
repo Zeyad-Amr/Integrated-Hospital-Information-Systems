@@ -13,24 +13,21 @@ import AdditionalData, {
 } from "@/core/shared/components/AdditionalData";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import CustomTextField from "@/core/shared/components/CustomTextField";
-import { Grid } from "@mui/material";
-import { values } from "lodash";
+import { Button } from "@mui/material";
 
 const AddIncidentForm = () => {
   const refSubmitButton: any = useRef(null);
 
   const [showIncidentForm, setshowIncidentForm] = useState("block");
-  const [hide, setHide] = useState("block");
   const [showIncidentHeader, setshowIncidentHeader] = useState("none");
   const [showCompForm, setshowCompForm] = useState("none");
   const [showDialog, setShawDialog] = useState("none");
 
-  const [incidentData, setIncidentData] = useState({});
-  const [companionData, setcompanionData] = useState({});
-
   const [submitFlag, setSubmitFlag] = useState<boolean>(false);
+  const [incidentFormSubmitted, setIncidentFormSubmitted] =
+    useState<boolean>(false);
+  const [addingCompanion, setAddingCompanion] = useState<string>("none");
   const [addDatasubmitFlag, setAddDatasubmitFlag] = useState<boolean>(false);
 
   const [clickedBtnId, setClickedBtnId] = useState("");
@@ -65,62 +62,96 @@ const AddIncidentForm = () => {
   };
 
   const handleCompanionSubmission = (values: PersonalDataValues) => {
-    setcompanionData(values);
+    response.current.companions.push(values);
+    setAddingCompanion("added");
+    console.log(document.getElementById("personal-data-form"));
+    (document.getElementById("personal-data-form") as HTMLFormElement).reset();
   };
 
   const handleIncidentSubmission = (values: any) => {
-    setIncidentData(values);
+    response.current.description =
+      values.comeFromString === "1"
+        ? "home"
+        : values.comeFromString === "2"
+        ? "accedent"
+        : "prison";
+    (response.current.attendantName = values.attendantName),
+      (response.current.attendantSSN = values.attendantSSN),
+      (response.current.attendantSerialNumber = values.attendantSerialNumber),
+      (response.current.car.firstChar = values.firstChar),
+      (response.current.car.secondChar = values.secondChar),
+      (response.current.car.thirdChar = values.thirdChar),
+      (response.current.car.number = values.carNum);
+      (response.current.reason = values.reason),
+      (response.current.place = values.place),
+      (response.current.notes = values.notes),
+      setIncidentFormSubmitted(true);
   };
 
-  useEffect(() => {
-    if (
-      Object.keys(incidentData).length !== 0 &&
-      Object.keys(companionData).length === 0
-    ) {
-      console.log("incidentData", incidentData);
-    } else if (
-      Object.keys(companionData).length === 0 &&
-      Object.keys(companionData).length !== 0
-    ) {
-      console.log("companionData", companionData);
-    } else if (
-      Object.keys(incidentData).length !== 0 &&
-      Object.keys(companionData).length !== 0
-    ) {
-      console.log("incidentData", incidentData);
-      console.log("companionData", companionData);
-    }
-  }, [companionData, incidentData]);
+  let response: React.MutableRefObject<{
+    numOfPatients: string;
+    description: string;
+    attendantName: string;
+    attendantSSN: string;
+    attendantSerialNumber: string;
+    car: {
+      firstChar: string;
+      secondChar: string;
+      thirdChar: string;
+      number: string;
+    };
+    companions: {}[];
+    reason: string;
+    place: string;
+    notes: string;
+  }> = useRef({
+    numOfPatients: "",
+    description: "",
+    attendantName: "",
+    attendantSSN: "",
+    attendantSerialNumber: "",
+    car: {
+      firstChar: "",
+      secondChar: "",
+      thirdChar: "",
+      number: "",
+    },
+    companions: [],
+    reason: "",
+    place: "",
+    notes: "",
+  });
 
   const handleClickedButton = (e: any) => {
+    if (refSubmitButton.current) {
+      refSubmitButton.current.click();
+    }
+    submitButtonClick();
+
     if (e.target.id === "confirm-btn") {
-      if (showCompForm === "none" && showIncidentForm === "block") {
-        submitButtonClick();
-      } else if (showCompForm === "block" && showIncidentForm === "none") {
-        setSubmitFlag(!submitFlag);
-      } else if (showCompForm === "block" && showIncidentForm === "block") {
-        submitButtonClick();
+      setClickedBtnId(e.target.id);
+      if (addingCompanion === "adding") {
         setSubmitFlag(!submitFlag);
       }
-      setClickedBtnId(e.target.id);
     } else if (e.target.id === "add-comp-btn") {
-      submitButtonClick();
       setClickedBtnId(e.target.id);
+      if (addingCompanion === "adding") {
+        setSubmitFlag(!submitFlag);
+      }
     }
   };
 
   const handleAddCompanionShow = () => {
+    setAddingCompanion("adding");
     setshowCompForm("block");
     setshowIncidentHeader("flex");
     setshowIncidentForm("none");
-    setHide("none");
   };
 
   const handleEditBtn = () => {
     setshowIncidentHeader("none");
     setshowIncidentForm("block");
-    setIncidentData([]);
-    setcompanionData([]);
+    setIncidentFormSubmitted(false);
   };
 
   const submitButtonClick = () => {
@@ -128,13 +159,16 @@ const AddIncidentForm = () => {
   };
 
   useEffect(() => {
-    if (
-      Object.keys(incidentData).length > 1 &&
-      clickedBtnId === "add-comp-btn"
-    ) {
+    if (incidentFormSubmitted && clickedBtnId === "add-comp-btn") {
       handleAddCompanionShow();
+    } else if (
+      incidentFormSubmitted &&
+      clickedBtnId === "confirm-btn" &&
+      addingCompanion !== "adding"
+    ) {
+      console.log(response.current);
     }
-  }, [clickedBtnId, incidentData]);
+  }, [addingCompanion, clickedBtnId, incidentFormSubmitted]);
   const handleFormSchema = Yup.object({
     numOfPatients: Yup.number().required("يجب إدخال عدد المرضى"),
   });
@@ -149,8 +183,8 @@ const AddIncidentForm = () => {
           numOfPatients: "",
         }}
         validationSchema={handleFormSchema}
-        onSubmit={() => {
-          // onSubmit(values);
+        onSubmit={(values) => {
+          response.current.numOfPatients = values.numOfPatients;
         }}
       >
         {({
@@ -162,7 +196,7 @@ const AddIncidentForm = () => {
           handleSubmit,
         }) => (
           <Box
-            sx={{ marginTop: "2rem" }}
+            sx={{ marginTop: "1rem" }}
             component="form"
             onSubmit={handleSubmit}
             noValidate
@@ -184,6 +218,11 @@ const AddIncidentForm = () => {
                   type: "number",
                 }}
               />
+              <Button
+                type="submit"
+                sx={{ display: "none" }}
+                ref={refSubmitButton}
+              ></Button>
             </Box>
           </Box>
         )}
@@ -196,21 +235,18 @@ const AddIncidentForm = () => {
         display={showIncidentForm}
       />
       <IncidentHeader
-        setIncidentData={setIncidentData}
-        setcompanionData={setcompanionData}
-        data={incidentData}
+        Companions={response.current.companions}
+        data={response.current}
         display={showIncidentHeader}
         onClick={handleEditBtn}
       />
       <Box sx={{ display: showCompForm }}>
         <SubHeader
+          setAddingCompanion={setAddingCompanion}
           setSubmitFlag={setSubmitFlag}
           handleEditBtn={handleEditBtn}
-          setIncidentData={setIncidentData}
-          setcompanionData={setcompanionData}
           SubHeaderText="بيـــانات المــرافق"
           compStateChanger={setshowCompForm}
-          compBtnStateChanger={setHide}
         />
         <PersonalData
           initialValues={intialValues}
@@ -220,7 +256,6 @@ const AddIncidentForm = () => {
       </Box>
       <Box
         sx={{
-          marginTop: "2.5rem",
           display: "flex",
           justifyContent: "flex-start",
           alignItems: "center",
@@ -236,20 +271,15 @@ const AddIncidentForm = () => {
           }}
         />
         <SecondaryButton
-          display={hide}
           id="add-comp-btn"
-          title="اضــــافة مـــرافق"
+          title={
+            showCompForm === "none"
+              ? "اضــــافة مـــرافق"
+              : "اضـافة مـرافق أخــر"
+          }
           type="button"
           onClick={(e: any) => {
             handleClickedButton(e);
-          }}
-        />
-        <SecondaryButton
-          display={hide}
-          title="استكمال البيانات"
-          type="button"
-          onClick={() => {
-            setShawDialog("block");
           }}
         />
       </Box>
