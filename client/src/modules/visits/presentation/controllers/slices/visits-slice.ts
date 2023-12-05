@@ -7,6 +7,8 @@ import {
 } from "../thunks/visits-thunks";
 import { VisitsState } from "../types";
 import VisitEntity from "@/modules/visits/domain/entities/visit-entity";
+import { ErrorResponse } from "@/core/api";
+import VisitInterface from "@/modules/visits/domain/interfaces/visit-interface";
 
 //* Initial State
 const initialState: VisitsState = {
@@ -32,10 +34,10 @@ const authSlice = createSlice({
         clearCurrentVisit(state) {
             state.currentVisit = initialState.currentVisit;
         },
-        setVisits(state, action: { payload: VisitEntity[], type: string }) {
+        setVisits(state, action: { payload: VisitInterface[], type: string }) {
             state.visits = action.payload;
         },
-        setCurrentVisit(state, action: { payload: VisitEntity, type: string }) {
+        setCurrentVisit(state, action: { payload: VisitInterface, type: string }) {
             state.currentVisit = action.payload;
         }
 
@@ -49,10 +51,12 @@ const authSlice = createSlice({
         builder.addCase(createVisit.fulfilled, (state, _action) => {
             state.loading = false;
             state.error = "";
+            state.visits = [_action.payload]
+            console.log('state.visits', state.visits);
         });
         builder.addCase(createVisit.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
         });
 
         //* Update Visit
@@ -66,7 +70,7 @@ const authSlice = createSlice({
         });
         builder.addCase(updateVisit.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
         });
 
         //* Get Anonymous Visits
@@ -81,7 +85,7 @@ const authSlice = createSlice({
         });
         builder.addCase(getAnonymousVisits.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
         });
 
         //* Get Visit By Code
@@ -96,7 +100,7 @@ const authSlice = createSlice({
         });
         builder.addCase(getVisitByCode.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as string;
+            state.error = (action.payload as ErrorResponse).message;
         });
     },
 });

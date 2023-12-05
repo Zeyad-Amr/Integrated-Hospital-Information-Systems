@@ -1,33 +1,10 @@
 import UserEntity from '../../domain/entities/user-entity';
+import UserInterface from '../../domain/interfaces/user-interface';
 import PersonModel from './person-model';
 
 export default class UserModel extends UserEntity {
-    constructor(data: {
-        id: string;
-        role: string;
-        createdAt: Date;
-        updatedAt: Date;
-        createdById: string | null;
-        person: {
-            id: string;
-            firstName: string;
-            secondName: string;
-            thirdName: string;
-            fourthName: string;
-            SSN: string;
-            verificationMethod: string;
-            gender: string;
-            birthDate: Date;
-            phone: string;
-            email: string;
-            governate: string;
-            address: string;
-            createdAt: Date;
-            updatedAt: Date;
-        };
-    }) {
+    constructor(data: UserInterface) {
         super(data);
-        this.person = new PersonModel(data.person);
     }
 
     //* --------------------- Serialization: Convert the model to JSON ---------------------

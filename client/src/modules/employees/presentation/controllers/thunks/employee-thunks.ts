@@ -21,12 +21,10 @@ export const getEmployeeList = createAsyncThunk(
         const { rejectWithValue } = thunkApi;
         try {
             const result = await sl.get<GetAllEmployeesUseCase>(ServiceKeys.GetAllEmployeesUseCase).call();
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
@@ -42,13 +40,10 @@ export const createEmployee = createAsyncThunk(
             const result = await sl.get<CreateEmployeeUseCase>(ServiceKeys.CreateEmployeeUseCase).call(
                 new CreateEmployeeUseCaseParameters(data, authData)
             );
-            console.log('Thunk', result);
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
@@ -63,12 +58,10 @@ export const updateEmployee = createAsyncThunk(
             const result = await sl.get<UpdateEmployeeUseCase>(ServiceKeys.UpdateEmployeeUseCase).call(
                 new UpdateEmployeeUseCaseParameters(data, authData)
             );
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
@@ -83,12 +76,10 @@ export const deleteEmployee = createAsyncThunk(
             const result = await sl.get<DeleteEmployeeUseCase>(ServiceKeys.DeleteEmployeeUseCase).call(
                 new DeleteEmployeeUseCaseParameters(id)
             );
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight() === true ? id : "";
+            console.log('Result:', result);
+            return id;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
@@ -103,12 +94,10 @@ export const getEmployeeDetails = createAsyncThunk(
             const result = await sl.get<GetEmployeeByIdUseCase>(ServiceKeys.GetEmployeeByIdUseCase).call(
                 new GetEmployeeByIdUseCaseParameters(id)
             );
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }

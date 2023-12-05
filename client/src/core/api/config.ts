@@ -15,13 +15,13 @@ axiosInstance.interceptors.request.use(
         if (token.length > 0) {
             config.headers['Authorization'] = 'Bearer ' + LocalStorage.fetch<string>(LocalStorageKeys.token) ?? '';
         }
-        if (!config.url?.includes('page') && config.method?.toLowerCase() === 'get') {
-            config.params = {
-                ...config.params,
-                page: 1,
-                size: 100
-            }
-        }
+        // if (!config.url?.includes('page') && config.method?.toLowerCase() === 'get') {
+        //     config.params = {
+        //         ...config.params,
+        //         page: 1,
+        //         size: 100
+        //     }
+        // }
         return config;
     },
     (error) => {

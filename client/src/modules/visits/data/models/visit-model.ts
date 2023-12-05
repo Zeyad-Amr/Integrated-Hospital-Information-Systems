@@ -1,77 +1,10 @@
 import VisitEntity from '../../domain/entities/visit-entity';
 import PersonModel from '../../../auth/data/models/person-model';
-// import EmployeeModel from '../../../employees/data/models/employee-model';
-export default class VisitModel extends VisitEntity {
-    constructor(data: {
-        code: string;
-        sequenceNumber: number | null;
-        kinship: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        // creator: {
-        //     id: string;
-        //     role: string;
-        //     createdAt: Date;
-        //     updatedAt: Date;
-        //     createdById: string | null;
-        //     person: {
-        //         id: string;
-        //         firstName: string;
-        //         secondName: string;
-        //         thirdName: string;
-        //         fourthName: string;
-        //         SSN: string;
-        //         verificationMethod: string;
-        //         gender: string;
-        //         birthDate: Date;
-        //         phone: string;
-        //         email: string;
-        //         governate: string;
-        //         address: string;
-        //         createdAt: Date;
-        //         updatedAt: Date;
-        //     };
-        // };
-        patient: {
-            id: string;
-            firstName: string;
-            secondName: string;
-            thirdName: string;
-            fourthName: string;
-            SSN: string;
-            verificationMethod: string;
-            gender: string;
-            birthDate: Date;
-            phone: string;
-            email: string;
-            governate: string;
-            address: string;
-            createdAt: Date;
-            updatedAt: Date;
-        };
-        companion: {
-            id: string;
-            firstName: string;
-            secondName: string;
-            thirdName: string;
-            fourthName: string;
-            SSN: string;
-            verificationMethod: string;
-            gender: string;
-            birthDate: Date;
-            phone: string;
-            email: string;
-            governate: string;
-            address: string;
-            createdAt: Date;
-            updatedAt: Date;
-        };
+import VisitInterface from '../../domain/interfaces/visit-interface';
 
-    }) {
+export default class VisitModel extends VisitEntity {
+    constructor(data: VisitInterface) {
         super(data);
-        // this.creator = new EmployeeModel(data.creator);
-        this.patient = new PersonModel(data.patient);
-        this.companion = new PersonModel(data.companion);
     }
 
     // //* --------------------- Serialization: Convert the model to JSON ---------------------
@@ -102,7 +35,6 @@ export default class VisitModel extends VisitEntity {
             kinship: json.kinship,
             createdAt: json.createdAt,
             updatedAt: json.updatedAt,
-            // creator: EmployeeModel.fromJson(json.creator),
             patient: PersonModel.fromJson(json.patient),
             companion: PersonModel.fromJson(json.companion),
         });

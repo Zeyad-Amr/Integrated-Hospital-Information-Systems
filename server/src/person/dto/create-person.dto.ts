@@ -79,15 +79,6 @@ export class CreatePersonDto {
 
     @ApiProperty({
         type: String,
-        example: 'diaabadr82@gmail.com',
-    })
-    @IsOptional()
-    @IsString()
-    @IsEmail()
-    email: string
-
-    @ApiProperty({
-        type: String,
         example: 'Giza',
     })
     @IsNotEmpty()

@@ -1,15 +1,13 @@
 import BaseUseCase from "@/core/base/base-usecase";
-import { Either } from "@/core/shared/utils/either";
-import { ErrorMessage } from "@/core/api";
 import { GetVisitByCodeUseCaseParameters } from "./usecase-params";
 import BaseVisitsRepository from "../repositories/base-visits-repository";
-import VisitEntity from "../entities/visit-entity";
+import VisitInterface from "../interfaces/visit-interface";
 
 class GetVisitByCodeUseCase
-    implements BaseUseCase<VisitEntity, GetVisitByCodeUseCaseParameters> {
+    implements BaseUseCase<VisitInterface, GetVisitByCodeUseCaseParameters> {
     constructor(private baseVisitsRepository: BaseVisitsRepository) { }
 
-    async call(param: GetVisitByCodeUseCaseParameters): Promise<Either<ErrorMessage, VisitEntity>> {
+    async call(param: GetVisitByCodeUseCaseParameters): Promise<VisitInterface> {
         return await this.baseVisitsRepository.getVisitByCode(param.visitcode);
     }
 }
