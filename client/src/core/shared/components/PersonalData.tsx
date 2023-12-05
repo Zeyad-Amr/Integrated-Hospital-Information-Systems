@@ -44,6 +44,7 @@ const PersonalData = ({
         checkFirstRender2.current = false;
       } else {
         if (refSubmitButton.current) {
+          console.log("ahhh");
           refSubmitButton.current.click();
         }
       }
@@ -122,7 +123,7 @@ const PersonalData = ({
         handleBlur,
         handleSubmit,
       }) => (
-        <Box component="form" onSubmit={handleSubmit} noValidate>
+        <Box component="form" onSubmit={handleSubmit} noValidate id='personal-data-form'>
           <Grid container columns={12} spacing={4}>
             <Grid
               item

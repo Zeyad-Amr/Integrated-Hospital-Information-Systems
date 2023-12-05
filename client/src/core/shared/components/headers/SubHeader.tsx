@@ -2,7 +2,16 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
-const SubHeader = (props: any) => {
+interface SubHeaderProps {
+  SubHeaderText: string;
+  setAddingCompanion: Function
+handleEditBtn: Function
+compStateChanger: Function
+compBtnStateChanger: Function
+setSubmitFlag: Function;
+}
+
+const SubHeader = ({SubHeaderText, setAddingCompanion, handleEditBtn, compStateChanger, compBtnStateChanger,setSubmitFlag}: SubHeaderProps) => {
   return (
     <Box sx={{ width: "100%", marginBottom: "2rem" }}>
       <Box
@@ -28,7 +37,7 @@ const SubHeader = (props: any) => {
           <Typography
             sx={{ color: "white", fontSize: "1.2rem", fontWeight: "600" }}
           >
-            {props.SubHeaderText}
+            {SubHeaderText}
           </Typography>
         </Box>
         <Box
@@ -44,12 +53,11 @@ const SubHeader = (props: any) => {
             cursor: "pointer",
           }}
           onClick={() => {
-            props.handleEditBtn();
-            props.compStateChanger("none");
-            props.compBtnStateChanger("block");
-            props.setIncidentData([]);
-            props.setcompanionData([]);
-            props.setSubmitFlag(false)
+            setAddingCompanion("none");
+            handleEditBtn();
+            compStateChanger("none");
+            compBtnStateChanger("block");
+            setSubmitFlag(false)
           }}
         >
           <CloseRoundedIcon sx={{ color: "white" }} />

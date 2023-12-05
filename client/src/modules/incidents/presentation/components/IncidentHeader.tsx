@@ -32,19 +32,20 @@ const IncidentHeader = (props: any) => {
         <Grid item lg={3} md={3} sm={6} xs={12} sx={{ display: "flex" }}>
           <Typography>قادم من :</Typography>
           <Typography sx={{ fontWeight: "600" }}>
-            &nbsp;{props.data.comeFromString === "1" ? "حادث" : "خناقة"}
+            &nbsp;{props.data.description === "home"? "منزل": (props.data.description === "accedent" ? "حادث" : "سجن")}
           </Typography>
         </Grid>
         <Grid item lg={3} md={3} sm={6} xs={12} sx={{ display: "flex" }}>
           <Typography>المسعف :</Typography>
           <Typography sx={{ fontWeight: "600" }}>
-            &nbsp;{props.data.paramedicName}
+            &nbsp;{props.data.attendantName}
           </Typography>
         </Grid>
         <Grid item lg={3} md={3} sm={6} xs={12} sx={{ display: "flex" }}>
           <Typography>سيارة الاسعاف :</Typography>
           <Typography sx={{ fontWeight: "600" }}>
-            &nbsp;{props.data.firstChar} &nbsp;{props.data.secondChar} &nbsp;{props.data.thirdChar} &nbsp;{props.data.carNum}
+            &nbsp;{props.data.car.firstChar} &nbsp;{props.data.car.secondChar} &nbsp;
+            {props.data.car.thirdChar} &nbsp;{props.data.car.number}
           </Typography>
         </Grid>
       </Grid>
