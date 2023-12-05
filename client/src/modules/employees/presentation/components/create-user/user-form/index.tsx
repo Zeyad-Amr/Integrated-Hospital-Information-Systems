@@ -104,7 +104,7 @@ const CreateUserForm = () => {
         handleSubmit,
       }) => (
         <Box
-          sx={{ marginTop: "2rem" }}
+          sx={{ marginTop: "1rem" }}
           component="form"
           onSubmit={handleSubmit}
           noValidate

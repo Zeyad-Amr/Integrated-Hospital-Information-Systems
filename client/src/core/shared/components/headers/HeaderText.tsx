@@ -5,7 +5,6 @@ const HeaderText = (props : {title : string}) => {
   return <Box sx={{
     textAlign:'center',
     width:'100%',
-    // fontWeight: 'bold',
     fontSize: '1rem',
   }}>{ props.title }</Box>;
 };

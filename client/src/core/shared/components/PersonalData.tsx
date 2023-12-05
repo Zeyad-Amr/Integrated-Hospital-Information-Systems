@@ -93,6 +93,8 @@ const PersonalData = ({
       .matches(/^[0-9]+$/, "Phone number must be numeric."),
   });
 
+  
+
   return (
     <Formik
       enableReinitialize
@@ -111,8 +113,9 @@ const PersonalData = ({
         verificationMethod: initialValues.verificationMethod,
       }}
       validationSchema={handleFormSchema}
-      onSubmit={(values) => {
+      onSubmit={(values, { resetForm }) => {
         onSubmit(values);
+        resetForm();
       }}
     >
       {({
@@ -123,7 +126,12 @@ const PersonalData = ({
         handleBlur,
         handleSubmit,
       }) => (
-        <Box component="form" onSubmit={handleSubmit} noValidate id='personal-data-form'>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          id="personal-data-form"
+        >
           <Grid container columns={12} spacing={4}>
             <Grid
               item

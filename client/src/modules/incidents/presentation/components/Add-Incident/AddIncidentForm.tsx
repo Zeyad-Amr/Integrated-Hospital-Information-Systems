@@ -20,7 +20,6 @@ const AddIncidentForm = () => {
   const refSubmitButton: any = useRef(null);
 
   const [showIncidentForm, setshowIncidentForm] = useState("block");
-  const [hide, setHide] = useState("block");
   const [showIncidentHeader, setshowIncidentHeader] = useState("none");
   const [showCompForm, setshowCompForm] = useState("none");
   const [showDialog, setShawDialog] = useState("none");
@@ -65,8 +64,8 @@ const AddIncidentForm = () => {
   const handleCompanionSubmission = (values: PersonalDataValues) => {
     response.current.companions.push(values);
     setAddingCompanion("added");
-    console.log(document.getElementById('personal-data-form'));
-    (document.getElementById('personal-data-form') as HTMLFormElement).reset()
+    console.log(document.getElementById("personal-data-form"));
+    (document.getElementById("personal-data-form") as HTMLFormElement).reset();
   };
 
   const handleIncidentSubmission = (values: any) => {
@@ -83,7 +82,10 @@ const AddIncidentForm = () => {
       (response.current.car.secondChar = values.secondChar),
       (response.current.car.thirdChar = values.thirdChar),
       (response.current.car.number = values.carNum);
-    setIncidentFormSubmitted(true);
+      (response.current.reason = values.reason),
+      (response.current.place = values.place),
+      (response.current.notes = values.notes),
+      setIncidentFormSubmitted(true);
   };
 
   let response: React.MutableRefObject<{
@@ -99,6 +101,9 @@ const AddIncidentForm = () => {
       number: string;
     };
     companions: {}[];
+    reason: string;
+    place: string;
+    notes: string;
   }> = useRef({
     numOfPatients: "",
     description: "",
@@ -112,6 +117,9 @@ const AddIncidentForm = () => {
       number: "",
     },
     companions: [],
+    reason: "",
+    place: "",
+    notes: "",
   });
 
   const handleClickedButton = (e: any) => {
@@ -138,7 +146,6 @@ const AddIncidentForm = () => {
     setshowCompForm("block");
     setshowIncidentHeader("flex");
     setshowIncidentForm("none");
-    setHide("none");
   };
 
   const handleEditBtn = () => {
@@ -189,7 +196,7 @@ const AddIncidentForm = () => {
           handleSubmit,
         }) => (
           <Box
-            sx={{ marginTop: "2rem" }}
+            sx={{ marginTop: "1rem" }}
             component="form"
             onSubmit={handleSubmit}
             noValidate
@@ -228,8 +235,7 @@ const AddIncidentForm = () => {
         display={showIncidentForm}
       />
       <IncidentHeader
-        // setIncidentData={setIncidentData}
-        // setcompanionData={setcompanionData}
+        Companions={response.current.companions}
         data={response.current}
         display={showIncidentHeader}
         onClick={handleEditBtn}
@@ -241,7 +247,6 @@ const AddIncidentForm = () => {
           handleEditBtn={handleEditBtn}
           SubHeaderText="بيـــانات المــرافق"
           compStateChanger={setshowCompForm}
-          compBtnStateChanger={setHide}
         />
         <PersonalData
           initialValues={intialValues}
@@ -251,7 +256,6 @@ const AddIncidentForm = () => {
       </Box>
       <Box
         sx={{
-          // marginTop: "1.5rem",
           display: "flex",
           justifyContent: "flex-start",
           alignItems: "center",
@@ -268,18 +272,14 @@ const AddIncidentForm = () => {
         />
         <SecondaryButton
           id="add-comp-btn"
-          title="اضــــافة مـــرافق"
+          title={
+            showCompForm === "none"
+              ? "اضــــافة مـــرافق"
+              : "اضـافة مـرافق أخــر"
+          }
           type="button"
           onClick={(e: any) => {
             handleClickedButton(e);
-          }}
-        />
-        <SecondaryButton
-          display={hide}
-          title="استكمال البيانات"
-          type="button"
-          onClick={() => {
-            setShawDialog("block");
           }}
         />
       </Box>
