@@ -1,10 +1,10 @@
 import { Box, Grid, Typography, Button } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
-
 import React, { useEffect, useRef } from "react";
 import CustomTextField from "./CustomTextField";
 import CustomSelectField from "./CustomSelectField";
+
 export interface AdditionalDataValues {
   comeFromString: string;
   attendantName: string;
@@ -71,24 +71,33 @@ const AdditionalData = ({
   });
   const handleKeyDown = (id: string, key: number, value: any) => {
     let x: number = parseInt(id[id.length - 1]);
-    x = parseInt(id[id.length - 1]) + 1;
-    console.log(x);
-    if (parseInt(id[id.length - 1]) < 4) {
-      switch (key) {
-        case 13: // Enter
-          x = parseInt(id[id.length - 1]) + 1;
-          break;
-        case 8: // Backspace
-          value.length === 0
-            ? (x = parseInt(id[id.length - 1]) - 1)
-            : (x = parseInt(id[id.length - 1]));
-          break;
-        default:
-          break;
+    if (key !== 18 && key !== 16) {
+      x < 4 && key !== 8
+        ? ((document.getElementById(`amb-car-${x}`) as HTMLInputElement).value =
+            "")
+        : null;
+      x = parseInt(id[id.length - 1]) + 1;
+      if (parseInt(id[id.length - 1]) <= 4) {
+        switch (key) {
+          case 13: // Enter
+            x = parseInt(id[id.length - 1]) + 1;
+            break;
+          case 8: // Backspace
+            value.length === 0
+              ? (x = parseInt(id[id.length - 1]) - 1)
+              : (x = parseInt(id[id.length - 1]));
+            break;
+          default:
+            break;
+        }
+        setTimeout(() => {
+          x <= 4 && x >= 1
+            ? (
+                document.getElementById(`amb-car-${x}`) as HTMLInputElement
+              ).focus()
+            : null;
+        }, 10);
       }
-      setTimeout(() => {
-        (document.getElementById(`amb-car-${x}`) as HTMLInputElement).focus();
-      }, 100);
     }
   };
 
@@ -120,14 +129,9 @@ const AdditionalData = ({
         handleBlur,
         handleSubmit,
       }) => (
-        <Box
-          sx={{ marginTop: "2rem" }}
-          component="form"
-          onSubmit={handleSubmit}
-          noValidate
-        >
+        <Box component="form" onSubmit={handleSubmit} noValidate>
           <Box sx={{ display: display ? display : "block" }}>
-            <Grid container columns={12} spacing={4}>
+            <Grid container columns={12} columnSpacing={2} rowSpacing={0}>
               <Grid
                 item
                 style={{
@@ -136,9 +140,9 @@ const AdditionalData = ({
                   alignItems: "center",
                   height: "100%",
                 }}
-                lg={6}
-                md={6}
-                sm={12}
+                lg={3}
+                md={3}
+                sm={6}
                 xs={12}
               >
                 <CustomSelectField
@@ -168,34 +172,20 @@ const AdditionalData = ({
                     },
                   ]}
                 />
-                <CustomTextField
-                  isRequired
-                  name="attendantName"
-                  label="اسم المحضر"
-                  value={values.attendantName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.attendantName}
-                  touched={touched.attendantName}
-                  width="100%"
-                  props={{
-                    type: "text",
-                  }}
-                />
-                <CustomTextField
-                  isRequired
-                  name="attendantSSN"
-                  label="الرقم القومي للمحضر"
-                  value={values.attendantSSN}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.attendantSSN}
-                  touched={touched.attendantSSN}
-                  width="100%"
-                  props={{
-                    type: "text",
-                  }}
-                />
+              </Grid>
+              <Grid
+                item
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+                lg={3}
+                md={3}
+                sm={6}
+                xs={12}
+              >
                 <CustomTextField
                   isRequired
                   name="attendantSerialNumber"
@@ -210,15 +200,85 @@ const AdditionalData = ({
                     type: "text",
                   }}
                 />
-                <Typography
+              </Grid>
+              <Grid
+                item
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+                lg={3}
+                md={3}
+                sm={6}
+                xs={12}
+              >
+                <CustomTextField
+                  isRequired
+                  name="attendantName"
+                  label="اسم المحضر"
+                  value={values.attendantName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.attendantName}
+                  touched={touched.attendantName}
+                  width="100%"
+                  props={{
+                    type: "text",
+                  }}
+                />
+              </Grid>
+              <Grid
+                item
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+                lg={3}
+                md={3}
+                sm={6}
+                xs={12}
+              >
+                <CustomTextField
+                  isRequired
+                  name="attendantSSN"
+                  label="الرقم القومي للمحضر"
+                  value={values.attendantSSN}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.attendantSSN}
+                  touched={touched.attendantSSN}
+                  width="100%"
+                  props={{
+                    type: "text",
+                  }}
+                />
+              </Grid>
+              <Grid
+                item
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+                lg={6}
+                md={6}
+                sm={6}
+                xs={12}
+              >
+                {/* <Typography
                   sx={{
                     width: "100%",
                     marginLeft: "1rem",
-                    marginTop: ".55rem",
+                    fontSize: "0.5rem"
                   }}
                 >
                   رقم سيارة الاسعاف
-                </Typography>
+                </Typography> */}
                 <Grid container columns={9} spacing={2}>
                   <Grid item lg={2} md={2} sm={2} xs={2}>
                     <CustomTextField
@@ -233,13 +293,20 @@ const AdditionalData = ({
                       width="200%"
                       props={{
                         onKeyDown: (e: any) =>
-                          handleKeyDown(e.target.id, e.keyCode, e.target.value),
+                          isNaN(e.key)
+                            ? handleKeyDown(
+                                e.target.id,
+                                e.keyCode,
+                                e.target.value
+                              )
+                            : e.preventDefault(),
                         id: "amb-car-1",
                         type: "text",
                         placeholder: "الحرف الاول",
                       }}
-                    />
+                    />{" "}
                   </Grid>
+
                   <Grid item lg={2} md={2} sm={2} xs={2}>
                     <CustomTextField
                       isRequired
@@ -253,7 +320,13 @@ const AdditionalData = ({
                       width="200%"
                       props={{
                         onKeyDown: (e: any) =>
-                          handleKeyDown(e.target.id, e.keyCode, e.target.value),
+                          isNaN(e.key)
+                            ? handleKeyDown(
+                                e.target.id,
+                                e.keyCode,
+                                e.target.value
+                              )
+                            : e.preventDefault(),
 
                         id: "amb-car-2",
                         type: "text",
@@ -273,7 +346,13 @@ const AdditionalData = ({
                       width="100%"
                       props={{
                         onKeyDown: (e: any) =>
-                          handleKeyDown(e.target.id, e.keyCode, e.target.value),
+                          isNaN(e.key)
+                            ? handleKeyDown(
+                                e.target.id,
+                                e.keyCode,
+                                e.target.value
+                              )
+                            : e.preventDefault(),
                         id: "amb-car-3",
                         type: "text",
                         placeholder: "الحرف الثالث",
@@ -291,9 +370,16 @@ const AdditionalData = ({
                       error={errors.carNum}
                       touched={touched.carNum}
                       width="100%"
+                      maxLength={4}
                       props={{
                         onKeyDown: (e: any) =>
-                          handleKeyDown(e.target.id, e.keyCode, e.target.value),
+                          !isNaN(e.key) || e.key === "Backspace"
+                            ? handleKeyDown(
+                                e.target.id,
+                                e.keyCode,
+                                e.target.value
+                              )
+                            : e.preventDefault(),
                         id: "amb-car-4",
                         type: "text",
                         placeholder: "الرقم",
@@ -310,9 +396,9 @@ const AdditionalData = ({
                   alignItems: "center",
                   height: "100%",
                 }}
-                lg={6}
-                md={6}
-                sm={12}
+                lg={3}
+                md={3}
+                sm={6}
                 xs={12}
               >
                 <CustomTextField
@@ -328,7 +414,20 @@ const AdditionalData = ({
                     type: "text",
                   }}
                 />
-
+              </Grid>
+              <Grid
+                item
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+                lg={3}
+                md={3}
+                sm={6}
+                xs={12}
+              >
                 <CustomTextField
                   name="place"
                   label="مكان الاصابة"
@@ -342,6 +441,20 @@ const AdditionalData = ({
                     type: "text",
                   }}
                 />
+              </Grid>
+              <Grid
+                item
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+                lg={12}
+                md={12}
+                sm={12}
+                xs={12}
+              >
                 <CustomTextField
                   name="notes"
                   label="ملاحظــات"

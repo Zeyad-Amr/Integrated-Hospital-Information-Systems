@@ -10,6 +10,7 @@ export interface CustomTextFieldProps {
   touched: boolean | undefined;
   value: string | number | undefined | null;
   multiline?: boolean | undefined;
+  maxLength?: number;
   rows?: number;
   isRequired?: boolean;
   width?: number | string;
@@ -26,6 +27,7 @@ const CustomTextField = ({
   error,
   touched,
   value,
+  maxLength,
   props,
   isRequired = false,
   width,
@@ -78,6 +80,8 @@ const CustomTextField = ({
           error={!!(error && touched)}
           {...(!hideLabel && textfieldProps)}
           {...props}
+          inputProps={{ maxLength: maxLength }}
+
         />
         <FormHelperText
           sx={{

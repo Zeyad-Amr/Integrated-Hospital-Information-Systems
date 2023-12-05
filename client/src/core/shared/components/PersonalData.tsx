@@ -43,6 +43,7 @@ const PersonalData = ({
         checkFirstRender2.current = false;
       } else {
         if (refSubmitButton.current) {
+          console.log("ahhh");
           refSubmitButton.current.click();
         }
       }
@@ -83,6 +84,8 @@ const PersonalData = ({
       .matches(/^[0-9]+$/, "يجب أن يكون رقم الهاتف رقميًا."),
   });
 
+  
+
   return (
     <Formik
       enableReinitialize
@@ -100,8 +103,9 @@ const PersonalData = ({
         verificationMethod: initialValues.verificationMethod,
       }}
       validationSchema={handleFormSchema}
-      onSubmit={(values) => {
+      onSubmit={(values, { resetForm }) => {
         onSubmit(values);
+        resetForm();
       }}
     >
       {({

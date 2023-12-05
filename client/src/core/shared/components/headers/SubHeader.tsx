@@ -2,9 +2,23 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
-const SubHeader = (props: any) => {
+interface SubHeaderProps {
+  SubHeaderText: string;
+  setAddingCompanion: Function;
+  handleEditBtn: Function;
+  compStateChanger: Function;
+  setSubmitFlag: Function;
+}
+
+const SubHeader = ({
+  SubHeaderText,
+  setAddingCompanion,
+  handleEditBtn,
+  compStateChanger,
+  setSubmitFlag,
+}: SubHeaderProps) => {
   return (
-    <Box sx={{ width: "100%", marginBottom: "2rem" }}>
+    <Box sx={{ width: "100%", marginBottom: "1rem" }}>
       <Box
         sx={{
           width: "100%",
@@ -19,16 +33,16 @@ const SubHeader = (props: any) => {
             alignItems: "center",
             justifyContent: "center",
             width: "30%",
-            height: "3rem",
+            height: "2rem",
             backgroundColor: "primary.darker",
             borderBottomLeftRadius: "10px",
             borderBottomRightRadius: "10px",
           }}
         >
           <Typography
-            sx={{ color: "white", fontSize: "1.2rem", fontWeight: "600" }}
+            sx={{ color: "white", fontSize: "1rem", fontWeight: "600" }}
           >
-            {props.SubHeaderText}
+            {SubHeaderText}
           </Typography>
         </Box>
         <Box
@@ -36,20 +50,19 @@ const SubHeader = (props: any) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: "5%",
-            height: "3rem",
+            width: "2rem",
+            height: "2rem",
             backgroundColor: "primary.darker",
             borderBottomLeftRadius: "10px",
             borderBottomRightRadius: "10px",
             cursor: "pointer",
+            zIndex: 1000
           }}
           onClick={() => {
-            props.handleEditBtn();
-            props.compStateChanger("none");
-            props.compBtnStateChanger("block");
-            props.setIncidentData([]);
-            props.setcompanionData([]);
-            props.setSubmitFlag(false)
+            setAddingCompanion("none");
+            handleEditBtn();
+            compStateChanger("none");
+            setSubmitFlag(false);
           }}
         >
           <CloseRoundedIcon sx={{ color: "white" }} />
