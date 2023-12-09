@@ -16,46 +16,44 @@ export class IncidentRepo extends PrismaGenericRepo<Incident & { visits: Array<V
     }
 
     private includeObj: Prisma.IncidentInclude = {
-        Car: { select: { firstChar: true, secondChar: true, thirdChar: true } }
-        , visits: { select: { code: true, patient: true, creator: true } }, CompanionsOnIncidents: { select: { companion: true } },
+        // Car: { select: { firstChar: true, secondChar: true, thirdChar: true } }
+     visits: { select: { code: true, patient: true, creator: true } }, CompanionsOnIncidents: { select: { companion: true } },
     }
 
     async createIncident(incidentDto: CreateIncidentDto, creatorId: string) {
         try {
-            let incidentData: Prisma.IncidentCreateInput;
-            if (!incidentDto.car) {
-                incidentData = {
-                    numberOfPatients: incidentDto.numerOfPatients,
-                    description: incidentDto.describtion,
-                }
-            }
-            else {
-                incidentData = {
-                    numberOfPatients: incidentDto.numerOfPatients,
-                    description: incidentDto.describtion,
-                    Car: {
-                        connectOrCreate: {
-                            create: {
-                                firstChar: incidentDto.car.firstChar,
-                                secondChar: incidentDto.car.secondChar,
-                                thirdChar: incidentDto.car.thirdChar,
-                                number: incidentDto.car.number
-                            },
-                            where: {
-                                firstChar_secondChar_thirdChar_number: {
-                                    firstChar: incidentDto.car.firstChar,
-                                    secondChar: incidentDto.car.secondChar,
-                                    thirdChar: incidentDto.car.thirdChar,
-                                    number: incidentDto.car.number
-                                }
-                            },
+            let incidentData: Prisma.IncidentCreateInput = {numberOfPatients:incidentDto.numerOfPatients};
+            if (incidentDto.additionalInfo.notes) {
+                // incidentData.Car = {
+                //     connectOrCreate: {
+                //         create: {
+                //             firstChar: incidentDto.additionalInfo.car.firstChar,
+                //             secondChar: incidentDto.additionalInfo.car.secondChar,
+                //             thirdChar: incidentDto.additionalInfo.car.thirdChar,
+                //             number: incidentDto.additionalInfo.car.number
+                //         },
+                //         where: {
+                //             firstChar_secondChar_thirdChar_number: {
+                //                 firstChar: incidentDto.additionalInfo.car.firstChar,
+                //                 secondChar: incidentDto.additionalInfo.car.secondChar,
+                //                 thirdChar: incidentDto.additionalInfo.car.thirdChar,
+                //                 number: incidentDto.additionalInfo.car.number
+                //             }
+                //         },
 
-                        }
-                    }, CompanionsOnIncidents: {
-                        createMany: { data: [{ companionId: "fads" }], skipDuplicates: true }
-                    }
-                }
+                //     }
+                // }
             }
+
+            // incidentData.notes = incidentDto.additionalInfo.notes;
+            // incidentData.CompanionsOnIncidents = {
+            //     createMany: { data: [{ companionId: "fads" }], skipDuplicates: true }
+            // };
+            // incidentData.attendantName = incidentDto.additionalInfo.attendantName;
+            // incidentData.attendantID = incidentDto.additionalInfo.attendantID;
+            // incidentData.cameFrom = incidentDto.additionalInfo.cameFrom;
+            // incidentData.injuryCause = incidentDto.additionalInfo.injuryCause;
+            // incidentData.injuryLocation = incidentDto.additionalInfo.injuryLocation;
 
             return await this.prismaService.$transaction(async (tx) => {
 

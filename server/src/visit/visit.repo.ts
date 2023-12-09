@@ -1,13 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/shared/services/prisma-client/prisma.service";
-import { AnonymousVisitDto, CreateVisitDto } from "./dto/create-visit.dto";
-import { Person, Prisma, Visit } from "@prisma/client";
+import { CreateVisitDto } from "./dto/create-visit.dto";
+import { Attendant, Person, Prisma, Visit, VisitAdditionalInformation } from "@prisma/client";
 import { PersonRepo } from "src/person/person.repo";
 import { Pagination } from "src/shared/decorators/pagination.decorator";
 import { PaginatedResource } from "src/shared/types/paginated.resource";
 import { Filter } from "src/shared/decorators/filters.decorator";
 import { Sorting } from "src/shared/decorators/order.decorator";
 import { PrismaGenericRepo } from "src/shared/services/prisma-client/prisma-generic.repo";
+import { isEmpty } from "class-validator";
+import { isEmptyObject } from "src/shared/util.functions.ts/general.utils";
 
 @Injectable()
 export class VisitRepo extends PrismaGenericRepo<Visit>{
@@ -42,22 +44,21 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
     async createPatientWithVisit(createPatientDto: CreateVisitDto, creatorId: string): Promise<any> {
         try {
             let car = undefined
-            if (createPatientDto.car) {
-                console.log(createPatientDto.car)
+            if (createPatientDto?.additionalInfo?.car) {
                 car = {
                     connectOrCreate: {
                         create: {
-                            firstChar: createPatientDto.car.firstChar,
-                            secondChar: createPatientDto.car.secondChar,
-                            thirdChar: createPatientDto.car.thirdChar,
-                            number: createPatientDto.car.number
+                            firstChar: createPatientDto.additionalInfo.car.firstChar,
+                            secondChar: createPatientDto.additionalInfo.car.secondChar,
+                            thirdChar: createPatientDto.additionalInfo.car.thirdChar,
+                            number: createPatientDto.additionalInfo.car.number
                         },
                         where: {
                             firstChar_secondChar_thirdChar_number: {
-                                firstChar: createPatientDto.car.firstChar,
-                                secondChar: createPatientDto.car.secondChar,
-                                thirdChar: createPatientDto.car.thirdChar,
-                                number: createPatientDto.car.number
+                                firstChar: createPatientDto.additionalInfo.car.firstChar,
+                                secondChar: createPatientDto.additionalInfo.car.secondChar,
+                                thirdChar: createPatientDto.additionalInfo.car.thirdChar,
+                                number: createPatientDto.additionalInfo.car.number
                             }
                         },
 
@@ -65,14 +66,74 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
                 }
             }
 
+
             const visit = await this.prismaService.$transaction(async (tx) => {
                 try {
+                    let additionalInfo: VisitAdditionalInformation
+                    let connectAdditionalInfo
+                    if (createPatientDto.additionalInfo && !isEmptyObject(createPatientDto.additionalInfo)) {
 
-                    const patient = await this.personRepo.createIfNotExist(createPatientDto.patient)
+                        let attendant: Attendant
+                        let connectAttendant
+                        if (createPatientDto.additionalInfo?.attendant) {
 
+                            attendant = await tx.attendant.findFirst({
+                                where: {
+                                    OR: [
+                                        { SSN: createPatientDto.additionalInfo.attendant.SSN },
+                                        { cardId: createPatientDto.additionalInfo.attendant.id }
+                                    ]
+                                }
+                            })
+                            if (!attendant) {
+                                attendant = await tx.attendant.create({
+                                    data: {
+
+                                        name: createPatientDto.additionalInfo.attendant.name,
+                                        SSN: createPatientDto.additionalInfo.attendant.SSN,
+                                        cardId: createPatientDto.additionalInfo.attendant.id,
+                                        attendantRole: createPatientDto.additionalInfo.attendant.role
+
+                                    }
+                                })
+                            }
+
+                            connectAttendant = {
+                                connect: { id: attendant?.id }
+                            }
+                        }
+                        additionalInfo = await tx.visitAdditionalInformation.create({
+                            data: {
+                                Car: car,
+                                cameFrom: createPatientDto.additionalInfo.cameFrom,
+                                notes: createPatientDto.additionalInfo.notes,
+                                injuryCause: createPatientDto.additionalInfo.injuryCause,
+                                injuryLocation: createPatientDto.additionalInfo.injuryCause,
+                                Attendant: connectAttendant
+                            }
+                        })
+
+                        connectAdditionalInfo = {
+                            connect: { id: additionalInfo?.id }
+                        }
+                    }
+                    if (!createPatientDto.patient?.SSN) {
+                        createPatientDto.patient.SSN = null
+                    }
+                    const patient = await tx.person.create({
+                        data: {
+                            ...createPatientDto.patient
+                        }
+                    })
                     let companion: Person;
+                    let companionConnect;
                     if (createPatientDto.companion) {
                         companion = await this.personRepo.createIfNotExist(createPatientDto.companion)
+                        companionConnect = {
+                            connect: {
+                                id: companion?.id
+                            }
+                        }
                     }
 
                     const visitCode = await this.createVisitCode()
@@ -88,12 +149,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
                                     id: patient.id
                                 }
                             },
-                            companion: {
-                                connect: {
-                                    id: companion?.id
-                                }
-                            }, Car:car, attendantName: createPatientDto.attendantName,
-                            attendantID: createPatientDto.attendantId
+                            companion: companionConnect, AdditionalInformation: connectAdditionalInfo
                         }
                     })
 
@@ -108,76 +164,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
             throw error
         }
     }
-    async createAnonymous(anonymousVisitDto: AnonymousVisitDto, creatorId: string) {
-        try {
 
-            let car = undefined
-            if (anonymousVisitDto.car) {
-                console.log(anonymousVisitDto.car)
-                car = {
-                    connectOrCreate: {
-                        create: {
-                            firstChar: anonymousVisitDto.car.firstChar,
-                            secondChar: anonymousVisitDto.car.secondChar,
-                            thirdChar: anonymousVisitDto.car.thirdChar,
-                            number: anonymousVisitDto.car.number
-                        },
-                        where: {
-                            firstChar_secondChar_thirdChar_number: {
-                                firstChar: anonymousVisitDto.car.firstChar,
-                                secondChar: anonymousVisitDto.car.secondChar,
-                                thirdChar: anonymousVisitDto.car.thirdChar,
-                                number: anonymousVisitDto.car.number
-                            }
-                        },
-
-                    }
-                }
-            }
-
-            const visitCode = await this.createVisitCode()
-            if (anonymousVisitDto.companion) {
-                const companion = await this.personRepo.createIfNotExist(anonymousVisitDto.companion)
-                const visit = await this.prismaService.visit.create({
-                    data: {
-                        code: visitCode,
-                        sequenceNumber: anonymousVisitDto.sequenceNumber,
-                        kinship: anonymousVisitDto.kinship,
-
-                        companion: {
-                            connect: {
-                                id: companion?.id
-                            }
-                        },
-                        creator: {
-                            connect: {
-                                id: creatorId
-                            }
-                        },
-                        Car: car, attendantName: anonymousVisitDto.attendantName,
-                        attendantID: anonymousVisitDto.attendantId
-                    }
-                })
-                return { companion, visit }
-            }
-            // should add creator id here
-            //BUG
-            return await this.prismaService.visit.create({
-                data: {
-                    code: visitCode,
-                    sequenceNumber: anonymousVisitDto.sequenceNumber,
-                    kinship: anonymousVisitDto.kinship,
-                    creator: {
-                        connect: {
-                            id: creatorId
-                        }
-                    }
-                }
-            })
-        } catch (error) {
-            throw error
-        }
-    }
 
     async findByVisitCode(visitCode: string) {
         try {
