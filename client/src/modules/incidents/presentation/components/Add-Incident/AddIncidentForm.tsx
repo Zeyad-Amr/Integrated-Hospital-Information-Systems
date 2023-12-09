@@ -1,43 +1,48 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { Button, Grid, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import CustomTextField from "@/core/shared/components/CustomTextField";
-import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import SecondaryButton from "@/core/shared/components/btns/SecondaryButton";
 import PersonalData, {
   PersonalDataValues,
 } from "@/core/shared/components/PersonalData";
-import SubHeader from "@/core/shared/components/headers/SubHeader";
-import IncidentHeader from "../IncidentHeader";
+// import SubHeader from "@/core/shared/components/headers/SubHeader";
+// import IncidentHeader from "../IncidentHeader";
+import GetCompanions from "../GetCompanions";
 import CompleteIncident from "../../pages/CompleteIncident";
+import AdditionalData, {
+  AdditionalDataValues,
+} from "@/core/shared/components/AdditionalData";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import CustomTextField from "@/core/shared/components/CustomTextField";
+import { Button } from "@mui/material";
+import CustomAccordion from "@/core/shared/components/CustomAccordion";
 
 const AddIncidentForm = () => {
   const refSubmitButton: any = useRef(null);
 
-  const [showIncidentForm, setshowIncidentForm] = useState("block");
-  const [hide, setHide] = useState("block");
-  const [showIncidentHeader, setshowIncidentHeader] = useState("none");
+  // const [showIncidentForm, setshowIncidentForm] = useState("block");
+  // const [showIncidentHeader, setshowIncidentHeader] = useState("none");
   const [showCompForm, setshowCompForm] = useState("none");
   const [showDialog, setShawDialog] = useState("none");
 
-  const [incidentData, setIncidentData] = useState({});
-  const [companionData, setcompanionData] = useState({});
-
-  const [comeFrom, serComeFrom] = useState("");
-
   const [submitFlag, setSubmitFlag] = useState<boolean>(false);
+  const [incidentFormSubmitted, setIncidentFormSubmitted] =
+    useState<boolean>(false);
+  const [NumOfPatients, setNumOfPatients] = useState<boolean>(false);
+  const [addingCompanion, setAddingCompanion] = useState<string>("none");
+  const [addDatasubmitFlag, setAddDatasubmitFlag] = useState<boolean>(false);
 
   const [clickedBtnId, setClickedBtnId] = useState("");
+  const [additionalDataAccordion, setAdditionalDataAccordion] =
+    useState<boolean>(true);
+  const [userDataAccordion, setUserDataAccordion] = useState<boolean>(false);
 
-  const intialValues: PersonalDataValues = {
+  const MainInitialVlaues = {
     firstName: "",
     secondName: "",
     thirdName: "",
-    forthName: "",
-    email: "",
+    fourthName: "",
     SSN: "",
     phone: "",
     gender: "",
@@ -45,125 +50,148 @@ const AddIncidentForm = () => {
     birthDate: "",
     address: "",
     verificationMethod: "",
+  }
+
+  const [editing, setEditing] = useState<boolean>(false);
+  const [intialValues, setIntialValues] = useState<PersonalDataValues>(MainInitialVlaues);
+
+  const intialAdditionalValues: AdditionalDataValues = {
+    comeFromString: "",
+    attendantName: "",
+    attendantSSN: "",
+    attendantSerialNumber: "",
+    carNum: "",
+    firstChar: "",
+    secondChar: "",
+    thirdChar: "",
+    reason: "",
+    place: "",
+    notes: "",
   };
+  const [idx, setIdx] = useState<number>(0);
 
   const handleCompanionSubmission = (values: PersonalDataValues) => {
-    setcompanionData(values);
+    console.log(editing);
+    if (editing) {
+      response.current.companions[idx] = values;
+      setEditing(false);
+      setIntialValues(MainInitialVlaues);
+    } else {
+      response.current.companions.push(values);
+      setAddingCompanion("added");
+    }
   };
 
   const handleIncidentSubmission = (values: any) => {
-    setIncidentData(values);
+    response.current.description =
+      values.comeFromString === "1"
+        ? "home"
+        : values.comeFromString === "2"
+        ? "accedent"
+        : "prison";
+    (response.current.attendantName = values.attendantName),
+      (response.current.attendantSSN = values.attendantSSN),
+      (response.current.attendantSerialNumber = values.attendantSerialNumber),
+      (response.current.car.firstChar = values.firstChar),
+      (response.current.car.secondChar = values.secondChar),
+      (response.current.car.thirdChar = values.thirdChar),
+      (response.current.car.number = values.carNum);
+    (response.current.reason = values.reason),
+      (response.current.place = values.place),
+      (response.current.notes = values.notes),
+      setIncidentFormSubmitted(true);
   };
 
-  useEffect(() => {
-    if (
-      Object.keys(incidentData).length !== 0 &&
-      Object.keys(companionData).length === 0
-    ) {
-      console.log("incidentData", incidentData);
-    } else if (
-      Object.keys(companionData).length === 0 &&
-      Object.keys(companionData).length !== 0
-    ) {
-      console.log("companionData", companionData);
-    } else if (
-      Object.keys(incidentData).length !== 0 &&
-      Object.keys(companionData).length !== 0
-    ) {
-      console.log("incidentData", incidentData);
-      console.log("companionData", companionData);
-    }
-  }, [companionData, incidentData]);
+  let response: React.MutableRefObject<{
+    numOfPatients: string;
+    description: string;
+    attendantName: string;
+    attendantSSN: string;
+    attendantSerialNumber: string;
+    car: {
+      firstChar: string;
+      secondChar: string;
+      thirdChar: string;
+      number: string;
+    };
+    companions: {}[];
+    reason: string;
+    place: string;
+    notes: string;
+  }> = useRef({
+    numOfPatients: "",
+    description: "",
+    attendantName: "",
+    attendantSSN: "",
+    attendantSerialNumber: "",
+    car: {
+      firstChar: "",
+      secondChar: "",
+      thirdChar: "",
+      number: "",
+    },
+    companions: [],
+    reason: "",
+    place: "",
+    notes: "",
+  });
 
   const handleClickedButton = (e: any) => {
+    if (refSubmitButton.current) {
+      refSubmitButton.current.click();
+    }
+    submitButtonClick();
+
     if (e.target.id === "confirm-btn") {
-      if (showCompForm === "none" && showIncidentForm === "block") {
-        submitButtonClick();
-      } else if (showCompForm === "block" && showIncidentForm === "none") {
-        setSubmitFlag(!submitFlag);
-      } else if (showCompForm === "block" && showIncidentForm === "block") {
-        submitButtonClick();
+      setClickedBtnId(e.target.id);
+      if (addingCompanion === "adding") {
         setSubmitFlag(!submitFlag);
       }
-      setClickedBtnId(e.target.id);
     } else if (e.target.id === "add-comp-btn") {
-      submitButtonClick();
       setClickedBtnId(e.target.id);
+      if (addingCompanion === "adding") {
+        setSubmitFlag(!submitFlag);
+      }
     }
   };
 
   const handleAddCompanionShow = () => {
+    setAddingCompanion("adding");
     setshowCompForm("block");
-    setshowIncidentHeader("flex");
-    setshowIncidentForm("none");
-    setHide("none");
+    // setshowIncidentHeader("flex");
+    // setshowIncidentForm("none");
+    setAdditionalDataAccordion(false);
+    setUserDataAccordion(true);
   };
 
-  const handleEditBtn = () => {
-    setshowIncidentHeader("none");
-    setshowIncidentForm("block");
-    setIncidentData([]);
-    setcompanionData([]);
-  };
+  // const handleEditBtn = () => {
+  //   setshowIncidentHeader("none");
+  //   setshowIncidentForm("block");
+  //   setIncidentFormSubmitted(false);
+  // };
 
   const submitButtonClick = () => {
-    if (refSubmitButton.current) {
-      refSubmitButton.current.click();
-    }
+    setAddDatasubmitFlag(!addDatasubmitFlag);
   };
 
   useEffect(() => {
     if (
-      Object.keys(incidentData).length > 1 &&
+      incidentFormSubmitted &&
+      NumOfPatients &&
       clickedBtnId === "add-comp-btn"
     ) {
       handleAddCompanionShow();
+    } else if (
+      incidentFormSubmitted &&
+      clickedBtnId === "confirm-btn" &&
+      addingCompanion !== "adding"
+    ) {
+      console.log(response.current);
     }
-  }, [clickedBtnId, incidentData]);
-
+  }, [addingCompanion, clickedBtnId, incidentFormSubmitted, NumOfPatients]);
   const handleFormSchema = Yup.object({
     numOfPatients: Yup.number().required("يجب إدخال عدد المرضى"),
-    // comeFromNum: Yup.number().required("يجب إدخال جهة القدوم"),
-    comeFromString: Yup.string().required("يجب إدخال جهة القدوم"),
-    paramedicName: Yup.string()
-      .required("يجب إدخال اسم المسعف")
-      .min(3, "First name must be at least 3 characters")
-      .max(45, "First name must be at most 45 characters"),
-    firstChar: Yup.string()
-      .required("يجب إدخال رقم سيارة الاسعاف")
-      .max(1, "حرف واحد على الاكثر"),
-    secondChar: Yup.string()
-      .required("يجب إدخال رقم سيارة الاسعاف")
-      .max(1, "حرف واحد على الاكثر"),
-    thirdChar: Yup.string().max(1, "حرف واحد على الاكثر"),
-    carNum: Yup.string().required("يجب إدخال رقم سيارة الاسعاف"),
-    reason: Yup.string(),
-    place: Yup.string(),
-    notes: Yup.string(),
   });
-  const handleKeyDown = (id: string, key: number, value: any) => {
-    console.log(id[id.length - 1]);
-    let x: number = parseInt(id[id.length - 1]);
-    x = parseInt(id[id.length - 1]) + 1;
-    console.log(x);
-    if (parseInt(id[id.length - 1]) < 4) {
-      switch (key) {
-        case 13: // Enter
-          x = parseInt(id[id.length - 1]) + 1;
-          break;
-        case 8: // Backspace
-          value.length === 0
-            ? (x = parseInt(id[id.length - 1]) - 1)
-            : (x = parseInt(id[id.length - 1]));
-          break;
-        default:
-          break;
-      }
-      setTimeout(() => {
-        (document.getElementById(`amb-car-${x}`) as HTMLInputElement).focus();
-      }, 100);
-    }
-  };
   return (
     <>
       <CompleteIncident
@@ -173,22 +201,11 @@ const AddIncidentForm = () => {
       <Formik
         initialValues={{
           numOfPatients: "",
-          // comeFromNum: "",
-          comeFromString: "",
-          paramedicName: "",
-          carNum: "",
-          firstChar: "",
-          secondChar: "",
-          thirdChar: "",
-          reason: "",
-          place: "",
-          notes: "",
         }}
         validationSchema={handleFormSchema}
         onSubmit={(values) => {
-          console.log("ahhh");
-
-          handleIncidentSubmission(values);
+          response.current.numOfPatients = values.numOfPatients;
+          setNumOfPatients(true);
         }}
       >
         {({
@@ -200,272 +217,28 @@ const AddIncidentForm = () => {
           handleSubmit,
         }) => (
           <Box
-            sx={{ marginTop: "2rem" }}
+            sx={{ marginTop: "1rem" }}
             component="form"
             onSubmit={handleSubmit}
             noValidate
           >
-            <Box sx={{ display: showIncidentForm }}>
-              <Grid container columns={12} spacing={4}>
-                <Grid
-                  item
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    height: "100%",
-                  }}
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  xs={12}
-                >
-                  <Grid
-                    container
-                    columns={6}
-                    spacing={4}
-                    sx={{ marginBottom: "-5px" }}
-                  >
-                    <Grid item lg={3} md={3} sm={6} xs={6}>
-                      <CustomTextField
-                        isRequired
-                        name="numOfPatients"
-                        label="عدد المرضى"
-                        value={values.numOfPatients}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.numOfPatients}
-                        touched={touched.numOfPatients}
-                        width="100%"
-                        props={{
-                          type: "number",
-                        }}
-                      />
-                    </Grid>
-                    <Grid item lg={3} md={3} sm={6} xs={6}>
-                      {/* <CustomTextField
-                        isRequired
-                        name="comeFromNum"
-                        label="قادم من"
-                        value={comeFrom}
-                        onChange={(e) => {
-                          handleChange(e);
-                          serComeFrom(String(e.target.value));
-                          console.log(comeFrom);
-                        }}
-                        onBlur={handleBlur}
-                        error={errors.comeFromNum}
-                        touched={touched.comeFromNum}
-                        width="100%"
-                        props={{
-                          type: "number",
-                        }}
-                      /> */}
-                      <CustomSelectField
-                        isRequired
-                        name="comeFromString"
-                        label="قادم من"
-                        value={comeFrom}
-                        onChange={(e) => {
-                          handleChange(e);
-                          serComeFrom(e.target.value);
-                        }}
-                        onBlur={handleBlur}
-                        error={errors.comeFromString}
-                        touched={touched.comeFromString}
-                        width="100%"
-                        options={[
-                          {
-                            id: "1",
-                            title: "حـــادث",
-                          },
-                          {
-                            id: "2",
-                            title: "خنـــاقة",
-                          },
-                        ]}
-                      />
-                    </Grid>
-                  </Grid>
-                  <CustomTextField
-                    isRequired
-                    name="paramedicName"
-                    label="اسم المسعف"
-                    value={values.paramedicName}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={errors.paramedicName}
-                    touched={touched.paramedicName}
-                    width="100%"
-                    props={{
-                      type: "text",
-                    }}
-                  />
-                  <Typography
-                    sx={{
-                      width: "100%",
-                      marginLeft: "1rem",
-                      marginTop: ".55rem",
-                    }}
-                  >
-                    رقم سيارة الاسعاف
-                  </Typography>
-                  <Grid container columns={9} spacing={2}>
-                    <Grid item lg={2} md={2} sm={2} xs={2}>
-                      <CustomTextField
-                        isRequired
-                        name="firstChar"
-                        label=""
-                        value={values.firstChar}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.firstChar}
-                        touched={touched.firstChar}
-                        width="200%"
-                        props={{
-                          onKeyDown: (e: any) =>
-                            handleKeyDown(
-                              e.target.id,
-                              e.keyCode,
-                              e.target.value
-                            ),
-                          id: "amb-car-1",
-                          type: "text",
-                          placeholder: "الحرف الاول",
-                        }}
-                      />
-                    </Grid>
-                    <Grid item lg={2} md={2} sm={2} xs={2}>
-                      <CustomTextField
-                        isRequired
-                        name="secondChar"
-                        label=""
-                        value={values.secondChar}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.secondChar}
-                        touched={touched.secondChar}
-                        width="200%"
-                        props={{
-                          onKeyDown: (e: any) =>
-                            handleKeyDown(
-                              e.target.id,
-                              e.keyCode,
-                              e.target.value
-                            ),
-
-                          id: "amb-car-2",
-                          type: "text",
-                          placeholder: "الحرف الثاني",
-                        }}
-                      />
-                    </Grid>
-                    <Grid item lg={2} md={2} sm={2} xs={2}>
-                      <CustomTextField
-                        name="thirdChar"
-                        label=""
-                        value={values.thirdChar}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.thirdChar}
-                        touched={touched.thirdChar}
-                        width="100%"
-                        props={{
-                          onKeyDown: (e: any) =>
-                            handleKeyDown(
-                              e.target.id,
-                              e.keyCode,
-                              e.target.value
-                            ),
-                          id: "amb-car-3",
-                          type: "text",
-                          placeholder: "الحرف الثالث",
-                        }}
-                      />
-                    </Grid>
-                    <Grid item lg={3} md={3} sm={3} xs={3}>
-                      <CustomTextField
-                        isRequired
-                        name="carNum"
-                        label=""
-                        value={values.carNum}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.carNum}
-                        touched={touched.carNum}
-                        width="100%"
-                        props={{
-                          onKeyDown: (e: any) =>
-                            handleKeyDown(
-                              e.target.id,
-                              e.keyCode,
-                              e.target.value
-                            ),
-                          id: "amb-car-4",
-                          type: "text",
-                          placeholder: "الرقم",
-                        }}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid
-                  item
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    height: "100%",
-                  }}
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  xs={12}
-                >
-                  <CustomTextField
-                    name="reason"
-                    label="سبب الاصابة"
-                    value={values.reason}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={errors.reason}
-                    touched={touched.reason}
-                    width="100%"
-                    props={{
-                      type: "text",
-                    }}
-                  />
-
-                  <CustomTextField
-                    name="place"
-                    label="مكان الاصابة"
-                    value={values.place}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={errors.place}
-                    touched={touched.place}
-                    width="100%"
-                    props={{
-                      type: "text",
-                    }}
-                  />
-                  <CustomTextField
-                    name="notes"
-                    label="ملاحظــات"
-                    value={values.notes}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={errors.notes}
-                    touched={touched.notes}
-                    width="100%"
-                    props={{
-                      type: "text",
-                    }}
-                    multiline
-                    rows={2}
-                  />
-                </Grid>
-              </Grid>
+            <Box
+            // sx={{ display: showIncidentForm ? showIncidentForm : "block" }}
+            >
+              <CustomTextField
+                isRequired
+                name="numOfPatients"
+                label="عدد المرضى"
+                value={values.numOfPatients}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.numOfPatients}
+                touched={touched.numOfPatients}
+                width="100%"
+                props={{
+                  type: "number",
+                }}
+              />
               <Button
                 type="submit"
                 sx={{ display: "none" }}
@@ -475,33 +248,69 @@ const AddIncidentForm = () => {
           </Box>
         )}
       </Formik>
-
-      <IncidentHeader
-        setIncidentData={setIncidentData}
-        setcompanionData={setcompanionData}
-        data={incidentData}
+      <CustomAccordion
+        isDisabled={false}
+        isExpanded={additionalDataAccordion}
+        setExpanded={setAdditionalDataAccordion}
+        title="البيــانات الاضـــافية"
+      >
+        <AdditionalData
+          initialValues={intialAdditionalValues}
+          onSubmit={handleIncidentSubmission}
+          isSubmitted={addDatasubmitFlag}
+          // display={showIncidentForm}
+        />
+      </CustomAccordion>
+      {/* <IncidentHeader
+        Companions={response.current.companions}
+        data={response.current}
         display={showIncidentHeader}
         onClick={handleEditBtn}
-      />
+      /> */}
       <Box sx={{ display: showCompForm }}>
-        <SubHeader
+        {/* <SubHeader
+          setAddingCompanion={setAddingCompanion}
           setSubmitFlag={setSubmitFlag}
           handleEditBtn={handleEditBtn}
-          setIncidentData={setIncidentData}
-          setcompanionData={setcompanionData}
           SubHeaderText="بيـــانات المــرافق"
           compStateChanger={setshowCompForm}
-          compBtnStateChanger={setHide}
-        />
-        <PersonalData
-          initialValues={intialValues}
-          onSubmit={handleCompanionSubmission}
-          isSubmitted={submitFlag}
-        />
+        /> */}
+        <CustomAccordion
+          isDisabled={false}
+          isExpanded={userDataAccordion}
+          setExpanded={setUserDataAccordion}
+          title="بيــانات المـــرافقين"
+        >
+          <Box sx={{ display: "flex" }}>
+            <Box sx={{ width: "75%" }}>
+              <PersonalData
+                initialValues={intialValues}
+                onSubmit={handleCompanionSubmission}
+                isSubmitted={submitFlag}
+              />
+            </Box>
+            <Box sx={{ height: "20rem", width: "25%", paddingLeft: "1rem" }}>
+              <Box
+                sx={{
+                  borderRadius: "10px",
+                  backgroundColor: "#eee",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <GetCompanions
+                  companionsArray={response.current.companions}
+                  setIntialValues={setIntialValues}
+                  setEditing={setEditing}
+                  getIdx={setIdx}
+                />
+              </Box>
+            </Box>
+          </Box>
+        </CustomAccordion>
       </Box>
       <Box
         sx={{
-          marginTop: "2.5rem",
           display: "flex",
           justifyContent: "flex-start",
           alignItems: "center",
@@ -517,20 +326,17 @@ const AddIncidentForm = () => {
           }}
         />
         <SecondaryButton
-          display={hide}
           id="add-comp-btn"
-          title="اضــــافة مـــرافق"
+          title={
+            showCompForm === "none"
+              ? "اضــــافة مـــرافق"
+              : !editing
+              ? "اضـافة مـرافق أخــر"
+              : "حفـــظ"
+          }
           type="button"
           onClick={(e: any) => {
             handleClickedButton(e);
-          }}
-        />
-        <SecondaryButton
-          display={hide}
-          title="استكمال البيانات"
-          type="button"
-          onClick={() => {
-            setShawDialog("block");
           }}
         />
       </Box>

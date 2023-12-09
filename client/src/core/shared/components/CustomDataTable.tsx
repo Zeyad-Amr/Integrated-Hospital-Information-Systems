@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Paper,
   Table,
@@ -9,7 +9,10 @@ import {
   TableRow,
   TableCellProps,
   SxProps,
+  Box,
+  Typography,
 } from "@mui/material";
+import FIlterTable from "./tables/FIlterTable";
 
 export interface HeaderItem {
   id: string;
@@ -44,11 +47,14 @@ const CustomDataTable = <T,>({
   width,
   height,
   boxShadow,
-  stickyHeader = false,
+  // stickyHeader = false,
   sx,
   onRowClick,
   hover = true,
 }: Props<T>) => {
+  const [filterdData, setFilterddData] = useState<any>(data);
+
+ 
   return (
     <TableContainer
       component={Paper}
@@ -59,7 +65,9 @@ const CustomDataTable = <T,>({
         ...sx,
       }}
     >
-      <Table stickyHeader={stickyHeader} aria-label="sticky table">
+      <Table
+      //  stickyHeader={stickyHeader} aria-label="sticky table"
+      >
         <TableHead>
           <TableRow>
             {renderItem.map((item) => (
@@ -68,13 +76,24 @@ const CustomDataTable = <T,>({
                 {...item.tableCellProps}
                 sx={{ minWidth: item.minWidth }}
               >
-                {item.component ? item.component : item.label}
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                  <Typography>
+                    {item.component ? item.component : item.label}
+                  </Typography>
+                  {item.label ? (
+                    <FIlterTable
+                      columnHeader={item.id}
+                      setFilterdData={setFilterddData}
+                      data={data}
+                    />
+                  ) : null}
+                </Box>
               </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item) => (
+          {filterdData.map((item: any) => (
             <TableRow
               key={(item as any).id}
               onClick={() => onRowClick && onRowClick(item)}
