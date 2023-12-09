@@ -8,13 +8,14 @@ Table Person {
   secondName String [not null]
   thirdName String [not null]
   fourthName String [not null]
-  SSN String [unique, not null]
-  verificationMethod IdentityEnum [not null]
+  SSN String [unique]
+  verificationMethod IdentityEnum
   gender GenderEnum [not null]
-  birthDate DateTime [not null]
+  birthDate DateTime
   phone String [unique]
-  governate String [not null]
-  address String [not null]
+  email String [unique]
+  governate String
+  address String
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   employee Employee
@@ -70,21 +71,18 @@ Table Visit {
   companionId String
   incident Incident
   incidentId String
-  Car CarNumber
-  carId String
-  attendantName String
-  attendantID String
+  AdditionalInformation VisitAdditionalInformation
+  additionalInfoId String
 }
 
 Table Incident {
   id String [pk]
-  description String
   numberOfPatients Int [not null]
   isCompleted Boolean [not null, default: false]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  Car CarNumber
-  carId String
+  AdditionalInformation VisitAdditionalInformation
+  additionalInfoId String
   visits Visit [not null]
   CompanionsOnIncidents CompanionsOnIncidents [not null]
 }
@@ -106,12 +104,34 @@ Table CarNumber {
   secondChar String [not null]
   thirdChar String [not null]
   number Int [not null]
-  Incident Incident [not null]
-  Visit Visit [not null]
+  VisitAdditionalInformation VisitAdditionalInformation [not null]
 
   indexes {
     (firstChar, secondChar, thirdChar, number) [unique]
   }
+}
+
+Table Attendant {
+  id String [pk]
+  SSN String [unique]
+  cardId String [unique]
+  name String [not null]
+  attendantRole AttendantRole [not null]
+  VisitAdditionalInformation VisitAdditionalInformation [not null]
+}
+
+Table VisitAdditionalInformation {
+  id String [pk]
+  Car CarNumber
+  carId String
+  cameFrom CameFromOptions
+  injuryLocation String
+  injuryCause String
+  notes String
+  Attendant Attendant
+  attendantId String
+  Incident Incident [not null]
+  Visit Visit [not null]
 }
 
 Enum IdentityEnum {
@@ -150,6 +170,17 @@ Enum ShiftEnum {
   LONG
 }
 
+Enum CameFromOptions {
+  HOME
+  ACCIDENT
+  PRISONER
+}
+
+Enum AttendantRole {
+  PARAMEDIC
+  OFFICER
+}
+
 Ref: Employee.personID - Person.id
 
 Ref: Employee.createdById - Employee.id
@@ -166,10 +197,14 @@ Ref: Visit.companionId > Person.id
 
 Ref: Visit.incidentId > Incident.id
 
-Ref: Visit.carId > CarNumber.id
+Ref: Visit.additionalInfoId > VisitAdditionalInformation.id
 
-Ref: Incident.carId > CarNumber.id
+Ref: Incident.additionalInfoId > VisitAdditionalInformation.id
 
 Ref: CompanionsOnIncidents.companionId > Person.id
 
 Ref: CompanionsOnIncidents.incidentId > Incident.id
+
+Ref: VisitAdditionalInformation.carId > CarNumber.id
+
+Ref: VisitAdditionalInformation.attendantId > Attendant.id
