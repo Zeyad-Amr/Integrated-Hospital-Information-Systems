@@ -7,6 +7,7 @@ import MuiAccordionSummary, {
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
+import { ClearRounded } from "@mui/icons-material";
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -48,9 +49,11 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 interface CustomAccordionProps {
   children: React.ReactNode;
   title: string;
-  isExpanded : boolean;
-  setExpanded : (value: boolean) => void;
-  isDisabled : boolean;
+  isExpanded: boolean;
+  setExpanded: (value: boolean) => void;
+  isDisabled: boolean;
+  isClosable: boolean;
+  handleClosed?: () => void;
 }
 
 export default function CustomAccordion({
@@ -59,20 +62,36 @@ export default function CustomAccordion({
   isExpanded,
   setExpanded,
   isDisabled,
+  isClosable,
+  handleClosed,
 }: CustomAccordionProps) {
-
   const handleChange = () => {
     setExpanded(!isExpanded);
   };
 
   return (
-    <Accordion disabled={isDisabled} expanded={isExpanded} onChange={() => handleChange()}>
-      <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-        <Typography>{title}</Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <Typography>{children}</Typography>
-      </AccordionDetails>
-    </Accordion>
+    <>
+      <Accordion
+        disabled={isDisabled}
+        expanded={isExpanded}
+        onChange={() => handleChange()}
+      >
+        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+          <ClearRounded
+            sx={{
+              display: isClosable ? "block" : "none",
+              position: "absolute",
+              right: "0.7rem !important",
+            }}
+            onClick={handleClosed}
+          />
+          <Typography>{title}</Typography>
+        </AccordionSummary>
+
+        <AccordionDetails>
+          <Typography>{children}</Typography>
+        </AccordionDetails>
+      </Accordion>
+    </>
   );
 }

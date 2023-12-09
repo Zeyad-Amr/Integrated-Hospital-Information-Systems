@@ -137,6 +137,7 @@ const AddVisitForm = () => {
   return (
     <Box sx={{ marginTop: "2.5rem" }}>
       <CustomAccordion
+        isClosable={false}
         title="بيانات المريض"
         isDisabled={false}
         isExpanded={patientDataAccordion}
@@ -146,8 +147,8 @@ const AddVisitForm = () => {
         <Formik
           initialValues={{ sequenceNumber: "" }}
           validationSchema={() => {
-            setPatientDataAccordion(true)
-           return restPatientFormSchema
+            setPatientDataAccordion(true);
+            return restPatientFormSchema;
           }}
           onSubmit={(values) => {
             handleRestPatientSubmit(values);
@@ -196,6 +197,8 @@ const AddVisitForm = () => {
       {/* second step */}
       <Box sx={{ display: showCompanionFlag === true ? "block" : "none" }}>
         <CustomAccordion
+          isClosable={true}
+          handleClosed={onDeleteCompanion}
           title="بيانات المرافق"
           isDisabled={false}
           isExpanded={companionDataAccordion}
@@ -206,8 +209,8 @@ const AddVisitForm = () => {
             <Formik
               initialValues={{ kinship: "" }}
               validationSchema={() => {
-                setCompanionDataAccordion(true)
-                return restCompanionFormSchema
+                setCompanionDataAccordion(true);
+                return restCompanionFormSchema;
               }}
               onSubmit={(values) => {
                 handleRestCompanionSubmit(values);
@@ -288,7 +291,7 @@ const AddVisitForm = () => {
           justifyContent: "flex-start",
           alignItems: "center",
           height: "4rem",
-          marginTop :"1.5rem"
+          marginTop: "1.5rem",
         }}
       >
         <PrimaryButton
@@ -304,12 +307,6 @@ const AddVisitForm = () => {
             onTriggerRestAndPatientForm();
           }}
           sx={{ display: showCompanionFlag ? "none" : "block" }}
-        />
-        <SecondaryButton
-          title="حذف مـــرافق"
-          type="button"
-          onClick={() => onDeleteCompanion()}
-          sx={{ display: showCompanionFlag ? "block" : "none" }}
         />
       </Box>
     </Box>

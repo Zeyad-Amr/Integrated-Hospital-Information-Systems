@@ -25,8 +25,8 @@ export class PrismaGenericRepo<T> {
       additionalWhereConditions?: Array<any>,
     }): Promise<PaginatedResource<T>> {
     try {
-      const whereCondition = getWhere(args.filters, args.additionalWhereConditions)
-      const order: any = getOrder(args.sort)
+      const whereCondition = getWhere(args?.filters, args?.additionalWhereConditions)
+      const order: any = getOrder(args?.sort)
       const res = await this.prisma.$transaction(async (tx) => {
         const count = await tx[this.modelName].count({ where: whereCondition });
         const data = await tx[this.modelName].findMany({
@@ -40,7 +40,7 @@ export class PrismaGenericRepo<T> {
         return { count, data }
       })
 
-      return { total: res.count, items: res.data, page: args.paginationParams?.page, size: res.data.length };
+      return { total: res.count, items: res.data, page: args?.paginationParams?.page, size: res.data.length };
 
     } catch (error) {
       throw error;

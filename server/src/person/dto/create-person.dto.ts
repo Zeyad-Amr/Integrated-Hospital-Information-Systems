@@ -40,7 +40,7 @@ export class CreatePersonDto {
         type: String,
         example: '30002103105556',
     })
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     SSN: string
 
@@ -48,7 +48,8 @@ export class CreatePersonDto {
         type: String,
         example: 'NATIONALIDCARD',
     })
-    @IsNotEmpty()
+
+    @IsOptional()
     @Validate(IsValidEnumValue, [IdentityEnum])
     verificationMethod: IdentityEnum
 
@@ -66,7 +67,7 @@ export class CreatePersonDto {
         example: '2000-05-10T00:00:00.000Z',
     })
     @IsDateString()
-    @IsNotEmpty()
+    @IsOptional()
     birthDate: Date
 
     @ApiProperty({
@@ -81,7 +82,7 @@ export class CreatePersonDto {
         type: String,
         example: 'Giza',
     })
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     governate: string
 
@@ -89,7 +90,7 @@ export class CreatePersonDto {
         type: String,
         example: '6th of october',
     })
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     address: string
 }
