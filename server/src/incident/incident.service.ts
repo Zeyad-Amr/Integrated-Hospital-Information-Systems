@@ -5,8 +5,6 @@ import { IncidentRepo } from './incident.repo';
 import { Pagination } from 'src/shared/decorators/pagination.decorator';
 import { Filter } from 'src/shared/decorators/filters.decorator';
 import { Sorting } from 'src/shared/decorators/order.decorator';
-import { PaginatedResource } from 'src/shared/types/paginated.resource';
-import { Incident } from '@prisma/client';
 
 @Injectable()
 export class IncidentService {

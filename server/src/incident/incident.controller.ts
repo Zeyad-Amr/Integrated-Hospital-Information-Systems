@@ -4,12 +4,9 @@ import { CreateIncidentDto } from './dto/create-incident.dto';
 import { UpdateIncidentDto } from './dto/update-incident.dto';
 import { handleError } from 'src/shared/http-error';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { Public } from 'src/shared/decorators/public.decorator';
 import { Pagination, PaginationParams } from 'src/shared/decorators/pagination.decorator';
 import { Filter, FilteringParams } from 'src/shared/decorators/filters.decorator';
 import { Sorting, SortingParams } from 'src/shared/decorators/order.decorator';
-import { PaginatedResource } from 'src/shared/types/paginated.resource';
-import { Incident } from '@prisma/client';
 import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
 
 @ApiBearerAuth()
