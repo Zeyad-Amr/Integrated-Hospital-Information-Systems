@@ -53,7 +53,6 @@ export class EmployeeController {
     }
   }
 
-  @CustomGetAllParamDecorator()
   @Get()
   @ApiOperation({ summary: 'get all employees' })
   @ApiOkResponse({ description: 'get all employees' })

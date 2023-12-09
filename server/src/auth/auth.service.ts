@@ -3,11 +3,10 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AuthDataDto } from './dto/login-user.dto';
+import { LoginDto } from './dto/login-user.dto';
 import { AuthRepo } from './auth.repo';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { User } from '@prisma/client';
 import * as crypto from 'crypto';
 
 
@@ -19,17 +18,17 @@ export class AuthService {
     private jwtService: JwtService,
   ) { }
 
-  async login(authDataDto: AuthDataDto) {
+  async login(loginDto: LoginDto) {
     try {
       const errInvalidCredentials = 'Invalid username or password';
-      const user = await this.authRepo.getByUsername(authDataDto.username);
+      const user = await this.authRepo.getByUsername(loginDto.username);
       if (!user) {
         throw new UnauthorizedException(errInvalidCredentials);
       }
       // console.log(user);
 
       const validPass = await bcrypt.compare(
-        authDataDto.password,
+        loginDto.password,
         user.password,
       );
       // console.log(validPass);
@@ -49,7 +48,7 @@ export class AuthService {
 
   async changePassword(
     username: string,
-    newPassword: AuthDataDto['password'],
+    newPassword: LoginDto['password'],
     oldPassword: string,
   ) {
     try {

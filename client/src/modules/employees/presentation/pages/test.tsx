@@ -13,7 +13,7 @@ import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
 const EmployeeTest = () => {
   const dispatch = useAppDispatch();
   const employeeState: EmployeeState = useAppSelector(
-    (state: any) => state.employee
+    (state: any) => state.employees
   );
 
   return (
@@ -37,7 +37,7 @@ const EmployeeTest = () => {
                 role: "ADMIN",
                 createdAt: new Date(),
                 updatedAt: new Date(),
-                personID: "4d11eb35-4dd0-4830-b705-0c7aefecf644",
+
                 createdById: null,
                 person: {
                   id: "4d11eb35-4dd0-4830-b705-0c7aefecf644",
@@ -96,7 +96,7 @@ const EmployeeTest = () => {
                 role: "ADMIN",
                 createdAt: new Date(),
                 updatedAt: new Date(),
-                personID: "4d11eb35-4dd0-4830-b705-0c7aefecf644",
+
                 createdById: null,
                 person: {
                   id: "4d11eb35-4dd0-4830-b705-0c7aefecf644",
@@ -138,6 +138,8 @@ const EmployeeTest = () => {
       <Typography>
         {employeeState.loading
           ? "Loading..."
+          : employeeState.error.length > 0
+          ? employeeState.error
           : employeeState.employeeList.length > 0
           ? employeeState.employeeList.map((employee) => (
               <div key={employee.id}>{employee.id}</div>

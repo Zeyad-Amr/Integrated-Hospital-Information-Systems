@@ -19,7 +19,7 @@ const SidebarComponent = () => {
         }
         activeIcon={<DashboardIcon sx={{ color: "white" }} />}
         text="لوحة التحكم"
-        path="/dashboard"
+        path="/dashboard/home"
       />
       <SidebarMenuItem
         icon={
@@ -27,7 +27,7 @@ const SidebarComponent = () => {
         }
         activeIcon={<PeopleIcon sx={{ color: "white" }} />}
         text="المستخدمين"
-        path="/users"
+        path="/dashboard/users"
       >
         <SidebarSubmenuItem
           text="إضافة مستخدم"
@@ -40,13 +40,13 @@ const SidebarComponent = () => {
           <ApartmentIcon sx={{ color: "primary.main", textAlign: "center" }} />
         }
         activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
-        text="الحوادث"
-        path="/incident"
+        text="الإصابات الجماعية"
+        path="/dashboard/incidents/"
       >
-        <SidebarSubmenuItem text="إضافة حادث" path="/dashboard/incidents/add" />
+        <SidebarSubmenuItem text="إضافة إصابة جماعية" path="/dashboard/incidents/add" />
         <SidebarSubmenuItem
-          text="استكمال الحوادث"
-          path="/dashboard/incidents/complete"
+          text="استكمال الإصابات الجماعية"
+          path="/dashboard/incidents/all"
         />
       </SidebarMenuItem>
       <SidebarMenuItem
@@ -55,10 +55,13 @@ const SidebarComponent = () => {
         }
         activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
         text="الزيارات"
-        path="/visits"
+        path="/dashboard/visits"
       >
         <SidebarSubmenuItem text="إضافة زيارة" path="/dashboard/visits/add" />
-        <SidebarSubmenuItem text="الزيارات المجهولة" path="/dashboard/visits/anonymous-visits" />
+        <SidebarSubmenuItem
+          text="الزيارات المجهولة"
+          path="/dashboard/visits/anonymous"
+        />
       </SidebarMenuItem>
     </Box>
   );

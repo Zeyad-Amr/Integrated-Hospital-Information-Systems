@@ -1,23 +1,8 @@
 import PersonEntity from '../../domain/entities/person-entity';
+import PersonInterface from '../../domain/interfaces/person-interface';
 
 export default class PersonModel extends PersonEntity {
-    constructor(data: {
-        id: string;
-        firstName: string;
-        secondName: string;
-        thirdName: string;
-        fourthName: string;
-        SSN: string;
-        verificationMethod: string;
-        gender: string;
-        birthDate: Date;
-        phone: string;
-        email: string;
-        governate: string;
-        address: string;
-        createdAt: Date;
-        updatedAt: Date;
-    }) {
+    constructor(data: PersonInterface) {
         super(data);
     }
 

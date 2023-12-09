@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { AnonymousVisitDto, CreateVisitDto } from './dto/create-visit.dto';
-import { UpdateVisitDto } from './dto/update-visit.dto';
+import { CreateVisitDto } from './dto/create-visit.dto';
 import { VisitRepo } from './visit.repo';
 import { Pagination, PaginationParams } from 'src/shared/decorators/pagination.decorator';
 import { Prisma, Visit } from '@prisma/client';
@@ -16,9 +15,7 @@ export class VisitService {
 
       if (createVisitDto.companion && createVisitDto.companion.SSN === createVisitDto.patient.SSN)
         throw new BadRequestException("companion ssn is equal to patient ssn")
-        if (createVisitDto.companion && createVisitDto.companion.email === createVisitDto.patient.email)
-        throw new BadRequestException("companion email is equal to patient email")
-        if (createVisitDto.companion && createVisitDto.companion.phone === createVisitDto.patient.phone)
+      if (createVisitDto.companion && createVisitDto.companion.phone === createVisitDto.patient.phone)
         throw new BadRequestException("companion phone is equal to patient phone")
       return await this.visitRepo.createPatientWithVisit(createVisitDto, creatorId)
 
@@ -27,17 +24,9 @@ export class VisitService {
     }
   }
 
-  async createAnonymous(anonymousVisitDto: AnonymousVisitDto, creatorId: string) {
-    try {
-      return await this.visitRepo.createAnonymous(anonymousVisitDto, creatorId)
-    } catch (error) {
-      throw error
-    }
-  }
-
   findAll(paginationParams: Pagination, filters?: Array<Filter>, sort?: Sorting): Promise<PaginatedResource<Visit>> {
     try {
-      const includeObj = { companion: true, creator: true, incident: true, patient: true }
+      const includeObj = { companion: true, creator: { include: { person: true } }, incident: true, patient: true }
 
       return this.visitRepo.getAll({ paginationParams, filters, sort, include: includeObj })
 

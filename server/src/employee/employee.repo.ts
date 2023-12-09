@@ -17,11 +17,17 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
 
     async createEmployee(item: CreateEmployeeDto, creatorId: string): Promise<Employee> {
         try {
-            const { auth, role, personalData } = item;
+            const { auth, personalData, role, shift, departmentId } = item;
             const employee = await this.prismaService.employee.create({
                 data: {
                     role,
-                    user: { create: { ...auth } },
+                    shift,
+                    department: {
+                        connect: {
+                            id: departmentId,
+                        }
+                    },
+                    auth: { create: { ...auth } },
                     person: {
                         connectOrCreate: {
                             where: { SSN: personalData.SSN },
@@ -43,14 +49,21 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
             throw error;
         }
     }
+
     async update(id: string, item: UpdateEmployeeDto): Promise<any> {
         try {
-            const { role, personalData } = item;
+            const { role, shift, departmentId, personalData, auth } = item;
 
             const employee = await this.prismaService.employee.update({
                 where: { id },
                 data: {
                     role,
+                    shift,
+                    department: {
+                        update: {
+                            id: departmentId
+                        }
+                    },
                     person: {
                         update: {
                             data: {
@@ -58,6 +71,12 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
                             }
                         }
                     },
+                    auth: {
+                        update: {
+                            ...auth
+                        }
+                    }
+
                 },
                 include: { person: true, }
             });
@@ -87,6 +106,15 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
         }
     }
 
-    private includeObj: Prisma.EmployeeInclude = { person: true }
+    private includeObj: Prisma.EmployeeInclude = {
+        person: true,
+        department: true,
+        auth: {
+            select: {
+                username: true,
+                email: true
+            }
+        }
+    }
 
 }

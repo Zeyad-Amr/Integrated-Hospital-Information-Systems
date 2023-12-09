@@ -5,24 +5,22 @@ import {
     GetMeUseCase,
     LoginUseCaseParameters
 } from "../../../domain/usecases";
-import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
+import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
 
 
 //* Login
 export const login = createAsyncThunk(
     "auth/login",
-    async (_data: AuthDataEntity, thunkApi) => {
+    async (_data: AuthInterface, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
             const result = await sl.get<LoginUseCase>(ServiceKeys.LoginUseCase).call(
                 new LoginUseCaseParameters(_data)
             );
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
@@ -35,12 +33,10 @@ export const getMe = createAsyncThunk(
         const { rejectWithValue } = thunkApi;
         try {
             const result = await sl.get<GetMeUseCase>(ServiceKeys.GetMeUseCase).call();
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }

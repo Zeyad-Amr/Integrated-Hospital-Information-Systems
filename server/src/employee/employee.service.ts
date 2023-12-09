@@ -15,7 +15,7 @@ export class EmployeeService {
   ) { }
   async create(createEmployeeDto: CreateEmployeeDto, creatorId: string) {
     try {
-      let auth: { username?: string, password?: string } = {};
+      let auth: { username?: string, password?: string, email?: string } = {};
       auth.username = createEmployeeDto.auth.username
 
       if (!createEmployeeDto.auth.password) {
@@ -28,6 +28,7 @@ export class EmployeeService {
         createEmployeeDto,
         creatorId,
       );
+      auth.email = createEmployeeDto.auth.email
       return { ...newEmployee, auth };
     } catch (error) {
       throw error;

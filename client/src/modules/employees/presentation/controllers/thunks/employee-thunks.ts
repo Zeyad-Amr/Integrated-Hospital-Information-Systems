@@ -16,17 +16,15 @@ import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
 
 //* Get All Employee Members 
 export const getEmployeeList = createAsyncThunk(
-    "employee/get",
+    "employees/get",
     async (_data, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
             const result = await sl.get<GetAllEmployeesUseCase>(ServiceKeys.GetAllEmployeesUseCase).call();
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
@@ -34,7 +32,7 @@ export const getEmployeeList = createAsyncThunk(
 
 //* Create Employee Member
 export const createEmployee = createAsyncThunk(
-    "employee/create",
+    "employees/create",
     async ({ data, authData }: { data: EmployeeEntity, authData: AuthDataEntity }, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
@@ -42,13 +40,10 @@ export const createEmployee = createAsyncThunk(
             const result = await sl.get<CreateEmployeeUseCase>(ServiceKeys.CreateEmployeeUseCase).call(
                 new CreateEmployeeUseCaseParameters(data, authData)
             );
-            console.log('Thunk', result);
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
@@ -56,19 +51,17 @@ export const createEmployee = createAsyncThunk(
 
 //* Update Employee Member
 export const updateEmployee = createAsyncThunk(
-    "employee/update",
+    "employees/update",
     async ({ data, authData }: { data: EmployeeEntity, authData: AuthDataEntity }, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
             const result = await sl.get<UpdateEmployeeUseCase>(ServiceKeys.UpdateEmployeeUseCase).call(
                 new UpdateEmployeeUseCaseParameters(data, authData)
             );
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
@@ -76,19 +69,17 @@ export const updateEmployee = createAsyncThunk(
 
 //* Delete Employee Member
 export const deleteEmployee = createAsyncThunk(
-    "employee/delete",
+    "employees/delete",
     async (id: string, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
             const result = await sl.get<DeleteEmployeeUseCase>(ServiceKeys.DeleteEmployeeUseCase).call(
                 new DeleteEmployeeUseCaseParameters(id)
             );
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight() === true ? id : "";
+            console.log('Result:', result);
+            return id;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }
@@ -96,19 +87,17 @@ export const deleteEmployee = createAsyncThunk(
 
 //* Get Employee Member Details by Id
 export const getEmployeeDetails = createAsyncThunk(
-    "employee/get/details",
+    "employees/get/details",
     async (id: string, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
             const result = await sl.get<GetEmployeeByIdUseCase>(ServiceKeys.GetEmployeeByIdUseCase).call(
                 new GetEmployeeByIdUseCaseParameters(id)
             );
-            result.fold(
-                (error) => console.log(error),
-                (success) => console.log(success)
-            );
-            return result.getRight();
+            console.log('Result:', result);
+            return result;
         } catch (error) {
+            console.log('Error:', error);
             return rejectWithValue(error);
         }
     }

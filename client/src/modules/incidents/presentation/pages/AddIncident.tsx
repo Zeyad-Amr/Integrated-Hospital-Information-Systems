@@ -10,10 +10,10 @@ const AddIncident = () => {
       sx={{
         width: "90%",
         height: "70vh",
-        margin: "3% auto 0",
+        margin: "0 auto 0",
       }}
     >
-      <PageHeader title="اضافـــــــة حـــادث">
+      <PageHeader title="اضافـــــة إصـــــابة جمـــــاعية">
         <HealthAndSafetyOutlinedIcon />
       </PageHeader>
 

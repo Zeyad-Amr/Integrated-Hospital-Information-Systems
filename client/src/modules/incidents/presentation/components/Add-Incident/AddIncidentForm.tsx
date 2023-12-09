@@ -55,6 +55,9 @@ const AddIncidentForm = () => {
   const [editing, setEditing] = useState<boolean>(false);
   const [intialValues, setIntialValues] = useState<PersonalDataValues>(MainInitialVlaues);
 
+
+  const [idx, setIdx] = useState<number>(0);
+
   const intialAdditionalValues: AdditionalDataValues = {
     comeFromString: "",
     attendantName: "",
@@ -68,7 +71,6 @@ const AddIncidentForm = () => {
     place: "",
     notes: "",
   };
-  const [idx, setIdx] = useState<number>(0);
 
   const handleCompanionSubmission = (values: PersonalDataValues) => {
     console.log(editing);
@@ -253,6 +255,7 @@ const AddIncidentForm = () => {
         isExpanded={additionalDataAccordion}
         setExpanded={setAdditionalDataAccordion}
         title="البيــانات الاضـــافية"
+        isClosable={false}
       >
         <AdditionalData
           initialValues={intialAdditionalValues}
@@ -280,6 +283,7 @@ const AddIncidentForm = () => {
           isExpanded={userDataAccordion}
           setExpanded={setUserDataAccordion}
           title="بيــانات المـــرافقين"
+          isClosable
         >
           <Box sx={{ display: "flex" }}>
             <Box sx={{ width: "75%" }}>

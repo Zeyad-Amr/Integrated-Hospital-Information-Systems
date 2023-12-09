@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { HOST_API } from '@/config/settings/app-config';
 import ErrorResponse from './error-response';
+import { LocalStorage, LocalStorageKeys } from '../shared/utils/local-storage';
 // ----------------------------------------------------------------
 
 //* Create a custom axios instance
@@ -12,15 +13,15 @@ axiosInstance.interceptors.request.use(
         // Modify the request configuration here (e.g., add headers, authentication tokens, etc.)  
         const token: string = localStorage.getItem('token') ?? '';
         if (token.length > 0) {
-            config.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+            config.headers['Authorization'] = 'Bearer ' + LocalStorage.fetch<string>(LocalStorageKeys.token) ?? '';
         }
-        if (!config.url?.includes('page') && config.method?.toLowerCase() === 'get') {
-            config.params = {
-                ...config.params,
-                page: 1,
-                size: 10
-            }
-        }
+        // if (!config.url?.includes('page') && config.method?.toLowerCase() === 'get') {
+        //     config.params = {
+        //         ...config.params,
+        //         page: 1,
+        //         size: 100
+        //     }
+        // }
         return config;
     },
     (error) => {

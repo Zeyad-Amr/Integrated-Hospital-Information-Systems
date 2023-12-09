@@ -8,21 +8,37 @@ import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import styles from './loginPage.module.css'
+import { useAppDispatch, useAppSelector } from "@/core/redux/store";
+import { AuthState } from "../../controllers/types";
+import { login } from "../../controllers/thunks/auth-thunks";
+import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
 
 const LoginPage = () => {
 
+  const dispatch = useAppDispatch();
+  const authState: AuthState = useAppSelector((state: any) => state.auth);
+
+
   const handleFormSchema = Yup.object({
     userName: Yup.string()
-    .required("Username is required")
-    .min(3, "Username must be at least 3 characters")
-    .max(45, "Username must be at most 45 characters"),
+      .required("Username is required")
+      .min(3, "Username must be at least 3 characters")
+      .max(45, "Username must be at most 45 characters"),
     password: Yup.string()
-    .required("Password is required")
-    .min(6, "Password must be at least 6 characters long"),
+      .required("Password is required")
+      .min(6, "Password must be at least 6 characters long"),
   })
 
   const onsubmit = (values: { userName: string; password: string; }) => {
     console.log(values)
+    dispatch(
+      login(
+        new AuthDataEntity({
+          username: values.userName,
+          password: values.password,
+        })
+      )
+    )
   }
 
   return (
@@ -31,15 +47,15 @@ const LoginPage = () => {
       <Box className={`${styles.loginBG}`}></Box>
       <Box className={`${styles.loginFormContainer} ${styles.flexCenter}`}>
         <h1 className={`${styles.title}`}>تسجيــل الدخــول</h1>
-        <Formik      
+        <Formik
           initialValues={{
-          userName: "",
-          password: "",
+            userName: "",
+            password: "",
 
-        }}
+          }}
 
-        validationSchema={handleFormSchema}
-        onSubmit={(values) => onsubmit(values)}>
+          validationSchema={handleFormSchema}
+          onSubmit={(values) => onsubmit(values)}>
           {({
             values,
             touched,
@@ -48,49 +64,49 @@ const LoginPage = () => {
             handleBlur,
             handleSubmit,
           }) => (
-            <Box component="form" onSubmit={handleSubmit} noValidate style= {{width: "70%"}}
+            <Box component="form" onSubmit={handleSubmit} noValidate style={{ width: "70%" }}
             >
-                <Grid className={`${styles.flexCenter}`}
-                  style={{height: "100%"}}
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  xs={12}
-                >
+              <Grid className={`${styles.flexCenter}`}
+                style={{ height: "100%" }}
+                lg={6}
+                md={6}
+                sm={12}
+                xs={12}
+              >
                 <CustomTextField
-                isRequired
-                name="userName"
-                label="اسم المستخدم"
-                value={values.userName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.userName}
-                touched={touched.userName}
-                width="100%"
-                
-                props={{
-                  type: "text",
-                  className: "input",
-                }}
-              />
-              <CustomTextField
-                    isRequired
-                    name="password"
-                    label="كلمة المرور"
-                    value={values.password}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={errors.password}
-                    touched={touched.password}
-                    width="100%"
-                    props={{
-                      type: "password",
-                      className: "input",
-                      
-                    }}
-                  />
-                  
-                </Grid>
+                  isRequired
+                  name="userName"
+                  label="اسم المستخدم"
+                  value={values.userName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.userName}
+                  touched={touched.userName}
+                  width="100%"
+
+                  props={{
+                    type: "text",
+                    className: "input",
+                  }}
+                />
+                <CustomTextField
+                  isRequired
+                  name="password"
+                  label="كلمة المرور"
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.password}
+                  touched={touched.password}
+                  width="100%"
+                  props={{
+                    type: "password",
+                    className: "input",
+
+                  }}
+                />
+
+              </Grid>
               <Button
                 type="submit"
                 style={{
@@ -103,6 +119,7 @@ const LoginPage = () => {
               </Button>
             </Box>
           )}
+
         </Formik>
       </Box>
     </Box>

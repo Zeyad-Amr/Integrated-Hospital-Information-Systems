@@ -8,7 +8,6 @@ class EmployeeMapper {
             role: entity.role,
             createdAt: entity.createdAt,
             updatedAt: entity.updatedAt,
-            personID: entity.personID,
             createdById: entity.createdById,
             person: {
                 id: entity.person.id,
@@ -37,7 +36,6 @@ class EmployeeMapper {
             role: model.role,
             createdAt: model.createdAt,
             updatedAt: model.updatedAt,
-            personID: model.personID,
             createdById: model.createdById,
             person: {
                 id: model.person.id,

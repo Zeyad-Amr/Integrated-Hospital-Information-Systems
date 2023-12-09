@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Tooltip, Typography } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import React from "react";
 import GetCompanions from "./GetCompanions";
@@ -44,13 +44,14 @@ const IncidentHeader = ({
   return (
     <Box sx={{ display: display, marginBottom: "1rem" }}>
       {/* <QRCodeCanvas style={{marginLeft:'1rem'}} value={`
-            عدد المرضى : ${props.data.numOfPatients}
-            قادم من : ${props.data.comeFromString === "1" ? "حادث" : "خناقة"}
-            المسعف : ${props.data.paramedicName}
-            سيارة الاسعاف : ${props.data.ambCarNum}
+            عدد المرضى : ${data.numOfPatients}
+            قادم من : ${data.comeFromString === "1" ? "حادث" : "خناقة"}
+            المسعف : ${data.paramedicName}
+            سيارة الاسعاف : ${data.ambCarNum}
             `} /> */}
       <Grid
         container
+        columns={5}
         sx={{
           backgroundColor: "primary.dark",
           color: "white",
@@ -59,10 +60,10 @@ const IncidentHeader = ({
           alignItems: "center",
         }}
       >
-        <Grid item lg={3} md={3} sm={6} xs={12} sx={{ display: "flex" }}>
+        <Grid item lg={1} md={1} sm={5} xs={5} sx={{ display: "flex" }}>
           <Typography>عدد المرضى :</Typography>
-          <Typography sx={{ fontWeight: "600" }}>
-            &nbsp;{props.data.numOfPatients}
+          <Typography sx={{ fontWeight: "500" }}>
+            &nbsp;{data.numOfPatients}
           </Typography>
         </Grid>
         <Grid
@@ -94,17 +95,22 @@ const IncidentHeader = ({
         </Grid>
         <Grid item lg={1} md={1} sm={5} xs={5} sx={{ display: "flex" }}>
           <Typography>قادم من :</Typography>
-          <Typography sx={{ fontWeight: "600" }}>
-            &nbsp;{props.data.comeFromString === "1" ? "حادث" : "خناقة"}
+          <Typography sx={{ fontWeight: "500" }}>
+            &nbsp;
+            {data.description === "home"
+              ? "منزل"
+              : data.description === "accedent"
+              ? "حادث"
+              : "سجن"}
           </Typography>
         </Grid>
-        <Grid item lg={3} md={3} sm={6} xs={12} sx={{ display: "flex" }}>
+        <Grid item lg={1} md={1} sm={5} xs={5} sx={{ display: "flex" }}>
           <Typography>المسعف :</Typography>
-          <Typography sx={{ fontWeight: "600" }}>
-            &nbsp;{props.data.paramedicName}
+          <Typography sx={{ fontWeight: "500" }}>
+            &nbsp;{data.attendantName}
           </Typography>
         </Grid>
-        <Grid item lg={3} md={3} sm={6} xs={12} sx={{ display: "flex" }}>
+        <Grid item lg={1} md={1} sm={5} xs={5} sx={{ display: "flex" }}>
           <Typography>سيارة الاسعاف :</Typography>
           <Typography sx={{ fontWeight: "500" }}>
             &nbsp;{data.car.firstChar} &nbsp;{data.car.secondChar} &nbsp;
@@ -123,7 +129,7 @@ const IncidentHeader = ({
           alignItems: "center",
           cursor: "pointer",
         }}
-        onClick={props.onClick}
+        onClick={onClick}
       >
         <EditRoundedIcon />
       </Box>

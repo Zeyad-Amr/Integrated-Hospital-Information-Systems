@@ -20,14 +20,15 @@ model Person {
   secondName         String
   thirdName          String
   fourthName         String
-  SSN                String       @unique
-  verificationMethod IdentityEnum
+  SSN                String?      @unique
+  verificationMethod IdentityEnum?
   gender             GenderEnum
-  birthDate          DateTime     @db.Date
+  birthDate          DateTime?     @db.Date
   phone              String?      @unique
-  email              String?      @unique
-  governate          String
-  address            String
+  governate          String?
+  address            String?
+
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -39,33 +40,45 @@ model Person {
 }
 
 model Employee {
-  id   String   @id @default(uuid())
-  role RoleEnum
-  // we should make table for shifts 
-  // shiftStart DateTime
-  // shiftEnd   DateTime
+  id    String    @id @default(uuid())
+  role  RoleEnum
+  shift ShiftEnum
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user              User?
-  person            Person     @relation(fields: [personID], references: [id])
-  personID          String     @unique
+  auth User?
+
+  person   Person @relation(fields: [personID], references: [id])
+  personID String @unique
+
   createdByEmployee Employee?  @relation("CreatedBy", fields: [createdById], references: [id])
   createdById       String?
   createdEmployees  Employee[] @relation("CreatedBy")
-  visit             Visit[]
+
+  visit Visit[]
+
+  department   Department @relation(fields: [departmentId], references: [id])
+  departmentId String
 }
 
 model User {
-  username String @id
+  username String  @id
   password String
+  email    String? @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   employeeId String   @unique
+}
+
+model Department {
+  id   String @id @default(uuid())
+  name String @unique
+
+  Employees Employee[]
 }
 
 model Visit {
@@ -76,8 +89,8 @@ model Visit {
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt
 
-  // it has to be commented till the emplopyee api created
-  creator     Employee  @relation(fields: [creatorId], references: [id])
+  creator Employee @relation(fields: [creatorId], references: [id])
+
   creatorId   String
   patient     Person?   @relation("visitPatient", fields: [patientId], references: [id])
   patientId   String?
@@ -85,19 +98,20 @@ model Visit {
   companionId String?
   incident    Incident? @relation(fields: [incidentId], references: [id])
   incidentId  String?
+
+  AdditionalInformation VisitAdditionalInformation? @relation(fields: [additionalInfoId], references: [id])
+  additionalInfoId      String?
 }
 
 model Incident {
   id               String  @id @default(uuid())
-  description      String?
   numberOfPatients Int
   isCompleted      Boolean @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  Car   CarNumber? @relation(fields: [carId], references: [id])
-  carId String?
+  createdAt             DateTime                    @default(now())
+  updatedAt             DateTime                    @updatedAt
+  AdditionalInformation VisitAdditionalInformation? @relation(fields: [additionalInfoId], references: [id])
+  additionalInfoId      String?
 
   visits                Visit[]
   CompanionsOnIncidents CompanionsOnIncidents[]
@@ -113,14 +127,37 @@ model CompanionsOnIncidents {
 }
 
 model CarNumber {
-  id         String     @id() @default(uuid())
-  firstChar  String     @db.VarChar(1)
-  secondChar String     @db.VarChar(1)
-  thirdChar  String     @db.VarChar(1)
-  number     Int
-  Incident   Incident[]
+  id                         String                       @id @default(uuid())
+  firstChar                  String                       @db.VarChar(1)
+  secondChar                 String                       @db.VarChar(1)
+  thirdChar                  String                       @db.VarChar(1)
+  number                     Int
+  VisitAdditionalInformation VisitAdditionalInformation[]
 
   @@unique([firstChar, secondChar, thirdChar, number], map: "Car_Unique")
+}
+
+model Attendant {
+  id                         String                       @id @default(uuid())
+  SSN                        String?                      @unique
+  cardId                     String?                      @unique
+  name                       String
+  attendantRole              AttendantRole
+  VisitAdditionalInformation VisitAdditionalInformation[]
+}
+
+model VisitAdditionalInformation {
+  id             String           @id @default(uuid())
+  Car            CarNumber?       @relation(fields: [carId], references: [id])
+  carId          String?
+  cameFrom       CameFromOptions?
+  injuryLocation String?
+  injuryCause    String?
+  notes          String?
+  Attendant      Attendant?       @relation(fields: [attendantId], references: [id])
+  attendantId    String?
+  Incident       Incident[]
+  Visit          Visit[]
 }
 
 enum IdentityEnum {
@@ -145,7 +182,27 @@ enum KinshipEnum {
 
 enum RoleEnum {
   ADMIN
-  RECEPTIONIST
+  EMPLOYEE
   DOCTOR
   NURSE
+}
+
+enum ShiftEnum {
+  MORNING8
+  AFTERNOON8
+  NIGHT8
+  MORNING12
+  NIGHT12
+  LONG
+}
+
+enum CameFromOptions {
+  HOME
+  ACCIDENT
+  PRISONER
+}
+
+enum AttendantRole {
+  PARAMEDIC
+  OFFICER
 }

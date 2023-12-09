@@ -11,8 +11,7 @@ export interface PersonalDataValues {
   firstName: string;
   secondName: string;
   thirdName: string;
-  forthName: string;
-  email: string;
+  fourthName: string;
   SSN: string;
   phone: string;
   gender: string;
@@ -26,12 +25,14 @@ interface PersonalDataProps {
   initialValues: PersonalDataValues;
   onSubmit: (values: PersonalDataValues) => void;
   isSubmitted: boolean;
+  isResetForm?: boolean;
 }
 
 const PersonalData = ({
   initialValues,
   onSubmit,
   isSubmitted,
+  isResetForm = false
 }: PersonalDataProps) => {
   const refSubmitButton: any = useRef(null);
   const checkFirstRender = useRef(true);
@@ -52,47 +53,39 @@ const PersonalData = ({
 
   const handleFormSchema = Yup.object({
     firstName: Yup.string()
-      .required("First name is required")
-      .min(3, "First name must be at least 3 characters")
-      .max(45, "First name must be at most 45 characters")
-      .matches(/^[aA-zZ\s]+$/, "First name must be alphabetic."),
+      .required("الاسم الأول مطلوب")
+      .min(3, "يجب أن يكون الاسم الأول على الأقل 3 أحرف")
+      .max(45, "يجب أن يكون الاسم الأول على الأكثر 45 حرفًا"),
     secondName: Yup.string()
-      .required("Second name is required")
-      .min(3, "Second name must be at least 3 characters")
-      .max(45, "Second name must be at most 45 characters")
-      .matches(/^[aA-zZ\s]+$/, "Second name must be alphabetic."),
+      .required("الاسم الثاني مطلوب")
+      .min(3, "يجب أن يكون الاسم الثاني على الأقل 3 أحرف")
+      .max(45, "يجب أن يكون الاسم الثاني على الأكثر 45 حرفًا"),
     thirdName: Yup.string()
-      .required("Third name is required")
-      .min(3, "Third name must be at least 3 characters")
-      .max(45, "Third name must be at most 45 characters")
-      .matches(/^[aA-zZ\s]+$/, "Third name must be alphabetic."),
-    forthName: Yup.string()
-      .required("Forth name is required")
-      .min(3, "Forth name must be at least 3 characters")
-      .max(45, "Forth name must be at most 45 characters")
-      .matches(/^[aA-zZ\s]+$/, "Forth name must be alphabetic."),
+      .required("الاسم الثالث مطلوب")
+      .min(3, "يجب أن يكون الاسم الثالث على الأقل 3 أحرف")
+      .max(45, "يجب أن يكون الاسم الثالث على الأكثر 45 حرفًا"),
+    fourthName: Yup.string()
+      .required("الاسم الرابع مطلوب")
+      .min(3, "يجب أن يكون الاسم الرابع على الأقل 3 أحرف")
+      .max(45, "يجب أن يكون الاسم الرابع على الأكثر 45 حرفًا"),
     address: Yup.string()
-      .required("Address name is required")
-      .min(3, "Address name must be at least 3 characters")
-      .max(100, "Address name must be at most 100 characters"),
-    gender: Yup.string().required("Gender is required"),
-    governate: Yup.string().required("Governate is required"),
-    verificationMethod: Yup.string().required("SSN type is required"),
-    birthDate: Yup.string().required("Date is required"),
-    email: Yup.string()
-      .required("Email is required")
-      .min(3, "Enter a valid email")
-      .max(45, "Enter a valid email")
-      .email("Enter a valid email"),
+      .required("اسم العنوان مطلوب")
+      .min(3, "يجب أن يكون اسم العنوان على الأقل 3 أحرف")
+      .max(100, "يجب أن يكون اسم العنوان على الأكثر 100 حرفًا"),
+    gender: Yup.string().required("الجنس مطلوب"),
+    governate: Yup.string().required("المحافظة مطلوبة"),
+    verificationMethod: Yup.string().required("نوع الهوية مطلوب"),
+    birthDate: Yup.string().required("التاريخ مطلوب"),
     SSN: Yup.string()
-      .required("SSN is required")
-      .length(14, "SSN must be 14 numbers")
-      .matches(/^[0-9]+$/, "Phone number must be numeric."),
+      .required("الرقم القومي مطلوب")
+      .length(14, "يجب أن يكون الرقم القومي 14 رقمًا")
+      .matches(/^[0-9]+$/, "يجب أن يكون الرقم القومي رقميًا."),
     phone: Yup.string()
-      .required("Phone number is required")
-      .length(11, "Phone number must be 11 characters")
-      .matches(/^[0-9]+$/, "Phone number must be numeric."),
+      .length(11, "يجب أن يكون رقم الهاتف 11 حرفًا")
+      .matches(/^[0-9]+$/, "يجب أن يكون رقم الهاتف رقميًا."),
   });
+
+  
 
   return (
     <Formik
@@ -101,8 +94,7 @@ const PersonalData = ({
         firstName: initialValues.firstName,
         secondName: initialValues.secondName,
         thirdName: initialValues.thirdName,
-        forthName: initialValues.forthName,
-        email: initialValues.email,
+        fourthName: initialValues.fourthName,
         SSN: initialValues.SSN,
         phone: initialValues.phone,
         gender: initialValues.gender,
@@ -112,8 +104,11 @@ const PersonalData = ({
         verificationMethod: initialValues.verificationMethod,
       }}
       validationSchema={handleFormSchema}
-      onSubmit={(values) => {
+      onSubmit={(values, { resetForm }) => {
         onSubmit(values);
+        if (isResetForm) {
+          resetForm();
+        }
       }}
     >
       {({
@@ -125,24 +120,35 @@ const PersonalData = ({
         handleSubmit,
       }) => (
         <Box component="form" onSubmit={handleSubmit} noValidate>
-          <Grid container columns={12} spacing={4}>
-            <Grid
-              item
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                height: "100%",
-              }}
-              lg={6}
-              md={6}
-              sm={12}
-              xs={12}
-            >
+          <Grid container columns={12} spacing={2}>
+            <Grid item lg={3} md={3} sm={12} xs={12}>
+              <CustomSelectField
+                isRequired
+                name="verificationMethod"
+                label="نوع الهوية"
+                value={values.verificationMethod}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.verificationMethod}
+                touched={touched.verificationMethod}
+                width="100%"
+                options={[
+                  {
+                    id: "NATIONALIDCARD",
+                    title: "بطاقة",
+                  },
+                  {
+                    id: "PASSPORT",
+                    title: "جواز سفر",
+                  },
+                ]}
+              />
+            </Grid>
+            <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
                 isRequired
                 name="SSN"
-                label="الرقم القومي"
+                label="رقم الهوية"
                 value={values.SSN}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -150,67 +156,12 @@ const PersonalData = ({
                 touched={touched.SSN}
                 width="100%"
                 props={{
-                  type: "number",
-                }}
-              />
-              <CustomTextField
-                isRequired
-                name="firstName"
-                label="الاسم الأول"
-                value={values.firstName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.firstName}
-                touched={touched.firstName}
-                width="100%"
-                props={{
                   type: "text",
                 }}
               />
+            </Grid>
 
-              <CustomTextField
-                isRequired
-                name="thirdName"
-                label="الاسم الثالث"
-                value={values.thirdName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.thirdName}
-                touched={touched.thirdName}
-                width="100%"
-                props={{
-                  type: "text",
-                }}
-              />
-
-              <CustomTextField
-                isRequired
-                name="birthDate"
-                label="تاريخ الميلاد"
-                value={values.birthDate}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.birthDate}
-                touched={touched.birthDate}
-                width="100%"
-                props={{
-                  type: "date",
-                }}
-              />
-              <CustomTextField
-                isRequired
-                name="phone"
-                label="رقم الهاتف"
-                value={values.phone}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.phone}
-                touched={touched.phone}
-                width="100%"
-                props={{
-                  type: "text",
-                }}
-              />
+            <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomSelectField
                 isRequired
                 name="gender"
@@ -233,96 +184,7 @@ const PersonalData = ({
                 ]}
               />
             </Grid>
-            <Grid
-              item
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                height: "100%",
-              }}
-              lg={6}
-              md={6}
-              sm={12}
-              xs={12}
-            >
-              <CustomSelectField
-                isRequired
-                name="verificationMethod"
-                label="نوع الهوية"
-                value={values.verificationMethod}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.verificationMethod}
-                touched={touched.verificationMethod}
-                width="100%"
-                options={[
-                  {
-                    id: "NATIONALIDCARD",
-                    title: "بطاقة",
-                  },
-                  {
-                    id: "PASSPORT",
-                    title: "جواز سفر",
-                  },
-                ]}
-              />
-              <CustomTextField
-                isRequired
-                name="secondName"
-                label="الاسم الثاني"
-                value={values.secondName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.secondName}
-                touched={touched.secondName}
-                width="100%"
-                props={{
-                  type: "text",
-                }}
-              />
-              <CustomTextField
-                isRequired
-                name="forthName"
-                label="الاسم الرابع"
-                value={values.forthName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.forthName}
-                touched={touched.forthName}
-                width="100%"
-                props={{
-                  type: "text",
-                }}
-              />
-              <CustomTextField
-                isRequired
-                name="email"
-                label="الايميل"
-                value={values.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.email}
-                touched={touched.email}
-                width="100%"
-                props={{
-                  type: "email",
-                }}
-              />
-              <CustomTextField
-                isRequired
-                name="address"
-                label="العنوان"
-                value={values.address}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.address}
-                touched={touched.address}
-                width="100%"
-                props={{
-                  type: "text",
-                }}
-              />
+            <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomSelectField
                 isRequired
                 name="governate"
@@ -343,6 +205,121 @@ const PersonalData = ({
                     title: "الجيزة",
                   },
                 ]}
+              />
+            </Grid>
+          </Grid>
+          <Grid container columns={12} spacing={2}>
+            <Grid item lg={3} md={3} sm={12} xs={12}>
+              <CustomTextField
+                isRequired
+                name="firstName"
+                label="الاسم الأول"
+                value={values.firstName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.firstName}
+                touched={touched.firstName}
+                width="100%"
+                props={{
+                  type: "text",
+                }}
+              />
+            </Grid>
+            <Grid item lg={3} md={3} sm={12} xs={12}>
+              <CustomTextField
+                isRequired
+                name="secondName"
+                label="الاسم الثاني"
+                value={values.secondName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.secondName}
+                touched={touched.secondName}
+                width="100%"
+                props={{
+                  type: "text",
+                }}
+              />
+            </Grid>
+            <Grid item lg={3} md={3} sm={12} xs={12}>
+              <CustomTextField
+                isRequired
+                name="thirdName"
+                label="الاسم الثالث"
+                value={values.thirdName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.thirdName}
+                touched={touched.thirdName}
+                width="100%"
+                props={{
+                  type: "text",
+                }}
+              />
+            </Grid>
+            <Grid item lg={3} md={3} sm={12} xs={12}>
+              <CustomTextField
+                isRequired
+                name="fourthName"
+                label="الاسم الرابع"
+                value={values.fourthName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.fourthName}
+                touched={touched.fourthName}
+                width="100%"
+                props={{
+                  type: "text",
+                }}
+              />
+            </Grid>
+          </Grid>
+          <Grid container columns={12} spacing={2}>
+            <Grid item lg={3} md={3} sm={12} xs={12}>
+              <CustomTextField
+                isRequired
+                name="birthDate"
+                label="تاريخ الميلاد"
+                value={values.birthDate}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.birthDate}
+                touched={touched.birthDate}
+                width="100%"
+                props={{
+                  type: "date",
+                }}
+              />
+            </Grid>
+            <Grid item lg={3} md={3} sm={12} xs={12}>
+              <CustomTextField
+                name="phone"
+                label="رقم الهاتف"
+                value={values.phone}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.phone}
+                touched={touched.phone}
+                width="100%"
+                props={{
+                  type: "text",
+                }}
+              />
+            </Grid>
+            <Grid item lg={6} md={6} sm={12} xs={12}>
+              <CustomTextField
+                isRequired
+                name="address"
+                label="العنوان"
+                value={values.address}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.address}
+                touched={touched.address}
+                width="100%"
+                props={{
+                  type: "text",
+                }}
               />
             </Grid>
           </Grid>

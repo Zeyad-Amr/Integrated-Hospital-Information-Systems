@@ -7,7 +7,6 @@ export default class EmployeeModel extends UserModel {
         role: string;
         createdAt: Date;
         updatedAt: Date;
-        personID: string;
         createdById: string | null;
         person: {
             id: string;
@@ -52,13 +51,11 @@ export default class EmployeeModel extends UserModel {
     static fromJson(json: any): EmployeeModel {
         const baseModel = super.fromJson(json); // Create a UserModel from the base class
         const {  /* other employee-specific data */ } = json;
-
         return new EmployeeModel({
             id: baseModel.id,
             role: baseModel.role,
             createdAt: baseModel.createdAt,
             updatedAt: baseModel.updatedAt,
-            personID: baseModel.personID,
             createdById: baseModel.createdById,
             person: baseModel.person,
         });
