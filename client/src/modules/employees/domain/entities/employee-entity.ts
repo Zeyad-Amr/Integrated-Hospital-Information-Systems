@@ -1,30 +1,8 @@
 import UserEntity from "@/modules/auth/domain/entities/user-entity";
+import EmployeeInterface from "../interfaces/employee-interface";
 
 export default class EmployeeEntity extends UserEntity {
-    constructor(data: {
-        id: string;
-        role: string;
-        createdAt: Date;
-        updatedAt: Date;
-        createdById: string | null;
-        person: {
-            id: string;
-            firstName: string;
-            secondName: string;
-            thirdName: string;
-            fourthName: string;
-            SSN: string;
-            verificationMethod: string;
-            gender: string;
-            birthDate: Date;
-            phone: string;
-            email: string;
-            governate: string;
-            address: string;
-            createdAt: Date;
-            updatedAt: Date;
-        };
-    }) {
+    constructor(data: EmployeeInterface) {
         super(data); // Call the constructor of the base class (UserEntity)
 
     }

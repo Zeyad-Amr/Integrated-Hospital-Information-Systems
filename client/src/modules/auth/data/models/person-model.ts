@@ -1,35 +1,29 @@
-import PersonEntity from '../../domain/entities/person-entity';
 import PersonInterface from '../../domain/interfaces/person-interface';
 
-export default class PersonModel extends PersonEntity {
-    constructor(data: PersonInterface) {
-        super(data);
-    }
-
+export default class PersonModel {
     //* --------------------- Serialization: Convert the model to JSON ---------------------
-    toJson(): any {
+    static toJson(entity: PersonInterface): any {
         return {
-            // id: this.id,
-            firstName: this.firstName,
-            secondName: this.secondName,
-            thirdName: this.thirdName,
-            fourthName: this.fourthName,
-            SSN: this.SSN,
-            verificationMethod: this.verificationMethod,
-            gender: this.gender,
-            birthDate: this.birthDate,
-            phone: this.phone,
-            email: this.email,
-            governate: this.governate,
-            address: this.address,
-            // createdAt: this.createdAt,
-            // updatedAt: this.updatedAt,
+            // id: entity.id,
+            firstName: entity.firstName,
+            secondName: entity.secondName,
+            thirdName: entity.thirdName,
+            fourthName: entity.fourthName,
+            SSN: entity.SSN,
+            verificationMethod: entity.verificationMethod,
+            gender: entity.gender,
+            birthDate: entity.birthDate,
+            phone: entity.phone,
+            governate: entity.governate,
+            address: entity.address,
+            // createdAt: entity.createdAt,
+            // updatedAt: entity.updatedAt,
         };
     }
 
     //* --------------------- Deserialization: Create a model from JSON data ---------------------
-    static fromJson(json: any): PersonModel {
-        return new PersonModel({
+    static fromJson(json: any): PersonInterface {
+        return {
             id: json.id,
             firstName: json.firstName,
             secondName: json.secondName,
@@ -40,11 +34,10 @@ export default class PersonModel extends PersonEntity {
             gender: json.gender,
             birthDate: new Date(json.birthDate),
             phone: json.phone,
-            email: json.email,
             governate: json.governate,
             address: json.address,
             createdAt: new Date(json.createdAt),
             updatedAt: new Date(json.updatedAt),
-        });
+        };
     }
 }

@@ -1,26 +1,22 @@
-import AuthDataEntity from '../../domain/entities/auth-data-entity';
+import AuthInterface from '../../domain/interfaces/auth-interface';
 
-export default class AuthDataModel extends AuthDataEntity {
-    constructor(data: {
-        username: string;
-        password: string;
-    }) {
-        super(data);
-    }
+export default class AuthDataModel {
 
     //* --------------------- Serialization: Convert the model to JSON ---------------------
-    toJson(): any {
+    static toJson(entity: AuthInterface): any {
         return {
-            username: this.username,
-            password: this.password,
+            username: entity.username,
+            password: entity.password,
+            email: entity.email,
         };
     }
 
     //* --------------------- Deserialization: Create a model from JSON data ---------------------
-    static fromJson(json: any): AuthDataModel {
-        return new AuthDataModel({
+    static fromJson(json: any): AuthInterface {
+        return {
             username: json.username,
             password: json.password,
-        });
+            email: json.email,
+        };
     }
 }

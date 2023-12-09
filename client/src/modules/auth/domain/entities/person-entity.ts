@@ -11,7 +11,6 @@ export default class PersonEntity implements PersonInterface {
     private _gender?: string;
     private _birthDate?: Date;
     private _phone?: string;
-    private _email?: string;
     private _governate?: string;
     private _address?: string;
     private _createdAt?: Date;
@@ -28,7 +27,6 @@ export default class PersonEntity implements PersonInterface {
         this._gender = data.gender;
         this._birthDate = data.birthDate;
         this._phone = data.phone;
-        this._email = data.email;
         this._governate = data.governate;
         this._address = data.address;
         this._createdAt = data.createdAt;
@@ -75,10 +73,6 @@ export default class PersonEntity implements PersonInterface {
 
     get phone(): string | undefined {
         return this._phone;
-    }
-
-    get email(): string | undefined {
-        return this._email;
     }
 
     get governate(): string | undefined {
@@ -137,10 +131,6 @@ export default class PersonEntity implements PersonInterface {
         this._phone = phone;
     }
 
-    set email(email: string | undefined) {
-        this._email = email;
-    }
-
     set governate(governate: string | undefined) {
         this._governate = governate;
     }
@@ -170,7 +160,6 @@ export default class PersonEntity implements PersonInterface {
             gender: undefined,
             birthDate: undefined,
             phone: undefined,
-            email: undefined,
             governate: undefined,
             address: undefined,
             createdAt: undefined,

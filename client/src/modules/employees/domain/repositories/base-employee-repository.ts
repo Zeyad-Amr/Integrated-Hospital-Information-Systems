@@ -1,10 +1,9 @@
-import EmployeeEntity from '../entities/employee-entity';
-import AuthDataEntity from '@/modules/auth/domain/entities/auth-data-entity';
+import EmployeeInterface from '../interfaces/employee-interface';
 abstract class BaseEmployeeRepository {
-    abstract getEmployeeById(id: string): Promise<EmployeeEntity>;
-    abstract getAllEmployees(): Promise<EmployeeEntity[]>;
-    abstract createEmployee(employee: EmployeeEntity, authData: AuthDataEntity): Promise<EmployeeEntity>;
-    abstract updateEmployee(employee: EmployeeEntity, authData: AuthDataEntity): Promise<EmployeeEntity>;
+    abstract getEmployeeById(id: string): Promise<EmployeeInterface>;
+    abstract getAllEmployees(): Promise<EmployeeInterface[]>;
+    abstract createEmployee(employee: EmployeeInterface): Promise<boolean>;
+    abstract updateEmployee(employee: EmployeeInterface): Promise<boolean>;
     abstract deleteEmployee(id: string): Promise<boolean>;
 }
 

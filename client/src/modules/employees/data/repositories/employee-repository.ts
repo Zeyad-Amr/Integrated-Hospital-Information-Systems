@@ -1,17 +1,14 @@
 import { ErrorResponse, ErrorMessage } from "@/core/api";
 import BaseEmployeeRepository from '../../domain/repositories/base-employee-repository';
 import { BaseEmployeeDataSource } from '../datasources/employee-datasource';
-import EmployeeEntity from '../../domain/entities/employee-entity';
-import EmployeeMapper from "../mappers/employee-mapper";
-import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
-import AuthDataMapper from "@/modules/auth/data/mappers/login-user-mapper";
+import EmployeeInterface from "../../domain/interfaces/employee-interface";
 
 class EmployeeRepository extends BaseEmployeeRepository {
     constructor(private baseEmployeeDataSource: BaseEmployeeDataSource) {
         super();
     }
 
-    override async getEmployeeById(id: string): Promise<EmployeeEntity> {
+    override async getEmployeeById(id: string): Promise<EmployeeInterface> {
         try {
             const result = await this.baseEmployeeDataSource.getEmployeeById(id);
             return result;
@@ -20,7 +17,7 @@ class EmployeeRepository extends BaseEmployeeRepository {
             throw errorResponse;
         }
     }
-    override async getAllEmployees(): Promise<EmployeeEntity[]> {
+    override async getAllEmployees(): Promise<EmployeeInterface[]> {
         try {
             const result = await this.baseEmployeeDataSource.getAllEmployees();
             return result;
@@ -29,20 +26,20 @@ class EmployeeRepository extends BaseEmployeeRepository {
             throw errorResponse;
         }
     }
-    override async createEmployee(employee: EmployeeEntity, authData: AuthDataEntity): Promise<EmployeeEntity> {
+    override async createEmployee(employee: EmployeeInterface): Promise<boolean> {
         try {
-            console.log('Repo', EmployeeMapper.entityToModel(employee), AuthDataMapper.entityToModel(authData));
+            console.log('Repo', employee);
 
-            const result = await this.baseEmployeeDataSource.createEmployee(EmployeeMapper.entityToModel(employee), AuthDataMapper.entityToModel(authData));
+            const result = await this.baseEmployeeDataSource.createEmployee(employee);
             return result;
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;
             throw errorResponse;
         }
     }
-    override async updateEmployee(employee: EmployeeEntity, authData: AuthDataEntity): Promise<EmployeeEntity> {
+    override async updateEmployee(employee: EmployeeInterface): Promise<boolean> {
         try {
-            const result = await this.baseEmployeeDataSource.updateEmployee(EmployeeMapper.entityToModel(employee), AuthDataMapper.entityToModel(authData));
+            const result = await this.baseEmployeeDataSource.updateEmployee(employee);
             return result;
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;

@@ -1,15 +1,14 @@
 import BaseUseCase from "@/core/base/base-usecase";
-import EmployeeEntity from "../entities/employee-entity";
 import BaseEmployeeRepository from "../repositories/base-employee-repository";
 import { CreateEmployeeUseCaseParameters } from "./usecase-params";
 
 class CreateEmployeeUseCase
-    implements BaseUseCase<EmployeeEntity, CreateEmployeeUseCaseParameters> {
+    implements BaseUseCase<boolean, CreateEmployeeUseCaseParameters> {
     constructor(private baseEmployeeRepository: BaseEmployeeRepository) { }
 
-    async call(param: CreateEmployeeUseCaseParameters): Promise<EmployeeEntity> {
+    async call(param: CreateEmployeeUseCaseParameters): Promise<boolean> {
         console.log('UseCase', param.employee);
-        return await this.baseEmployeeRepository.createEmployee(param.employee, param.authData);
+        return await this.baseEmployeeRepository.createEmployee(param.employee);
     }
 }
 

@@ -1,33 +1,33 @@
-import UserEntity from '../../domain/entities/user-entity';
 import UserInterface from '../../domain/interfaces/user-interface';
+import AuthDataModel from './auth-data-model';
 import PersonModel from './person-model';
 
-export default class UserModel extends UserEntity {
-    constructor(data: UserInterface) {
-        super(data);
-    }
+export default class UserModel {
 
     //* --------------------- Serialization: Convert the model to JSON ---------------------
-    toJson(): any {
+    static toJson(entity: UserInterface): any {
         return {
-            // id: this.id,
-            role: this.role,
-            // createdAt: this.createdAt,
-            // updatedAt: this.updatedAt,
-            createdById: this.createdById,
-            person: (this.person as PersonModel).toJson(),
+            role: entity.role,
+            shift: entity.shift,
+            department: entity.department,
+            createdById: entity.createdById,
+            person: PersonModel.toJson(entity.person),
+            auth: AuthDataModel.toJson(entity.auth),
         };
     }
 
     //* --------------------- Deserialization: Create a model from JSON data ---------------------
-    static fromJson(json: any): UserModel {
-        return new UserModel({
+    static fromJson(json: any): UserInterface {
+        return {
             id: json.id,
             role: json.role,
+            shift: json.shift,
+            department: json.department,
             createdAt: json.createdAt,
             updatedAt: json.updatedAt,
             createdById: json.createdById,
             person: PersonModel.fromJson(json.person),
-        });
+            auth: AuthDataModel.fromJson(json.auth),
+        };
     }
 }

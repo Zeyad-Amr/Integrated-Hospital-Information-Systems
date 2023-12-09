@@ -9,7 +9,6 @@ export default interface PersonInterface {
     gender?: string;
     birthDate?: Date;
     phone?: string;
-    email?: string;
     governate?: string;
     address?: string;
     createdAt?: Date;

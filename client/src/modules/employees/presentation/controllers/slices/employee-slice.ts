@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getEmployeeList, createEmployee, updateEmployee, deleteEmployee, getEmployeeDetails } from "../thunks/employee-thunks";
 import { EmployeeState } from "../types";
-import EmployeeEntity from "@/modules/employees/domain/entities/employee-entity";
+import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
 import { ErrorResponse } from "@/core/api";
 
 //* Initial State
@@ -25,10 +25,10 @@ const employeeSlice = createSlice({
         clearEmployeeList(state) {
             state.employeeList = [];
         },
-        setCurrentEmployee(state, action: { payload: EmployeeEntity, type: string }) {
+        setCurrentEmployee(state, action: { payload: EmployeeInterface, type: string }) {
             state.currentEmployee = action.payload;
         },
-        setEmployeeList(state, action: { payload: EmployeeEntity[], type: string }) {
+        setEmployeeList(state, action: { payload: EmployeeInterface[], type: string }) {
             state.employeeList = action.payload;
         },
         setLoading(state, action: { payload: boolean, type: string }) {
@@ -57,9 +57,9 @@ const employeeSlice = createSlice({
             state.loading = true;
             state.error = "";
         });
-        builder.addCase(createEmployee.fulfilled, (state, action) => {
+        builder.addCase(createEmployee.fulfilled, (state, _action) => {
             state.loading = false;
-            state.currentEmployee = action.payload;
+            state.currentEmployee = initialState.currentEmployee;
             state.error = "";
         });
         builder.addCase(createEmployee.rejected, (state, action) => {
@@ -72,9 +72,9 @@ const employeeSlice = createSlice({
             state.loading = true;
             state.error = "";
         });
-        builder.addCase(updateEmployee.fulfilled, (state, action) => {
+        builder.addCase(updateEmployee.fulfilled, (state, _action) => {
             state.loading = false;
-            state.currentEmployee = action.payload;
+            state.currentEmployee = initialState.currentEmployee;
             state.error = "";
         });
         builder.addCase(updateEmployee.rejected, (state, action) => {
