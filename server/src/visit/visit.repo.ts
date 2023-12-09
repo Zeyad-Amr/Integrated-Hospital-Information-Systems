@@ -120,11 +120,8 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
                     if (!createPatientDto.patient?.SSN) {
                         createPatientDto.patient.SSN = null
                     }
-                    const patient = await tx.person.create({
-                        data: {
-                            ...createPatientDto.patient
-                        }
-                    })
+
+                    const patient = await this.personRepo.createIfNotExist(createPatientDto.patient)
                     let companion: Person;
                     let companionConnect;
                     if (createPatientDto.companion) {
