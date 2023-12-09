@@ -1,8 +1,5 @@
-import { ErrorMessage } from "../api";
-import { Either } from "../shared/utils/either";
-
 interface BaseUseCase<T, P> {
-    call(param: P): Promise<Either<ErrorMessage, T>>;
+    call(param: P): Promise<T>;
 }
 
 export default BaseUseCase;

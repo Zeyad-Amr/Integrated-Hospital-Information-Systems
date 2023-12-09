@@ -1,175 +1,97 @@
-import PersonEntity from "@/modules/auth/domain/entities/person-entity";
-// import EmployeeEntity from "@/modules/employees/domain/entities/employee-entity";
+import PersonInterface from '@/modules/auth/domain/interfaces/person-interface';
+import VisitInterface from '../interfaces/visit-interface';
 
-export default class VisitEntity {
-    private _code: string;
-    private _sequenceNumber: number | null;
-    private _kinship: string | null;
-    private _createdAt: Date;
-    private _updatedAt: Date;
-    // private _creator: EmployeeEntity;
-    private _patient: PersonEntity;
-    private _companion: PersonEntity;
+export default class VisitEntity implements VisitInterface {
+    // //* --------------------- Properties ---------------------
+    _code?: string;
+    _sequenceNumber?: number;
+    _kinship?: string;
+    _createdAt?: Date;
+    _updatedAt?: Date;
+    _patient?: PersonInterface;
+    _companion?: PersonInterface;
 
-    constructor(data: {
-        code: string;
-        sequenceNumber: number | null;
-        kinship: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        // creator: {
-        //     id: string;
-        //     role: string;
-        //     createdAt: Date;
-        //     updatedAt: Date;
-        //     createdById: string | null;
-        //     person: {
-        //         id: string;
-        //         firstName: string;
-        //         secondName: string;
-        //         thirdName: string;
-        //         fourthName: string;
-        //         SSN: string;
-        //         verificationMethod: string;
-        //         gender: string;
-        //         birthDate: Date;
-        //         phone: string;
-        //         email: string;
-        //         governate: string;
-        //         address: string;
-        //         createdAt: Date;
-        //         updatedAt: Date;
-        //     };
-        // };
-        patient: {
-            id: string;
-            firstName: string;
-            secondName: string;
-            thirdName: string;
-            fourthName: string;
-            SSN: string;
-            verificationMethod: string;
-            gender: string;
-            birthDate: Date;
-            phone: string;
-            email: string;
-            governate: string;
-            address: string;
-            createdAt: Date;
-            updatedAt: Date;
-        };
-        companion: {
-            id: string;
-            firstName: string;
-            secondName: string;
-            thirdName: string;
-            fourthName: string;
-            SSN: string;
-            verificationMethod: string;
-            gender: string;
-            birthDate: Date;
-            phone: string;
-            email: string;
-            governate: string;
-            address: string;
-            createdAt: Date;
-            updatedAt: Date;
-        };
-    }) {
+    // //* --------------------- Constructor ---------------------
+    constructor(data: VisitInterface) {
         this._code = data.code;
         this._sequenceNumber = data.sequenceNumber;
         this._kinship = data.kinship;
         this._createdAt = data.createdAt;
         this._updatedAt = data.updatedAt;
-        // this._creator = new EmployeeEntity(data.creator);
-        this._patient = new PersonEntity(data.patient);
-        this._companion = new PersonEntity(data.companion);
+        this._patient = data.patient;
+        this._companion = data.companion;
     }
 
-    //* --------------------- Getters ---------------------
-    get code(): string {
+    // //* --------------------- Getters ---------------------
+    get code(): string | undefined {
         return this._code;
     }
 
-    get sequenceNumber(): number | null {
+    get sequenceNumber(): number | undefined {
         return this._sequenceNumber;
     }
 
-    get kinship(): string | null {
+    get kinship(): string | undefined {
         return this._kinship;
     }
 
-    get createdAt(): Date {
+    get createdAt(): Date | undefined {
         return this._createdAt;
     }
 
-    get updatedAt(): Date {
+    get updatedAt(): Date | undefined {
         return this._updatedAt;
     }
 
-    // get creator(): EmployeeEntity {
-    //     return this._creator;
-    // }
-
-    get patient(): PersonEntity {
+    get patient(): PersonInterface | undefined {
         return this._patient;
     }
 
-    get companion(): PersonEntity {
+    get companion(): PersonInterface | undefined {
         return this._companion;
     }
 
-    //* --------------------- Setters ---------------------
+    // //* --------------------- Setters ---------------------
 
-    set code(code: string) {
-        this._code = code;
+    set code(value: string | undefined) {
+        this._code = value;
     }
 
-    set sequenceNumber(sequenceNumber: number | null) {
-        this._sequenceNumber = sequenceNumber;
+    set sequenceNumber(value: number | undefined) {
+        this._sequenceNumber = value;
     }
 
-    set kinship(kinship: string | null) {
-        this._kinship = kinship;
+    set kinship(value: string | undefined) {
+        this._kinship = value;
     }
 
-    set createdAt(createdAt: Date) {
-        this._createdAt = createdAt;
+    set createdAt(value: Date | undefined) {
+        this._createdAt = value;
     }
 
-    set updatedAt(updatedAt: Date) {
-        this._updatedAt = updatedAt;
+    set updatedAt(value: Date | undefined) {
+        this._updatedAt = value;
     }
 
-    // set creator(creator: EmployeeEntity) {
-    //     this._creator = creator;
-    // }
-
-    set patient(patient: PersonEntity) {
-        this._patient = patient;
+    set patient(value: PersonInterface | undefined) {
+        this._patient = value;
     }
 
-    set companion(companion: PersonEntity) {
-        this._companion = companion;
+    set companion(value: PersonInterface | undefined) {
+        this._companion = value;
     }
 
     //* --------------------- Methods ---------------------
-    static defaultValue(): VisitEntity {
-        const defaultDate = new Date();
-        const defaultPerson = PersonEntity.defaultValue(); // Getting default PersonEntity
-        // const defaultEmployee = EmployeeEntity.defaultValue(); // Getting default PersonEntity
-
-        return new VisitEntity({
+    static defaultValue(): VisitInterface {
+        return {
             code: "",
-            sequenceNumber: null,
-            kinship: null,
-            createdAt: defaultDate,
-            updatedAt: defaultDate,
-            // creator: defaultEmployee,
-            patient: defaultPerson,
-            companion: defaultPerson,
-
-        });
+            sequenceNumber: undefined,
+            kinship: undefined,
+            createdAt: undefined,
+            updatedAt: undefined,
+            patient: undefined,
+            companion: undefined,
+        }
     }
 
 }

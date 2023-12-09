@@ -25,12 +25,14 @@ interface PersonalDataProps {
   initialValues: PersonalDataValues;
   onSubmit: (values: PersonalDataValues) => void;
   isSubmitted: boolean;
+  isResetForm?: boolean;
 }
 
 const PersonalData = ({
   initialValues,
   onSubmit,
   isSubmitted,
+  isResetForm = false
 }: PersonalDataProps) => {
   const refSubmitButton: any = useRef(null);
   const checkFirstRender = useRef(true);
@@ -72,7 +74,7 @@ const PersonalData = ({
       .max(100, "يجب أن يكون اسم العنوان على الأكثر 100 حرفًا"),
     gender: Yup.string().required("الجنس مطلوب"),
     governate: Yup.string().required("المحافظة مطلوبة"),
-    verificationMethod: Yup.string().required("نوع الرقم القومي مطلوب"),
+    verificationMethod: Yup.string().required("نوع الهوية مطلوب"),
     birthDate: Yup.string().required("التاريخ مطلوب"),
     SSN: Yup.string()
       .required("الرقم القومي مطلوب")
@@ -82,6 +84,8 @@ const PersonalData = ({
       .length(11, "يجب أن يكون رقم الهاتف 11 حرفًا")
       .matches(/^[0-9]+$/, "يجب أن يكون رقم الهاتف رقميًا."),
   });
+
+  
 
   return (
     <Formik
@@ -100,8 +104,11 @@ const PersonalData = ({
         verificationMethod: initialValues.verificationMethod,
       }}
       validationSchema={handleFormSchema}
-      onSubmit={(values) => {
+      onSubmit={(values, { resetForm }) => {
         onSubmit(values);
+        if (isResetForm) {
+          resetForm();
+        }
       }}
     >
       {({
@@ -114,22 +121,6 @@ const PersonalData = ({
       }) => (
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container columns={12} spacing={2}>
-            <Grid item lg={3} md={3} sm={12} xs={12}>
-              <CustomTextField
-                isRequired
-                name="SSN"
-                label="رقم الهوية"
-                value={values.SSN}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.SSN}
-                touched={touched.SSN}
-                width="100%"
-                props={{
-                  type: "text",
-                }}
-              />
-            </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomSelectField
                 isRequired
@@ -153,6 +144,23 @@ const PersonalData = ({
                 ]}
               />
             </Grid>
+            <Grid item lg={3} md={3} sm={12} xs={12}>
+              <CustomTextField
+                isRequired
+                name="SSN"
+                label="رقم الهوية"
+                value={values.SSN}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.SSN}
+                touched={touched.SSN}
+                width="100%"
+                props={{
+                  type: "text",
+                }}
+              />
+            </Grid>
+
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomSelectField
                 isRequired

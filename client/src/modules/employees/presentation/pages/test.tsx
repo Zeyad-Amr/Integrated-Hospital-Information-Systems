@@ -138,6 +138,8 @@ const EmployeeTest = () => {
       <Typography>
         {employeeState.loading
           ? "Loading..."
+          : employeeState.error.length > 0
+          ? employeeState.error
           : employeeState.employeeList.length > 0
           ? employeeState.employeeList.map((employee) => (
               <div key={employee.id}>{employee.id}</div>

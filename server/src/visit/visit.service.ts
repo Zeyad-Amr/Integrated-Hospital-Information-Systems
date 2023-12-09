@@ -15,9 +15,7 @@ export class VisitService {
 
       if (createVisitDto.companion && createVisitDto.companion.SSN === createVisitDto.patient.SSN)
         throw new BadRequestException("companion ssn is equal to patient ssn")
-        if (createVisitDto.companion && createVisitDto.companion.email === createVisitDto.patient.email)
-        throw new BadRequestException("companion email is equal to patient email")
-        if (createVisitDto.companion && createVisitDto.companion.phone === createVisitDto.patient.phone)
+      if (createVisitDto.companion && createVisitDto.companion.phone === createVisitDto.patient.phone)
         throw new BadRequestException("companion phone is equal to patient phone")
       return await this.visitRepo.createPatientWithVisit(createVisitDto, creatorId)
 
@@ -28,7 +26,7 @@ export class VisitService {
 
   findAll(paginationParams: Pagination, filters?: Array<Filter>, sort?: Sorting): Promise<PaginatedResource<Visit>> {
     try {
-      const includeObj = { companion: true, creator:{include:{person:true}}, incident: true, patient: true }
+      const includeObj = { companion: true, creator: { include: { person: true } }, incident: true, patient: true }
 
       return this.visitRepo.getAll({ paginationParams, filters, sort, include: includeObj })
 

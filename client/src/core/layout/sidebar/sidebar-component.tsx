@@ -40,12 +40,12 @@ const SidebarComponent = () => {
           <ApartmentIcon sx={{ color: "primary.main", textAlign: "center" }} />
         }
         activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
-        text="الحوادث"
+        text="الإصابات الجماعية"
         path="/dashboard/incidents/"
       >
-        <SidebarSubmenuItem text="إضافة حادث" path="/dashboard/incidents/add" />
+        <SidebarSubmenuItem text="إضافة إصابة جماعية" path="/dashboard/incidents/add" />
         <SidebarSubmenuItem
-          text="استكمال الحوادث"
+          text="استكمال الإصابات الجماعية"
           path="/dashboard/incidents/all"
         />
       </SidebarMenuItem>

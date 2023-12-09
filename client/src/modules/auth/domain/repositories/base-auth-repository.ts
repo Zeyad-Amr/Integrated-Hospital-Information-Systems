@@ -1,10 +1,8 @@
-import { ErrorResponse } from "@/core/api";
-import { Either } from "@/core/shared/utils/either";
-import AuthDataEntity from '../entities/auth-data-entity';
-import UserEntity from "../entities/user-entity";
+import AuthInterface from '../interfaces/auth-interface';
+import UserInterface from '../interfaces/user-interface';
 abstract class BaseAuthRepository {
-    abstract login(authData: AuthDataEntity): Promise<Either<ErrorResponse, boolean>>;
-    abstract getMe(): Promise<Either<ErrorResponse, UserEntity>>;
+    abstract login(authData: AuthInterface): Promise<boolean>;
+    abstract getMe(): Promise<UserInterface>;
 }
 
 export default BaseAuthRepository;

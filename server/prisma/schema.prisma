@@ -25,9 +25,10 @@ model Person {
   gender             GenderEnum
   birthDate          DateTime?     @db.Date
   phone              String?      @unique
-  email              String?      @unique
   governate          String?
   address            String?
+
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -62,8 +63,9 @@ model Employee {
 }
 
 model User {
-  username String @id
+  username String  @id
   password String
+  email    String? @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

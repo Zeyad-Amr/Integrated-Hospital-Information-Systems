@@ -1,9 +1,9 @@
-import VisitEntity from "../../domain/entities/visit-entity";
+import VisitInterface from "../../domain/interfaces/visit-interface";
 
 // Define the initial state using that type
 export interface VisitsState {
-    visits: VisitEntity[];
-    currentVisit: VisitEntity;
+    visits: VisitInterface[];
+    currentVisit: VisitInterface;
     loading: boolean;
     error: string;
 }

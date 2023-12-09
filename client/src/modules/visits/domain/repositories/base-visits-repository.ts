@@ -1,12 +1,10 @@
-import { ErrorResponse } from "@/core/api";
-import { Either } from "@/core/shared/utils/either";
-import VisitEntity from "../entities/visit-entity";
+import VisitInterface from "../interfaces/visit-interface";
 
 abstract class BaseVisitsRepository {
-    abstract createVisit(visit: VisitEntity): Promise<Either<ErrorResponse, VisitEntity>>;
-    abstract updateVisit(visit: VisitEntity): Promise<Either<ErrorResponse, boolean>>;
-    abstract getAllAnonymousVisits(): Promise<Either<ErrorResponse, VisitEntity[]>>;
-    abstract getVisitByCode(visitcode: string): Promise<Either<ErrorResponse, VisitEntity>>;
+    abstract createVisit(visit: VisitInterface): Promise<VisitInterface>;
+    abstract updateVisit(visit: VisitInterface): Promise<boolean>;
+    abstract getAllAnonymousVisits(): Promise<VisitInterface[]>;
+    abstract getVisitByCode(visitcode: string): Promise<VisitInterface>;
 }
 
 export default BaseVisitsRepository;
