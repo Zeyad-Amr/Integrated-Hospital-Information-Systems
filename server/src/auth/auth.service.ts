@@ -9,14 +9,12 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 
-
-
 @Injectable()
 export class AuthService {
   constructor(
     private authRepo: AuthRepo,
     private jwtService: JwtService,
-  ) { }
+  ) {}
 
   async login(loginDto: LoginDto) {
     try {
@@ -27,10 +25,7 @@ export class AuthService {
       }
       // console.log(user);
 
-      const validPass = await bcrypt.compare(
-        loginDto.password,
-        user.password,
-      );
+      const validPass = await bcrypt.compare(loginDto.password, user.password);
       // console.log(validPass);
       if (!validPass) {
         throw new UnauthorizedException(errInvalidCredentials);
@@ -67,8 +62,8 @@ export class AuthService {
 
   async findOne(username: string) {
     try {
-      const user = await this.authRepo.getByUsername(username)
-      return user
+      const user = await this.authRepo.getByUsername(username);
+      return user;
     } catch (error) {
       throw error;
     }
@@ -78,7 +73,6 @@ export class AuthService {
     const charset =
       'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const randomValues = new Uint8Array(length);
-
 
     crypto.getRandomValues(randomValues);
 

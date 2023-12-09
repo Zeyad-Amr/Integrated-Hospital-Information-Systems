@@ -10,13 +10,24 @@ import { AuthGuard } from './auth/auth.guard';
 import { DepartmentModule } from './department/department.module';
 import { StreamingModule } from './streaming/streaming.module';
 
-
 @Module({
-  imports: [StreamingModule, AuthModule, PatientModule, PersonModule, EmployeeModule, VisitModule, IncidentModule, DepartmentModule, StreamingModule],
+  imports: [
+    StreamingModule,
+    AuthModule,
+    PatientModule,
+    PersonModule,
+    EmployeeModule,
+    VisitModule,
+    IncidentModule,
+    DepartmentModule,
+    StreamingModule,
+  ],
   controllers: [],
-  providers: [{
-    provide: APP_GUARD,
-    useClass: AuthGuard,
-  },],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
-export class AppModule { }
+export class AppModule {}

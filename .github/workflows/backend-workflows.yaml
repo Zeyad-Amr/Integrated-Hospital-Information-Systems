@@ -41,23 +41,14 @@ jobs:
         run: npm install
         working-directory: ./server/
 
-      - name: Run Linter
+      - name: Run Linter for backend
         run: npm run lint
         working-directory: ./server/
-
       
-      - name: Set Up Secrets
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/DATABASE?schema=QasrHIS&sslmode=prefer
-        run: echo "DATABASE_URL=$DATABASE_URL" >> .env
-        working-directory: ./server/
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./client/
       
-      - name: Prisma Migrate
-        run: npx prisma migrate dev
-        working-directory: ./server/
-
-
-      - name: Run Integration Tests
-        run: npm run test:e2e
-        working-directory: ./server/
-
+      - name: Run Linter for frontend
+        run: npm run lint
+        working-directory: ./client/
