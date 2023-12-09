@@ -86,10 +86,6 @@ export class UpdatePersonDto {
         type: String,
         example: 'diaabadr82@gmail.com',
     })
-    @IsOptional()
-    @IsString()
-    @IsEmail()
-    email: string
 
     @ApiProperty({
         type: String,

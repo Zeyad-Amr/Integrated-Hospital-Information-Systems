@@ -16,6 +16,9 @@ CREATE TYPE "ShiftEnum" AS ENUM ('MORNING8', 'AFTERNOON8', 'NIGHT8', 'MORNING12'
 -- CreateEnum
 CREATE TYPE "CameFromOptions" AS ENUM ('HOME', 'ACCIDENT', 'PRISONER');
 
+-- CreateEnum
+CREATE TYPE "AttendantRole" AS ENUM ('PARAMEDIC', 'OFFICER');
+
 -- CreateTable
 CREATE TABLE "Person" (
     "id" TEXT NOT NULL,
@@ -23,14 +26,13 @@ CREATE TABLE "Person" (
     "secondName" TEXT NOT NULL,
     "thirdName" TEXT NOT NULL,
     "fourthName" TEXT NOT NULL,
-    "SSN" TEXT NOT NULL,
-    "verificationMethod" "IdentityEnum" NOT NULL,
+    "SSN" TEXT,
+    "verificationMethod" "IdentityEnum",
     "gender" "GenderEnum" NOT NULL,
-    "birthDate" DATE NOT NULL,
+    "birthDate" DATE,
     "phone" TEXT,
-    "email" TEXT,
-    "governate" TEXT NOT NULL,
-    "address" TEXT NOT NULL,
+    "governate" TEXT,
+    "address" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -55,6 +57,7 @@ CREATE TABLE "Employee" (
 CREATE TABLE "User" (
     "username" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "email" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "employeeId" TEXT NOT NULL,
@@ -81,13 +84,7 @@ CREATE TABLE "Visit" (
     "patientId" TEXT,
     "companionId" TEXT,
     "incidentId" TEXT,
-    "carId" TEXT,
-    "attendantName" TEXT,
-    "attendantID" TEXT,
-    "cameFrom" "CameFromOptions",
-    "injuryLocation" TEXT,
-    "injuryCause" TEXT,
-    "notes" TEXT,
+    "additionalInfoId" TEXT,
 
     CONSTRAINT "Visit_pkey" PRIMARY KEY ("code")
 );
@@ -95,17 +92,11 @@ CREATE TABLE "Visit" (
 -- CreateTable
 CREATE TABLE "Incident" (
     "id" TEXT NOT NULL,
-    "description" TEXT,
     "numberOfPatients" INTEGER NOT NULL,
     "isCompleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "attendantName" TEXT,
-    "attendantID" TEXT,
-    "cameFrom" "CameFromOptions",
-    "injuryLocation" TEXT,
-    "injuryCause" TEXT,
-    "carId" TEXT,
+    "additionalInfoId" TEXT,
 
     CONSTRAINT "Incident_pkey" PRIMARY KEY ("id")
 );
@@ -129,6 +120,30 @@ CREATE TABLE "CarNumber" (
     CONSTRAINT "CarNumber_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Attendant" (
+    "id" TEXT NOT NULL,
+    "SSN" TEXT,
+    "cardId" TEXT,
+    "name" TEXT NOT NULL,
+    "attendantRole" "AttendantRole" NOT NULL,
+
+    CONSTRAINT "Attendant_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "VisitAdditionalInformation" (
+    "id" TEXT NOT NULL,
+    "carId" TEXT,
+    "cameFrom" "CameFromOptions",
+    "injuryLocation" TEXT,
+    "injuryCause" TEXT,
+    "notes" TEXT,
+    "attendantId" TEXT,
+
+    CONSTRAINT "VisitAdditionalInformation_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Person_SSN_key" ON "Person"("SSN");
 
@@ -136,10 +151,10 @@ CREATE UNIQUE INDEX "Person_SSN_key" ON "Person"("SSN");
 CREATE UNIQUE INDEX "Person_phone_key" ON "Person"("phone");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Person_email_key" ON "Person"("email");
+CREATE UNIQUE INDEX "Employee_personID_key" ON "Employee"("personID");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Employee_personID_key" ON "Employee"("personID");
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_employeeId_key" ON "User"("employeeId");
@@ -149,6 +164,12 @@ CREATE UNIQUE INDEX "Department_name_key" ON "Department"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Car_Unique" ON "CarNumber"("firstChar", "secondChar", "thirdChar", "number");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Attendant_SSN_key" ON "Attendant"("SSN");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Attendant_cardId_key" ON "Attendant"("cardId");
 
 -- AddForeignKey
 ALTER TABLE "Employee" ADD CONSTRAINT "Employee_personID_fkey" FOREIGN KEY ("personID") REFERENCES "Person"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -175,13 +196,19 @@ ALTER TABLE "Visit" ADD CONSTRAINT "Visit_companionId_fkey" FOREIGN KEY ("compan
 ALTER TABLE "Visit" ADD CONSTRAINT "Visit_incidentId_fkey" FOREIGN KEY ("incidentId") REFERENCES "Incident"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Visit" ADD CONSTRAINT "Visit_carId_fkey" FOREIGN KEY ("carId") REFERENCES "CarNumber"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Visit" ADD CONSTRAINT "Visit_additionalInfoId_fkey" FOREIGN KEY ("additionalInfoId") REFERENCES "VisitAdditionalInformation"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Incident" ADD CONSTRAINT "Incident_carId_fkey" FOREIGN KEY ("carId") REFERENCES "CarNumber"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Incident" ADD CONSTRAINT "Incident_additionalInfoId_fkey" FOREIGN KEY ("additionalInfoId") REFERENCES "VisitAdditionalInformation"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "CompanionsOnIncidents" ADD CONSTRAINT "CompanionsOnIncidents_companionId_fkey" FOREIGN KEY ("companionId") REFERENCES "Person"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "CompanionsOnIncidents" ADD CONSTRAINT "CompanionsOnIncidents_incidentId_fkey" FOREIGN KEY ("incidentId") REFERENCES "Incident"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "VisitAdditionalInformation" ADD CONSTRAINT "VisitAdditionalInformation_carId_fkey" FOREIGN KEY ("carId") REFERENCES "CarNumber"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "VisitAdditionalInformation" ADD CONSTRAINT "VisitAdditionalInformation_attendantId_fkey" FOREIGN KEY ("attendantId") REFERENCES "Attendant"("id") ON DELETE SET NULL ON UPDATE CASCADE;

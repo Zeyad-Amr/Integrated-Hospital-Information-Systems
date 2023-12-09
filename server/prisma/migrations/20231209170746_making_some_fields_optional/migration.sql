@@ -1,4 +1,0 @@
--- AlterTable
-ALTER TABLE "Person" ALTER COLUMN "birthDate" DROP NOT NULL,
-ALTER COLUMN "governate" DROP NOT NULL,
-ALTER COLUMN "address" DROP NOT NULL;

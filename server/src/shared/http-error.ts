@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 
 export function handleError(error: any) {
-  console.log(error);
   
   if (error.code === 'P2025') throw new NotFoundException();
 
@@ -15,9 +14,6 @@ export function handleError(error: any) {
   if (error.code === 'P2014')
     throw new ConflictException(`${error.meta.relation_name} relation already exists`);
 
-  if (error.status !== undefined) {
-    throw error;
-  }
   console.log(error);
   throw new InternalServerErrorException();
 }

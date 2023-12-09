@@ -14,13 +14,14 @@ export class PersonRepo extends PrismaGenericRepo<Person>{
     async createIfNotExist(person: CreatePersonDto): Promise<Person> {
         try {
 
-            return await this.prismaService.person.upsert({
+            return  await this.prismaService.person.upsert({
                 where: { SSN: person.SSN }, update: {
                     ...person
                 }, create: {
                     ...person
                 }
-            })
+            });
+
         } catch (error) {
             throw error
         }

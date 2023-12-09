@@ -13,7 +13,6 @@ Table Person {
   gender GenderEnum [not null]
   birthDate DateTime
   phone String [unique]
-  email String [unique]
   governate String
   address String
   createdAt DateTime [default: `now()`, not null]
