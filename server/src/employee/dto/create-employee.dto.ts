@@ -2,12 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsObject,
-  IsString,
   IsUUID,
   Validate,
   ValidateNested,
 } from 'class-validator';
-import { AuthDataDto } from '../../auth/dto/login-user.dto';
+import { AuthDataDto } from '../../auth/dto/auth-data.dto';
 import { CreatePersonDto } from 'src/person/dto/create-person.dto';
 import { IsValidEnumValue } from 'src/shared/special-validator';
 import { RoleEnum, ShiftEnum } from '@prisma/client';
