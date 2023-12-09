@@ -45,6 +45,7 @@ const employeeSlice = createSlice({
             state.loading = false;
             state.employeeList = action.payload;
             state.error = "";
+            console.log('Employees List', action.payload);
         });
         builder.addCase(getEmployeeList.rejected, (state, action) => {
             state.loading = false;

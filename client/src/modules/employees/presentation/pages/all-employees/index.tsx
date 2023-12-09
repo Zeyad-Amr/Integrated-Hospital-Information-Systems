@@ -4,16 +4,11 @@ import { Box } from "@mui/material";
 import PageHeader from "@/core/shared/components/headers/PageHeader";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import EmployeesTable from "../../components/view-employees";
-import { useAppDispatch, useAppSelector } from "@/core/redux/store";
-import { EmployeeState } from "../../controllers/types";
+import { useAppDispatch } from "@/core/redux/store";
 import { getEmployeeList } from "../../controllers/thunks/employee-thunks";
 
 const EmployeesTableComponent = () => {
   const dispatch = useAppDispatch();
-
-  const employeeState: EmployeeState = useAppSelector(
-    (state: any) => state.employees
-  );
 
   useEffect(() => {
     dispatch(getEmployeeList());
