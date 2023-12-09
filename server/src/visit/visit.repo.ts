@@ -180,4 +180,12 @@ export class VisitRepo extends PrismaGenericRepo<Visit>{
             throw error
         }
     }
+
+    async findAll() {
+        try {
+            return await this.prismaService.visit.findMany({ include: { companion: true } })
+        } catch (error) {
+            throw error
+        }
+    }
 }

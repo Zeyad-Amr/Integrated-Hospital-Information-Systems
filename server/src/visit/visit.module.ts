@@ -8,5 +8,6 @@ import { PersonRepo } from 'src/person/person.repo';
 @Module({
   controllers: [VisitController],
   providers: [VisitRepo, VisitService, PrismaService, PersonRepo],
+  exports: [VisitRepo]
 })
 export class VisitModule { }
