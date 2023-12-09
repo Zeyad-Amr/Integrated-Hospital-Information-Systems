@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { VisitService } from './visit.service';
-import { AnonymousVisitDto, CreateVisitDto } from './dto/create-visit.dto';
+import { CreateVisitDto } from './dto/create-visit.dto';
 
 import { UpdateVisitDto } from './dto/update-visit.dto';
 import { ApiAcceptedResponse, ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -25,18 +25,6 @@ export class VisitController {
   async create(@Body() createVisitDto: CreateVisitDto, @Req() req) {
     try {
       return await this.visitService.create(createVisitDto, req.user.sub)
-    } catch (error) {
-      throw handleError(error)
-    }
-  }
-
-  @ApiOperation({ description: "This is for anonymous patient" })
-  @ApiCreatedResponse({ description: "visit has been created successfully" })
-  @ApiBadRequestResponse({ description: "body has missed some data" })
-  @Post('anonymous')
-  createAnonymous(@Body() anonymousVisitDto: AnonymousVisitDto, @Req() req) {
-    try {
-      return this.visitService.createAnonymous(anonymousVisitDto, req.user.sub);
     } catch (error) {
       throw handleError(error)
     }

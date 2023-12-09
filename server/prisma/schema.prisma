@@ -20,13 +20,15 @@ model Person {
   secondName         String
   thirdName          String
   fourthName         String
-  SSN                String       @unique
-  verificationMethod IdentityEnum
+  SSN                String?      @unique
+  verificationMethod IdentityEnum?
   gender             GenderEnum
-  birthDate          DateTime     @db.Date
+  birthDate          DateTime?     @db.Date
   phone              String?      @unique
-  governate          String
-  address            String
+  governate          String?
+  address            String?
+
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -45,7 +47,7 @@ model Employee {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user User?
+  auth User?
 
   person   Person @relation(fields: [personID], references: [id])
   personID String @unique
@@ -89,30 +91,27 @@ model Visit {
 
   creator Employee @relation(fields: [creatorId], references: [id])
 
-  creatorId     String
-  patient       Person?    @relation("visitPatient", fields: [patientId], references: [id])
-  patientId     String?
-  companion     Person?    @relation("visitCompanion", fields: [companionId], references: [id])
-  companionId   String?
-  incident      Incident?  @relation(fields: [incidentId], references: [id])
-  incidentId    String?
-  Car           CarNumber? @relation(fields: [carId], references: [id])
-  carId         String?
-  attendantName String?
-  attendantID   String?
+  creatorId   String
+  patient     Person?   @relation("visitPatient", fields: [patientId], references: [id])
+  patientId   String?
+  companion   Person?   @relation("visitCompanion", fields: [companionId], references: [id])
+  companionId String?
+  incident    Incident? @relation(fields: [incidentId], references: [id])
+  incidentId  String?
+
+  AdditionalInformation VisitAdditionalInformation? @relation(fields: [additionalInfoId], references: [id])
+  additionalInfoId      String?
 }
 
 model Incident {
   id               String  @id @default(uuid())
-  description      String?
   numberOfPatients Int
   isCompleted      Boolean @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  Car   CarNumber? @relation(fields: [carId], references: [id])
-  carId String?
+  createdAt             DateTime                    @default(now())
+  updatedAt             DateTime                    @updatedAt
+  AdditionalInformation VisitAdditionalInformation? @relation(fields: [additionalInfoId], references: [id])
+  additionalInfoId      String?
 
   visits                Visit[]
   CompanionsOnIncidents CompanionsOnIncidents[]
@@ -128,15 +127,37 @@ model CompanionsOnIncidents {
 }
 
 model CarNumber {
-  id         String     @id() @default(uuid())
-  firstChar  String     @db.VarChar(1)
-  secondChar String     @db.VarChar(1)
-  thirdChar  String     @db.VarChar(1)
-  number     Int
-  Incident   Incident[]
-  Visit      Visit[]
+  id                         String                       @id @default(uuid())
+  firstChar                  String                       @db.VarChar(1)
+  secondChar                 String                       @db.VarChar(1)
+  thirdChar                  String                       @db.VarChar(1)
+  number                     Int
+  VisitAdditionalInformation VisitAdditionalInformation[]
 
   @@unique([firstChar, secondChar, thirdChar, number], map: "Car_Unique")
+}
+
+model Attendant {
+  id                         String                       @id @default(uuid())
+  SSN                        String?                      @unique
+  cardId                     String?                      @unique
+  name                       String
+  attendantRole              AttendantRole
+  VisitAdditionalInformation VisitAdditionalInformation[]
+}
+
+model VisitAdditionalInformation {
+  id             String           @id @default(uuid())
+  Car            CarNumber?       @relation(fields: [carId], references: [id])
+  carId          String?
+  cameFrom       CameFromOptions?
+  injuryLocation String?
+  injuryCause    String?
+  notes          String?
+  Attendant      Attendant?       @relation(fields: [attendantId], references: [id])
+  attendantId    String?
+  Incident       Incident[]
+  Visit          Visit[]
 }
 
 enum IdentityEnum {
@@ -173,4 +194,15 @@ enum ShiftEnum {
   MORNING12
   NIGHT12
   LONG
+}
+
+enum CameFromOptions {
+  HOME
+  ACCIDENT
+  PRISONER
+}
+
+enum AttendantRole {
+  PARAMEDIC
+  OFFICER
 }

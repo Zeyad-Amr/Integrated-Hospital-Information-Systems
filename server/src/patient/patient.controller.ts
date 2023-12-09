@@ -18,7 +18,7 @@ export class PatientController {
   @ApiOkResponse()
   @CustomGetAllParamDecorator()
   @Get()
-  findAll(@PaginationParams() pagination: Pagination, @SortingParams(['firstName', 'createdAt']) sort?: Sorting, @FilteringParams(['firstName', 'secondName', 'thirdName', 'fourthName', 'gender', 'email', 'phone', 'governate', 'createdAt']) filters?: Array<Filter>) {
+  findAll(@PaginationParams() pagination: Pagination, @SortingParams(['firstName', 'createdAt']) sort?: Sorting, @FilteringParams(['firstName', 'secondName', 'thirdName', 'fourthName', 'gender',  'phone', 'governate', 'createdAt']) filters?: Array<Filter>) {
     try {
       return this.patientService.findAll(pagination,sort,filters);
     } catch (error) {

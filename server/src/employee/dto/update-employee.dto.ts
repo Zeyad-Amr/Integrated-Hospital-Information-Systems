@@ -1,9 +1,11 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { CreateEmployeeDto } from './create-employee.dto';
+import { ApiProperty } from '@nestjs/swagger';
 import {
+    IsEmail,
     IsObject,
     IsOptional,
+    IsString,
     IsUUID,
+    MinLength,
     Validate,
     ValidateNested,
 } from 'class-validator';
@@ -12,6 +14,27 @@ import { RoleEnum, ShiftEnum } from '@prisma/client';
 import { Type } from 'class-transformer';
 import { UpdatePersonDto } from 'src/person/dto/update-person.dto';
 
+
+export class AuthUpdateDto {
+
+    @ApiProperty({
+        type: String,
+        description: 'employee username (required field)',
+        example: 'Admin123',
+    })
+    @IsString()
+    @MinLength(5)
+    username: string;
+
+    @ApiProperty({
+        type: String,
+        example: 'ahmedraouf@gmail.com',
+    })
+    @IsOptional()
+    @IsString()
+    @IsEmail()
+    email: string
+}
 export class UpdateEmployeeDto {
 
     @ApiProperty({ type: UpdatePersonDto, required: false })
@@ -43,5 +66,11 @@ export class UpdateEmployeeDto {
     @IsOptional()
     @IsUUID()
     departmentId: string;
+
+    @ApiProperty({ type: AuthUpdateDto, required: true })
+    @IsObject()
+    @ValidateNested()
+    @Type(() => AuthUpdateDto)
+    auth: AuthUpdateDto
 
 }
