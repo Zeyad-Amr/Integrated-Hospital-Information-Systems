@@ -1,14 +1,16 @@
 import { AxiosRequestConfig } from 'axios';
 import axiosInstance from './config';
+import { PaginatedApiResponseParams } from './pagination';
 // ----------------------------------------------------------------
 
 //* API Client class
 class ApiClient {
 
   //* Method to replace route parameters in the endpoint URL with values from pathVariables
-  private replacePathVariables(endpoint: string, pathVariables: { [key: string]: string }) {
-    // Replace route parameters in the endpoint URL with values from pathVariables
+  private replacePathVariables(endpoint: string, pathVariables: { [key: string]: string }): string {
     let url = endpoint;
+
+    // Replace route parameters in the endpoint URL with values from pathVariables
     if (pathVariables) {
       Object.keys(pathVariables).forEach((variable) => {
         url = url.replace(`:${variable}`, pathVariables[variable]);
@@ -17,15 +19,52 @@ class ApiClient {
     return url;
   }
 
+  //* Method to add query parameters to the endpoint URL
+  private addQueryParams(endpoint: string, queryParams?: { [key: string]: string }, filters?: string[]): string {
+    let url = endpoint;
+
+    // Adding ? to the URL if there are query parameters or filters
+    if (queryParams || filters) {
+      url = url.concat('?');
+    }
+
+    // Add query parameters to the URL
+    if (queryParams) {
+
+      Object.keys(queryParams).forEach((param) => {
+        url = url.concat(`${param}=${queryParams[param]}&`);
+      });
+    }
+
+    // Add filters to the URL
+    if (filters) {
+      filters.forEach((filter) => {
+        url = url.concat(`filters=${filter}&`);
+      });
+    }
+
+    // Remove the last '&' or '?' from the URL
+    if (queryParams || filters) {
+      url = url.slice(0, -1);
+    }
+
+    return url;
+  }
+
   //* GET method to make a GET request to the API
   //* @param endpoint - API endpoint
   //* @param queryParams - Query parameters to be sent with the request
   //* @param pathVariables - Path variables to be replaced in the endpoint URL
   //* @param config - Axios request config
-  public async get(endpoint: string, { queryParams, pathVariables, config }: { queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
-    const url = this.replacePathVariables(endpoint, pathVariables);
+  public async get(endpoint: string, { pagination, filters, queryParams, pathVariables, config }: { pagination?: PaginatedApiResponseParams, filters?: string[]; queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
+    if (pagination) {
+      if (pagination.page) {
+        queryParams = { ...queryParams, page: pagination.page ?? 1, pageSize: pagination.size ?? 10 };
+      }
+    }
+    let url = this.replacePathVariables(endpoint, pathVariables);
+    url = this.addQueryParams(url, { ...queryParams, }, filters);
     const requestConfig: AxiosRequestConfig = {
-      params: queryParams,
       ...config,
     };
     try {
@@ -42,10 +81,10 @@ class ApiClient {
   // @param queryParams - Query parameters to be sent with the request
   // @param pathVariables - Path variables to be replaced in the endpoint URL
   // @param config - Axios request config
-  public async post(endpoint: string, data: any, { queryParams, pathVariables, config }: { queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
-    const url = this.replacePathVariables(endpoint, pathVariables);
+  public async post(endpoint: string, data: any, { filters, queryParams, pathVariables, config }: { filters?: string[]; queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
+    let url = this.replacePathVariables(endpoint, pathVariables);
+    url = this.addQueryParams(url, queryParams, filters);
     const requestConfig: AxiosRequestConfig = {
-      params: queryParams,
       ...config,
     };
 
@@ -63,10 +102,10 @@ class ApiClient {
   // @param queryParams - Query parameters to be sent with the request
   // @param pathVariables - Path variables to be replaced in the endpoint URL
   // @param config - Axios request config
-  public async put(endpoint: string, data: any, { queryParams, pathVariables, config }: { queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
-    const url = this.replacePathVariables(endpoint, pathVariables);
+  public async put(endpoint: string, data: any, { filters, queryParams, pathVariables, config }: { filters?: string[]; queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
+    let url = this.replacePathVariables(endpoint, pathVariables);
+    url = this.addQueryParams(url, queryParams, filters);
     const requestConfig: AxiosRequestConfig = {
-      params: queryParams,
       ...config,
     };
 
@@ -84,10 +123,10 @@ class ApiClient {
   // @param queryParams - Query parameters to be sent with the request
   // @param pathVariables - Path variables to be replaced in the endpoint URL
   // @param config - Axios request config
-  public async patch(endpoint: string, data: any, { queryParams, pathVariables, config }: { queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
-    const url = this.replacePathVariables(endpoint, pathVariables);
+  public async patch(endpoint: string, data: any, { filters, queryParams, pathVariables, config }: { filters?: string[]; queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
+    let url = this.replacePathVariables(endpoint, pathVariables);
+    url = this.addQueryParams(url, queryParams, filters);
     const requestConfig: AxiosRequestConfig = {
-      params: queryParams,
       ...config,
     };
 
@@ -104,10 +143,10 @@ class ApiClient {
   // @param queryParams - Query parameters to be sent with the request
   // @param pathVariables - Path variables to be replaced in the endpoint URL
   // @param config - Axios request config
-  public async delete(endpoint: string, { queryParams, pathVariables, config }: { queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
-    const url = this.replacePathVariables(endpoint, pathVariables);
+  public async delete(endpoint: string, { filters, queryParams, pathVariables, config }: { filters?: string[]; queryParams?: any; pathVariables?: any; config?: AxiosRequestConfig } = {}) {
+    let url = this.replacePathVariables(endpoint, pathVariables);
+    url = this.addQueryParams(url, queryParams, filters);
     const requestConfig: AxiosRequestConfig = {
-      params: queryParams,
       ...config,
     };
 
@@ -121,3 +160,4 @@ class ApiClient {
 }
 
 export default ApiClient;
+

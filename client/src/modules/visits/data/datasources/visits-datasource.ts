@@ -1,4 +1,4 @@
-import { ApiClient, Endpoints } from "@/core/api";
+import { ApiClient, Endpoints, FilterQueryParam } from "@/core/api";
 import VisitModel from '../models/visit-model';
 
 abstract class BaseVisitsDataSource {
@@ -30,7 +30,7 @@ class VisitsDataSource extends BaseVisitsDataSource {
     override async getAllAnonymousVisits(): Promise<VisitModel[]> {
         // TODO: Apply Filter to get only anonymous visits
         console.log("getAllAnonymousVisits DS");
-        const response = await this.apiClient.get(Endpoints.visit.list);
+        const response = await this.apiClient.get(Endpoints.visit.list, { filters: [FilterQueryParam.isNull('patientId')] });
         console.log(response.data.items);
         return response.data.items.map((item: any) => VisitModel.fromJson(item));
     }
