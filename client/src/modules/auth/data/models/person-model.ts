@@ -1,3 +1,4 @@
+import { genderList, identityList } from '../../domain/data-values/constants';
 import PersonInterface from '../../domain/interfaces/person-interface';
 
 export default class PersonModel {
@@ -30,8 +31,8 @@ export default class PersonModel {
             thirdName: json.thirdName,
             fourthName: json.fourthName,
             SSN: json.SSN,
-            verificationMethod: json.verificationMethod,
-            gender: json.gender,
+            verificationMethod: identityList.find((identity) => identity.key === json.verificationMethod) ?? identityList[0],
+            gender: genderList.find((gender) => gender.key === json.gender),
             birthDate: new Date(json.birthDate),
             phone: json.phone,
             governate: json.governate,

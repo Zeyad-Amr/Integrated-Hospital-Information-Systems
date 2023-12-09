@@ -1,3 +1,5 @@
+import { identityList } from "../data-values/constants";
+import { IGender, IIdentity } from "../data-values/interfaces";
 import PersonInterface from "../interfaces/person-interface";
 
 export default class PersonEntity implements PersonInterface {
@@ -7,8 +9,8 @@ export default class PersonEntity implements PersonInterface {
     private _thirdName?: string;
     private _fourthName?: string;
     private _SSN: string;
-    private _verificationMethod: string;
-    private _gender?: string;
+    private _verificationMethod: IIdentity;
+    private _gender?: IGender;
     private _birthDate?: Date;
     private _phone?: string;
     private _governate?: string;
@@ -59,11 +61,11 @@ export default class PersonEntity implements PersonInterface {
         return this._SSN;
     }
 
-    get verificationMethod(): string {
+    get verificationMethod(): IIdentity {
         return this._verificationMethod;
     }
 
-    get gender(): string | undefined {
+    get gender(): IGender | undefined {
         return this._gender;
     }
 
@@ -115,11 +117,11 @@ export default class PersonEntity implements PersonInterface {
         this._SSN = SSN;
     }
 
-    set verificationMethod(verificationMethod: string) {
+    set verificationMethod(verificationMethod: IIdentity) {
         this._verificationMethod = verificationMethod;
     }
 
-    set gender(gender: string | undefined) {
+    set gender(gender: IGender | undefined) {
         this._gender = gender;
     }
 
@@ -156,7 +158,7 @@ export default class PersonEntity implements PersonInterface {
             thirdName: undefined,
             fourthName: undefined,
             SSN: '',
-            verificationMethod: '',
+            verificationMethod: identityList[0],
             gender: undefined,
             birthDate: undefined,
             phone: undefined,
