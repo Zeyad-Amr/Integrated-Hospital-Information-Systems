@@ -8,7 +8,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDataDto } from './dto/login-user.dto';
+import { LoginDto } from './dto/login-user.dto';
 import { handleError } from '../shared/http-error';
 import {
   ApiBadRequestResponse,
@@ -46,9 +46,9 @@ export class AuthController {
   })
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async login(@Body() authDataDto: AuthDataDto) {
+  async login(@Body() loginDto: LoginDto) {
     try {
-      return { access_token: await this.authService.login(authDataDto) };
+      return { access_token: await this.authService.login(loginDto) };
     } catch (error) {
       throw handleError(error);
     }
@@ -63,7 +63,7 @@ export class AuthController {
     try {
       const { username } = req.user
       const { email, employee } = await this.authService.findOne(username)
-      return { email, ...employee }
+      return { email, username, ...employee }
     } catch (error) {
       throw handleError(error);
     }

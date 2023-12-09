@@ -27,7 +27,7 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
                             id: departmentId,
                         }
                     },
-                    user: { create: { ...auth } },
+                    auth: { create: { ...auth } },
                     person: {
                         connectOrCreate: {
                             where: { SSN: personalData.SSN },
@@ -52,7 +52,7 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
 
     async update(id: string, item: UpdateEmployeeDto): Promise<any> {
         try {
-            const { role, shift, departmentId, personalData } = item;
+            const { role, shift, departmentId, personalData, auth } = item;
 
             const employee = await this.prismaService.employee.update({
                 where: { id },
@@ -71,6 +71,12 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
                             }
                         }
                     },
+                    auth: {
+                        update: {
+                            ...auth
+                        }
+                    }
+
                 },
                 include: { person: true, }
             });
@@ -100,6 +106,15 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
         }
     }
 
-    private includeObj: Prisma.EmployeeInclude = { person: true, department: true }
+    private includeObj: Prisma.EmployeeInclude = {
+        person: true,
+        department: true,
+        auth: {
+            select: {
+                username: true,
+                email: true
+            }
+        }
+    }
 
 }

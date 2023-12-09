@@ -47,7 +47,7 @@ model Employee {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user User?
+  auth User?
 
   person   Person @relation(fields: [personID], references: [id])
   personID String @unique
