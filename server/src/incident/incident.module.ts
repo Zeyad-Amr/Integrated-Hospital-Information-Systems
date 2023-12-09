@@ -8,6 +8,12 @@ import { PersonRepo } from 'src/person/person.repo';
 
 @Module({
   controllers: [IncidentController],
-  providers: [IncidentService, IncidentRepo, PrismaService, VisitRepo, PersonRepo],
+  providers: [
+    IncidentService,
+    IncidentRepo,
+    PrismaService,
+    VisitRepo,
+    PersonRepo,
+  ],
 })
-export class IncidentModule { }
+export class IncidentModule {}

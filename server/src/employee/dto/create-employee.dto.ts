@@ -23,7 +23,7 @@ export class CreateEmployeeDto {
   @IsObject()
   @ValidateNested()
   @Type(() => AuthDataDto)
-  auth: AuthDataDto
+  auth: AuthDataDto;
 
   @ApiProperty({
     type: String,

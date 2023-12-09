@@ -11,4 +11,4 @@ import { PrismaService } from '../shared/services/prisma-client/prisma.service';
   controllers: [EmployeeController],
   providers: [EmployeeService, EmployeeRepo, PrismaService],
 })
-export class EmployeeModule { }
+export class EmployeeModule {}

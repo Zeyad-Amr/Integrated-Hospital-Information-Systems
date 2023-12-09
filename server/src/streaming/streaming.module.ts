@@ -10,4 +10,4 @@ import { DepartmentModule } from 'src/department/department.module';
   controllers: [StreamingController],
   providers: [StreamingService, PrismaService],
 })
-export class StreamingModule { }
+export class StreamingModule {}
