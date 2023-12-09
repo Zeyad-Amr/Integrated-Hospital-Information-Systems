@@ -7,7 +7,7 @@ import MuiAccordionSummary, {
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import { HighlightOff } from "@mui/icons-material";
+import { ClearRounded } from "@mui/icons-material";
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -77,7 +77,7 @@ export default function CustomAccordion({
         onChange={() => handleChange()}
       >
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <HighlightOff
+          <ClearRounded
             sx={{
               display: isClosable ? "block" : "none",
               position: "absolute",

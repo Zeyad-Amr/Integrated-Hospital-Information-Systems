@@ -134,10 +134,6 @@ const AddVisitForm = () => {
     }
   }, [combinedValues]);
 
-  const testClosed = () => {
-    console.log("testtttttttttttttttttt closed");
-  };
-
   return (
     <Box sx={{ marginTop: "2.5rem" }}>
       <CustomAccordion

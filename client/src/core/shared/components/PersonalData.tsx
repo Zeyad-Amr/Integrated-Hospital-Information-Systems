@@ -25,12 +25,14 @@ interface PersonalDataProps {
   initialValues: PersonalDataValues;
   onSubmit: (values: PersonalDataValues) => void;
   isSubmitted: boolean;
+  isResetForm?: boolean;
 }
 
 const PersonalData = ({
   initialValues,
   onSubmit,
   isSubmitted,
+  isResetForm = false
 }: PersonalDataProps) => {
   const refSubmitButton: any = useRef(null);
   const checkFirstRender = useRef(true);
@@ -43,7 +45,6 @@ const PersonalData = ({
         checkFirstRender2.current = false;
       } else {
         if (refSubmitButton.current) {
-          console.log("ahhh");
           refSubmitButton.current.click();
         }
       }
@@ -105,7 +106,9 @@ const PersonalData = ({
       validationSchema={handleFormSchema}
       onSubmit={(values, { resetForm }) => {
         onSubmit(values);
-        resetForm();
+        if (isResetForm) {
+          resetForm();
+        }
       }}
     >
       {({
