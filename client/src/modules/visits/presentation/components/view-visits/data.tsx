@@ -34,7 +34,7 @@ export const data = [
   // }
   {
     code: "202311241",
-    sequenceNumber: 55,
+    sequenceNumber: 1,
     kinship: "BROTHER",
     createdAt: "2023-11-24T18:24:16.011Z",
     updatedAt: "2023-11-24T18:24:16.011Z",
@@ -50,8 +50,8 @@ export const data = [
     },
   },
   {
-    code: "2023112410",
-    sequenceNumber: 55,
+    code: "202311241",
+    sequenceNumber: 2,
     kinship: "BROTHER",
     createdAt: "2023-11-24T18:28:38.857Z",
     updatedAt: "2023-11-24T18:28:38.857Z",
@@ -68,7 +68,7 @@ export const data = [
   },
   {
     code: "202311242",
-    sequenceNumber: 55,
+    sequenceNumber: 3,
     kinship: "BROTHER",
     createdAt: "2023-11-24T18:24:50.364Z",
     updatedAt: "2023-11-24T18:24:50.364Z",
@@ -85,7 +85,7 @@ export const data = [
   },
   {
     code: "202311243",
-    sequenceNumber: 55,
+    sequenceNumber: 4,
     kinship: "BROTHER",
     createdAt: "2023-11-24T18:25:07.541Z",
     updatedAt: "2023-11-24T18:25:07.541Z",
@@ -97,7 +97,7 @@ export const data = [
   },
   {
     code: "202311244",
-    sequenceNumber: 55,
+    sequenceNumber: 5,
     kinship: "BROTHER",
     createdAt: "2023-11-24T18:25:42.107Z",
     updatedAt: "2023-11-24T18:25:42.107Z",
@@ -114,7 +114,7 @@ export const data = [
   },
   {
     code: "202311244",
-    sequenceNumber: 55,
+    sequenceNumber: 6,
     kinship: "BROTHER",
     createdAt: "2023-11-24T18:25:42.107Z",
     updatedAt: "2023-11-24T18:25:42.107Z",
@@ -131,7 +131,7 @@ export const data = [
   },
   {
     code: "202311244",
-    sequenceNumber: 55,
+    sequenceNumber: 7,
     kinship: "BROTHER",
     createdAt: "2023-11-24T18:25:42.107Z",
     updatedAt: "2023-11-24T18:25:42.107Z",
@@ -148,7 +148,7 @@ export const data = [
   },
   {
     code: "202311244",
-    sequenceNumber: 55,
+    sequenceNumber: 8,
     kinship: "BROTHER",
     createdAt: "2023-11-24T18:25:42.107Z",
     updatedAt: "2023-11-24T18:25:42.107Z",
@@ -165,7 +165,24 @@ export const data = [
   },
   {
     code: "202311244",
-    sequenceNumber: 55,
+    sequenceNumber: 9,
+    kinship: "BROTHER",
+    createdAt: "2023-11-24T18:25:42.107Z",
+    updatedAt: "2023-11-24T18:25:42.107Z",
+    creatorId: "c5db3bec-6a27-4714-89e1-7ef055593b49",
+    patientId: "2e32a83b-765f-4032-b381-520f659a354e",
+    companionId: null,
+    incidentId: null,
+    companion: {
+      firstName: "زياد",
+      secondName: "عمرو",
+      thirdName: "فكري",
+      fourthName: "ابراهيم",
+    },
+  },
+  {
+    code: "202311247",
+    sequenceNumber: 10,
     kinship: "BROTHER",
     createdAt: "2023-11-24T18:25:42.107Z",
     updatedAt: "2023-11-24T18:25:42.107Z",
@@ -182,24 +199,7 @@ export const data = [
   },
   {
     code: "202311244",
-    sequenceNumber: 55,
-    kinship: "BROTHER",
-    createdAt: "2023-11-24T18:25:42.107Z",
-    updatedAt: "2023-11-24T18:25:42.107Z",
-    creatorId: "c5db3bec-6a27-4714-89e1-7ef055593b49",
-    patientId: "2e32a83b-765f-4032-b381-520f659a354e",
-    companionId: null,
-    incidentId: null,
-    companion: {
-      firstName: "زياد",
-      secondName: "عمرو",
-      thirdName: "فكري",
-      fourthName: "ابراهيم",
-    },
-  },
-  {
-    code: "202311244",
-    sequenceNumber: 55,
+    sequenceNumber: 11,
     kinship: "BROTHER",
     createdAt: "2023-11-24T18:25:42.107Z",
     updatedAt: "2023-11-24T18:25:42.107Z",
@@ -216,7 +216,7 @@ export const data = [
   },
   {
     code: "202311245",
-    sequenceNumber: 55,
+    sequenceNumber: 12,
     kinship: "BROTHER",
     createdAt: "2023-11-24T18:27:10.716Z",
     updatedAt: "2023-11-24T18:27:10.716Z",

@@ -10,7 +10,7 @@ const VisitsTableComponent = () => {
         <Box sx={{
             width: "90%",
             height: "70vh",
-            margin: "3% auto 0",
+            margin: "0 auto 0",
         }}>
             <PageHeader title="المرضى المجهولون">
                 <AccountBoxIcon />
