@@ -10,6 +10,9 @@ import React, { useEffect, useRef, useState } from "react";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
+import AdditionalData, {
+  AdditionalDataValues,
+} from "@/core/shared/components/AdditionalData";
 
 const AddVisitForm = () => {
   // useRef
@@ -18,16 +21,19 @@ const AddVisitForm = () => {
   const sequenceNumberValue: any = useRef("");
   const kinshipValue: any = useRef("");
   const patientData: any = useRef({});
+  const companionData: any = useRef({});
+  const additionalData: any = useRef({});
   const checkFirstRender = useRef(true);
 
   // useState
   const [submitPatientFlag, setSubmitPatientFlag] = useState<boolean>(false);
-  const [patientDataAccordion, setPatientDataAccordion] =
-    useState<boolean>(true);
-  const [companionDataAccordion, setCompanionDataAccordion] =
+  const [submitAdditionalDataFlag, setSubmitAdditionalDataFlag] =
     useState<boolean>(false);
-  // const [companionDataDisabled, setCompanionDataDisabled] =
-  //   useState<boolean>(true);
+  const [patientDataExpanded, setPatientDataExpanded] = useState<boolean>(true);
+  const [companionDataExpanded, setCompanionDataExpanded] =
+    useState<boolean>(false);
+  const [additionalDataExpanded, setAdditionalDataExpanded] =
+    useState<boolean>(false);
   const [showCompanionFlag, setShowCompanionFlag] = useState<boolean>(false);
   const [addCompanionClicked, setAddCompanionClicked] =
     useState<boolean>(false);
@@ -40,6 +46,23 @@ const AddVisitForm = () => {
       sequenceNumber: "",
       kinship: "",
     },
+    additionalInfo: {
+      cameFrom: "",
+      injuryLocation: "",
+      injuryCause: "",
+      notes: "",
+      car: {
+        firstChar: "",
+        secondChar: "",
+        thirdChar: "",
+        number: null
+      },
+      attendant: {
+        name: "",
+        SSN: "",
+        role: ""
+      }
+    }
   });
 
   const sharedInitialValues: PersonalDataValues = {
@@ -59,37 +82,28 @@ const AddVisitForm = () => {
   const handlePatientSubmit = (values: PersonalDataValues) => {
     if (addCompanionClicked) {
       setShowCompanionFlag(true);
-      setPatientDataAccordion(false);
-      // setCompanionDataDisabled(false);
-      setCompanionDataAccordion(true);
-      patientData.current = values;
+      setPatientDataExpanded(false);
+      setCompanionDataExpanded(true);
     } else {
-      setCombinedValues((prevValues: any) => ({
-        ...prevValues,
-        patient: values,
-        companion: {},
-        visit: {
-          sequenceNumber: sequenceNumberValue.current,
-          kinship: "",
-        },
-      }));
+      setSubmitAdditionalDataFlag(!submitAdditionalDataFlag)
     }
+    patientData.current = values;
+    //  else {
+    //   setCombinedValues((prevValues: any) => ({
+    //     ...prevValues,
+    //     patient: values,
+    //     companion: {sharedInitialValues},
+    //     visit: {
+    //       sequenceNumber: sequenceNumberValue.current,
+    //       kinship: "",
+    //     },
+    //   }));
+    // }
   };
 
   const handleRestPatientSubmit = (values: { sequenceNumber: string }) => {
     setSubmitPatientFlag(!submitPatientFlag);
     sequenceNumberValue.current = values.sequenceNumber;
-  };
-
-  const onTriggerRestAndPatientForm = () => {
-    if (refSubmitFirstStepButton.current) {
-      refSubmitFirstStepButton.current.click();
-      if (showCompanionFlag) {
-        if (refSubmitSecondStepButton.current) {
-          refSubmitSecondStepButton.current.click();
-        }
-      }
-    }
   };
 
   const restPatientFormSchema = Yup.object({
@@ -104,26 +118,123 @@ const AddVisitForm = () => {
   });
 
   const handleRestCompanionSubmit = (values: { kinship: string }) => {
+    setSubmitAdditionalDataFlag(!submitAdditionalDataFlag)
     setSubmitCompanionFlag(!submitCompanionFlag);
     kinshipValue.current = values.kinship;
   };
 
   const handleCompanionSubmit = (values: PersonalDataValues) => {
-    console.log("totalSubmit", values);
-    setCombinedValues((prevValues: any) => ({
-      ...prevValues,
-      patient: patientData.current,
-      companion: values,
-      visit: {
-        sequenceNumber: sequenceNumberValue.current,
-        kinship: kinshipValue.current,
-      },
-    }));
+
+    setCombinedValues(
+      {
+        patient: patientData.current,
+        companion: values,
+        visit: {
+          sequenceNumber: sequenceNumberValue.current,
+          kinship: kinshipValue.current,
+        },
+        additionalInfo: {
+          cameFrom: additionalData.current.comeFromString,
+          injuryLocation: additionalData.current.place,
+          injuryCause: additionalData.current.reason,
+          notes: additionalData.current.notes,
+          car: {
+            firstChar: additionalData.current.firstChar,
+            secondChar: additionalData.current.secondChar,
+            thirdChar: additionalData.current.thirdChar,
+            number: additionalData.current.carNum
+          },
+          attendant: {
+            name: additionalData.current.attendantName,
+            SSN: additionalData.current.attendantSSN,
+            id : additionalData.current.attendantSerialNumber,
+            role: ""
+          }
+        }
+      }
+    )
+
+    // setCombinedValues((prevValues: any) => ({
+    //   ...prevValues,
+    //   patient: patientData.current,
+    //   companion: values,
+    //   visit: {
+    //     sequenceNumber: sequenceNumberValue.current,
+    //     kinship: kinshipValue.current,
+    //   },
+    // }));
   };
 
   const onDeleteCompanion = () => {
     setShowCompanionFlag(false);
     setAddCompanionClicked(false);
+  };
+
+  // additional data
+
+  const intialAdditionalValues: AdditionalDataValues = {
+    comeFromString: "",
+    attendantName: "",
+    attendantSSN: "",
+    attendantSerialNumber: "",
+    carNum: "",
+    firstChar: "",
+    secondChar: "",
+    thirdChar: "",
+    reason: "",
+    place: "",
+    notes: "",
+  };
+
+  const handleAdditionalDataSubmit = (values: AdditionalDataValues) => {
+    if (!addCompanionClicked) {
+      setCombinedValues(
+        {
+          patient: patientData.current,
+          companion: sharedInitialValues,
+          visit: {
+            sequenceNumber: sequenceNumberValue.current,
+            kinship: "",
+          },
+          additionalInfo: {
+            cameFrom: values.comeFromString,
+            injuryLocation: values.place,
+            injuryCause: values.reason,
+            notes: values.notes,
+            car: {
+              firstChar: values.firstChar,
+              secondChar: values.secondChar,
+              thirdChar: values.thirdChar,
+              number: values.carNum
+            },
+            attendant: {
+              name: values.attendantName,
+              SSN: values.attendantSSN,
+              id : values.attendantSerialNumber,
+              role: ""
+            }
+          }
+        }
+      )
+    } else {
+      additionalData.current = values
+      console.log('ana da5lt', additionalData.current);
+      
+    }
+    
+  };
+
+  // global methods
+
+  const onTriggerRestAndPatientForm = () => {
+    if (refSubmitFirstStepButton.current) {
+      refSubmitFirstStepButton.current.click();
+      if (showCompanionFlag) {
+        if (refSubmitSecondStepButton.current) {
+          refSubmitSecondStepButton.current.click();
+        }
+      }
+    }
   };
 
   useEffect(() => {
@@ -140,14 +251,14 @@ const AddVisitForm = () => {
         isClosable={false}
         title="بيانات المريض"
         isDisabled={false}
-        isExpanded={patientDataAccordion}
-        setExpanded={setPatientDataAccordion}
+        isExpanded={patientDataExpanded}
+        setExpanded={setPatientDataExpanded}
       >
         {/* start rest patient form */}
         <Formik
           initialValues={{ sequenceNumber: "" }}
           validationSchema={() => {
-            setPatientDataAccordion(true);
+            setPatientDataExpanded(true);
             return restPatientFormSchema;
           }}
           onSubmit={(values) => {
@@ -201,15 +312,15 @@ const AddVisitForm = () => {
           handleClosed={onDeleteCompanion}
           title="بيانات المرافق"
           isDisabled={false}
-          isExpanded={companionDataAccordion}
-          setExpanded={setCompanionDataAccordion}
+          isExpanded={companionDataExpanded}
+          setExpanded={setCompanionDataExpanded}
         >
           {/* start rest companion form */}
           <Box>
             <Formik
               initialValues={{ kinship: "" }}
               validationSchema={() => {
-                setCompanionDataAccordion(true);
+                setCompanionDataExpanded(true);
                 return restCompanionFormSchema;
               }}
               onSubmit={(values) => {
@@ -282,6 +393,22 @@ const AddVisitForm = () => {
               isSubmitted={submitCompanionFlag}
             />
           </Box>
+        </CustomAccordion>
+      </Box>
+
+      <Box>
+        <CustomAccordion
+          isClosable={false}
+          title="البيانات الأضافية"
+          isDisabled={false}
+          isExpanded={additionalDataExpanded}
+          setExpanded={setAdditionalDataExpanded}
+        >
+          <AdditionalData
+            initialValues={intialAdditionalValues}
+            isSubmitted={submitAdditionalDataFlag}
+            onSubmit={handleAdditionalDataSubmit}
+          />
         </CustomAccordion>
       </Box>
 
