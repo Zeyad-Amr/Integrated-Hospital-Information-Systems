@@ -78,6 +78,7 @@ const AddIncidentForm = () => {
       response.current.companions[idx] = values;
       setEditing(false);
       setIntialValues(MainInitialVlaues);
+      console.log(intialValues)
     } else {
       response.current.companions.push(values);
       setAddingCompanion("added");
@@ -284,6 +285,7 @@ const AddIncidentForm = () => {
           setExpanded={setUserDataAccordion}
           title="بيــانات المـــرافقين"
           isClosable
+          handleClosed={()=>console.log("ahhhh")}
         >
           <Box sx={{ display: "flex" }}>
             <Box sx={{ width: "75%" }}>
@@ -291,6 +293,7 @@ const AddIncidentForm = () => {
                 initialValues={intialValues}
                 onSubmit={handleCompanionSubmission}
                 isSubmitted={submitFlag}
+                isResetForm
               />
             </Box>
             <Box sx={{ height: "20rem", width: "25%", paddingLeft: "1rem" }}>
@@ -307,6 +310,7 @@ const AddIncidentForm = () => {
                   setIntialValues={setIntialValues}
                   setEditing={setEditing}
                   getIdx={setIdx}
+                  submitted = {editing}
                 />
               </Box>
             </Box>
