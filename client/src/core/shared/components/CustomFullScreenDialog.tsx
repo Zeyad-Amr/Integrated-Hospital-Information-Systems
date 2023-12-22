@@ -67,7 +67,7 @@ export default function CustomFullScreenDialog({
         <Box
           sx={{
             width: "95%",
-            margin: "0 auto",
+            margin: "1.5rem auto",
           }}
         >
           {children}
