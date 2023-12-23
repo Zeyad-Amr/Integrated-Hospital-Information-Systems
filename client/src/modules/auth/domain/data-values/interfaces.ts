@@ -3,25 +3,37 @@ import {
     GenderEnum,
     RoleEnum,
     ShiftEnum,
+    GovernateEnum,
+    DepartmentEnum,
 } from './enums';
 
 
 export interface IIdentity {
-    key: IdentityEnum;
+    id: IdentityEnum;
     label: string;
 }
 
 export interface IGender {
-    key: GenderEnum;
+    id: GenderEnum;
     label: string;
 }
 
 export interface IRole {
-    key: RoleEnum;
+    id: RoleEnum;
     label: string;
 }
 
 export interface IShift {
-    key: ShiftEnum;
+    id: ShiftEnum;
+    label: string;
+}
+
+export interface IGovernate {
+    id: GovernateEnum;
+    label: string;
+}
+
+export interface IDepartment {
+    id: DepartmentEnum;
     label: string;
 }

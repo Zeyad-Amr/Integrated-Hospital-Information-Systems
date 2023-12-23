@@ -9,7 +9,6 @@ import { localStorageGetItem } from "@/core/shared/utils/storage-available";
 //
 import { SettingsValueProps } from "../types";
 import { SettingsContext } from "./settings-context";
-import { AppServicesLocator } from "@/core/service-locator";
 // ----------------------------------------------------------------------
 
 const STORAGE_KEY = "settings";

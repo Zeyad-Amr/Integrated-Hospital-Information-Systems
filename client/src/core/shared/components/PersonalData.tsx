@@ -1,29 +1,26 @@
 import React, { useEffect, useRef } from "react";
 import Button from "@mui/material/Button";
 import { Formik } from "formik";
-import * as Yup from "yup";
 import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
-
-export interface PersonalDataValues {
-  firstName: string;
-  secondName: string;
-  thirdName: string;
-  fourthName: string;
-  SSN: string;
-  phone: string;
-  gender: string;
-  governate: string;
-  birthDate: null | string;
-  address: string;
-  verificationMethod: string;
-}
+import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
+import {
+  IGender,
+  IGovernate,
+  IIdentity,
+} from "@/modules/auth/domain/data-values/interfaces";
+import {
+  genderList,
+  governateList,
+  identityList,
+} from "@/modules/auth/domain/data-values/constants";
+import PersonEntity from "@/modules/auth/domain/entities/person-entity";
 
 interface PersonalDataProps {
-  initialValues: PersonalDataValues;
-  onSubmit: (values: PersonalDataValues) => void;
+  initialValues: PersonInterface;
+  onSubmit: (values: PersonInterface) => void;
   isSubmitted: boolean;
   isResetForm?: boolean;
 }
@@ -32,7 +29,7 @@ const PersonalData = ({
   initialValues,
   onSubmit,
   isSubmitted,
-  isResetForm = false
+  isResetForm = false,
 }: PersonalDataProps) => {
   const refSubmitButton: any = useRef(null);
   const checkFirstRender = useRef(true);
@@ -51,59 +48,11 @@ const PersonalData = ({
     }
   }, [isSubmitted]);
 
-  const handleFormSchema = Yup.object({
-    firstName: Yup.string()
-      .required("الاسم الأول مطلوب")
-      .min(3, "يجب أن يكون الاسم الأول على الأقل 3 أحرف")
-      .max(45, "يجب أن يكون الاسم الأول على الأكثر 45 حرفًا"),
-    secondName: Yup.string()
-      .required("الاسم الثاني مطلوب")
-      .min(3, "يجب أن يكون الاسم الثاني على الأقل 3 أحرف")
-      .max(45, "يجب أن يكون الاسم الثاني على الأكثر 45 حرفًا"),
-    thirdName: Yup.string()
-      .required("الاسم الثالث مطلوب")
-      .min(3, "يجب أن يكون الاسم الثالث على الأقل 3 أحرف")
-      .max(45, "يجب أن يكون الاسم الثالث على الأكثر 45 حرفًا"),
-    fourthName: Yup.string()
-      .required("الاسم الرابع مطلوب")
-      .min(3, "يجب أن يكون الاسم الرابع على الأقل 3 أحرف")
-      .max(45, "يجب أن يكون الاسم الرابع على الأكثر 45 حرفًا"),
-    address: Yup.string()
-      .required("اسم العنوان مطلوب")
-      .min(3, "يجب أن يكون اسم العنوان على الأقل 3 أحرف")
-      .max(100, "يجب أن يكون اسم العنوان على الأكثر 100 حرفًا"),
-    gender: Yup.string().required("الجنس مطلوب"),
-    governate: Yup.string().required("المحافظة مطلوبة"),
-    verificationMethod: Yup.string().required("نوع الهوية مطلوب"),
-    birthDate: Yup.string().required("التاريخ مطلوب"),
-    SSN: Yup.string()
-      .required("الرقم القومي مطلوب")
-      .length(14, "يجب أن يكون الرقم القومي 14 رقمًا")
-      .matches(/^[0-9]+$/, "يجب أن يكون الرقم القومي رقميًا."),
-    phone: Yup.string()
-      .length(11, "يجب أن يكون رقم الهاتف 11 حرفًا")
-      .matches(/^[0-9]+$/, "يجب أن يكون رقم الهاتف رقميًا."),
-  });
-
-  
-
   return (
     <Formik
       enableReinitialize
-      initialValues={{
-        firstName: initialValues.firstName,
-        secondName: initialValues.secondName,
-        thirdName: initialValues.thirdName,
-        fourthName: initialValues.fourthName,
-        SSN: initialValues.SSN,
-        phone: initialValues.phone,
-        gender: initialValues.gender,
-        governate: initialValues.governate,
-        birthDate: initialValues.birthDate,
-        address: initialValues.address,
-        verificationMethod: initialValues.verificationMethod,
-      }}
-      validationSchema={handleFormSchema}
+      initialValues={initialValues}
+      validationSchema={PersonEntity.getSchema()}
       onSubmit={(values, { resetForm }) => {
         onSubmit(values);
         if (isResetForm) {
@@ -122,7 +71,7 @@ const PersonalData = ({
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container columns={12} spacing={2}>
             <Grid item lg={3} md={3} sm={12} xs={12}>
-              <CustomSelectField
+              <CustomSelectField<IIdentity>
                 isRequired
                 name="verificationMethod"
                 label="نوع الهوية"
@@ -132,16 +81,7 @@ const PersonalData = ({
                 error={errors.verificationMethod}
                 touched={touched.verificationMethod}
                 width="100%"
-                options={[
-                  {
-                    id: "NATIONALIDCARD",
-                    title: "بطاقة",
-                  },
-                  {
-                    id: "PASSPORT",
-                    title: "جواز سفر",
-                  },
-                ]}
+                options={identityList}
               />
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
@@ -162,7 +102,7 @@ const PersonalData = ({
             </Grid>
 
             <Grid item lg={3} md={3} sm={12} xs={12}>
-              <CustomSelectField
+              <CustomSelectField<IGender>
                 isRequired
                 name="gender"
                 label="الجنس"
@@ -172,20 +112,11 @@ const PersonalData = ({
                 error={errors.gender}
                 touched={touched.gender}
                 width="100%"
-                options={[
-                  {
-                    id: "MALE",
-                    title: "ذكر",
-                  },
-                  {
-                    id: "FEMALE",
-                    title: "أنثي",
-                  },
-                ]}
+                options={genderList}
               />
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
-              <CustomSelectField
+              <CustomSelectField<IGovernate>
                 isRequired
                 name="governate"
                 label="المحافظة"
@@ -195,16 +126,7 @@ const PersonalData = ({
                 error={errors.governate}
                 touched={touched.governate}
                 width="100%"
-                options={[
-                  {
-                    id: "1",
-                    title: "القاهرة",
-                  },
-                  {
-                    id: "2",
-                    title: "الجيزة",
-                  },
-                ]}
+                options={governateList}
               />
             </Grid>
           </Grid>
@@ -275,7 +197,7 @@ const PersonalData = ({
             </Grid>
           </Grid>
           <Grid container columns={12} spacing={2}>
-            <Grid item lg={3} md={3} sm={12} xs={12}>
+            {/* <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
                 isRequired
                 name="birthDate"
@@ -290,7 +212,7 @@ const PersonalData = ({
                   type: "date",
                 }}
               />
-            </Grid>
+            </Grid> */}
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
                 name="phone"

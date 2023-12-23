@@ -92,7 +92,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     │      │   ├── entities/                # Domain-specific entities with behavior and business rules (e.g., User, Post)
     │      │   ├── interfaces/              # Domain-specific interfaces (e.g., IUserRepository)
     │      │   ├── repositories/            # Abstraction for data access (e.g., UserRepository)
-    │      │   ├── contannts/               # Domain-specific constants
+    │      │   ├── contants/               # Domain-specific constants
     │      │   └── usecases/                # Business logic (e.g., Login, Logout)
     │      └── presentation/
     │          ├── pages/                   # Feature-specific pages
