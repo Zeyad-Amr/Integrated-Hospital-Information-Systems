@@ -3,11 +3,12 @@ import { getEmployeeList, createEmployee, updateEmployee, deleteEmployee, getEmp
 import { EmployeeState } from "../types";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
 import { ErrorResponse } from "@/core/api";
+import EmployeeEntity from "@/modules/employees/domain/entities/employee-entity";
 
 //* Initial State
 const initialState: EmployeeState = {
     employeeList: [],
-    currentEmployee: null,
+    currentEmployee: EmployeeEntity.defaultValue(),
     loading: false,
     error: "",
 };
@@ -20,7 +21,7 @@ const employeeSlice = createSlice({
             state.error = "";
         },
         clearCurrentEmployee(state) {
-            state.currentEmployee = null;
+            state.currentEmployee = initialState.currentEmployee;
         },
         clearEmployeeList(state) {
             state.employeeList = [];
@@ -112,7 +113,7 @@ const employeeSlice = createSlice({
         builder.addCase(getEmployeeDetails.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
-            state.currentEmployee = null;
+            state.currentEmployee = initialState.currentEmployee;
         });
 
     },

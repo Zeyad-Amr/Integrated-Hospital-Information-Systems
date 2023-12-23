@@ -7,7 +7,6 @@ import { ReactNode } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { FormikErrors, FormikTouched } from "formik";
-import { IdentityEnum } from "@/modules/auth/domain/data-values/enums";
 
 export interface SelectFieldProps<T> {
   onChange: (event: SelectChangeEvent<T>, child: ReactNode) => void;
@@ -69,18 +68,13 @@ const CustomSelectField = <T extends { id: any; label: string }>({
           onChange={(event: SelectChangeEvent<T>, child: ReactNode) => {
             onChange(event, child);
             console.log(event.target.value);
-            console.log(
-              options.find((option) => option.id === event.target.value)
-            );
-            console.log(IdentityEnum.NATIONALIDCARD);
           }}
           onBlur={onBlur}
           sx={{
             backgroundColor: "#fff ",
             height: "3.5rem",
           }}
-          // label={label}
-          value={value?.id} // Find the object in options that matches the current value
+          value={value?.id}
           name={name}
           error={error && touched ? true : false}
           hidden={hideLabel}

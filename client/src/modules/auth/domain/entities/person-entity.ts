@@ -1,4 +1,3 @@
-import { identityList } from "../data-values/constants";
 import { GenderEnum, GovernateEnum, IdentityEnum } from "../data-values/enums";
 import { IGender, IGovernate, IIdentity } from "../data-values/interfaces";
 import PersonInterface from "../interfaces/person-interface";
@@ -159,7 +158,7 @@ export default class PersonEntity implements PersonInterface {
             thirdName: undefined,
             fourthName: undefined,
             SSN: undefined,
-            verificationMethod: identityList[0],
+            verificationMethod: undefined,
             gender: undefined,
             birthDate: undefined,
             phone: undefined,
@@ -195,12 +194,14 @@ export default class PersonEntity implements PersonInterface {
             verificationMethod: Yup.string()
                 .oneOf(Object.values(IdentityEnum).map(String) as string[])
                 .required("نوع الهوية مطلوب"),
-            gender: Yup.string().oneOf(Object.values(GenderEnum).map(String) as string[]),
+            gender: Yup.string()
+                .oneOf(Object.values(GenderEnum).map(String) as string[])
+                .required("الجنس مطلوب"),
             birthDate: Yup.string().required("التاريخ مطلوب"),
-            phone: Yup.string()
+            phone: Yup.string().required("رقم الهاتف مطلوب")
                 .length(11, "يجب أن يكون رقم الهاتف 11 حرفًا")
                 .matches(/^[0-9]+$/, "يجب أن يكون رقم الهاتف رقميًا."),
-            governate: Yup.string().oneOf(Object.values(GovernateEnum).map(String) as string[]),
+            governate: Yup.string().oneOf(Object.values(GovernateEnum).map(String) as string[]).required("المحافظة مطلوبة"),
             address: Yup.string()
                 .required("العنوان مطلوب")
                 .min(3, "يجب أن يكون العنوان على الأقل 3 أحرف")

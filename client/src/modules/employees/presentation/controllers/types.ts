@@ -3,7 +3,7 @@ import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-in
 // Define the initial state using that type
 export interface EmployeeState {
     employeeList: EmployeeInterface[];
-    currentEmployee: EmployeeInterface | null;
+    currentEmployee: EmployeeInterface;
     loading: boolean;
     error: string;
 }
