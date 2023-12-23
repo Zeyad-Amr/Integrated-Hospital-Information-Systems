@@ -1,5 +1,4 @@
-FROM node:18 AS build_stage
-
+FROM node:18
 WORKDIR /qasr
 
 COPY package*.json ./
@@ -12,10 +11,7 @@ COPY . .
 
 RUN npx prisma generate
 
-RUN npm run build
-
-RUN command
 
 EXPOSE 4000
 
-CMD ["npm","run","start:prod"]
+CMD ["npm","run","start"]

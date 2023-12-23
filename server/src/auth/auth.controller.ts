@@ -30,7 +30,10 @@ export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
   // ******* this api for development only MUST be removed in production *******
-  @ApiOperation({ summary: 'get all users (used for debugging *should be removed in production*)' })
+  @ApiOperation({
+    summary:
+      'get all users (used for debugging *should be removed in production*)',
+  })
   @Get()
   @Public()
   async findAll() {
@@ -54,22 +57,19 @@ export class AuthController {
     }
   }
 
-
   @Get('me')
-  @ApiOperation({ summary: 'get user\'s data' })
+  @ApiOperation({ summary: "get user's data" })
   @ApiOkResponse({ description: 'get logged in user' })
   @ApiNotFoundResponse({ description: 'user not found' })
   async findMe(@Req() req: AuthRequest) {
     try {
-      const { username } = req.user
-      const { email, employee } = await this.authService.findOne(username)
-      return { email, username, ...employee }
+      const { username } = req.user;
+      const { email, employee } = await this.authService.findOne(username);
+      return { auth: { email, username }, ...employee };
     } catch (error) {
       throw handleError(error);
     }
   }
-
-
 
   @ApiOperation({ summary: "Change user's password" })
   @ApiOkResponse({ description: 'change the password of the user' })

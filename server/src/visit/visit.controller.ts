@@ -1,16 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Req, Patch } from '@nestjs/common';
 import { VisitService } from './visit.service';
 import { CreateVisitDto } from './dto/create-visit.dto';
 
-import { UpdateVisitDto } from './dto/update-visit.dto';
-import { ApiAcceptedResponse, ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { handleError } from 'src/shared/http-error';
-import { Pagination, PaginationParams } from 'src/shared/decorators/pagination.decorator';
+import {
+  Pagination,
+  PaginationParams,
+} from 'src/shared/decorators/pagination.decorator';
 import { PaginatedResource } from 'src/shared/types/paginated.resource';
 import { Visit } from '@prisma/client';
-import { Filter, FilteringParams } from 'src/shared/decorators/filters.decorator';
+import {
+  Filter,
+  FilteringParams,
+} from 'src/shared/decorators/filters.decorator';
 import { SortingParams, Sorting } from 'src/shared/decorators/order.decorator';
 import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
+import { TriageAXDto } from './dto/triage-assessment.dto';
 
 @ApiBearerAuth()
 @ApiTags('visit')
@@ -18,45 +32,83 @@ import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.d
 export class VisitController {
   constructor(private readonly visitService: VisitService) { }
 
-  @ApiOperation({ description: "This to add normal visit for know patient data" })
-  @ApiCreatedResponse({ description: "visit has been created successfully" })
-  @ApiBadRequestResponse({ description: "body has missed some data" })
+  @ApiOperation({
+    description: 'This to add normal visit for know patient data',
+  })
+  @ApiCreatedResponse({ description: 'visit has been created successfully' })
+  @ApiBadRequestResponse({ description: 'body has missed some data' })
   @Post()
   async create(@Body() createVisitDto: CreateVisitDto, @Req() req) {
     try {
-      return await this.visitService.create(createVisitDto, req.user.sub)
+      return await this.visitService.create(createVisitDto, req.user.sub);
     } catch (error) {
-      throw handleError(error)
+      throw handleError(error);
     }
   }
 
-  @ApiOperation({ description: "this for visits with filters (not finished yet)" })
+  @ApiOperation({
+    description: 'This to add triage assessment to the visit with given code',
+  })
+  @ApiCreatedResponse({ description: 'triage assessment has been created successfully' })
+  @ApiBadRequestResponse({ description: 'body has missed some data' })
+  @Patch('triage/:visitCode')
+  async addTriageAX(@Body() triageAXDto: TriageAXDto, @Param('visitCode') visitCode: string) {
+    try {
+      return await this.visitService.addTriageAX(visitCode, triageAXDto);
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  @ApiOperation({
+    description: 'this for visits with filters (not finished yet)',
+  })
   @CustomGetAllParamDecorator()
   @Get()
   findAll(
     @PaginationParams() paginationParams: Pagination,
-    @FilteringParams(['code', 'createdAt', 'creatorId', 'companionId', 'patientId', 'sequenceNumber','incidentId']) filters?: Array<Filter>,
-    @SortingParams(['createdAt', 'sequenceNumber', 'code']) sort?: Sorting
+    @FilteringParams([
+      'code',
+      'createdAt',
+      'creatorId',
+      'companionId',
+      'patientId',
+      'sequenceNumber',
+      'incidentId',
+    ])
+    filters?: Array<Filter>,
+    @SortingParams(['createdAt', 'sequenceNumber', 'code']) sort?: Sorting,
   ): Promise<PaginatedResource<Visit>> {
     try {
       return this.visitService.findAll(paginationParams, filters, sort);
     } catch (error) {
-      throw handleError(error)
+      throw handleError(error);
     }
   }
 
-  @ApiOperation({ description: "This is to get visit data with visit code" })
+  @ApiOperation({ description: 'This is to get visit data with visit code' })
   @ApiOkResponse()
   @ApiNotFoundResponse()
   @ApiCreatedResponse()
-  @Get(':visitcode')
-  findOne(@Param('visitcode') visitCode: string) {
+  @Get(':visitCode')
+  async findOne(@Param('visitCode') visitCode: string) {
     try {
-      return this.visitService.findOne(visitCode);
+      return await this.visitService.findOne(visitCode);
     } catch (error) {
-      throw handleError(error)
+      throw handleError(error);
+    }
+  }
+
+  @ApiOperation({ description: 'This is to get all visit data in the ER area' })
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiCreatedResponse()
+  @Get('all/er-area')
+  async findERAreaVisits() {
+    try {
+      return await this.visitService.findERAreaVisits();
+    } catch (error) {
+      throw handleError(error);
     }
   }
 }
-
-

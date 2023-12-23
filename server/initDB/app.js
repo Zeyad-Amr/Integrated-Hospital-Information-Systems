@@ -26,6 +26,7 @@ async function insertAdmin() {
                 phone: '+201067662458',
                 governate: 'Giza',
                 address: 'Fasil',
+                type: PrismaClient.PersonType.EMPLOYEE
               },
             },
             shift: 'LONG',
@@ -59,15 +60,23 @@ async function insertDepartments() {
   prisma.department
     .createMany({
       data: [
-        { name: 'Administration' },
-        { name: 'Reception' },
         { name: 'Triage A' },
         { name: 'Triage B' },
-        { name: 'Polytrauma' },
+        { name: 'Resuscitation' },
+        { name: 'Cardiology' },
+        { name: 'Neurology' },
+        { name: 'Orthopedic Emergency' },
+        { name: 'Poly-Trauma' },
         { name: 'Short Stay A' },
         { name: 'Short Stay B' },
-        { name: 'Minor surgery' },
+        { name: 'Short Stay C' },
+        { name: 'Minor Procedures' },
+        { name: 'ENT' },
+        { name: 'Ophthalmology' },
+        { name: 'ER Area' },
+        { name: 'Administration' },
       ],
+      skipDuplicates: true
     })
     .then((res) => {
       console.log('Init data created');

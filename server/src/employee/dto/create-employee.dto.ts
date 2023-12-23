@@ -17,13 +17,13 @@ export class CreateEmployeeDto {
   @IsObject()
   @ValidateNested()
   @Type(() => CreatePersonDto)
-  personalData: CreatePersonDto;
+  person: CreatePersonDto;
 
   @ApiProperty({ type: AuthDataDto, required: true })
   @IsObject()
   @ValidateNested()
   @Type(() => AuthDataDto)
-  auth: AuthDataDto
+  auth: AuthDataDto;
 
   @ApiProperty({
     type: String,

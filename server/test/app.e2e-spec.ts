@@ -66,7 +66,10 @@ describe('AppController (e2e)', () => {
         ssn: '123456789',
         email: 'ahmed@gmail.com',
       };
-      const createEmployeeDto = plainToClass(CreateEmployeeDto, invalidEmployeeData);
+      const createEmployeeDto = plainToClass(
+        CreateEmployeeDto,
+        invalidEmployeeData,
+      );
       const errors = await validate(createEmployeeDto);
       expect(errors.length).toBeGreaterThan(0);
     });

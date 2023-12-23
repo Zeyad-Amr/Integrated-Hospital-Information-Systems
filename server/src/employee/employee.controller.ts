@@ -25,16 +25,22 @@ import {
 import { handleError } from '../shared/http-error';
 import { AuthRequest } from 'src/auth/auth.interface';
 import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
-import { Pagination, PaginationParams } from 'src/shared/decorators/pagination.decorator';
+import {
+  Pagination,
+  PaginationParams,
+} from 'src/shared/decorators/pagination.decorator';
 import { Sorting, SortingParams } from 'src/shared/decorators/order.decorator';
-import { Filter, FilteringParams } from 'src/shared/decorators/filters.decorator';
+import {
+  Filter,
+  FilteringParams,
+} from 'src/shared/decorators/filters.decorator';
 
 @ApiTags('employee')
 @ApiUnauthorizedResponse({ description: 'No token provided' })
 @ApiBearerAuth()
 @Controller('employee')
 export class EmployeeController {
-  constructor(private readonly employeeService: EmployeeService) { }
+  constructor(private readonly employeeService: EmployeeService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create employee' })
@@ -57,7 +63,11 @@ export class EmployeeController {
   @ApiOperation({ summary: 'get all employees' })
   @ApiOkResponse({ description: 'get all employees' })
   @CustomGetAllParamDecorator()
-  async findAll(@PaginationParams() pagination: Pagination, @SortingParams() sort: Sorting, @FilteringParams() filters: Array<Filter>) {
+  async findAll(
+    @PaginationParams() pagination: Pagination,
+    @SortingParams() sort: Sorting,
+    @FilteringParams() filters: Array<Filter>,
+  ) {
     try {
       return await this.employeeService.findAll(pagination, sort, filters);
     } catch (error) {

@@ -5,8 +5,9 @@ import SecondaryButton from "@/core/shared/components/btns/SecondaryButton";
 import PersonalData, {
   PersonalDataValues,
 } from "@/core/shared/components/PersonalData";
-import SubHeader from "@/core/shared/components/headers/SubHeader";
-import IncidentHeader from "../IncidentHeader";
+// import SubHeader from "@/core/shared/components/headers/SubHeader";
+// import IncidentHeader from "../IncidentHeader";
+import GetCompanions from "../GetCompanions";
 import CompleteIncident from "../../pages/CompleteIncident";
 import AdditionalData, {
   AdditionalDataValues,
@@ -15,29 +16,33 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import { Button } from "@mui/material";
+import CustomAccordion from "@/core/shared/components/CustomAccordion";
 
 const AddIncidentForm = () => {
   const refSubmitButton: any = useRef(null);
 
-  const [showIncidentForm, setshowIncidentForm] = useState("block");
-  const [showIncidentHeader, setshowIncidentHeader] = useState("none");
+  // const [showIncidentForm, setshowIncidentForm] = useState("block");
+  // const [showIncidentHeader, setshowIncidentHeader] = useState("none");
   const [showCompForm, setshowCompForm] = useState("none");
   const [showDialog, setShawDialog] = useState("none");
 
   const [submitFlag, setSubmitFlag] = useState<boolean>(false);
   const [incidentFormSubmitted, setIncidentFormSubmitted] =
     useState<boolean>(false);
+  const [NumOfPatients, setNumOfPatients] = useState<boolean>(false);
   const [addingCompanion, setAddingCompanion] = useState<string>("none");
   const [addDatasubmitFlag, setAddDatasubmitFlag] = useState<boolean>(false);
 
   const [clickedBtnId, setClickedBtnId] = useState("");
+  const [additionalDataAccordion, setAdditionalDataAccordion] =
+    useState<boolean>(true);
+  const [userDataAccordion, setUserDataAccordion] = useState<boolean>(false);
 
-  const intialValues: PersonalDataValues = {
+  const MainInitialVlaues = {
     firstName: "",
     secondName: "",
     thirdName: "",
     fourthName: "",
-    email: "",
     SSN: "",
     phone: "",
     gender: "",
@@ -45,7 +50,13 @@ const AddIncidentForm = () => {
     birthDate: "",
     address: "",
     verificationMethod: "",
-  };
+  }
+
+  const [editing, setEditing] = useState<boolean>(false);
+  const [intialValues, setIntialValues] = useState<PersonalDataValues>(MainInitialVlaues);
+
+
+  const [idx, setIdx] = useState<number>(0);
 
   const intialAdditionalValues: AdditionalDataValues = {
     comeFromString: "",
@@ -62,10 +73,16 @@ const AddIncidentForm = () => {
   };
 
   const handleCompanionSubmission = (values: PersonalDataValues) => {
-    response.current.companions.push(values);
-    setAddingCompanion("added");
-    console.log(document.getElementById("personal-data-form"));
-    (document.getElementById("personal-data-form") as HTMLFormElement).reset();
+    console.log(editing);
+    if (editing) {
+      response.current.companions[idx] = values;
+      setEditing(false);
+      setIntialValues(MainInitialVlaues);
+      console.log(intialValues)
+    } else {
+      response.current.companions.push(values);
+      setAddingCompanion("added");
+    }
   };
 
   const handleIncidentSubmission = (values: any) => {
@@ -82,7 +99,7 @@ const AddIncidentForm = () => {
       (response.current.car.secondChar = values.secondChar),
       (response.current.car.thirdChar = values.thirdChar),
       (response.current.car.number = values.carNum);
-      (response.current.reason = values.reason),
+    (response.current.reason = values.reason),
       (response.current.place = values.place),
       (response.current.notes = values.notes),
       setIncidentFormSubmitted(true);
@@ -144,22 +161,28 @@ const AddIncidentForm = () => {
   const handleAddCompanionShow = () => {
     setAddingCompanion("adding");
     setshowCompForm("block");
-    setshowIncidentHeader("flex");
-    setshowIncidentForm("none");
+    // setshowIncidentHeader("flex");
+    // setshowIncidentForm("none");
+    setAdditionalDataAccordion(false);
+    setUserDataAccordion(true);
   };
 
-  const handleEditBtn = () => {
-    setshowIncidentHeader("none");
-    setshowIncidentForm("block");
-    setIncidentFormSubmitted(false);
-  };
+  // const handleEditBtn = () => {
+  //   setshowIncidentHeader("none");
+  //   setshowIncidentForm("block");
+  //   setIncidentFormSubmitted(false);
+  // };
 
   const submitButtonClick = () => {
     setAddDatasubmitFlag(!addDatasubmitFlag);
   };
 
   useEffect(() => {
-    if (incidentFormSubmitted && clickedBtnId === "add-comp-btn") {
+    if (
+      incidentFormSubmitted &&
+      NumOfPatients &&
+      clickedBtnId === "add-comp-btn"
+    ) {
       handleAddCompanionShow();
     } else if (
       incidentFormSubmitted &&
@@ -168,7 +191,7 @@ const AddIncidentForm = () => {
     ) {
       console.log(response.current);
     }
-  }, [addingCompanion, clickedBtnId, incidentFormSubmitted]);
+  }, [addingCompanion, clickedBtnId, incidentFormSubmitted, NumOfPatients]);
   const handleFormSchema = Yup.object({
     numOfPatients: Yup.number().required("يجب إدخال عدد المرضى"),
   });
@@ -185,6 +208,7 @@ const AddIncidentForm = () => {
         validationSchema={handleFormSchema}
         onSubmit={(values) => {
           response.current.numOfPatients = values.numOfPatients;
+          setNumOfPatients(true);
         }}
       >
         {({
@@ -202,7 +226,7 @@ const AddIncidentForm = () => {
             noValidate
           >
             <Box
-              sx={{ display: showIncidentForm ? showIncidentForm : "block" }}
+            // sx={{ display: showIncidentForm ? showIncidentForm : "block" }}
             >
               <CustomTextField
                 isRequired
@@ -227,32 +251,71 @@ const AddIncidentForm = () => {
           </Box>
         )}
       </Formik>
-
-      <AdditionalData
-        initialValues={intialAdditionalValues}
-        onSubmit={handleIncidentSubmission}
-        isSubmitted={addDatasubmitFlag}
-        display={showIncidentForm}
-      />
-      <IncidentHeader
+      <CustomAccordion
+        isDisabled={false}
+        isExpanded={additionalDataAccordion}
+        setExpanded={setAdditionalDataAccordion}
+        title="البيــانات الاضـــافية"
+        isClosable={false}
+      >
+        <AdditionalData
+          initialValues={intialAdditionalValues}
+          onSubmit={handleIncidentSubmission}
+          isSubmitted={addDatasubmitFlag}
+          // display={showIncidentForm}
+        />
+      </CustomAccordion>
+      {/* <IncidentHeader
         Companions={response.current.companions}
         data={response.current}
         display={showIncidentHeader}
         onClick={handleEditBtn}
-      />
+      /> */}
       <Box sx={{ display: showCompForm }}>
-        <SubHeader
+        {/* <SubHeader
           setAddingCompanion={setAddingCompanion}
           setSubmitFlag={setSubmitFlag}
           handleEditBtn={handleEditBtn}
           SubHeaderText="بيـــانات المــرافق"
           compStateChanger={setshowCompForm}
-        />
-        <PersonalData
-          initialValues={intialValues}
-          onSubmit={handleCompanionSubmission}
-          isSubmitted={submitFlag}
-        />
+        /> */}
+        <CustomAccordion
+          isDisabled={false}
+          isExpanded={userDataAccordion}
+          setExpanded={setUserDataAccordion}
+          title="بيــانات المـــرافقين"
+          isClosable
+          handleClosed={()=>console.log("ahhhh")}
+        >
+          <Box sx={{ display: "flex" }}>
+            <Box sx={{ width: "75%" }}>
+              <PersonalData
+                initialValues={intialValues}
+                onSubmit={handleCompanionSubmission}
+                isSubmitted={submitFlag}
+                isResetForm
+              />
+            </Box>
+            <Box sx={{ height: "20rem", width: "25%", paddingLeft: "1rem" }}>
+              <Box
+                sx={{
+                  borderRadius: "10px",
+                  backgroundColor: "#eee",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <GetCompanions
+                  companionsArray={response.current.companions}
+                  setIntialValues={setIntialValues}
+                  setEditing={setEditing}
+                  getIdx={setIdx}
+                  submitted = {editing}
+                />
+              </Box>
+            </Box>
+          </Box>
+        </CustomAccordion>
       </Box>
       <Box
         sx={{
@@ -275,7 +338,9 @@ const AddIncidentForm = () => {
           title={
             showCompForm === "none"
               ? "اضــــافة مـــرافق"
-              : "اضـافة مـرافق أخــر"
+              : !editing
+              ? "اضـافة مـرافق أخــر"
+              : "حفـــظ"
           }
           type="button"
           onClick={(e: any) => {

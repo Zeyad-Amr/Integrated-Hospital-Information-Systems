@@ -28,6 +28,16 @@ services:
       POSTGRES_DB: Qasr
     volumes:
       - postgres-data:/var/lib/postgresql/data
+  
+  # model:
+  #   image: model
+  #   container_name: model
+  #   build:
+  #     dockerfile: Dockerfile
+  #     context: ./model
+  #   ports:
+  #     - "5000:5000"
 
 volumes:
   postgres-data:
+

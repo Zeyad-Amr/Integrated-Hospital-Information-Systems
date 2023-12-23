@@ -1,6 +1,7 @@
 import { Box, Grid, Tooltip, Typography } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import React from "react";
+import GetCompanions from "./GetCompanions";
 // import {QRCodeCanvas} from 'qrcode.react';
 
 // const GetCompanions = (props: any) => {
@@ -19,23 +20,27 @@ interface IncidentHeaderProps {
   Companions: {}[];
   data: any;
   display: string;
-  onClick: ()=>void;
+  onClick: () => void;
 }
 
+// export const GetCompanions = ({companionsArray}: any) => {
+//   return (
+//     <Box sx={{display:'flex', flexDirection:'column', padding:'0 0.5rem'}}>
+//       {companionsArray.map((companion: any, idx: number) => (
+//         <Typography key={idx}>
+//           {companion.firstName}&nbsp;{companion.secondName}
+//         </Typography>
+//       ))}
+//     </Box>
+//   );
+// };
 
-export const GetCompanions = ({companionsArray}: any) => {
-  return (
-    <Box sx={{display:'flex', flexDirection:'column', padding:'0 0.5rem'}}>
-      {companionsArray.map((companion: any, idx: number) => (
-        <Typography key={idx}>
-          {companion.firstName}&nbsp;{companion.secondName}
-        </Typography>
-      ))}
-    </Box>
-  );
-};
-
-const IncidentHeader = ({Companions, data, display, onClick}: IncidentHeaderProps) => {
+const IncidentHeader = ({
+  Companions,
+  data,
+  display,
+  onClick,
+}: IncidentHeaderProps) => {
   return (
     <Box sx={{ display: display, marginBottom: "1rem" }}>
       {/* <QRCodeCanvas style={{marginLeft:'1rem'}} value={`
@@ -61,13 +66,20 @@ const IncidentHeader = ({Companions, data, display, onClick}: IncidentHeaderProp
             &nbsp;{data.numOfPatients}
           </Typography>
         </Grid>
-        <Grid item lg={1} md={1} sm={5} xs={5} sx={{ display: "flex", cursor:'default' }}>
-          <Tooltip 
+        <Grid
+          item
+          lg={1}
+          md={1}
+          sm={5}
+          xs={5}
+          sx={{ display: "flex", cursor: "default" }}
+        >
+          <Tooltip
             title={
               Companions.length === 0 ? (
                 "لا يوجد مرافقين"
               ) : (
-                <GetCompanions companionsArray = {Companions}/>
+                <GetCompanions companionsArray={Companions} />
               )
             }
             arrow
@@ -101,8 +113,7 @@ const IncidentHeader = ({Companions, data, display, onClick}: IncidentHeaderProp
         <Grid item lg={1} md={1} sm={5} xs={5} sx={{ display: "flex" }}>
           <Typography>سيارة الاسعاف :</Typography>
           <Typography sx={{ fontWeight: "500" }}>
-            &nbsp;{data.car.firstChar} &nbsp;{data.car.secondChar}{" "}
-            &nbsp;
+            &nbsp;{data.car.firstChar} &nbsp;{data.car.secondChar} &nbsp;
             {data.car.thirdChar} &nbsp;{data.car.number}
           </Typography>
         </Grid>
