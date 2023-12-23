@@ -34,131 +34,131 @@ export class IncidentRepo extends PrismaGenericRepo<
     visits: { select: { code: true, patient: true, creator: true } },
     CompanionsOnIncidents: { select: { companion: true } },
   };
+  // TODO: Handle Incident with new database schema
+  // async createIncident(incidentDto: CreateIncidentDto, creatorId: string) {
+  //   try {
+  //     let car;
+  //     if (incidentDto.additionalInfo?.car) {
+  //       car = {
+  //         connectOrCreate: {
+  //           create: {
+  //             firstChar: incidentDto.additionalInfo.car.firstChar,
+  //             secondChar: incidentDto.additionalInfo.car.secondChar,
+  //             thirdChar: incidentDto.additionalInfo.car.thirdChar,
+  //             number: incidentDto.additionalInfo.car.number,
+  //           },
+  //           where: {
+  //             firstChar_secondChar_thirdChar_number: {
+  //               firstChar: incidentDto.additionalInfo.car.firstChar,
+  //               secondChar: incidentDto.additionalInfo.car.secondChar,
+  //               thirdChar: incidentDto.additionalInfo.car.thirdChar,
+  //               number: incidentDto.additionalInfo.car.number,
+  //             },
+  //           },
+  //         },
+  //       };
+  //     }
 
-  async createIncident(incidentDto: CreateIncidentDto, creatorId: string) {
-    try {
-      let car;
-      if (incidentDto.additionalInfo?.car) {
-        car = {
-          connectOrCreate: {
-            create: {
-              firstChar: incidentDto.additionalInfo.car.firstChar,
-              secondChar: incidentDto.additionalInfo.car.secondChar,
-              thirdChar: incidentDto.additionalInfo.car.thirdChar,
-              number: incidentDto.additionalInfo.car.number,
-            },
-            where: {
-              firstChar_secondChar_thirdChar_number: {
-                firstChar: incidentDto.additionalInfo.car.firstChar,
-                secondChar: incidentDto.additionalInfo.car.secondChar,
-                thirdChar: incidentDto.additionalInfo.car.thirdChar,
-                number: incidentDto.additionalInfo.car.number,
-              },
-            },
-          },
-        };
-      }
+  //     return await this.prismaService.$transaction(async (tx) => {
+  //       let additionalInfo: VisitAdditionalInformation;
+  //       let connectAdditionalInfo;
+  //       if (
+  //         incidentDto.additionalInfo &&
+  //         !isEmptyObject(incidentDto.additionalInfo)
+  //       ) {
+  //         let attendant: Attendant;
+  //         let connectAttendant;
+  //         if (incidentDto.additionalInfo?.attendant) {
+  //           attendant = await tx.attendant.findFirst({
+  //             where: {
+  //               OR: [
+  //                 { SSN: incidentDto.additionalInfo.attendant.SSN },
+  //                 { cardId: incidentDto.additionalInfo.attendant.id },
+  //               ],
+  //             },
+  //           });
+  //           if (!attendant) {
+  //             attendant = await tx.attendant.create({
+  //               data: {
+  //                 name: incidentDto.additionalInfo.attendant.name,
+  //                 SSN: incidentDto.additionalInfo.attendant.SSN,
+  //                 cardId: incidentDto.additionalInfo.attendant.id,
+  //                 attendantRole: incidentDto.additionalInfo.attendant.role,
+  //               },
+  //             });
+  //           }
 
-      return await this.prismaService.$transaction(async (tx) => {
-        let additionalInfo: VisitAdditionalInformation;
-        let connectAdditionalInfo;
-        if (
-          incidentDto.additionalInfo &&
-          !isEmptyObject(incidentDto.additionalInfo)
-        ) {
-          let attendant: Attendant;
-          let connectAttendant;
-          if (incidentDto.additionalInfo?.attendant) {
-            attendant = await tx.attendant.findFirst({
-              where: {
-                OR: [
-                  { SSN: incidentDto.additionalInfo.attendant.SSN },
-                  { cardId: incidentDto.additionalInfo.attendant.id },
-                ],
-              },
-            });
-            if (!attendant) {
-              attendant = await tx.attendant.create({
-                data: {
-                  name: incidentDto.additionalInfo.attendant.name,
-                  SSN: incidentDto.additionalInfo.attendant.SSN,
-                  cardId: incidentDto.additionalInfo.attendant.id,
-                  attendantRole: incidentDto.additionalInfo.attendant.role,
-                },
-              });
-            }
+  //           connectAttendant = {
+  //             connect: { id: attendant?.id },
+  //           };
+  //         }
+  //         additionalInfo = await tx.visitAdditionalInformation.create({
+  //           data: {
+  //             Car: car,
+  //             cameFrom: incidentDto.additionalInfo.cameFrom,
+  //             notes: incidentDto.additionalInfo.notes,
+  //             injuryCause: incidentDto.additionalInfo.injuryCause,
+  //             injuryLocation: incidentDto.additionalInfo.injuryCause,
+  //             Attendant: connectAttendant,
+  //           },
+  //         });
 
-            connectAttendant = {
-              connect: { id: attendant?.id },
-            };
-          }
-          additionalInfo = await tx.visitAdditionalInformation.create({
-            data: {
-              Car: car,
-              cameFrom: incidentDto.additionalInfo.cameFrom,
-              notes: incidentDto.additionalInfo.notes,
-              injuryCause: incidentDto.additionalInfo.injuryCause,
-              injuryLocation: incidentDto.additionalInfo.injuryCause,
-              Attendant: connectAttendant,
-            },
-          });
+  //         connectAdditionalInfo = {
+  //           connect: { id: additionalInfo?.id },
+  //         };
+  //       }
 
-          connectAdditionalInfo = {
-            connect: { id: additionalInfo?.id },
-          };
-        }
+  //       await tx.person.createMany({
+  //         data: incidentDto.companions,
+  //         skipDuplicates: true,
+  //       });
+  //       const companionsSSNs = incidentDto.companions.map((c) => c.SSN);
 
-        await tx.person.createMany({
-          data: incidentDto.companions,
-          skipDuplicates: true,
-        });
-        const companionsSSNs = incidentDto.companions.map((c) => c.SSN);
+  //       const companions = await tx.person.findMany({
+  //         where: { SSN: { in: companionsSSNs } },
+  //       });
 
-        const companions = await tx.person.findMany({
-          where: { SSN: { in: companionsSSNs } },
-        });
+  //       const companionsIds: Prisma.CompanionsOnIncidentsCreateManyIncidentInput[] =
+  //         companions.map((c) => {
+  //           return { companionId: c.id };
+  //         });
 
-        const companionsIds: Prisma.CompanionsOnIncidentsCreateManyIncidentInput[] =
-          companions.map((c) => {
-            return { companionId: c.id };
-          });
+  //       const incident = await tx.incident.create({
+  //         data: {
+  //           numberOfPatients: incidentDto.numerOfPatients,
+  //           AdditionalInformation: connectAdditionalInfo,
+  //           CompanionsOnIncidents: {
+  //             createMany: {
+  //               data: companionsIds,
+  //               skipDuplicates: true,
+  //             },
+  //           },
+  //         },
+  //       });
 
-        const incident = await tx.incident.create({
-          data: {
-            numberOfPatients: incidentDto.numerOfPatients,
-            AdditionalInformation: connectAdditionalInfo,
-            CompanionsOnIncidents: {
-              createMany: {
-                data: companionsIds,
-                skipDuplicates: true,
-              },
-            },
-          },
-        });
+  //       let visitCode = await this.visitRepo.createVisitCode();
 
-        let visitCode = await this.visitRepo.createVisitCode();
+  //       const visitsData = [];
+  //       for (let i = 0; i < incidentDto.numerOfPatients; i++) {
+  //         visitsData.push({
+  //           code: visitCode,
+  //           incidentId: incident.id,
+  //           creatorId: creatorId,
+  //         });
+  //         const visitNumber = parseInt(visitCode.slice(8)) + 1;
+  //         visitCode = `${visitCode.slice(0, 8)}${visitNumber}`;
+  //       }
 
-        const visitsData = [];
-        for (let i = 0; i < incidentDto.numerOfPatients; i++) {
-          visitsData.push({
-            code: visitCode,
-            incidentId: incident.id,
-            creatorId: creatorId,
-          });
-          const visitNumber = parseInt(visitCode.slice(8)) + 1;
-          visitCode = `${visitCode.slice(0, 8)}${visitNumber}`;
-        }
+  //       await tx.visit.createMany({ data: visitsData });
 
-        await tx.visit.createMany({ data: visitsData });
+  //       const visitsCodes = visitsData.map((visit) => visit.code);
 
-        const visitsCodes = visitsData.map((visit) => visit.code);
-
-        return { incident, visitsCodes };
-      });
-    } catch (error) {
-      throw error;
-    }
-  }
+  //       return { incident, visitsCodes };
+  //     });
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
 
   async getById(id: string) {
     try {
@@ -196,6 +196,6 @@ export class IncidentRepo extends PrismaGenericRepo<
         });
       });
       return incidents;
-    } catch (error) {}
+    } catch (error) { }
   }
 }

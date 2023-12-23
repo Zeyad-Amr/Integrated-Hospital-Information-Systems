@@ -13,6 +13,13 @@ import { AdditionalInformation } from 'src/incident/dto/create-incident.dto';
 import { CreatePersonDto } from 'src/person/dto/create-person.dto';
 import { IsValidEnumValue } from 'src/shared/special-validator';
 
+export class CompanionDto extends CreatePersonDto {
+  @ApiProperty({ type: String, example: 'BROTHER', required: false })
+  @IsOptional()
+  @Validate(IsValidEnumValue, [KinshipEnum])
+  kinship: KinshipEnum;
+}
+
 export class VisitDto {
   @ApiProperty({ type: Number, example: 55, required: true })
   @IsInt()
@@ -27,17 +34,18 @@ export class VisitDto {
 
 export class CreateVisitDto {
   @ApiProperty({ type: CreatePersonDto, required: true })
+  @IsOptional()
   @IsObject()
   @ValidateNested()
   @Type(() => CreatePersonDto)
   patient: CreatePersonDto;
 
-  @ApiProperty({ type: CreatePersonDto, required: false })
+  @ApiProperty({ type: CompanionDto, required: false })
   @IsOptional()
   @IsObject()
   @ValidateNested()
-  @Type(() => CreatePersonDto)
-  companion: CreatePersonDto;
+  @Type(() => CompanionDto)
+  companion: CompanionDto;
 
   @ApiProperty({ type: VisitDto, required: true })
   @IsObject()

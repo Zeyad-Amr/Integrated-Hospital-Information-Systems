@@ -1,11 +1,8 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Delete } from '@nestjs/common';
 import { PersonService } from './person.service';
-import { CreatePersonDto } from './dto/create-person.dto';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiConflictResponse,
-  ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -26,23 +23,8 @@ import {
 @ApiTags('person')
 @Controller('person')
 export class PersonController {
-  constructor(private readonly personService: PersonService) {}
+  constructor(private readonly personService: PersonService) { }
 
-  @ApiOperation({
-    description:
-      'create a new person or update its data if exists (send the data that you want to be stored)',
-  })
-  @ApiCreatedResponse()
-  @ApiBadRequestResponse()
-  @ApiConflictResponse({ description: 'person already exists' })
-  @Post()
-  create(@Body() createPersonDto: CreatePersonDto) {
-    try {
-      return this.personService.create(createPersonDto);
-    } catch (error) {
-      throw handleError(error);
-    }
-  }
 
   @ApiOperation({ description: 'get all persons data' })
   @ApiOkResponse()

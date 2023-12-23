@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { VisitRepo } from '../visit/visit.repo';
+import { VisitService } from 'src/visit/visit.service';
 
 @Injectable()
 export class StreamingService {
-  constructor(private readonly visitRepo: VisitRepo) {}
+  constructor(private readonly visitService: VisitService) { }
 
-  async findAllVisits() {
-    return await this.visitRepo.getAll();
+  async getERareaVisits() {
+    return await this.visitService.findERAreaVisits();
   }
 
   findOne(id: number) {

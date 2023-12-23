@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Req, Patch } from '@nestjs/common';
 import { VisitService } from './visit.service';
 import { CreateVisitDto } from './dto/create-visit.dto';
 
@@ -24,12 +24,13 @@ import {
 } from 'src/shared/decorators/filters.decorator';
 import { SortingParams, Sorting } from 'src/shared/decorators/order.decorator';
 import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
+import { TriageAXDto } from './dto/triage-assessment.dto';
 
 @ApiBearerAuth()
 @ApiTags('visit')
 @Controller('visit')
 export class VisitController {
-  constructor(private readonly visitService: VisitService) {}
+  constructor(private readonly visitService: VisitService) { }
 
   @ApiOperation({
     description: 'This to add normal visit for know patient data',
@@ -40,6 +41,20 @@ export class VisitController {
   async create(@Body() createVisitDto: CreateVisitDto, @Req() req) {
     try {
       return await this.visitService.create(createVisitDto, req.user.sub);
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  @ApiOperation({
+    description: 'This to add triage assessment to the visit with given code',
+  })
+  @ApiCreatedResponse({ description: 'triage assessment has been created successfully' })
+  @ApiBadRequestResponse({ description: 'body has missed some data' })
+  @Patch('triage/:visitCode')
+  async addTriageAX(@Body() triageAXDto: TriageAXDto, @Param('visitCode') visitCode: string) {
+    try {
+      return await this.visitService.addTriageAX(visitCode, triageAXDto);
     } catch (error) {
       throw handleError(error);
     }
@@ -75,10 +90,23 @@ export class VisitController {
   @ApiOkResponse()
   @ApiNotFoundResponse()
   @ApiCreatedResponse()
-  @Get(':visitcode')
-  findOne(@Param('visitcode') visitCode: string) {
+  @Get(':visitCode')
+  async findOne(@Param('visitCode') visitCode: string) {
     try {
-      return this.visitService.findOne(visitCode);
+      return await this.visitService.findOne(visitCode);
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  @ApiOperation({ description: 'This is to get all visit data in the ER area' })
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiCreatedResponse()
+  @Get('all/er-area')
+  async findERAreaVisits() {
+    try {
+      return await this.visitService.findERAreaVisits();
     } catch (error) {
       throw handleError(error);
     }

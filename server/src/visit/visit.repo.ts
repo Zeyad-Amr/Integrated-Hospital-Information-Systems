@@ -3,13 +3,17 @@ import { PrismaService } from 'src/shared/services/prisma-client/prisma.service'
 import { CreateVisitDto } from './dto/create-visit.dto';
 import {
   Attendant,
-  Person,
+  Companion,
+  Patient,
+  PersonType,
+  Prisma,
   Visit,
   VisitAdditionalInformation,
 } from '@prisma/client';
 import { PersonRepo } from 'src/person/person.repo';
 import { PrismaGenericRepo } from 'src/shared/services/prisma-client/prisma-generic.repo';
 import { isEmptyObject } from 'src/shared/util.functions.ts/general.utils';
+import { TriageAXDto } from './dto/triage-assessment.dto';
 
 @Injectable()
 export class VisitRepo extends PrismaGenericRepo<Visit> {
@@ -26,11 +30,11 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
 
     const lastCreatedVisit: Visit[] = await this.prismaService
       .$queryRaw`SELECT * FROM "Visit" 
-                                                                                    WHERE "createdAt" >= ${today}
-                                                                                    AND
-                                                                                    "createdAt"< CURRENT_DATE + INTERVAL '1 day'
-                                                                                    ORDER BY CAST(SUBSTRING(code, 9) AS integer) DESC
-                                                                                    LIMIT 1`;
+                WHERE "createdAt" >= ${today}
+                AND
+                "createdAt"< CURRENT_DATE + INTERVAL '1 day'
+                ORDER BY CAST(SUBSTRING(code, 9) AS integer) DESC
+                LIMIT 1`;
 
     let sequenceNumber = 1;
     if (lastCreatedVisit.length != 0) {
@@ -43,63 +47,62 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
   }
 
   async createPatientWithVisit(
-    createPatientDto: CreateVisitDto,
+    createVisitDto: CreateVisitDto,
     creatorId: string,
   ): Promise<any> {
     try {
       let car = undefined;
-      if (createPatientDto?.additionalInfo?.car) {
+      if (createVisitDto?.additionalInfo?.car) {
         car = {
           connectOrCreate: {
             create: {
-              firstChar: createPatientDto.additionalInfo.car.firstChar,
-              secondChar: createPatientDto.additionalInfo.car.secondChar,
-              thirdChar: createPatientDto.additionalInfo.car.thirdChar,
-              number: createPatientDto.additionalInfo.car.number,
+              firstChar: createVisitDto.additionalInfo.car.firstChar,
+              secondChar: createVisitDto.additionalInfo.car.secondChar,
+              thirdChar: createVisitDto.additionalInfo.car.thirdChar,
+              number: createVisitDto.additionalInfo.car.number,
             },
             where: {
               firstChar_secondChar_thirdChar_number: {
-                firstChar: createPatientDto.additionalInfo.car.firstChar,
-                secondChar: createPatientDto.additionalInfo.car.secondChar,
-                thirdChar: createPatientDto.additionalInfo.car.thirdChar,
-                number: createPatientDto.additionalInfo.car.number,
+                firstChar: createVisitDto.additionalInfo.car.firstChar,
+                secondChar: createVisitDto.additionalInfo.car.secondChar,
+                thirdChar: createVisitDto.additionalInfo.car.thirdChar,
+                number: createVisitDto.additionalInfo.car.number,
               },
             },
           },
         };
       }
-
+      // ======================================== Start of transaction =========================================================
       const visit = await this.prismaService.$transaction(async (tx) => {
         try {
           let additionalInfo: VisitAdditionalInformation;
           let connectAdditionalInfo;
           if (
-            createPatientDto.additionalInfo &&
-            !isEmptyObject(createPatientDto.additionalInfo)
+            createVisitDto.additionalInfo &&
+            !isEmptyObject(createVisitDto.additionalInfo)
           ) {
             let attendant: Attendant;
             let connectAttendant;
-            if (createPatientDto.additionalInfo?.attendant) {
+            if (createVisitDto.additionalInfo?.attendant) {
               attendant = await tx.attendant.findFirst({
                 where: {
                   OR: [
-                    { SSN: createPatientDto.additionalInfo.attendant.SSN },
-                    { cardId: createPatientDto.additionalInfo.attendant.id },
+                    { SSN: createVisitDto.additionalInfo.attendant.SSN },
+                    { cardId: createVisitDto.additionalInfo.attendant.id },
                   ],
                 },
               });
               if (!attendant) {
                 attendant = await tx.attendant.create({
                   data: {
-                    name: createPatientDto.additionalInfo.attendant.name,
-                    SSN: createPatientDto.additionalInfo.attendant.SSN,
-                    cardId: createPatientDto.additionalInfo.attendant.id,
+                    name: createVisitDto.additionalInfo.attendant.name,
+                    SSN: createVisitDto.additionalInfo.attendant.SSN,
+                    cardId: createVisitDto.additionalInfo.attendant.id,
                     attendantRole:
-                      createPatientDto.additionalInfo.attendant.role,
+                      createVisitDto.additionalInfo.attendant.role,
                   },
                 });
               }
-
               connectAttendant = {
                 connect: { id: attendant?.id },
               };
@@ -107,57 +110,98 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
             additionalInfo = await tx.visitAdditionalInformation.create({
               data: {
                 Car: car,
-                cameFrom: createPatientDto.additionalInfo.cameFrom,
-                notes: createPatientDto.additionalInfo.notes,
-                injuryCause: createPatientDto.additionalInfo.injuryCause,
-                injuryLocation: createPatientDto.additionalInfo.injuryCause,
+                cameFrom: createVisitDto.additionalInfo.cameFrom,
+                notes: createVisitDto.additionalInfo.notes,
+                injuryCause: createVisitDto.additionalInfo.injuryCause,
+                injuryLocation: createVisitDto.additionalInfo.injuryCause,
                 Attendant: connectAttendant,
               },
             });
-
             connectAdditionalInfo = {
               connect: { id: additionalInfo?.id },
             };
           }
-          if (!createPatientDto.patient?.SSN) {
-            createPatientDto.patient.SSN = null;
+          // ======================================== Patient =========================================================
+          let patient: Patient;
+          let patientConnect: Prisma.PatientWhereUniqueInput;
+          if (!createVisitDto.patient?.SSN) {
+            createVisitDto.patient.SSN = null;
           }
-
-          const patient = await this.personRepo.createIfNotExist(
-            createPatientDto.patient,
-          );
-          let companion: Person;
-          let companionConnect;
-          if (createPatientDto.companion) {
-            companion = await this.personRepo.createIfNotExist(
-              createPatientDto.companion,
-            );
-            companionConnect = {
-              connect: {
-                id: companion?.id,
-              },
-            };
+          const person = await this.personRepo.findBySSN(createVisitDto.patient.SSN)
+          if (person.type !== PersonType.PATIENT) {
+            patient = await tx.patient.create({
+              data: {
+                person: {
+                  connectOrCreate: {
+                    where: {
+                      SSN: createVisitDto.patient.SSN ? createVisitDto.patient.SSN : ""
+                    },
+                    create: {
+                      ...createVisitDto.patient, type: PersonType.PATIENT
+                    }
+                  }
+                }
+              }
+            })
+            patientConnect = {
+              id: patient.id,
+            }
+          } else {
+            patientConnect = {
+              personId: person.id
+            }
           }
-
+          // ======================================== Companion =========================================================
+          let companion: Companion;
+          let companionConnect: Prisma.CompanionWhereUniqueInput;
+          if (createVisitDto.companion) {
+            const kinship = createVisitDto.companion.kinship
+            delete createVisitDto.companion.kinship
+            const person = await this.personRepo.findBySSN(createVisitDto.companion.SSN)
+            if (person.type !== PersonType.COMPANION) {
+              companion = await tx.companion.create({
+                data: {
+                  kinship,
+                  person: {
+                    connectOrCreate: {
+                      where: { SSN: createVisitDto.companion.SSN },
+                      create: {
+                        ...createVisitDto.companion, type: PersonType.COMPANION
+                      }
+                    }
+                  }
+                }
+              })
+              companionConnect = companion?.id ? {
+                id: companion.id,
+              } : undefined
+            } else {
+              companionConnect = {
+                personId: person.id
+              }
+            }
+          }
+          // ======================================== Create Visit  =========================================================
           const visitCode = await this.createVisitCode();
           const visit = await tx.visit.create({
             data: {
-              ...createPatientDto.visit,
+              ...createVisitDto.visit,
               code: visitCode,
               creator: {
                 connect: { id: creatorId },
               },
               patient: {
-                connect: {
-                  id: patient.id,
-                },
+                connect: patientConnect,
               },
-              companion: companionConnect,
+              companion: {
+                connect: companionConnect,
+              },
               AdditionalInformation: connectAdditionalInfo,
             },
+            include: this.visitIncludes
           });
 
-          return { patient, companion, visit };
+          return { visit };
         } catch (error) {
           throw error;
         }
@@ -170,17 +214,56 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
 
   async findByVisitCode(visitCode: string) {
     try {
-      return await this.prismaService.visit.findFirst({
+      return await this.prismaService.visit.findUniqueOrThrow({
         where: {
           code: visitCode,
         },
-        include: {
-          patient: true,
-          companion: true,
-          creator: true,
-          incident: true,
-        },
+        include: this.visitIncludes,
       });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async addTriageAss(code: string, data: TriageAXDto) {
+    try {
+      const visit = await this.prismaService.visit.findUnique({
+        where: {
+          code,
+        },
+        select: { patientId: true },
+      });
+      const updatedVisit = await this.prismaService.visit.update({
+        where: { code },
+        data: {
+          medicalRecord: {
+            create: {
+              mainComplaint: data.mainComplaint,
+              consciousnessLevel: data.LOC,
+              triage: data.triage,
+              vitals: {
+                create: {
+                  ...data.vitals
+                }
+              },
+              patientId: visit.patientId
+            }
+          },
+          transfers: {
+            create: {
+              from: "ER Area",
+              to: data.transferTo
+            }
+          },
+          patient: {
+            update: {
+              comorbidities: { push: data.comorbidities }
+            }
+          }
+        },
+        include: this.triageIncludes
+      })
+      return updatedVisit
     } catch (error) {
       throw error;
     }
@@ -194,5 +277,20 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
     } catch (error) {
       throw error;
     }
+  }
+
+  visitIncludes: Prisma.VisitInclude =
+    {
+      patient: { include: { person: true } },
+      companion: { include: { person: true } },
+      creator: { include: { person: true, department: true } },
+      AdditionalInformation: { include: { Attendant: true, Car: true } },
+      incident: true,
+    }
+
+  triageIncludes: Prisma.VisitInclude = {
+    ...this.visitIncludes,
+    medicalRecord: { include: { vitals: true, } },
+    transfers: true,
   }
 }

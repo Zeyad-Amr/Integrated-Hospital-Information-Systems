@@ -27,7 +27,7 @@ import { AuthRequest } from './auth.interface';
 @ApiBearerAuth()
 @Controller('user')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   // ******* this api for development only MUST be removed in production *******
   @ApiOperation({
@@ -65,7 +65,7 @@ export class AuthController {
     try {
       const { username } = req.user;
       const { email, employee } = await this.authService.findOne(username);
-      return { email, username, ...employee };
+      return { auth: { email, username }, ...employee };
     } catch (error) {
       throw handleError(error);
     }
