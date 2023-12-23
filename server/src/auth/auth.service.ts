@@ -83,7 +83,7 @@ export class AuthService {
   };
 
   async findAll() {
-    return await this.authRepo.findAll();
+    return await this.authRepo.getAll();
   }
 
   hashPassword = async (password: string) => {

@@ -7,12 +7,4 @@ export class DepartmentRepo extends PrismaGenericRepo<any> {
   constructor(private prismaService: PrismaService) {
     super('department', prismaService);
   }
-
-  async findAll() {
-    try {
-      return await this.prismaService.department.findMany();
-    } catch (error) {
-      throw error;
-    }
-  }
 }

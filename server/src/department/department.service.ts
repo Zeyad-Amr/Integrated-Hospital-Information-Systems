@@ -7,7 +7,7 @@ export class DepartmentService {
 
   async findAll() {
     try {
-      return await this.departmentRepo.findAll();
+      return (await this.departmentRepo.getAll()).items;
     } catch (error) {
       throw error;
     }
