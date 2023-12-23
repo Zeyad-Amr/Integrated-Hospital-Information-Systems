@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Person } from '@prisma/client';
+import { Person, PersonType } from '@prisma/client';
 import { PrismaGenericRepo } from 'src/shared/services/prisma-client/prisma-generic.repo';
 import { PrismaService } from 'src/shared/services/prisma-client/prisma.service';
 import { CreatePersonDto } from './dto/create-person.dto';
@@ -10,7 +10,7 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
     super('person', prismaService);
   }
 
-  async createIfNotExist(person: CreatePersonDto): Promise<Person> {
+  async createIfNotExist(person: CreatePersonDto, type: PersonType): Promise<Person> {
     try {
       return await this.prismaService.person.upsert({
         where: { SSN: person.SSN },
@@ -19,6 +19,7 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
         },
         create: {
           ...person,
+          type
         },
       });
     } catch (error) {

@@ -25,7 +25,7 @@ import {
 @ApiTags('patient')
 @Controller('patient')
 export class PatientController {
-  constructor(private readonly patientService: PatientService) {}
+  constructor(private readonly patientService: PatientService) { }
 
   @ApiOperation({ description: 'get all patients' })
   @ApiOkResponse()

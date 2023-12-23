@@ -4,13 +4,14 @@ import { PersonRepo } from './person.repo';
 import { Sorting } from 'src/shared/decorators/order.decorator';
 import { Pagination } from 'src/shared/decorators/pagination.decorator';
 import { Filter } from 'src/shared/decorators/filters.decorator';
+import { PersonType } from '@prisma/client';
 
 @Injectable()
 export class PersonService {
-  constructor(private readonly personRepo: PersonRepo) {}
-  async create(createPersonDto: CreatePersonDto) {
+  constructor(private readonly personRepo: PersonRepo) { }
+  async create(createPersonDto: CreatePersonDto, type: PersonType) {
     try {
-      return await this.personRepo.createIfNotExist(createPersonDto);
+      return await this.personRepo.createIfNotExist(createPersonDto, type);
     } catch (error) {
       throw error;
     }

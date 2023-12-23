@@ -7,14 +7,16 @@ import { Sorting } from 'src/shared/decorators/order.decorator';
 
 @Injectable()
 export class IncidentService {
-  constructor(private readonly incidentRepo: IncidentRepo) {}
-  create(createIncidentDto: CreateIncidentDto, creatorId: string) {
-    try {
-      return this.incidentRepo.createIncident(createIncidentDto, creatorId);
-    } catch (error) {
-      throw error;
-    }
-  }
+  constructor(private readonly incidentRepo: IncidentRepo) { }
+  // TODO: Handle Incident with new database schema
+
+  // create(createIncidentDto: CreateIncidentDto, creatorId: string) {
+  //   try {
+  //     return this.incidentRepo.createIncident(createIncidentDto, creatorId);
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
 
   async findAll(
     paginationParams: Pagination,

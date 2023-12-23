@@ -1,7 +1,7 @@
 import { PrismaGenericRepo } from '../shared/services/prisma-client/prisma-generic.repo';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../shared/services/prisma-client/prisma.service';
-import { Employee, Prisma } from '@prisma/client';
+import { Employee, PersonType, Prisma } from '@prisma/client';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { Pagination } from 'src/shared/decorators/pagination.decorator';
@@ -36,6 +36,7 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
               where: { SSN: personalData.SSN },
               create: {
                 ...personalData,
+                type: PersonType.EMPLOYEE
               },
             },
           },

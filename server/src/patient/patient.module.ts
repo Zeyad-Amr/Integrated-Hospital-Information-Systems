@@ -16,4 +16,4 @@ import { VisitRepo } from 'src/visit/visit.repo';
     VisitRepo,
   ],
 })
-export class PatientModule {}
+export class PatientModule { }
