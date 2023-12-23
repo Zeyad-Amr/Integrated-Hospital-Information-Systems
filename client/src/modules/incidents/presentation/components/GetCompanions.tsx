@@ -8,8 +8,10 @@ const GetCompanions = ({
   setIntialValues,
   setEditing,
   getIdx,
+  submitted,
 }: any) => {
   const [select, setSelect] = useState<number>();
+
   return (
     <Box sx={{ padding: "1rem", height: "100%" }}>
       <Typography
@@ -35,7 +37,10 @@ const GetCompanions = ({
                   display: "flex",
                   justifyContent: "space-between",
                   // marginBottom: "0.5rem",
-                  backgroundColor: idx === select ? "white" : "transparent",
+                  backgroundColor:
+                    idx === select && submitted !== false
+                      ? "white"
+                      : "transparent",
                   padding: "0.4rem 1rem",
                   alignItems: "center",
                   borderRadius: "10px",
