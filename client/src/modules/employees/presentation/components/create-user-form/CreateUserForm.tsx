@@ -7,8 +7,8 @@ import PersonalData from "@/core/shared/components/PersonalData";
 import { Grid } from "@mui/material";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
-import { useAppDispatch } from "@/core/redux/store";
-import { createEmployee } from "../../controllers/thunks/employee-thunks";
+// import { useAppDispatch } from "@/core/redux/store";
+// import { createEmployee } from "../../controllers/thunks/employee-thunks";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
 import EmployeeEntity from "@/modules/employees/domain/entities/employee-entity";
 import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
@@ -28,7 +28,7 @@ import {
 } from "@/modules/auth/domain/data-values/interfaces";
 
 const CreateUserForm = () => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   // useRef
   const refSubmitPerson: any = useRef(null);
@@ -38,14 +38,17 @@ const CreateUserForm = () => {
 
   // useState
   const [submitUserFlag, setSubmitUserFlag] = useState<boolean>(false);
-  const [userDataAccordion, setUserDataAccordion] = useState<boolean>(true);
-  const [restUserDataAccordion, setRestUserDataAccordion] =
+  const [personSectionExpanded, setPersonSectionExpanded] =
     useState<boolean>(true);
+  const [authSectionExpanded, setAuthSectionExpanded] = useState<boolean>(true);
+  const [employeeSectionExpanded, setEmployeeSectionExpanded] =
+    useState<boolean>(true);
+
   const [combinedValues, setCombinedValues] = useState<EmployeeInterface>(
     EmployeeEntity.defaultValue()
   );
 
-  const handleAllUserDataSubmit = (values: PersonInterface) => {
+  const handlePersonSubmit = (values: PersonInterface) => {
     setCombinedValues((prevValues: EmployeeInterface) => ({
       ...prevValues,
       person: values,
@@ -56,14 +59,8 @@ const CreateUserForm = () => {
       },
       role: refSubmitEmployee.current.role,
       shift: refSubmitEmployee.current.shift,
-      departmentId: refSubmitEmployee.current.department,
+      department: refSubmitEmployee.current.department,
     }));
-  };
-
-  const onTriggerAllUserForm = () => {
-    if (refSubmitPerson.current) {
-      refSubmitPerson.current.click();
-    }
   };
 
   // rest user functions and variables
@@ -76,38 +73,44 @@ const CreateUserForm = () => {
     refSubmitAuth.current = values;
   };
 
+  const onTriggerAllUserForm = () => {
+    if (refSubmitPerson.current) {
+      refSubmitPerson.current.click();
+    }
+  };
+
   useEffect(() => {
     if (checkFirstRender.current) {
       checkFirstRender.current = false;
     } else {
       // post request
-      dispatch(createEmployee(combinedValues));
+      // dispatch(createEmployee(combinedValues));
       console.log(combinedValues);
     }
   }, [combinedValues]);
 
   return (
     <Box sx={{ marginTop: "2.5rem" }}>
-      {/* start user personal data */}
+      {/* Peronal Data Section */}
       <CustomAccordion
         isDisabled={false}
-        isExpanded={userDataAccordion}
-        setExpanded={setUserDataAccordion}
+        isExpanded={personSectionExpanded}
+        setExpanded={setPersonSectionExpanded}
         title="البيانات الشخصية"
         isClosable={false}
       >
         <PersonalData
           initialValues={PersonEntity.defaultValue()}
           isSubmitted={submitUserFlag}
-          onSubmit={handleAllUserDataSubmit}
+          onSubmit={handlePersonSubmit}
         />
       </CustomAccordion>
 
-      {/* start rest user form */}
+      {/* Auth Section */}
       <CustomAccordion
         isDisabled={false}
-        isExpanded={restUserDataAccordion}
-        setExpanded={setRestUserDataAccordion}
+        isExpanded={authSectionExpanded}
+        setExpanded={setAuthSectionExpanded}
         title="بيانات المستخدم"
         isClosable={false}
       >
@@ -115,6 +118,7 @@ const CreateUserForm = () => {
           initialValues={AuthDataEntity.defaultValue()}
           validationSchema={AuthDataEntity.getSchema()}
           onSubmit={(values) => {
+            console.log("Validate Auth:", values);
             handleAuthSubmit(values);
           }}
         >
@@ -181,7 +185,7 @@ const CreateUserForm = () => {
               <Button
                 type="submit"
                 sx={{ display: "none" }}
-                ref={refSubmitPerson}
+                ref={refSubmitAuth}
               ></Button>
             </Box>
           )}
@@ -190,8 +194,8 @@ const CreateUserForm = () => {
 
       <CustomAccordion
         isDisabled={false}
-        isExpanded={restUserDataAccordion}
-        setExpanded={setRestUserDataAccordion}
+        isExpanded={employeeSectionExpanded}
+        setExpanded={setEmployeeSectionExpanded}
         title="بيانات الموظف"
         isClosable={false}
       >
@@ -199,6 +203,7 @@ const CreateUserForm = () => {
           initialValues={EmployeeEntity.defaultValue()}
           validationSchema={EmployeeEntity.getSchema()}
           onSubmit={(values) => {
+            console.log("Validate Emmployee:", values);
             handleEmployeeSubmit(values);
           }}
         >
@@ -259,7 +264,7 @@ const CreateUserForm = () => {
               <Button
                 type="submit"
                 sx={{ display: "none" }}
-                ref={refSubmitPerson}
+                ref={refSubmitEmployee}
               ></Button>
             </Box>
           )}

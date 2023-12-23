@@ -1,3 +1,4 @@
+import { identityList } from "../data-values/constants";
 import { GenderEnum, GovernateEnum, IdentityEnum } from "../data-values/enums";
 import { IGender, IGovernate, IIdentity } from "../data-values/interfaces";
 import PersonInterface from "../interfaces/person-interface";
@@ -158,7 +159,7 @@ export default class PersonEntity implements PersonInterface {
             thirdName: undefined,
             fourthName: undefined,
             SSN: undefined,
-            verificationMethod: undefined,
+            verificationMethod: identityList[0],
             gender: undefined,
             birthDate: undefined,
             phone: undefined,

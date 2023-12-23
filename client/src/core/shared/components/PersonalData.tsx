@@ -197,12 +197,12 @@ const PersonalData = ({
             </Grid>
           </Grid>
           <Grid container columns={12} spacing={2}>
-            {/* <Grid item lg={3} md={3} sm={12} xs={12}>
+            <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
                 isRequired
                 name="birthDate"
                 label="تاريخ الميلاد"
-                value={values.birthDate}
+                value={values.birthDate?.toString()}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={errors.birthDate}
@@ -212,7 +212,7 @@ const PersonalData = ({
                   type: "date",
                 }}
               />
-            </Grid> */}
+            </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
                 name="phone"
