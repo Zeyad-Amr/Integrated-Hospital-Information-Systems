@@ -20,6 +20,7 @@ export class AuthUpdateDto {
     description: 'employee username (required field)',
     example: 'Admin123',
   })
+  @IsOptional()
   @IsString()
   @MinLength(5)
   username: string;
@@ -42,7 +43,7 @@ export class UpdateEmployeeDto {
 
   @ApiProperty({
     type: String,
-    example: 'RECEPTIONIST',
+    example: 'EMPLOYEE',
   })
   @IsOptional()
   @Validate(IsValidEnumValue, [RoleEnum])
@@ -58,7 +59,7 @@ export class UpdateEmployeeDto {
 
   @ApiProperty({
     type: String,
-    example: 'RECEPTIONIST',
+    example: 'c6527fcc-2b70-4572-a415-7e74c6d0df65',
   })
   @IsOptional()
   @IsUUID()

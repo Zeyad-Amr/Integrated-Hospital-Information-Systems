@@ -6,7 +6,7 @@ export class StreamingService {
   constructor(private readonly visitRepo: VisitRepo) {}
 
   async findAllVisits() {
-    return await this.visitRepo.findAll();
+    return await this.visitRepo.getAll();
   }
 
   findOne(id: number) {

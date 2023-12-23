@@ -25,10 +25,6 @@ export class AuthRepo extends PrismaGenericRepo<User> {
     }
   }
 
-  async findAll(): Promise<User[]> {
-    return await this.prismaService.user.findMany();
-  }
-
   async update(
     username: string,
     item: Prisma.UserUpdateInput,

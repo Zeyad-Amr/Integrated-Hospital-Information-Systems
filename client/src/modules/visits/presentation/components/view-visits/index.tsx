@@ -1,6 +1,6 @@
 import CustomDataTable from "@/core/shared/components/CustomDataTable";
 import { Button, } from "@mui/material";
-import { DataItem, data, header } from "./data";
+import { DataItem, header } from "./data";
 import { Box } from "@mui/system";
 import CompleteVisit from "../complete-visit-data/CompleteVisit";
 import { useRef, useState } from "react";
@@ -17,14 +17,14 @@ const VisitsTable = () => {
 
     // useState
     const [showDialog, setShawDialog] = useState("none");
-    const [streamedData, setStreamedData] = useState("");
+    const [streamedData, setStreamedData] = useState([]);
 
     useEffect(() => {
         fetchEventSource(HOST_API + 'streaming/event', {
             onmessage(ev) {
                 refStreamedData.current = ev.data;
                 console.log(ev.data);
-                setStreamedData(ev.data);
+                setStreamedData(JSON.parse(ev.data).items);
             },
             headers: {
                 "Authorization": "Bearer " + LocalStorage.fetch<string>(LocalStorageKeys.token)
@@ -40,7 +40,7 @@ const VisitsTable = () => {
     }
 
     //* data that in the state 
-    const apiData: any[] = JSON.parse(streamedData ? streamedData : "[]")
+    const apiData: any[] = streamedData
     let tableData: DataItem[] = []
     apiData.forEach((item) => {
         tableData.push({
