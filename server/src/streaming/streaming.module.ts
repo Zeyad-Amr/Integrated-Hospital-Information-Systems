@@ -1,13 +1,11 @@
 import { Module } from '@nestjs/common';
 import { StreamingService } from './streaming.service';
 import { StreamingController } from './streaming.controller';
-import { VisitModule } from 'src/visit/visit.module';
 import { PrismaService } from 'src/shared/services/prisma-client/prisma.service';
-import { DepartmentModule } from 'src/department/department.module';
+import { VisitService } from 'src/visit/visit.service';
 
 @Module({
-  imports: [VisitModule, DepartmentModule],
   controllers: [StreamingController],
-  providers: [StreamingService, PrismaService],
+  providers: [StreamingService, PrismaService, VisitService],
 })
-export class StreamingModule {}
+export class StreamingModule { }

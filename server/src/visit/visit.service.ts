@@ -6,19 +6,20 @@ import { Visit } from '@prisma/client';
 import { PaginatedResource } from 'src/shared/types/paginated.resource';
 import { Filter } from 'src/shared/decorators/filters.decorator';
 import { Sorting } from 'src/shared/decorators/order.decorator';
+import { TriageAXDto } from './dto/triage-assessment.dto';
 
 @Injectable()
 export class VisitService {
-  constructor(private readonly visitRepo: VisitRepo) {}
+  constructor(private readonly visitRepo: VisitRepo) { }
   async create(createVisitDto: CreateVisitDto, creatorId: string) {
     try {
       if (
-        createVisitDto.companion &&
+        createVisitDto.companion?.SSN &&
         createVisitDto.companion.SSN === createVisitDto.patient.SSN
       )
         throw new BadRequestException('companion ssn is equal to patient ssn');
       if (
-        createVisitDto.companion &&
+        createVisitDto.companion?.phone &&
         createVisitDto.companion.phone === createVisitDto.patient.phone
       )
         throw new BadRequestException(
@@ -57,9 +58,49 @@ export class VisitService {
     }
   }
 
-  findOne(visitCode: string) {
+  async findOne(visitCode: string) {
     try {
-      return this.visitRepo.findByVisitCode(visitCode);
-    } catch (error) {}
+      return await this.visitRepo.findByVisitCode(visitCode);
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async findERAreaVisits() {
+    try {
+      const now = new Date();
+      const yesterday = new Date(now.getTime());
+      yesterday.setDate(now.getDate() - 1);
+      yesterday.setHours(0, 0, 0, 0);
+
+      return await this.visitRepo.getAll({
+        additionalWhereConditions: [
+          {
+            transfers: {
+              none: {}
+            },
+          },
+          {
+            createdAt: {
+              gte: yesterday,
+              lte: now
+            }
+          }
+        ],
+        include: { patient: { include: { person: true } }, transfers: true },
+        sort: { direction: 'desc', property: 'createdAt' }
+
+      });
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async addTriageAX(code: string, data: TriageAXDto) {
+    try {
+      return await this.visitRepo.addTriageAss(code, data)
+    } catch (error) {
+      throw error
+    }
   }
 }

@@ -6,14 +6,13 @@ interface MessageEvent {
 }
 @Controller('streaming')
 export class StreamingController {
-  constructor(private readonly streamingService: StreamingService) {}
+  constructor(private readonly streamingService: StreamingService) { }
 
-  // @Public()
-  @Sse('event')
+  @Sse('event') // server sent emitter
   async sendEvent(): Promise<Observable<MessageEvent>> {
-    return defer(() => this.streamingService.findAllVisits()).pipe(
+    return defer(() => this.streamingService.getERareaVisits()).pipe(
       repeat({
-        delay: 5000,
+        delay: 10000,
       }),
       map((report) => ({
         type: 'message',
