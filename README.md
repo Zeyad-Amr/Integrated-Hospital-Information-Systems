@@ -39,5 +39,8 @@ The following filter rules can be used when applying filters to your data:
 - Example: `field:desc`
 
 # Model
+- to run the model 
+- 1. pip install -r requirements.txt
+- 2. python app.py
 - API -> http://localhost:5000/extractdata
 - API body -> accepts 2 images in form data with names {front:img, back:img}
