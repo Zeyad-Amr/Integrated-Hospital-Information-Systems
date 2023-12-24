@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AttendantRole, CameFromOptions } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
   IsArray,
@@ -10,11 +9,9 @@ import {
   IsOptional,
   IsString,
   Length,
-  Validate,
   ValidateNested,
 } from 'class-validator';
 import { CreatePersonDto } from 'src/person/dto/create-person.dto';
-import { IsValidEnumValue } from 'src/shared/special-validator';
 
 export class CarNumber {
   @ApiProperty({ type: String, example: 'و' })
@@ -58,15 +55,15 @@ export class Attendant {
 
   @ApiProperty({ type: String, example: 'PARAMEDIC' })
   @IsOptional()
-  @Validate(IsValidEnumValue, [AttendantRole])
-  role: AttendantRole;
+  @IsInt()
+  roleId: number;
 }
 
 export class AdditionalInformation {
   @ApiProperty({ type: String, example: 'HOME', required: false })
   @IsOptional()
-  @Validate(IsValidEnumValue, [CameFromOptions])
-  cameFrom: CameFromOptions;
+  @IsInt()
+  cameFromId: number;
 
   @ApiProperty({ type: String, example: 'Giza' })
   @IsOptional()

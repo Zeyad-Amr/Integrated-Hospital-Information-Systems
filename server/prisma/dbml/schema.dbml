@@ -9,8 +9,10 @@ Table Person {
   thirdName String [not null]
   fourthName String [not null]
   SSN String [unique]
-  verificationMethod IdentityEnum
-  gender GenderEnum [not null]
+  verificationMethod IdentityType
+  verificationMethodId Int
+  gender GenderType
+  genderId Int [not null]
   birthDate DateTime
   phone String [unique]
   governate String
@@ -23,7 +25,7 @@ Table Person {
 
 Table Patient {
   id String [pk]
-  comorbidities Comorbidity[] [not null]
+  comorbidities Comorbidity [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   person Person [not null]
@@ -34,7 +36,8 @@ Table Patient {
 
 Table Companion {
   id String [pk]
-  kinship KinshipEnum
+  kinship KinshipType
+  kinshipId Int
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   person Person [not null]
@@ -45,8 +48,10 @@ Table Companion {
 
 Table Employee {
   id String [pk]
-  role RoleEnum [not null]
-  shift ShiftEnum [not null]
+  role RoleType [not null]
+  roleId Int [not null]
+  shift ShiftType [not null]
+  shiftId Int [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   auth User
@@ -137,6 +142,7 @@ Table Attendant {
   cardId String [unique]
   name String [not null]
   attendantRole AttendantRole [not null]
+  attendantRoleId Int [not null]
   VisitAdditionalInformation VisitAdditionalInformation [not null]
 }
 
@@ -145,6 +151,7 @@ Table VisitAdditionalInformation {
   Car CarNumber
   carId String
   cameFrom CameFromOptions
+  cameFromId Int [not null]
   injuryLocation String
   injuryCause String
   notes String
@@ -157,8 +164,10 @@ Table VisitAdditionalInformation {
 Table MedicalRecord {
   id String [pk]
   mainComplaint String
-  consciousnessLevel ConsciousnessLevel
-  triage Triage
+  consciousnessLevel LOC
+  consciousnessLevelId Int
+  triage TriageType
+  triageId Int
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   visit Visit [not null]
@@ -195,99 +204,85 @@ Table Transfer {
   visitCode String [not null]
 }
 
+Table IdentityType {
+  id Int [pk, increment]
+  value String [unique, not null]
+  Person Person [not null]
+}
+
+Table GenderType {
+  id Int [pk, increment]
+  value String [unique, not null]
+  Person Person [not null]
+}
+
+Table KinshipType {
+  id Int [pk, increment]
+  value String [unique, not null]
+  Companion Companion [not null]
+}
+
+Table RoleType {
+  id Int [pk, increment]
+  value String [unique, not null]
+  Employee Employee [not null]
+}
+
+Table ShiftType {
+  id Int [pk, increment]
+  value String [unique, not null]
+  Employee Employee [not null]
+}
+
+Table CameFromOptions {
+  id Int [pk, increment]
+  value String [unique, not null]
+  VisitAdditionalInformation VisitAdditionalInformation [not null]
+}
+
+Table AttendantRole {
+  id Int [pk, increment]
+  value String [unique, not null]
+  Attendant Attendant [not null]
+}
+
+Table TriageType {
+  id Int [pk, increment]
+  value String [unique, not null]
+  MedicalRecord MedicalRecord [not null]
+}
+
+Table LOC {
+  id Int [pk, increment]
+  value String [unique, not null]
+  MedicalRecord MedicalRecord [not null]
+}
+
+Table Comorbidity {
+  id Int [pk, increment]
+  value String [unique, not null]
+  Patient Patient [not null]
+}
+
 Enum PersonType {
   PATIENT
   COMPANION
   EMPLOYEE
 }
 
-Enum IdentityEnum {
-  NATIONALIDCARD
-  PASSPORT
-}
+Ref: Person.verificationMethodId > IdentityType.id
 
-Enum GenderEnum {
-  MALE
-  FEMALE
-}
-
-Enum KinshipEnum {
-  BROTHER
-  SISTER
-  FATHER
-  MOTHER
-  COUSIN
-  AUNT
-  OTHER
-}
-
-Enum RoleEnum {
-  ADMIN
-  EMPLOYEE
-  DOCTOR
-  NURSE
-}
-
-Enum ShiftEnum {
-  MORNING8
-  AFTERNOON8
-  NIGHT8
-  MORNING12
-  NIGHT12
-  LONG
-}
-
-Enum CameFromOptions {
-  HOME
-  ACCIDENT
-  PRISONER
-}
-
-Enum AttendantRole {
-  PARAMEDIC
-  OFFICER
-}
-
-Enum Triage {
-  STANDARD
-  IMMEDIATE
-  CRITICAL
-  URGENT
-}
-
-Enum ConsciousnessLevel {
-  ALERT
-  VERBAL_RESPONSIVE
-  PAIN_RESPONSIVE
-  UNRESPONSIVE
-}
-
-Enum Comorbidity {
-  HYPERTENSION
-  DIABETES
-  CARDIOVASCULAR_DISEASE
-  OBESITY
-  CHRONIC_RESPIRATORY_CONDITION
-  IMMUNODEFICIENCY_DISORDER
-  CHRONIC_KIDNEY_DISEASE
-  LIVER_DISEASE
-  CANCER
-  AUTOIMMUNE_DISORDER
-  NEUROLOGICAL_DISORDER
-  GASTROINTESTINAL_DISORDER
-  ENDOCRINE_DISORDER
-  PSYCHIATRIC_DISORDER
-  BONE_AND_JOINT_DISORDER
-  INFECTIOUS_DISEASE
-  HEMATOLOGICAL_DISORDER
-  METABOLIC_SYNDROME
-  SLEEP_APNEA
-  SUBSTANCE_USE_DISORDER
-}
+Ref: Person.genderId > GenderType.id
 
 Ref: Patient.personId - Person.id
 
+Ref: Companion.kinshipId > KinshipType.id
+
 Ref: Companion.personId - Person.id
+
+Ref: Employee.roleId > RoleType.id
+
+Ref: Employee.shiftId > ShiftType.id
 
 Ref: Employee.personId - Person.id
 
@@ -313,9 +308,17 @@ Ref: CompanionsOnIncidents.companionId > Companion.id
 
 Ref: CompanionsOnIncidents.incidentId > Incident.id
 
+Ref: Attendant.attendantRoleId > AttendantRole.id
+
 Ref: VisitAdditionalInformation.carId > CarNumber.id
 
+Ref: VisitAdditionalInformation.cameFromId > CameFromOptions.id
+
 Ref: VisitAdditionalInformation.attendantId > Attendant.id
+
+Ref: MedicalRecord.consciousnessLevelId > LOC.id
+
+Ref: MedicalRecord.triageId > TriageType.id
 
 Ref: MedicalRecord.visitCode - Visit.code
 

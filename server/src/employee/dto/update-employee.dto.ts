@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
+  IsInt,
   IsObject,
   IsOptional,
   IsString,
@@ -10,7 +11,6 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { IsValidEnumValue } from 'src/shared/special-validator';
-import { RoleEnum, ShiftEnum } from '@prisma/client';
 import { Type } from 'class-transformer';
 import { UpdatePersonDto } from 'src/person/dto/update-person.dto';
 
@@ -46,16 +46,16 @@ export class UpdateEmployeeDto {
     example: 'EMPLOYEE',
   })
   @IsOptional()
-  @Validate(IsValidEnumValue, [RoleEnum])
-  role: RoleEnum;
+  @IsInt()
+  roleId: number;
 
   @ApiProperty({
     type: String,
     example: 'MORNING12',
   })
   @IsOptional()
-  @Validate(IsValidEnumValue, [ShiftEnum])
-  shift: ShiftEnum;
+  @IsInt()
+  shiftId: number;
 
   @ApiProperty({
     type: String,

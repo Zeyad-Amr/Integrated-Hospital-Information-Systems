@@ -14,7 +14,9 @@ export class AuthService {
   constructor(
     private authRepo: AuthRepo,
     private jwtService: JwtService,
-  ) {}
+  ) { }
+
+
 
   async login(loginDto: LoginDto) {
     try {
@@ -33,7 +35,7 @@ export class AuthService {
       const token = await this.jwtService.signAsync({
         sub: user.employeeId,
         username: user.username,
-        role: user.employee.role,
+        role: user.employee.role.value,
       });
       return token;
     } catch (error) {

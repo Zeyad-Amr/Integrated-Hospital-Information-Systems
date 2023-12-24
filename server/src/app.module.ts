@@ -9,6 +9,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { DepartmentModule } from './department/department.module';
 import { StreamingModule } from './streaming/streaming.module';
+import { EnumsModule } from './enums/enums.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { StreamingModule } from './streaming/streaming.module';
     IncidentModule,
     DepartmentModule,
     StreamingModule,
+    EnumsModule,
   ],
   controllers: [],
   providers: [

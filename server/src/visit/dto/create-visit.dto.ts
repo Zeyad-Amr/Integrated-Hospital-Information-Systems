@@ -1,23 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { KinshipEnum } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
   IsInt,
   IsNotEmpty,
   IsObject,
   IsOptional,
-  Validate,
   ValidateNested,
 } from 'class-validator';
 import { AdditionalInformation } from 'src/incident/dto/create-incident.dto';
 import { CreatePersonDto } from 'src/person/dto/create-person.dto';
-import { IsValidEnumValue } from 'src/shared/special-validator';
 
 export class CompanionDto extends CreatePersonDto {
   @ApiProperty({ type: String, example: 'BROTHER', required: false })
-  @IsOptional()
-  @Validate(IsValidEnumValue, [KinshipEnum])
-  kinship: KinshipEnum;
+  @IsNotEmpty()
+  @IsInt()
+  kinshipId: number;
 }
 
 export class VisitDto {
@@ -25,11 +22,6 @@ export class VisitDto {
   @IsInt()
   @IsNotEmpty()
   sequenceNumber: number;
-
-  @ApiProperty({ type: String, example: 'BROTHER', required: false })
-  @IsOptional()
-  @Validate(IsValidEnumValue, [KinshipEnum])
-  kinship: KinshipEnum;
 }
 
 export class CreateVisitDto {

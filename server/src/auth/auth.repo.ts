@@ -11,13 +11,13 @@ export class AuthRepo extends PrismaGenericRepo<User> {
 
   async getByUsername(
     username: string,
-  ): Promise<User & { employee: Employee }> {
+  ) {
     try {
       const user = await this.prismaService.user.findUnique({
         where: {
           username,
         },
-        include: { employee: { include: { person: true, department: true } } },
+        include: { employee: { include: { person: true, department: true, role: true, shift: true } } },
       });
       return user;
     } catch (error) {

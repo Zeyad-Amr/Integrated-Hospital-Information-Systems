@@ -1,14 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { GenderEnum, IdentityEnum } from '@prisma/client';
 import {
   IsDateString,
+  IsInt,
   IsNotEmpty,
   IsOptional,
   IsPhoneNumber,
   IsString,
-  Validate,
 } from 'class-validator';
-import { IsValidEnumValue } from 'src/shared/special-validator';
 
 export class CreatePersonDto {
   @ApiProperty({
@@ -56,17 +54,16 @@ export class CreatePersonDto {
     example: 'NATIONALIDCARD',
   })
   @IsOptional()
-  @Validate(IsValidEnumValue, [IdentityEnum])
-  verificationMethod: IdentityEnum;
+  @IsInt()
+  verificationMethodId: number;
 
   @ApiProperty({
     type: String,
     example: 'MALE',
   })
-  @IsString()
   @IsNotEmpty()
-  @Validate(IsValidEnumValue, [GenderEnum])
-  gender: GenderEnum;
+  @IsInt()
+  genderId: number;
 
   @ApiProperty({
     type: String,
