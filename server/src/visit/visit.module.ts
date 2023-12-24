@@ -9,6 +9,6 @@ import { PatientRepo } from 'src/patient/patient.repo';
 @Module({
   controllers: [VisitController],
   providers: [VisitRepo, VisitService, PrismaService, PersonRepo, PatientRepo],
-  exports: [VisitRepo],
+  exports: [VisitService],
 })
 export class VisitModule { }

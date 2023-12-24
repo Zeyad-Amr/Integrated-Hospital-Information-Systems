@@ -20,7 +20,7 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
     creatorId: string,
   ): Promise<Employee> {
     try {
-      const { auth, personalData, role, shift, departmentId } = item;
+      const { auth, person, role, shift, departmentId } = item;
       const employee = await this.prismaService.employee.create({
         data: {
           role,
@@ -33,9 +33,9 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
           auth: { create: { ...auth } },
           person: {
             connectOrCreate: {
-              where: { SSN: personalData.SSN },
+              where: { SSN: person.SSN },
               create: {
-                ...personalData,
+                ...person,
                 type: PersonType.EMPLOYEE
               },
             },
