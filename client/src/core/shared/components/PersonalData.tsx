@@ -31,6 +31,13 @@ const PersonalData = ({
   isSubmitted,
   isResetForm = false,
 }: PersonalDataProps) => {
+  const test = (values: {}) => {
+    let length: number = 0;
+    const valuesArray = Object.values(values);
+    valuesArray.map((value: any) => (length += value.length));
+    console.log(length);
+  };
+
   const refSubmitButton: any = useRef(null);
   const checkFirstRender = useRef(true);
   const checkFirstRender2 = useRef(true);
@@ -247,6 +254,7 @@ const PersonalData = ({
           </Grid>
           <Button
             type="submit"
+            onClick={() => test(values)}
             sx={{ display: "none" }}
             ref={refSubmitButton}
           ></Button>
