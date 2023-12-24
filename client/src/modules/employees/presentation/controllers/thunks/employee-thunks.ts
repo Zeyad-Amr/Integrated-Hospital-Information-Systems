@@ -11,8 +11,7 @@ import {
     DeleteEmployeeUseCaseParameters,
     GetEmployeeByIdUseCaseParameters
 } from "@/modules/employees/domain/usecases";
-import EmployeeEntity from "@/modules/employees/domain/entities/employee-entity";
-import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
+import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
 
 //* Get All Employee Members 
 export const getEmployeeList = createAsyncThunk(
@@ -33,12 +32,12 @@ export const getEmployeeList = createAsyncThunk(
 //* Create Employee Member
 export const createEmployee = createAsyncThunk(
     "employees/create",
-    async ({ data, authData }: { data: EmployeeEntity, authData: AuthDataEntity }, thunkApi) => {
+    async (data: EmployeeInterface, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
             console.log('Thunk', data);
             const result = await sl.get<CreateEmployeeUseCase>(ServiceKeys.CreateEmployeeUseCase).call(
-                new CreateEmployeeUseCaseParameters(data, authData)
+                new CreateEmployeeUseCaseParameters(data)
             );
             console.log('Result:', result);
             return result;
@@ -52,11 +51,11 @@ export const createEmployee = createAsyncThunk(
 //* Update Employee Member
 export const updateEmployee = createAsyncThunk(
     "employees/update",
-    async ({ data, authData }: { data: EmployeeEntity, authData: AuthDataEntity }, thunkApi) => {
+    async (data: EmployeeInterface, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
             const result = await sl.get<UpdateEmployeeUseCase>(ServiceKeys.UpdateEmployeeUseCase).call(
-                new UpdateEmployeeUseCaseParameters(data, authData)
+                new UpdateEmployeeUseCaseParameters(data)
             );
             console.log('Result:', result);
             return result;

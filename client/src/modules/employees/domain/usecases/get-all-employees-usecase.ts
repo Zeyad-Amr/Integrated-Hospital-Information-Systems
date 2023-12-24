@@ -1,12 +1,12 @@
 import BaseUseCase from "@/core/base/base-usecase";
-import EmployeeEntity from "../entities/employee-entity";
+import EmployeeInterface from "../interfaces/employee-interface";
 import BaseEmployeeRepository from "../repositories/base-employee-repository";
 
 class GetAllEmployeesUseCase
-    implements BaseUseCase<EmployeeEntity[], void> {
+    implements BaseUseCase<EmployeeInterface[], void> {
     constructor(private baseEmployeeRepository: BaseEmployeeRepository) { }
 
-    async call(): Promise<EmployeeEntity[]> {
+    async call(): Promise<EmployeeInterface[]> {
         return await this.baseEmployeeRepository.getAllEmployees();
     }
 }

@@ -6,21 +6,23 @@ import { InputLabel, SelectChangeEvent } from "@mui/material";
 import { ReactNode } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-export interface SelectFieldProps {
-  onChange: (event: SelectChangeEvent<string>, child: ReactNode) => void;
+import { FormikErrors, FormikTouched } from "formik";
+
+export interface SelectFieldProps<T> {
+  onChange: (event: SelectChangeEvent<T>, child: ReactNode) => void;
   onBlur: (event: React.FocusEvent<{ value: unknown }>) => void;
   name: string;
   label: string;
-  error: string | undefined;
-  touched: boolean | undefined;
-  value: string;
-  options: {id: string , title : string}[];
+  error: string | undefined | FormikErrors<T>;
+  touched: boolean | undefined | FormikTouched<T>;
+  value: T | undefined;
+  options: T[];
   isRequired?: boolean;
   width?: number | string;
   hideLabel?: boolean;
 }
 
-const CustomSelectField = ({
+const CustomSelectField = <T extends { id: any; label: string }>({
   onChange,
   onBlur,
   name,
@@ -31,18 +33,26 @@ const CustomSelectField = ({
   options,
   isRequired = false,
   width,
-  hideLabel = true
-}: SelectFieldProps) => {
+  hideLabel = true,
+}: SelectFieldProps<T>) => {
   return (
     <Box
       sx={{
         mb: 2,
-        width : width,
+        width: width,
         maxWidth: "100%",
       }}
     >
       {!hideLabel && (
-        <Typography variant="h6"  component="div" sx={{ flexGrow: 1 , fontSize : "0.9rem !important" , margin : "0rem 0.5rem" }}>
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{
+            flexGrow: 1,
+            fontSize: "0.9rem !important",
+            margin: "0rem 0.5rem",
+          }}
+        >
           {label} {isRequired && <span style={{ color: "#FF5630" }}>*</span>}
         </Typography>
       )}
@@ -54,18 +64,17 @@ const CustomSelectField = ({
         <InputLabel>{label}</InputLabel>
 
         <Select
-          // labelId="demo-simple-select-required-label"
-          // id="demo-simple-select-helper"
-          // defaultValue={options[0].title}
           label={label}
-          onChange={onChange}
+          onChange={(event: SelectChangeEvent<T>, child: ReactNode) => {
+            onChange(event, child);
+            console.log(event.target.value);
+          }}
           onBlur={onBlur}
           sx={{
             backgroundColor: "#fff ",
             height: "3.5rem",
           }}
-          // label={label}
-          value={value}
+          value={value?.id}
           name={name}
           error={error && touched ? true : false}
           hidden={hideLabel}
@@ -83,9 +92,9 @@ const CustomSelectField = ({
               value={option.id}
               sx={{
                 // backgroundColor : "#232836",
-                opacity : 0.8,
+                opacity: 0.8,
                 color: "#232836",
-                transitionDuration : "0.5s ease",
+                transitionDuration: "0.5s ease",
                 margin: 1,
                 // selected background color
                 "&.Mui-selected": {
@@ -103,17 +112,17 @@ const CustomSelectField = ({
                 },
               }}
             >
-              {option.title}
+              {option.label}
             </MenuItem>
           ))}
         </Select>
         <FormHelperText
           sx={{
             color: "#FF5630",
-            fontSize : "12px"
+            fontSize: "12px",
           }}
         >
-          {error && touched ? error : ""}
+          {error && touched ? String(error) : null}
         </FormHelperText>
       </FormControl>
     </Box>

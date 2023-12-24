@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import { Formik } from "formik";
 import { Grid } from "@mui/material";
@@ -21,33 +21,16 @@ import PersonEntity from "@/modules/auth/domain/entities/person-entity";
 interface PersonalDataProps {
   initialValues: PersonInterface;
   onSubmit: (values: PersonInterface) => void;
-  isSubmitted: boolean;
+  refSubmitButton: React.MutableRefObject<null>;
   isResetForm?: boolean;
 }
 
-const PersonalData = ({
+const PersonalDataComponent = ({
   initialValues,
   onSubmit,
-  isSubmitted,
+  refSubmitButton,
   isResetForm = false,
 }: PersonalDataProps) => {
-  const refSubmitButton: any = useRef(null);
-  const checkFirstRender = useRef(true);
-  const checkFirstRender2 = useRef(true);
-  useEffect(() => {
-    if (checkFirstRender.current) {
-      checkFirstRender.current = false;
-    } else {
-      if (checkFirstRender2.current) {
-        checkFirstRender2.current = false;
-      } else {
-        if (refSubmitButton.current) {
-          refSubmitButton.current.click();
-        }
-      }
-    }
-  }, [isSubmitted]);
-
   return (
     <Formik
       enableReinitialize
@@ -55,6 +38,7 @@ const PersonalData = ({
       validationSchema={PersonEntity.getSchema()}
       onSubmit={(values, { resetForm }) => {
         onSubmit(values);
+        console.log("onSubmit Person:", values);
         if (isResetForm) {
           resetForm();
         }
@@ -256,4 +240,4 @@ const PersonalData = ({
   );
 };
 
-export default PersonalData;
+export default PersonalDataComponent;

@@ -1,33 +1,32 @@
-import UserEntity from '../../domain/entities/user-entity';
+import { roleList, shiftList, departmentList } from '../../domain/data-values/constants';
 import UserInterface from '../../domain/interfaces/user-interface';
+import AuthDataModel from './auth-data-model';
 import PersonModel from './person-model';
 
-export default class UserModel extends UserEntity {
-    constructor(data: UserInterface) {
-        super(data);
-    }
+export default class UserModel {
 
     //* --------------------- Serialization: Convert the model to JSON ---------------------
-    toJson(): any {
+    static toJson(entity: UserInterface): any {
         return {
-            // id: this.id,
-            role: this.role,
-            // createdAt: this.createdAt,
-            // updatedAt: this.updatedAt,
-            createdById: this.createdById,
-            person: (this.person as PersonModel).toJson(),
+            role: entity.role?.id,
+            shift: entity.shift?.id,
+            department: entity.department?.id,
+            person: entity.person ? PersonModel.toJson(entity.person) : null,
+            auth: entity.auth ? AuthDataModel.toJson(entity.auth) : null,
         };
     }
 
     //* --------------------- Deserialization: Create a model from JSON data ---------------------
-    static fromJson(json: any): UserModel {
-        return new UserModel({
+    static fromJson(json: any): UserInterface {
+        return {
             id: json.id,
-            role: json.role,
+            role: roleList.find((role) => role.id === json.role) ?? roleList[0],
+            shift: shiftList.find((shift) => shift.id === json.shift) ?? shiftList[0],
+            department: departmentList.find((department) => department.id === json.department) ?? departmentList[0],
             createdAt: json.createdAt,
             updatedAt: json.updatedAt,
-            createdById: json.createdById,
             person: PersonModel.fromJson(json.person),
-        });
+            auth: AuthDataModel.fromJson(json.auth),
+        };
     }
 }

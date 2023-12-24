@@ -1,16 +1,15 @@
-import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
-import EmployeeEntity from "../entities/employee-entity";
+import EmployeeInterface from "../interfaces/employee-interface";
 
 class GetEmployeeByIdUseCaseParameters {
     constructor(public id: string) { }
 }
 
 class CreateEmployeeUseCaseParameters {
-    constructor(public employee: EmployeeEntity, public authData: AuthDataEntity) { }
+    constructor(public employee: EmployeeInterface) { }
 }
 
 class UpdateEmployeeUseCaseParameters {
-    constructor(public employee: EmployeeEntity, public authData: AuthDataEntity) { }
+    constructor(public employee: EmployeeInterface) { }
 }
 
 class DeleteEmployeeUseCaseParameters {
