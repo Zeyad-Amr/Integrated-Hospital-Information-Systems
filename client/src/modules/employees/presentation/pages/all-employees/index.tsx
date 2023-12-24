@@ -19,7 +19,7 @@ const EmployeesTableComponent = () => {
       sx={{
         width: "90%",
         height: "70vh",
-        margin: "3% auto 0",
+        margin: "0 auto 3% auto",
       }}
     >
       <PageHeader title="الموظفون">

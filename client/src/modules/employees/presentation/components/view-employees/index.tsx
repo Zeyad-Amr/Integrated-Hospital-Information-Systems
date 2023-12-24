@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import { useAppSelector } from "@/core/redux/store";
 import { EmployeeState } from "../../controllers/types";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
+import { Typography } from "@mui/material";
 
 const EmployeesTable = () => {
   // const dispatch = useAppDispatch();
@@ -19,53 +20,47 @@ const EmployeesTable = () => {
   // useState
   const [showDialog, setShawDialog] = useState("none");
 
-  //* data that in the state
-  const apiData: EmployeeInterface[] = employeeState.employeeList;
-  let tableData: DataItem[] = [];
-  apiData.forEach((item: EmployeeInterface) => {
-    tableData.push({
-      SSN: item.person.SSN,
-      email: item.auth.email ?? "",
-      phone: item.person.phone ?? "",
-      role: item.role.toLowerCase(),
-      name:
-        item.person?.firstName +
-        " " +
-        item.person?.secondName +
-        " " +
-        item.person?.thirdName +
-        " " +
-        item.person?.fourthName,
-      // date: (item.createdAt).split('T')[0],
-      // time: new Date(item.createdAt).toLocaleTimeString([], {
-      //     hour: '2-digit',
-      //     minute: '2-digit',
-      //     second: '2-digit'
-      // }),
-      // update: <Button
-      //     color="info"
-      //     variant="outlined"
-      //     fullWidth
-      //     onClick={() => {
-      //         refIdValue.current = item.code
-      //         setShawDialog("block");
-      //     }}
-      // >استكمال بيانات</Button>
-    });
-  });
-
   return (
     <Box
       sx={{
         p: 3,
       }}
     >
-      <CustomDataTable
-        data={tableData}
-        renderItem={header}
-        stickyHeader={true}
-        boxShadow={5}
-      />
+      {employeeState.loading ? (
+        <Box
+          sx={{
+            p: 3,
+          }}
+        >
+          <Typography variant="h6" align="center">
+            Loading...
+          </Typography>
+        </Box>
+      ) : (
+        <CustomDataTable
+          data={employeeState.employeeList.map<DataItem>(
+            (item: EmployeeInterface) => {
+              return {
+                SSN: item.person?.SSN ?? "",
+                email: item.auth?.email ?? "",
+                phone: item.person?.phone ?? "",
+                role: item.role?.label.toLowerCase() ?? "",
+                name:
+                  item.person?.firstName +
+                  " " +
+                  item.person?.secondName +
+                  " " +
+                  item.person?.thirdName +
+                  " " +
+                  item.person?.fourthName,
+              };
+            }
+          )}
+          renderItem={header}
+          stickyHeader={true}
+          boxShadow={5}
+        />
+      )}
       <CompleteVisit
         display={showDialog}
         DialogStateController={setShawDialog}

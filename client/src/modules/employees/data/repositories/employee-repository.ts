@@ -19,7 +19,9 @@ class EmployeeRepository extends BaseEmployeeRepository {
     }
     override async getAllEmployees(): Promise<EmployeeInterface[]> {
         try {
+            console.log('Repo');
             const result = await this.baseEmployeeDataSource.getAllEmployees();
+            console.log('Repo:', result);
             return result;
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;
