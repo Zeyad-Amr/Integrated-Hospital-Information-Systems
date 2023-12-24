@@ -37,3 +37,11 @@ The following filter rules can be used when applying filters to your data:
 ## Sorting Rules
 - Example: `field:asc`
 - Example: `field:desc`
+
+# Model
+- to run the model 
+- 1. pip install -r requirements.txt
+- 2. python app.py
+- API -> http://localhost:5000/extractdata
+- API body -> accepts 2 images in form data with names {front:img, back:img}
+- status codes: 200 success, 420: failed to detect name, 421: failed to detect national id , 422: check national id
