@@ -1,35 +1,31 @@
-import VisitEntity from '../../domain/entities/visit-entity';
 import PersonModel from '../../../auth/data/models/person-model';
 import VisitInterface from '../../domain/interfaces/visit-interface';
 
-export default class VisitModel extends VisitEntity {
-    constructor(data: VisitInterface) {
-        super(data);
-    }
+export default class VisitModel {
 
     // //* --------------------- Serialization: Convert the model to JSON ---------------------
-    toJson(): any {
+    static toJson(entity: VisitInterface): any {
         return {
-            patient: (this.patient as PersonModel).toJson(),
-            companion: (this.companion as PersonModel).toJson(),
+            patient: entity.patient !== null ? PersonModel.toJson(entity.patient!) : null,
+            companion: entity.companion !== null ? PersonModel.toJson(entity.companion!) : null,
             visit: {
-                sequenceNumber: this.sequenceNumber,
-                kinship: this.kinship,
+                sequenceNumber: entity.sequenceNumber,
+                kinship: entity.kinship,
             }
         };
     }
 
-    toUpdateJson(): any {
+    static toUpdateJson(entity: VisitInterface): any {
         return {
-            patient: (this.patient as PersonModel).toJson(),
-            companion: (this.companion as PersonModel).toJson(),
-            visitCode: this.code
+            patient: entity.patient !== null ? PersonModel.toJson(entity.patient!) : null,
+            companion: entity.companion !== null ? PersonModel.toJson(entity.companion!) : null,
+            visitCode: entity.code,
         };
     }
 
     // //* --------------------- Deserialization: Create a model from JSON data ---------------------
-    static fromJson(json: any): VisitModel {
-        return new VisitModel({
+    static fromJson(json: any): VisitInterface {
+        return {
             code: json.code,
             sequenceNumber: json.sequenceNumber,
             kinship: json.kinship,
@@ -37,6 +33,6 @@ export default class VisitModel extends VisitEntity {
             updatedAt: json.updatedAt,
             patient: PersonModel.fromJson(json.patient),
             companion: PersonModel.fromJson(json.companion),
-        });
+        };
     }
 }

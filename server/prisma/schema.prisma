@@ -15,27 +15,50 @@ datasource db {
 }
 
 model Person {
-  id                 String       @id @default(uuid())
+  id                 String        @id @default(uuid())
   firstName          String
   secondName         String
   thirdName          String
   fourthName         String
-  SSN                String?      @unique
+  SSN                String?       @unique
   verificationMethod IdentityEnum?
   gender             GenderEnum
   birthDate          DateTime?     @db.Date
-  phone              String?      @unique
+  phone              String?       @unique
   governate          String?
   address            String?
+  type               PersonType
 
+  employee  Employee?
+  patient   Patient?
+  companion Companion?
+}
 
+model Patient {
+  id            String        @id @default(uuid())
+  comorbidities Comorbidity[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  employee              Employee?
-  patientVisits         Visit[]                 @relation("visitPatient")
-  companionVisits       Visit[]                 @relation("visitCompanion")
+  person   Person @relation(fields: [personId], references: [id])
+  personId String @unique
+
+  medicalRecords MedicalRecord[]
+  visits         Visit[]
+}
+
+model Companion {
+  id      String       @id @default(uuid())
+  kinship KinshipEnum?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  person   Person @relation(fields: [personId], references: [id])
+  personId String @unique
+
+  visits                Visit[]
   CompanionsOnIncidents CompanionsOnIncidents[]
 }
 
@@ -49,14 +72,14 @@ model Employee {
 
   auth User?
 
-  person   Person @relation(fields: [personID], references: [id])
-  personID String @unique
+  person   Person @relation(fields: [personId], references: [id])
+  personId String @unique
 
   createdByEmployee Employee?  @relation("CreatedBy", fields: [createdById], references: [id])
   createdById       String?
   createdEmployees  Employee[] @relation("CreatedBy")
 
-  visit Visit[]
+  visitsCreated Visit[]
 
   department   Department @relation(fields: [departmentId], references: [id])
   departmentId String
@@ -82,25 +105,28 @@ model Department {
 }
 
 model Visit {
-  code           String       @id
+  code           String @id
   sequenceNumber Int?
-  kinship        KinshipEnum?
 
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt
 
-  creator Employee @relation(fields: [creatorId], references: [id])
-
-  creatorId   String
-  patient     Person?   @relation("visitPatient", fields: [patientId], references: [id])
-  patientId   String?
-  companion   Person?   @relation("visitCompanion", fields: [companionId], references: [id])
-  companionId String?
-  incident    Incident? @relation(fields: [incidentId], references: [id])
-  incidentId  String?
-
   AdditionalInformation VisitAdditionalInformation? @relation(fields: [additionalInfoId], references: [id])
   additionalInfoId      String?
+
+  // Relations with Pesons
+  creator     Employee   @relation(fields: [creatorId], references: [id])
+  creatorId   String
+  patient     Patient?   @relation(fields: [patientId], references: [id])
+  patientId   String?
+  companion   Companion? @relation(fields: [companionId], references: [id])
+  companionId String?
+
+  medicalRecord MedicalRecord?
+  transfers     Transfer[]
+
+  incident   Incident? @relation(fields: [incidentId], references: [id])
+  incidentId String?
 }
 
 model Incident {
@@ -108,8 +134,9 @@ model Incident {
   numberOfPatients Int
   isCompleted      Boolean @default(false)
 
-  createdAt             DateTime                    @default(now())
-  updatedAt             DateTime                    @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   AdditionalInformation VisitAdditionalInformation? @relation(fields: [additionalInfoId], references: [id])
   additionalInfoId      String?
 
@@ -118,9 +145,9 @@ model Incident {
 }
 
 model CompanionsOnIncidents {
-  companion   Person   @relation(fields: [companionId], references: [id])
+  companion   Companion @relation(fields: [companionId], references: [id])
   companionId String
-  incident    Incident @relation(fields: [incidentId], references: [id])
+  incident    Incident  @relation(fields: [incidentId], references: [id])
   incidentId  String
 
   @@id([companionId, incidentId])
@@ -158,6 +185,60 @@ model VisitAdditionalInformation {
   attendantId    String?
   Incident       Incident[]
   Visit          Visit[]
+}
+
+model MedicalRecord {
+  id                 String              @id @default(uuid())
+  mainComplaint      String?
+  consciousnessLevel ConsciousnessLevel?
+  triage             Triage?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  visit     Visit  @relation(fields: [visitCode], references: [code])
+  visitCode String @unique
+
+  vitals    Vitals[]
+  Patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId String?
+}
+
+model Vitals {
+  id        String @id @default(uuid())
+  temp      Float?
+  PR        Float? //pulse rate
+  RR        Float? //respiratory rate
+  painScore Float?
+  SBP       Float? //systolic blood pressure
+  DBP       Float? //diastolic blood pressure
+  SpO2      Float?
+  CVP       Float?
+  GCS       Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  medicalRecord  MedicalRecord @relation(fields: [medcalRecordId], references: [id])
+  medcalRecordId String
+}
+
+model Transfer {
+  id   String @id @default(uuid())
+  from String
+  to   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  visit     Visit  @relation(fields: [visitCode], references: [code])
+  visitCode String
+}
+
+enum PersonType {
+  PATIENT
+  COMPANION
+  EMPLOYEE
 }
 
 enum IdentityEnum {
@@ -205,4 +286,41 @@ enum CameFromOptions {
 enum AttendantRole {
   PARAMEDIC
   OFFICER
+}
+
+enum Triage {
+  STANDARD
+  IMMEDIATE
+  CRITICAL
+  URGENT
+}
+
+enum ConsciousnessLevel {
+  ALERT
+  VERBAL_RESPONSIVE
+  PAIN_RESPONSIVE
+  UNRESPONSIVE
+}
+
+enum Comorbidity {
+  HYPERTENSION
+  DIABETES
+  CARDIOVASCULAR_DISEASE
+  OBESITY
+  CHRONIC_RESPIRATORY_CONDITION
+  IMMUNODEFICIENCY_DISORDER
+  CHRONIC_KIDNEY_DISEASE
+  LIVER_DISEASE
+  CANCER
+  AUTOIMMUNE_DISORDER
+  NEUROLOGICAL_DISORDER
+  GASTROINTESTINAL_DISORDER
+  ENDOCRINE_DISORDER
+  PSYCHIATRIC_DISORDER
+  BONE_AND_JOINT_DISORDER
+  INFECTIOUS_DISEASE
+  HEMATOLOGICAL_DISORDER
+  METABOLIC_SYNDROME
+  SLEEP_APNEA
+  SUBSTANCE_USE_DISORDER
 }

@@ -75,7 +75,7 @@ const UploadFileComponent = ({
               if (file) {
                 onChange({ ...FileObject.defaultValues(), id: "uploading" });
                 console.log(file);
-                uploadFile(file).then((res) => {
+                uploadFile(file).then((res: any) => {
                   onChange(res);
                   console.log(value);
                 });

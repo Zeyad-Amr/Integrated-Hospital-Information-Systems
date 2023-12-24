@@ -1,6 +1,5 @@
 import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
-
 export interface DataItem {
   SSN: string;
   name: string;
@@ -24,7 +23,7 @@ export const data = [
       secondName: "رؤوف",
       thirdName: "محمد",
       fourthName: "حسين",
-      SSN: "30102103105556",
+      SSN: "1",
       verificationMethod: "NATIONALIDCARD",
       gender: "MALE",
       birthDate: "2000-05-10T00:00:00.000Z",
@@ -33,8 +32,8 @@ export const data = [
       governate: "Giza",
       address: "6th of October",
       createdAt: "2023-11-25T15:52:05.620Z",
-      updatedAt: "2023-11-25T15:52:05.620Z"
-    }
+      updatedAt: "2023-11-25T15:52:05.620Z",
+    },
   },
   {
     id: "9a33b768-b66f-476b-b41f-076483813733",
@@ -49,7 +48,7 @@ export const data = [
       secondName: "رؤوف",
       thirdName: "محمد",
       fourthName: "حسين",
-      SSN: "30002103125556",
+      SSN: "4",
       verificationMethod: "NATIONALIDCARD",
       gender: "MALE",
       birthDate: "2000-05-10T00:00:00.000Z",
@@ -58,8 +57,8 @@ export const data = [
       governate: "Giza",
       address: "6th of October",
       createdAt: "2023-11-17T15:00:47.476Z",
-      updatedAt: "2023-11-17T15:00:47.476Z"
-    }
+      updatedAt: "2023-11-17T15:00:47.476Z",
+    },
   },
   {
     id: "a91e88ad-9f25-473d-98b8-b3921d58f5b9",
@@ -74,7 +73,7 @@ export const data = [
       secondName: "رؤوف",
       thirdName: "محمد",
       fourthName: "حسين",
-      SSN: "30002101205556",
+      SSN: "2",
       verificationMethod: "NATIONALIDCARD",
       gender: "MALE",
       birthDate: "2000-05-10T00:00:00.000Z",
@@ -83,8 +82,8 @@ export const data = [
       governate: "Giza",
       address: "6th of October",
       createdAt: "2023-11-25T18:36:05.539Z",
-      updatedAt: "2023-11-25T18:36:05.539Z"
-    }
+      updatedAt: "2023-11-25T18:36:05.539Z",
+    },
   },
   {
     id: "c5c7b834-f450-4692-86ed-8a2f5c564da8",
@@ -99,16 +98,17 @@ export const data = [
       secondName: "رؤوف",
       thirdName: "محمد",
       fourthName: "حسين",
-      SSN: "30002103105556",
+      SSN: "3",
       verificationMethod: "NATIONALIDCARD",
       gender: "MALE",
       birthDate: "2000-05-10T00:00:00.000Z",
       phone: "+201098157522",
       email: "diaabad@gmail.com",
       governate: "Giza",
-      address: "6th of October"
-    }
-  }]
+      address: "6th of October",
+    },
+  },
+];
 
 export const header: HeaderItem[] = [
   {
@@ -135,7 +135,6 @@ export const header: HeaderItem[] = [
     minWidth: 50,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
   },
-
   {
     id: "role",
     label: "الوظيفة",
@@ -154,6 +153,4 @@ export const header: HeaderItem[] = [
   //   minWidth: 100,
   //   tableCellProps: { align: "center" },
   // },
-
-
 ];

@@ -1,22 +1,29 @@
+import { Yup } from "@/core/shared/utils/validation";
+import { IDepartment, IRole, IShift } from "../data-values/interfaces";
+import AuthInterface from "../interfaces/auth-interface";
 import PersonInterface from "../interfaces/person-interface";
 import UserInterface from "../interfaces/user-interface";
-import PersonEntity from "./person-entity";
+import { DepartmentEnum, RoleEnum, ShiftEnum } from "../data-values/enums";
 
-export default class UserEntity {
+export default class UserEntity implements UserInterface {
     private _id: string;
-    private _role: string;
+    private _role?: IRole;
+    private _shift?: IShift;
+    private _department?: IDepartment;
     private _createdAt?: Date;
     private _updatedAt?: Date;
-    private _createdById?: string;
-    private _person: PersonInterface;
+    private _person?: PersonInterface;
+    private _auth?: AuthInterface;
 
     constructor(data: UserInterface) {
         this._id = data.id;
         this._role = data.role;
+        this._shift = data.shift;
+        this._department = data.department;
         this._createdAt = data.createdAt;
         this._updatedAt = data.updatedAt;
-        this._createdById = data.createdById;
         this._person = data.person;
+        this._auth = data.auth;
     }
 
     //* --------------------- Getters ---------------------
@@ -24,8 +31,16 @@ export default class UserEntity {
         return this._id;
     }
 
-    get role(): string {
+    get role(): IRole | undefined {
         return this._role;
+    }
+
+    get shift(): IShift | undefined {
+        return this._shift;
+    }
+
+    get department(): IDepartment | undefined {
+        return this._department;
     }
 
     get createdAt(): Date | undefined {
@@ -36,12 +51,13 @@ export default class UserEntity {
         return this._updatedAt;
     }
 
-    get createdById(): string | undefined {
-        return this._createdById;
+
+    get person(): PersonInterface | undefined {
+        return this._person;
     }
 
-    get person(): PersonInterface {
-        return this._person;
+    get auth(): AuthInterface | undefined {
+        return this._auth;
     }
 
     //* --------------------- Setters ---------------------
@@ -49,8 +65,16 @@ export default class UserEntity {
         this._id = id;
     }
 
-    set role(role: string) {
+    set role(role: IRole) {
         this._role = role;
+    }
+
+    set shift(shift: IShift) {
+        this._shift = shift;
+    }
+
+    set department(department: IDepartment) {
+        this._department = department;
     }
 
     set createdAt(createdAt: Date) {
@@ -61,26 +85,43 @@ export default class UserEntity {
         this._updatedAt = updatedAt;
     }
 
-
-    set createdById(createdById: string | undefined) {
-        this._createdById = createdById;
-    }
-
     set person(person: PersonInterface) {
         this._person = person;
     }
 
+    set auth(auth: AuthInterface) {
+        this._auth = auth;
+    }
+
     //* --------------------- Methods ---------------------
     static defaultValue(): UserInterface {
-        const defaultDate = new Date();
-        const defaultPerson = PersonEntity.defaultValue(); // Getting default PersonEntity
         return {
             id: '',
-            role: '',
-            createdAt: defaultDate,
-            updatedAt: defaultDate,
-            createdById: undefined,
-            person: defaultPerson,
+            role: undefined,
+            shift: undefined,
+            department: undefined,
+            createdAt: undefined,
+            updatedAt: undefined,
+            person: undefined,
+            auth: undefined,
         };
     }
+
+    static getSchema(): Yup.ObjectSchema<any> {
+        return Yup.object().shape({
+            role: Yup.string()
+                .oneOf(Object.values(RoleEnum).map(String) as string[])
+                .required("الوظيفة مطلوب"),
+            shift: Yup.string()
+                .oneOf(Object.values(ShiftEnum).map(String) as string[])
+                .required("موعد العمل مطلوب"),
+            department: Yup.string()
+                .oneOf(Object.values(DepartmentEnum).map(String) as string[])
+                .required("القسم مطلوب"),
+
+
+        }).defined();
+    }
+
+
 }

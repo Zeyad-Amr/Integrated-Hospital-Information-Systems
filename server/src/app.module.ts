@@ -8,14 +8,26 @@ import { EmployeeModule } from './employee/employee.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { DepartmentModule } from './department/department.module';
-
+import { StreamingModule } from './streaming/streaming.module';
 
 @Module({
-  imports: [AuthModule, PatientModule, PersonModule, EmployeeModule, VisitModule, IncidentModule, DepartmentModule],
+  imports: [
+    StreamingModule,
+    AuthModule,
+    PatientModule,
+    PersonModule,
+    EmployeeModule,
+    VisitModule,
+    IncidentModule,
+    DepartmentModule,
+    StreamingModule,
+  ],
   controllers: [],
-  providers: [{
-    provide: APP_GUARD,
-    useClass: AuthGuard,
-  },],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
-export class AppModule { }
+export class AppModule {}

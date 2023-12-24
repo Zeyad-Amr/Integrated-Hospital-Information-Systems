@@ -8,4 +8,4 @@ import { PrismaService } from 'src/shared/services/prisma-client/prisma.service'
   controllers: [PersonController],
   providers: [PersonService, PersonRepo, PrismaService],
 })
-export class PersonModule { }
+export class PersonModule {}

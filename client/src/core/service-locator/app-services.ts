@@ -86,9 +86,6 @@ class AppServicesLocator {
             sl.get<BaseVisitsRepository>(ServiceKeys.VisitsRepository)
         ));
 
-
-
-
         //* Exnternal Services --------------------------------------------------
         sl.registerFactory<ApiClient>(ServiceKeys.ApiClient, () => new ApiClient());
     }

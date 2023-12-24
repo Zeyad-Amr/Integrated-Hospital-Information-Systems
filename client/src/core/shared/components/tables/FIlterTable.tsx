@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import { Box } from "@mui/system";
-import { Input, InputAdornment, Menu, Typography } from "@mui/material";
-import { styled, alpha } from "@mui/material/styles";
-import { MenuProps } from "@mui/material/Menu";
+import { Input, InputAdornment, Typography } from "@mui/material";
+
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 
 import SortRoundedIcon from "@mui/icons-material/SortRounded";
 import FilterListRoundedIcon from "@mui/icons-material/FilterListRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import DropDownMenu from "../DropDownMenu";
 
-interface FIlterTableProps {
+export interface FIlterTableProps {
   columnHeader: string;
   data: [];
   setFilterdData: any;
@@ -46,51 +46,19 @@ const sortData = (data: [], header: string, type: string) => {
 };
 
 const handleSearch = (data: [], header: string, search: string) => {
-  console.log(data)
-  let found = data.filter(function (el: any) {
-    return el[header].includes(search);
-  });
-  return found;
+  return data.filter((obj) =>
+    Object.values(obj).some(
+      (value) => typeof value === "string" && value.includes(search)
+    )
+  );
+
+  // let found = data.filter(function (el: any) {
+  //   return el[header].includes(search);
+  // });
+  // return found;
 };
 
-const StyledMenu = styled((props: MenuProps) => (
-  <Menu
-    elevation={0}
-    anchorOrigin={{
-      vertical: "bottom",
-      horizontal: "right",
-    }}
-    transformOrigin={{
-      vertical: "top",
-      horizontal: "right",
-    }}
-    {...props}
-  />
-))(({ theme }) => ({
-  "& .MuiPaper-root": {
-    borderRadius: 6,
-    marginTop: theme.spacing(1),
-    minWidth: 180,
-    boxShadow:
-      "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
-    "& .MuiMenu-list": {
-      padding: "1rem 0.5rem",
-    },
-    "& .MuiMenuItem-root": {
-      "& .MuiSvgIcon-root": {
-        fontSize: 25,
-        // color: theme.palette.text.secondary,
-        marginRight: theme.spacing(1.5),
-      },
-      "&:active": {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          theme.palette.action.selectedOpacity
-        ),
-      },
-    },
-  },
-}));
+
 
 const FIlterTable = ({
   columnHeader,
@@ -119,7 +87,7 @@ const FIlterTable = ({
         sx={{ cursor: "pointer", marginX: "0.5rem" }}
         onClick={(event: any) => handleClick(event)}
       />
-      <StyledMenu
+      <DropDownMenu
         id="demo-customized-menu"
         MenuListProps={{
           "aria-labelledby": "demo-customized-button",
@@ -131,7 +99,7 @@ const FIlterTable = ({
         {/* <InputLabel htmlFor="input-with-icon-adornment">بحـــث</InputLabel> */}
         <Input
           // sx={{padding:' 0 1rem', boxSizing: 'border-box'}}
-          
+
           id="input-with-icon-adornment"
           startAdornment={
             <InputAdornment position="start">
@@ -140,7 +108,9 @@ const FIlterTable = ({
           }
           onChange={(e) => (
             (search.current = e.target.value),
-            setFilterdData([...handleSearch(data, columnHeader, search.current)])
+            setFilterdData([
+              ...handleSearch(data, columnHeader, search.current),
+            ])
           )}
         />
         <MenuItem
@@ -179,7 +149,7 @@ const FIlterTable = ({
             تـــرشيح
           </Typography>
         </Box>
-      </StyledMenu>
+      </DropDownMenu>
     </Box>
   );
 };
