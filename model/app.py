@@ -156,18 +156,10 @@ class NationalID:
         for contour in contours:
             if cv2.contourArea(contour) < 200:
                 continue
-
-            area = cv2.contourArea(contour)
-            perimeter = cv2.arcLength(contour, True)
-            centroid = (0, 0)
-            if area > 0:
-                M = cv2.moments(contour)
-                centroid = (int(M['m10'] / M['m00']), int(M['m01'] / M['m00']))
             
             x, y, w, h = cv2.boundingRect(contour)
             number_roi = img[y:y + h, x:x + w]
 
-            roi_height, roi_width = number_roi.shape[:2]
 
             resized_img = cv2.resize(number_roi, (64, 64))
 
