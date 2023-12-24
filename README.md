@@ -37,3 +37,7 @@ The following filter rules can be used when applying filters to your data:
 ## Sorting Rules
 - Example: `field:asc`
 - Example: `field:desc`
+
+# Model
+- API -> http://localhost:5000/extractdata
+- API body -> accepts 2 images in form data with names {front:img, back:img}
