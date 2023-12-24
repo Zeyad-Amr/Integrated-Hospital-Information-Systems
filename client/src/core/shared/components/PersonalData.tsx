@@ -32,8 +32,15 @@ const PersonalData = ({
   initialValues,
   onSubmit,
   isSubmitted,
-  isResetForm = false
+  isResetForm = false,
 }: PersonalDataProps) => {
+  const test = (values: {}) => {
+    let length: number = 0;
+    const valuesArray = Object.values(values);
+    valuesArray.map((value: any) => (length += value.length));
+    console.log(length);
+  };
+
   const refSubmitButton: any = useRef(null);
   const checkFirstRender = useRef(true);
   const checkFirstRender2 = useRef(true);
@@ -84,8 +91,6 @@ const PersonalData = ({
       .length(11, "يجب أن يكون رقم الهاتف 11 حرفًا")
       .matches(/^[0-9]+$/, "يجب أن يكون رقم الهاتف رقميًا."),
   });
-
-  
 
   return (
     <Formik
@@ -325,6 +330,7 @@ const PersonalData = ({
           </Grid>
           <Button
             type="submit"
+            onClick={() => test(values)}
             sx={{ display: "none" }}
             ref={refSubmitButton}
           ></Button>

@@ -5,10 +5,8 @@ import SecondaryButton from "@/core/shared/components/btns/SecondaryButton";
 import PersonalData, {
   PersonalDataValues,
 } from "@/core/shared/components/PersonalData";
-// import SubHeader from "@/core/shared/components/headers/SubHeader";
-// import IncidentHeader from "../IncidentHeader";
+
 import GetCompanions from "../GetCompanions";
-import CompleteIncident from "../../pages/CompleteIncident";
 import AdditionalData, {
   AdditionalDataValues,
 } from "@/core/shared/components/AdditionalData";
@@ -21,16 +19,10 @@ import CustomAccordion from "@/core/shared/components/CustomAccordion";
 const AddIncidentForm = () => {
   const refSubmitButton: any = useRef(null);
 
-  // const [showIncidentForm, setshowIncidentForm] = useState("block");
-  // const [showIncidentHeader, setshowIncidentHeader] = useState("none");
-  const [showCompForm, setshowCompForm] = useState("none");
-  const [showDialog, setShawDialog] = useState("none");
-
   const [submitFlag, setSubmitFlag] = useState<boolean>(false);
   const [incidentFormSubmitted, setIncidentFormSubmitted] =
     useState<boolean>(false);
-  const [NumOfPatients, setNumOfPatients] = useState<boolean>(false);
-  const [addingCompanion, setAddingCompanion] = useState<string>("none");
+
   const [addDatasubmitFlag, setAddDatasubmitFlag] = useState<boolean>(false);
 
   const [clickedBtnId, setClickedBtnId] = useState("");
@@ -50,11 +42,11 @@ const AddIncidentForm = () => {
     birthDate: "",
     address: "",
     verificationMethod: "",
-  }
+  };
 
   const [editing, setEditing] = useState<boolean>(false);
-  const [intialValues, setIntialValues] = useState<PersonalDataValues>(MainInitialVlaues);
-
+  const [intialValues, setIntialValues] =
+    useState<PersonalDataValues>(MainInitialVlaues);
 
   const [idx, setIdx] = useState<number>(0);
 
@@ -72,15 +64,21 @@ const AddIncidentForm = () => {
     notes: "",
   };
 
+  const [companionsArray, setTestArray] = useState<{}[]>([]);
+
   const handleCompanionSubmission = (values: PersonalDataValues) => {
-    console.log(editing);
+    let newCompanionsArray: {}[];
     if (editing) {
       response.current.companions[idx] = values;
       setEditing(false);
       setIntialValues(MainInitialVlaues);
+      newCompanionsArray = [...companionsArray];
+      newCompanionsArray[idx] = values;
+      setTestArray(newCompanionsArray);
     } else {
       response.current.companions.push(values);
-      setAddingCompanion("added");
+      newCompanionsArray = [...companionsArray, values];
+      setTestArray(newCompanionsArray);
     }
   };
 
@@ -100,8 +98,8 @@ const AddIncidentForm = () => {
       (response.current.car.number = values.carNum);
     (response.current.reason = values.reason),
       (response.current.place = values.place),
-      (response.current.notes = values.notes),
-      setIncidentFormSubmitted(true);
+      (response.current.notes = values.notes);
+    setIncidentFormSubmitted(true);
   };
 
   let response: React.MutableRefObject<{
@@ -139,67 +137,37 @@ const AddIncidentForm = () => {
   });
 
   const handleClickedButton = (e: any) => {
-    if (refSubmitButton.current) {
-      refSubmitButton.current.click();
-    }
-    submitButtonClick();
-
     if (e.target.id === "confirm-btn") {
-      setClickedBtnId(e.target.id);
-      if (addingCompanion === "adding") {
-        setSubmitFlag(!submitFlag);
+      console.log('compaionsFormValus')
+      if (refSubmitButton.current) {
+        refSubmitButton.current.click();
       }
+      submitButtonClick();
+      setClickedBtnId(e.target.id);
     } else if (e.target.id === "add-comp-btn") {
       setClickedBtnId(e.target.id);
-      if (addingCompanion === "adding") {
-        setSubmitFlag(!submitFlag);
-      }
+
+      setSubmitFlag(!submitFlag);
     }
   };
-
-  const handleAddCompanionShow = () => {
-    setAddingCompanion("adding");
-    setshowCompForm("block");
-    // setshowIncidentHeader("flex");
-    // setshowIncidentForm("none");
-    setAdditionalDataAccordion(false);
-    setUserDataAccordion(true);
-  };
-
-  // const handleEditBtn = () => {
-  //   setshowIncidentHeader("none");
-  //   setshowIncidentForm("block");
-  //   setIncidentFormSubmitted(false);
-  // };
 
   const submitButtonClick = () => {
     setAddDatasubmitFlag(!addDatasubmitFlag);
   };
 
   useEffect(() => {
-    if (
-      incidentFormSubmitted &&
-      NumOfPatients &&
-      clickedBtnId === "add-comp-btn"
-    ) {
-      handleAddCompanionShow();
-    } else if (
-      incidentFormSubmitted &&
-      clickedBtnId === "confirm-btn" &&
-      addingCompanion !== "adding"
-    ) {
+    if (incidentFormSubmitted && clickedBtnId === "confirm-btn") {
       console.log(response.current);
     }
-  }, [addingCompanion, clickedBtnId, incidentFormSubmitted, NumOfPatients]);
+  }, [addDatasubmitFlag, incidentFormSubmitted]);
+
   const handleFormSchema = Yup.object({
     numOfPatients: Yup.number().required("يجب إدخال عدد المرضى"),
   });
+
+
   return (
     <>
-      <CompleteIncident
-        display={showDialog}
-        DialogStateController={setShawDialog}
-      />
       <Formik
         initialValues={{
           numOfPatients: "",
@@ -207,7 +175,6 @@ const AddIncidentForm = () => {
         validationSchema={handleFormSchema}
         onSubmit={(values) => {
           response.current.numOfPatients = values.numOfPatients;
-          setNumOfPatients(true);
         }}
       >
         {({
@@ -222,11 +189,8 @@ const AddIncidentForm = () => {
             sx={{ marginTop: "1rem" }}
             component="form"
             onSubmit={handleSubmit}
-            noValidate
-          >
-            <Box
-            // sx={{ display: showIncidentForm ? showIncidentForm : "block" }}
-            >
+            noValidate          >
+            <Box>
               <CustomTextField
                 isRequired
                 name="numOfPatients"
@@ -261,89 +225,67 @@ const AddIncidentForm = () => {
           initialValues={intialAdditionalValues}
           onSubmit={handleIncidentSubmission}
           isSubmitted={addDatasubmitFlag}
-          // display={showIncidentForm}
         />
       </CustomAccordion>
-      {/* <IncidentHeader
-        Companions={response.current.companions}
-        data={response.current}
-        display={showIncidentHeader}
-        onClick={handleEditBtn}
-      /> */}
-      <Box sx={{ display: showCompForm }}>
-        {/* <SubHeader
-          setAddingCompanion={setAddingCompanion}
-          setSubmitFlag={setSubmitFlag}
-          handleEditBtn={handleEditBtn}
-          SubHeaderText="بيـــانات المــرافق"
-          compStateChanger={setshowCompForm}
-        /> */}
-        <CustomAccordion
-          isDisabled={false}
-          isExpanded={userDataAccordion}
-          setExpanded={setUserDataAccordion}
-          title="بيــانات المـــرافقين"
-          isClosable
-        >
-          <Box sx={{ display: "flex" }}>
-            <Box sx={{ width: "75%" }}>
-              <PersonalData
-                initialValues={intialValues}
-                onSubmit={handleCompanionSubmission}
-                isSubmitted={submitFlag}
+
+      <CustomAccordion
+        isDisabled={false}
+        isExpanded={userDataAccordion}
+        setExpanded={setUserDataAccordion}
+        title="بيــانات المـــرافقين"
+        isClosable={false}
+      >
+        <Box sx={{ display: "flex" }}>
+          <Box sx={{ width: "75%" }}>
+            <PersonalData
+              isResetForm
+              initialValues={intialValues}
+              onSubmit={handleCompanionSubmission}
+              isSubmitted={submitFlag}
+            />
+            <SecondaryButton
+              id="add-comp-btn"
+              title={editing ? "حفــــظ" : "اضــــافة"}
+              type="button"
+              onClick={(e: any) => {
+                handleClickedButton(e);
+              }}
+            />
+          </Box>
+          <Box
+            sx={{
+              width: `25%`,
+              paddingLeft: `1rem`,
+              transition: "0.3s",
+            }}
+          >
+            <Box
+              sx={{
+                borderRadius: "10px",
+                backgroundColor: "#eee",
+                width: "100%",
+                height: "100%",
+              }}
+            >
+              <GetCompanions
+                companionsArray={companionsArray}
+                setIntialValues={setIntialValues}
+                setEditing={setEditing}
+                getIdx={setIdx}
               />
             </Box>
-            <Box sx={{ height: "20rem", width: "25%", paddingLeft: "1rem" }}>
-              <Box
-                sx={{
-                  borderRadius: "10px",
-                  backgroundColor: "#eee",
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <GetCompanions
-                  companionsArray={response.current.companions}
-                  setIntialValues={setIntialValues}
-                  setEditing={setEditing}
-                  getIdx={setIdx}
-                />
-              </Box>
-            </Box>
           </Box>
-        </CustomAccordion>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-start",
-          alignItems: "center",
-          height: "4rem",
+        </Box>
+      </CustomAccordion>
+
+      <PrimaryButton
+        id="confirm-btn"
+        title="حفـــظ"
+        type="button"
+        onClick={(e: HTMLElement) => {
+          handleClickedButton(e);
         }}
-      >
-        <PrimaryButton
-          id="confirm-btn"
-          title="تأكيــد"
-          type="button"
-          onClick={(e: any) => {
-            handleClickedButton(e);
-          }}
-        />
-        <SecondaryButton
-          id="add-comp-btn"
-          title={
-            showCompForm === "none"
-              ? "اضــــافة مـــرافق"
-              : !editing
-              ? "اضـافة مـرافق أخــر"
-              : "حفـــظ"
-          }
-          type="button"
-          onClick={(e: any) => {
-            handleClickedButton(e);
-          }}
-        />
-      </Box>
+      />
     </>
   );
 };

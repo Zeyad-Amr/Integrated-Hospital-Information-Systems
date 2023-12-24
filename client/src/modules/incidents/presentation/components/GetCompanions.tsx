@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 const GetCompanions = ({
@@ -9,6 +9,7 @@ const GetCompanions = ({
   setEditing,
   getIdx,
 }: any) => {
+
   const [select, setSelect] = useState<number>();
   return (
     <Box sx={{ padding: "1rem", height: "100%" }}>
@@ -26,7 +27,7 @@ const GetCompanions = ({
           height: "90%",
         }}
       >
-        {companionsArray.length == 0
+        {companionsArray.length === 0
           ? "لا يـــوجد مــرافقون"
           : companionsArray.map((companion: any, idx: number) => (
               <Box
@@ -34,7 +35,6 @@ const GetCompanions = ({
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
-                  // marginBottom: "0.5rem",
                   backgroundColor: idx === select ? "white" : "transparent",
                   padding: "0.4rem 1rem",
                   alignItems: "center",

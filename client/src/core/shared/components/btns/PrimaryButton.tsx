@@ -12,7 +12,7 @@ const PrimaryButton = (props: any) => {
         backgroundColor: "#004B50",
         width: "15rem",
         fontSize: "0.9rem",
-        margin: "1rem 0rem 2rem 1rem",
+        // margin: "1rem 0rem 2rem 1rem",
         height: "40px",
       }}
       onClick={props.onClick}
