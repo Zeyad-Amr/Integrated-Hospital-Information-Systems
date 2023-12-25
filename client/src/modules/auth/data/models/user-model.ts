@@ -1,4 +1,4 @@
-import { roleList, shiftList, departmentList } from '../../domain/data-values/constants';
+import store from '@/core/state/store';
 import UserInterface from '../../domain/interfaces/user-interface';
 import AuthDataModel from './auth-data-model';
 import PersonModel from './person-model';
@@ -8,9 +8,9 @@ export default class UserModel {
     //* --------------------- Serialization: Convert the model to JSON ---------------------
     static toJson(entity: UserInterface): any {
         return {
-            role: entity.role?.id,
-            shift: entity.shift?.id,
-            department: entity.department?.id,
+            roleId: entity.role,
+            shiftId: entity.shift,
+            departmentId: entity.department,
             person: entity.person ? PersonModel.toJson(entity.person) : null,
             auth: entity.auth ? AuthDataModel.toJson(entity.auth) : null,
         };
@@ -18,11 +18,12 @@ export default class UserModel {
 
     //* --------------------- Deserialization: Create a model from JSON data ---------------------
     static fromJson(json: any): UserInterface {
+        const state = store.getState();
         return {
             id: json.id,
-            role: roleList.find((role) => role.id === json.role) ?? roleList[0],
-            shift: shiftList.find((shift) => shift.id === json.shift) ?? shiftList[0],
-            department: departmentList.find((department) => department.id === json.department) ?? departmentList[0],
+            role: json.role ?? state.lookups.lookups.roleTypes[0],
+            shift: json.shift ?? state.lookups.lookups.shiftTypes[0],
+            department: json.department ?? state.lookups.lookups.departments[0],
             createdAt: json.createdAt,
             updatedAt: json.updatedAt,
             person: PersonModel.fromJson(json.person),
