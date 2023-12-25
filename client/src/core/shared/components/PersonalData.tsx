@@ -35,7 +35,7 @@ const PersonalData = ({
     let length: number = 0;
     const valuesArray = Object.values(values);
     valuesArray.map((value: any) => (length += value.length));
-    console.log(length);
+    console.log(valuesArray);
   };
 
   const refSubmitButton: any = useRef(null);
@@ -60,6 +60,7 @@ const PersonalData = ({
       enableReinitialize
       initialValues={initialValues}
       validationSchema={PersonEntity.getSchema()}
+      onChange={(e: any) => test(e.target.value)}
       onSubmit={(values, { resetForm }) => {
         onSubmit(values);
         if (isResetForm) {

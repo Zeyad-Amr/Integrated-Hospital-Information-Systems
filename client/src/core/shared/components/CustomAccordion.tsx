@@ -29,7 +29,8 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
   />
 ))(({ theme }) => ({
   color: "#fff",
-  backgroundColor: "#007867",
+  backgroundColor: "#0f70f2",
+  background: "linear-gradient(-30deg,#0a63d9, #0054a6)",
   borderTopRightRadius: "6px",
   borderTopLeftRadius: "6px",
   flexDirection: "row-reverse",
