@@ -76,7 +76,7 @@ const CustomMultiSelectField = <T extends { id: any; label: string }> ({
     sx={{
       mb: 2,
       width: width,
-      maxWidth: "100%",
+      maxWidth: "100%"
     }}
     >
       {!hideLabel && (
@@ -95,7 +95,7 @@ const CustomMultiSelectField = <T extends { id: any; label: string }> ({
 
       <FormControl
         required={isRequired}
-        sx={{ marginTop: 0.5, width: { width }, maxWidth: "100%" }}
+        sx={{ marginTop: 1.1, width: { width }, maxWidth: "100%" }}
       >
         <InputLabel>{label}</InputLabel>
 
