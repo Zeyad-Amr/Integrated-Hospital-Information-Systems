@@ -86,7 +86,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
             },
           }}
         >
-          {options.map((option: T) => (
+          {options?.map((option: T) => (
             <MenuItem
               key={option.id}
               value={option.id}
