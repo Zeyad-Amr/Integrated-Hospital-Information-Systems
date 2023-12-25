@@ -1,26 +1,58 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Req,
+} from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiConflictResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { handleError } from '../shared/http-error';
 import { AuthRequest } from 'src/auth/auth.interface';
+import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
+import {
+  Pagination,
+  PaginationParams,
+} from 'src/shared/decorators/pagination.decorator';
+import { Sorting, SortingParams } from 'src/shared/decorators/order.decorator';
+import {
+  Filter,
+  FilteringParams,
+} from 'src/shared/decorators/filters.decorator';
 
 @ApiTags('employee')
-@ApiUnauthorizedResponse({ description: "No token provided" })
+@ApiUnauthorizedResponse({ description: 'No token provided' })
+@ApiBearerAuth()
 @Controller('employee')
 export class EmployeeController {
-  constructor(private readonly employeeService: EmployeeService) { }
+  constructor(private readonly employeeService: EmployeeService) {}
 
   @Post()
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Create employee' })
   @ApiCreatedResponse({ description: 'created successfully' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiConflictResponse({ description: 'employee already exist' })
-  async create(@Body() createEmployeeDto: CreateEmployeeDto, @Req() req: AuthRequest) {
+  async create(
+    @Body() createEmployeeDto: CreateEmployeeDto,
+    @Req() req: AuthRequest,
+  ) {
     try {
-      const userId = req.user.sub
+      const userId = req.user.sub;
       return await this.employeeService.create(createEmployeeDto, userId);
     } catch (error) {
       throw handleError(error);
@@ -28,19 +60,22 @@ export class EmployeeController {
   }
 
   @Get()
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'get all employees' })
   @ApiOkResponse({ description: 'get all employees' })
-  async findAll() {
+  @CustomGetAllParamDecorator()
+  async findAll(
+    @PaginationParams() pagination: Pagination,
+    @SortingParams() sort: Sorting,
+    @FilteringParams() filters: Array<Filter>,
+  ) {
     try {
-      return await this.employeeService.findAll();
+      return await this.employeeService.findAll(pagination, sort, filters);
     } catch (error) {
       throw handleError(error);
     }
   }
 
   @Get(':id')
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'get employee by id' })
   @ApiOkResponse({ description: 'get a employee' })
   @ApiNotFoundResponse({ description: 'employee not found' })
@@ -53,11 +88,13 @@ export class EmployeeController {
   }
 
   @Patch(':id')
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'update employee' })
   @ApiOkResponse({ description: 'updated successfully' })
   @ApiNotFoundResponse({ description: 'employee not found' })
-  async update(@Param('id') id: string, @Body() updateEmployeeDto: UpdateEmployeeDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateEmployeeDto: UpdateEmployeeDto,
+  ) {
     try {
       return await this.employeeService.update(id, updateEmployeeDto);
     } catch (error) {
@@ -66,7 +103,6 @@ export class EmployeeController {
   }
 
   @Delete(':id')
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'delete employee by id' })
   @ApiOkResponse({ description: 'deleted successfully' })
   @ApiNotFoundResponse({ description: 'employee not found' })

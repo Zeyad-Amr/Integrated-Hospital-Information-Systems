@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -14,7 +14,7 @@ export interface TableColumn {
   label: string;
   icon?: React.ReactNode;
   minWidth?: number;
-  align?: "right";
+  align?: "right" | "left" | "center" | "inherit" | "justify" | undefined;
   format?: (value: number) => string;
   onClick?: ({ props }: any) => void;
 }
@@ -28,8 +28,8 @@ const DataTable = ({
   columns: readonly TableColumn[];
   onClickRow?: ({ props }: any) => void;
 }) => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -57,7 +57,6 @@ const DataTable = ({
                     <TableCell
                       key={column.label}
                       align={column.align}
-                      style={{ minWidth: column.minWidth }}
                     ></TableCell>
                   );
                 }
@@ -79,7 +78,7 @@ const DataTable = ({
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row: typeof rows) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1}>
+                  <TableRow key={row.id} hover role="checkbox" tabIndex={-1}>
                     {columns.map((column) => {
                       const value = row[column.id as keyof typeof row];
                       if (column.id === "icon") {

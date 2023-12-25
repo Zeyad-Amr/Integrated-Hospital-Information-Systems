@@ -1,0 +1,329 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table Person {
+  id String [pk]
+  firstName String [not null]
+  secondName String [not null]
+  thirdName String [not null]
+  fourthName String [not null]
+  SSN String [unique]
+  verificationMethod IdentityType
+  verificationMethodId Int
+  gender GenderType
+  genderId Int [not null]
+  birthDate DateTime
+  phone String [unique]
+  governate String
+  address String
+  type PersonType [not null]
+  employee Employee
+  patient Patient
+  companion Companion
+}
+
+Table Patient {
+  id String [pk]
+  comorbidities Comorbidity [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  person Person [not null]
+  personId String [unique, not null]
+  medicalRecords MedicalRecord [not null]
+  visits Visit [not null]
+}
+
+Table Companion {
+  id String [pk]
+  kinship KinshipType
+  kinshipId Int
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  person Person [not null]
+  personId String [unique, not null]
+  visits Visit [not null]
+  CompanionsOnIncidents CompanionsOnIncidents [not null]
+}
+
+Table Employee {
+  id String [pk]
+  role RoleType [not null]
+  roleId Int [not null]
+  shift ShiftType [not null]
+  shiftId Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  auth User
+  person Person [not null]
+  personId String [unique, not null]
+  createdByEmployee Employee
+  createdById String
+  createdEmployees Employee [not null]
+  visitsCreated Visit [not null]
+  department Department [not null]
+  departmentId String [not null]
+}
+
+Table User {
+  username String [pk]
+  password String [not null]
+  email String [unique]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  employee Employee [not null]
+  employeeId String [unique, not null]
+}
+
+Table Department {
+  id String [pk]
+  name String [unique, not null]
+  Employees Employee [not null]
+}
+
+Table Visit {
+  code String [pk]
+  sequenceNumber Int
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  AdditionalInformation VisitAdditionalInformation
+  additionalInfoId String
+  creator Employee [not null]
+  creatorId String [not null]
+  patient Patient
+  patientId String
+  companion Companion
+  companionId String
+  medicalRecord MedicalRecord
+  transfers Transfer [not null]
+  incident Incident
+  incidentId String
+}
+
+Table Incident {
+  id String [pk]
+  numberOfPatients Int [not null]
+  isCompleted Boolean [not null, default: false]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  AdditionalInformation VisitAdditionalInformation
+  additionalInfoId String
+  visits Visit [not null]
+  CompanionsOnIncidents CompanionsOnIncidents [not null]
+}
+
+Table CompanionsOnIncidents {
+  companion Companion [not null]
+  companionId String [not null]
+  incident Incident [not null]
+  incidentId String [not null]
+
+  indexes {
+    (companionId, incidentId) [pk]
+  }
+}
+
+Table CarNumber {
+  id String [pk]
+  firstChar String [not null]
+  secondChar String [not null]
+  thirdChar String [not null]
+  number Int [not null]
+  VisitAdditionalInformation VisitAdditionalInformation [not null]
+
+  indexes {
+    (firstChar, secondChar, thirdChar, number) [unique]
+  }
+}
+
+Table Attendant {
+  id String [pk]
+  SSN String [unique]
+  cardId String [unique]
+  name String [not null]
+  attendantRole AttendantRole [not null]
+  attendantRoleId Int [not null]
+  VisitAdditionalInformation VisitAdditionalInformation [not null]
+}
+
+Table VisitAdditionalInformation {
+  id String [pk]
+  Car CarNumber
+  carId String
+  cameFrom CameFromOptions
+  cameFromId Int [not null]
+  injuryLocation String
+  injuryCause String
+  notes String
+  Attendant Attendant
+  attendantId String
+  Incident Incident [not null]
+  Visit Visit [not null]
+}
+
+Table MedicalRecord {
+  id String [pk]
+  mainComplaint String
+  consciousnessLevel LOC
+  consciousnessLevelId Int
+  triage TriageType
+  triageId Int
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  visit Visit [not null]
+  visitCode String [unique, not null]
+  vitals Vitals [not null]
+  Patient Patient
+  patientId String
+}
+
+Table Vitals {
+  id String [pk]
+  temp Float
+  PR Float
+  RR Float
+  painScore Float
+  SBP Float
+  DBP Float
+  SpO2 Float
+  CVP Float
+  GCS Float
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  medicalRecord MedicalRecord [not null]
+  medcalRecordId String [not null]
+}
+
+Table Transfer {
+  id String [pk]
+  from String [not null]
+  to String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  visit Visit [not null]
+  visitCode String [not null]
+}
+
+Table IdentityType {
+  id Int [pk, increment]
+  value String [unique, not null]
+  Person Person [not null]
+}
+
+Table GenderType {
+  id Int [pk, increment]
+  value String [unique, not null]
+  Person Person [not null]
+}
+
+Table KinshipType {
+  id Int [pk, increment]
+  value String [unique, not null]
+  Companion Companion [not null]
+}
+
+Table RoleType {
+  id Int [pk, increment]
+  value String [unique, not null]
+  Employee Employee [not null]
+}
+
+Table ShiftType {
+  id Int [pk, increment]
+  value String [unique, not null]
+  Employee Employee [not null]
+}
+
+Table CameFromOptions {
+  id Int [pk, increment]
+  value String [unique, not null]
+  VisitAdditionalInformation VisitAdditionalInformation [not null]
+}
+
+Table AttendantRole {
+  id Int [pk, increment]
+  value String [unique, not null]
+  Attendant Attendant [not null]
+}
+
+Table TriageType {
+  id Int [pk, increment]
+  value String [unique, not null]
+  MedicalRecord MedicalRecord [not null]
+}
+
+Table LOC {
+  id Int [pk, increment]
+  value String [unique, not null]
+  MedicalRecord MedicalRecord [not null]
+}
+
+Table Comorbidity {
+  id Int [pk, increment]
+  value String [unique, not null]
+  Patient Patient [not null]
+}
+
+Enum PersonType {
+  PATIENT
+  COMPANION
+  EMPLOYEE
+}
+
+Ref: Person.verificationMethodId > IdentityType.id
+
+Ref: Person.genderId > GenderType.id
+
+Ref: Patient.personId - Person.id
+
+Ref: Companion.kinshipId > KinshipType.id
+
+Ref: Companion.personId - Person.id
+
+Ref: Employee.roleId > RoleType.id
+
+Ref: Employee.shiftId > ShiftType.id
+
+Ref: Employee.personId - Person.id
+
+Ref: Employee.createdById - Employee.id
+
+Ref: Employee.departmentId > Department.id
+
+Ref: User.employeeId - Employee.id [delete: Cascade]
+
+Ref: Visit.additionalInfoId > VisitAdditionalInformation.id
+
+Ref: Visit.creatorId > Employee.id
+
+Ref: Visit.patientId > Patient.id
+
+Ref: Visit.companionId > Companion.id
+
+Ref: Visit.incidentId > Incident.id
+
+Ref: Incident.additionalInfoId > VisitAdditionalInformation.id
+
+Ref: CompanionsOnIncidents.companionId > Companion.id
+
+Ref: CompanionsOnIncidents.incidentId > Incident.id
+
+Ref: Attendant.attendantRoleId > AttendantRole.id
+
+Ref: VisitAdditionalInformation.carId > CarNumber.id
+
+Ref: VisitAdditionalInformation.cameFromId > CameFromOptions.id
+
+Ref: VisitAdditionalInformation.attendantId > Attendant.id
+
+Ref: MedicalRecord.consciousnessLevelId > LOC.id
+
+Ref: MedicalRecord.triageId > TriageType.id
+
+Ref: MedicalRecord.visitCode - Visit.code
+
+Ref: MedicalRecord.patientId > Patient.id
+
+Ref: Vitals.medcalRecordId > MedicalRecord.id
+
+Ref: Transfer.visitCode > Visit.code

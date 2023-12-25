@@ -1,4 +1,3 @@
-import Label from "@/core/components/label/label";
 import Box from "@mui/material/Box";
 const TestPage = ({ label = "Test" }) => {
   return (
@@ -6,6 +5,10 @@ const TestPage = ({ label = "Test" }) => {
       sx={{
         fontSize: "h1.fontSize",
         fontWeight: "fontWeightBold",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "80vh",
       }}
     >
       <div>{label}</div>

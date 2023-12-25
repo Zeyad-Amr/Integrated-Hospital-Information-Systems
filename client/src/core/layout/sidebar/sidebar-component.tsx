@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import SidebarMenuItem from "./menu/sidebar-menu-item";
 import SidebarSubmenuItem from "./menu/sidebar-submenu-item";
@@ -8,19 +8,6 @@ import PeopleIcon from '@mui/icons-material/People';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 
 const SidebarComponent = (props: any) => {
-=======
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import PeopleIcon from "@mui/icons-material/People";
-import ApartmentIcon from "@mui/icons-material/Apartment";
-import { Button } from "@mui/material";
-import { SidebarContext } from "./context/context";
-import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { MenuIcon, CloseIcon } from "@/assets/icons/index";
-const SidebarComponent = () => {
-  const { collapsed, onCollapse } = useContext(SidebarContext);
-
->>>>>>> Stashed changes
   return (
     <Box
       sx={{
@@ -60,9 +47,8 @@ const SidebarComponent = () => {
         activeIcon={<DashboardIcon sx={{ color: "white" }} />}
 >>>>>>> Stashed changes
         text="لوحة التحكم"
-        path="/dashboard"
+        path="/dashboard/home"
       />
-
       <SidebarMenuItem
 <<<<<<< Updated upstream
         icon={<PeopleIcon sx={{color:'primary.main', textAlign: 'center'}}/>}
@@ -72,18 +58,28 @@ const SidebarComponent = () => {
         activeIcon={<PeopleIcon sx={{ color: "white" }} />}
 >>>>>>> Stashed changes
         text="المستخدمين"
-        path="/users"
+        path="/dashboard/users"
       >
-        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
-        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
-        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
-        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
-        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
-        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
-        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
-        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
+        <SidebarSubmenuItem
+          text="إضافة مستخدم"
+          path="/dashboard/users/create"
+        />
+        <SidebarSubmenuItem text="عرض المستخدمين" path="/dashboard/users/all" />
       </SidebarMenuItem>
-
+      <SidebarMenuItem
+        icon={
+          <ApartmentIcon sx={{ color: "primary.main", textAlign: "center" }} />
+        }
+        activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
+        text="الإصابات الجماعية"
+        path="/dashboard/incidents/"
+      >
+        <SidebarSubmenuItem text="إضافة إصابة جماعية" path="/dashboard/incidents/add" />
+        <SidebarSubmenuItem
+          text="استكمال الإصابات الجماعية"
+          path="/dashboard/incidents/all"
+        />
+      </SidebarMenuItem>
       <SidebarMenuItem
 <<<<<<< Updated upstream
         icon={<ApartmentIcon sx={{color:'primary.main', textAlign: 'center'}}/>}

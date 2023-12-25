@@ -1,10 +1,21 @@
 const Endpoints = {
-    staff: {
-        list: '/staff',
-        details: '/staff/:id',
-        create: '/staff',
-        update: '/staff/:id',
-        delete: '/staff/:id',
+    user: {
+        login: '/user/login',
+        me: '/user/me',
+    },
+    employee: {
+        list: '/employee',
+        details: '/employee/:id',
+        create: '/employee',
+        update: '/employee/:id',
+        delete: '/employee/:id',
+    },
+    visit: {
+        list: '/visit',
+        details: '/visit/:visitcode',
+        create: '/visit/',
+        createAnonymously: '/visit/anonymous',
+        update: '/patient',
     },
 };
 export default Endpoints;

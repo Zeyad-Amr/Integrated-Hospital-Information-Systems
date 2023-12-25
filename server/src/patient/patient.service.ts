@@ -1,36 +1,43 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { PatientRepo } from './patient.repo';
-import { PersonRepo } from 'src/person/person.repo';
+import { Pagination } from 'src/shared/decorators/pagination.decorator';
+import { Sorting } from 'src/shared/decorators/order.decorator';
+import { Filter } from 'src/shared/decorators/filters.decorator';
 
 @Injectable()
 export class PatientService {
-  constructor(private readonly patientRepo: PatientRepo, private personRepo: PersonRepo) { }
+  constructor(
+    private readonly patientRepo: PatientRepo,
+  ) { }
 
-
-  async findAll() {
+  async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>) {
     try {
-      return await this.patientRepo.findAll();
+      return await this.patientRepo.getAll({
+        paginationParams: pagination,
+        filters,
+        sort,
+        include: this.patientRepo.patientInclude,
+      });
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   async findOne(ssn: string) {
-
     try {
-      return await this.patientRepo.findBySSN(ssn)
+      return await this.patientRepo.findBySSN(ssn);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-  update(updatePatientDto: UpdatePatientDto) {
+  async update(updatePatientDto: UpdatePatientDto) {
     try {
-      const updatedPatient = this.patientRepo.update(updatePatientDto);
-      return "updated successfully"
+      await this.patientRepo.updateUncompleted(updatePatientDto);
+      return 'updated successfully';
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }

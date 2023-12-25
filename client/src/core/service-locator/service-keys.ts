@@ -1,24 +1,31 @@
 enum ServiceKeys {
 
     //* Data Sources ----------------------------------------------
-    StaffDataSource = 'StaffDataSource',
+    EmployeeDataSource = 'EmployeeDataSource',
+    AuthDataSources = 'AuthDataSources',
+    VisitsDataSource = 'VisitsDataSource',
 
 
     //* Repositories ----------------------------------------------
-    StaffRepository = 'StaffRepository',
+    EmployeeRepository = 'EmployeeRepository',
+    AuthRepository = 'AuthRepository',
+    VisitsRepository = 'VisitsRepository',
 
 
     //* Use Cases --------------------------------------------------
-    GetAllStaffMembersUseCase = 'GetAllStaffMembersUseCase',
-    GetStaffDetailsUseCase = 'GetStaffDetailsUseCase',
-    CreateStaffMemberUseCase = 'CreateStaffMemberUseCase',
-    UpdateStaffMemberUseCase = 'UpdateStaffMemberUseCase',
-    DeleteStaffMemberUseCase = 'DeleteStaffMemberUseCase',
+    GetAllEmployeesUseCase = 'GetAllEmployeesUseCase',
+    GetEmployeeByIdUseCase = 'GetEmployeeByIdUseCase',
+    CreateEmployeeUseCase = 'CreateEmployeeUseCase',
+    UpdateEmployeeUseCase = 'UpdateEmployeeUseCase',
+    DeleteEmployeeUseCase = 'DeleteEmployeeUseCase',
 
+    LoginUseCase = 'LoginUseCase',
+    GetMeUseCase = 'GetMeUseCase',
 
-    //* Thunks --------------------------------------------------
-    StaffThunks = 'StaffThunks',
-
+    CreateVisitUseCase = 'CreateVisitUseCase',
+    UpdateVisitUseCase = 'UpdateVisitUseCase',
+    GetAnonymousVisitsUseCase = 'GetAnonymousVisitsUseCase',
+    GetVisitByCodeUseCase = 'GetVisitByCodeUseCase',
 
     //* Exnternal Services --------------------------------------------------
     ApiClient = 'ApiClient',

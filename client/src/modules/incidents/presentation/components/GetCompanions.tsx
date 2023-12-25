@@ -39,7 +39,7 @@ const GetCompanions = ({
                   justifyContent: "space-between",
                   // marginBottom: "0.5rem",
                   backgroundColor:
-                    idx === select 
+                    idx === select && submitted !== false
                       ? "white"
                       : "transparent",
                   padding: "0.4rem 1rem",

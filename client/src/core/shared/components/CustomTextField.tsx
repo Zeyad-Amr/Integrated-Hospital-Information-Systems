@@ -1,8 +1,7 @@
-import TextField from "@mui/material/TextField";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { Box } from "@mui/system";
-import Typography from "@mui/material/Typography";
 import { FormControl, FormHelperText } from "@mui/material";
-export interface TextFieldProps {
+export interface CustomTextFieldProps {
   onChange: (event: React.ChangeEvent<{ value: unknown }>) => void;
   onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
   name: string;
@@ -10,10 +9,13 @@ export interface TextFieldProps {
   error: string | undefined;
   touched: boolean | undefined;
   value: string | number | undefined | null;
+  multiline?: boolean | undefined;
+  maxLength?: number;
+  rows?: number;
   isRequired?: boolean;
   width?: number | string;
   hideLabel?: boolean;
-  props?: any;
+  props?: TextFieldProps;
 }
 
 const CustomTextField = ({
@@ -25,10 +27,14 @@ const CustomTextField = ({
   error,
   touched,
   value,
+  maxLength,
   props,
   isRequired = false,
   width,
-}: TextFieldProps) => {
+  multiline,
+  rows
+  
+}: CustomTextFieldProps) => {
   const textfieldProps = {
     FormHelperTextProps: { sx: { color: "red" } },
     InputProps: { sx: { backgroundColor: "white" } },
@@ -41,7 +47,7 @@ const CustomTextField = ({
           maxWidth: "100%",
         },
         width: width,
-        margin: "0.7rem",
+        margin: "0.7rem 0rem",
         maxWidth: "100%",
       }}
     >
@@ -55,7 +61,13 @@ const CustomTextField = ({
         sx={{ width: { width }, maxWidth: "100%" }}
       >
         <TextField
-          sx={{ width: width, backgroundColor: "#e7e7e7 !important" , borderRadius : "10px"  }}
+          multiline={multiline?true:false}
+          rows={rows}
+          sx={{
+            width: width,
+            backgroundColor: "#e7e7e7 !important",
+            borderRadius: "10px",
+          }}
           // id="outlined-required"
           label={label}
           required={isRequired}
@@ -68,11 +80,13 @@ const CustomTextField = ({
           error={!!(error && touched)}
           {...(!hideLabel && textfieldProps)}
           {...props}
+          inputProps={{ maxLength: maxLength }}
+
         />
         <FormHelperText
           sx={{
             color: "#FF5630",
-            fontSize : "12px"
+            fontSize: "12px",
           }}
         >
           {error && touched ? error : ""}

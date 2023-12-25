@@ -5,59 +5,95 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Person {
-  id                 String       @id @default(uuid())
-  firstName          String
-  secondName         String
-  thirdName          String
-  fourthName         String
-  SSN                String       @unique
-  verificationMethod IdentityEnum
-  gender             GenderEnum
-  birthDate          DateTime     @db.Date
-  phone              String?      @unique
-  email              String?      @unique
-  governate          String
-  address            String
+  id                   String        @id @default(uuid())
+  firstName            String
+  secondName           String
+  thirdName            String
+  fourthName           String
+  SSN                  String?       @unique
+  verificationMethod   IdentityType? @relation(fields: [verificationMethodId], references: [id])
+  verificationMethodId Int?
+  gender               GenderType?   @relation(fields: [genderId], references: [id])
+  genderId             Int
+  birthDate            DateTime?     @db.Date
+  phone                String?       @unique
+  governate            String?
+  address              String?
+  type                 PersonType
+
+  employee  Employee?
+  patient   Patient?
+  companion Companion?
+}
+
+model Patient {
+  id            String        @id @default(uuid())
+  comorbidities Comorbidity[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  employee        Employee?
-  patientVisits   Visit[]   @relation("visitPatient")
-  companionVisits Visit[]   @relation("visitCompanion")
+  person   Person @relation(fields: [personId], references: [id])
+  personId String @unique
 
-  incidentCompanion Incident? @relation(fields: [incidentId], references: [id])
-  incidentId        String?
+  medicalRecords MedicalRecord[]
+  visits         Visit[]
+}
+
+model Companion {
+  id        String       @id @default(uuid())
+  kinship   KinshipType? @relation(fields: [kinshipId], references: [id])
+  kinshipId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  person   Person @relation(fields: [personId], references: [id])
+  personId String @unique
+
+  visits                Visit[]
+  CompanionsOnIncidents CompanionsOnIncidents[]
 }
 
 model Employee {
-  id   String   @id @default(uuid())
-  role RoleEnum
-  // we should make table for shifts 
-  // shiftStart DateTime
-  // shiftEnd   DateTime
+  id      String    @id @default(uuid())
+  role    RoleType  @relation(fields: [roleId], references: [id])
+  roleId  Int
+  shift   ShiftType @relation(fields: [shiftId], references: [id])
+  shiftId Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user              User?
-  person            Person     @relation(fields: [personID], references: [id])
-  personID          String     @unique
+  auth User?
+
+  person   Person @relation(fields: [personId], references: [id])
+  personId String @unique
+
   createdByEmployee Employee?  @relation("CreatedBy", fields: [createdById], references: [id])
   createdById       String?
   createdEmployees  Employee[] @relation("CreatedBy")
-  visit             Visit[]
+
+  visitsCreated Visit[]
+
+  department   Department @relation(fields: [departmentId], references: [id])
+  departmentId String
 }
 
 model User {
-  username String @id
+  username String  @id
   password String
+  email    String? @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -66,75 +102,284 @@ model User {
   employeeId String   @unique
 }
 
+model Department {
+  id   String @id @default(uuid())
+  name String @unique
+
+  Employees Employee[]
+}
+
 model Visit {
-  code           String       @id
+  code           String @id
   sequenceNumber Int?
-  kinship        KinshipEnum?
 
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt
 
-  // it has to be commented till the emplopyee api created
-  creator     Employee?  @relation(fields: [creatorId], references: [id])
-  creatorId   String?
-  patient     Person?   @relation("visitPatient", fields: [patientId], references: [id])
+  AdditionalInformation VisitAdditionalInformation? @relation(fields: [additionalInfoId], references: [id])
+  additionalInfoId      String?
+
+  // Relations with Pesons
+  creator     Employee   @relation(fields: [creatorId], references: [id])
+  creatorId   String
+  patient     Patient?   @relation(fields: [patientId], references: [id])
   patientId   String?
-  companion   Person?   @relation("visitCompanion", fields: [companionId], references: [id])
+  companion   Companion? @relation(fields: [companionId], references: [id])
   companionId String?
-  incident    Incident? @relation(fields: [incidentId], references: [id])
-  incidentId  String?
+
+  medicalRecord MedicalRecord?
+  transfers     Transfer[]
+
+  incident   Incident? @relation(fields: [incidentId], references: [id])
+  incidentId String?
 }
 
 model Incident {
   id               String  @id @default(uuid())
-  description      String?
   numberOfPatients Int
-  isCompleted Boolean    @default(false)
+  isCompleted      Boolean @default(false)
 
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  
-  Car         CarNumber? @relation(fields: [carId], references: [id])
-  carId       String?
-  companions  Person[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  visits Visit[]
+  AdditionalInformation VisitAdditionalInformation? @relation(fields: [additionalInfoId], references: [id])
+  additionalInfoId      String?
+
+  visits                Visit[]
+  CompanionsOnIncidents CompanionsOnIncidents[]
+}
+
+model CompanionsOnIncidents {
+  companion   Companion @relation(fields: [companionId], references: [id])
+  companionId String
+  incident    Incident  @relation(fields: [incidentId], references: [id])
+  incidentId  String
+
+  @@id([companionId, incidentId])
 }
 
 model CarNumber {
-  id         String     @id() @default(uuid())
-  firstChar  String     @db.VarChar(1)
-  secondChar String     @db.VarChar(1)
-  thirdChar  String     @db.VarChar(1)
-  number     Int
-  Incident   Incident[]
+  id                         String                       @id @default(uuid())
+  firstChar                  String                       @db.VarChar(1)
+  secondChar                 String                       @db.VarChar(1)
+  thirdChar                  String                       @db.VarChar(1)
+  number                     Int
+  VisitAdditionalInformation VisitAdditionalInformation[]
 
   @@unique([firstChar, secondChar, thirdChar, number], map: "Car_Unique")
 }
 
-enum IdentityEnum {
-  NATIONALIDCARD
-  PASSPORT
+model Attendant {
+  id                         String                       @id @default(uuid())
+  SSN                        String?                      @unique
+  cardId                     String?                      @unique
+  name                       String
+  attendantRole              AttendantRole                @relation(fields: [attendantRoleId], references: [id])
+  attendantRoleId            Int
+  VisitAdditionalInformation VisitAdditionalInformation[]
 }
 
-enum GenderEnum {
-  MALE
-  FEMALE
+model VisitAdditionalInformation {
+  id             String           @id @default(uuid())
+  Car            CarNumber?       @relation(fields: [carId], references: [id])
+  carId          String?
+  cameFrom       CameFromOptions? @relation(fields: [cameFromId], references: [id])
+  cameFromId     Int
+  injuryLocation String?
+  injuryCause    String?
+  notes          String?
+  Attendant      Attendant?       @relation(fields: [attendantId], references: [id])
+  attendantId    String?
+  Incident       Incident[]
+  Visit          Visit[]
 }
 
-enum KinshipEnum {
-  BROTHER
-  SISTER
-  FATHER
-  MOTHER
-  COUSIN
-  AUNT
-  OTHER
+model MedicalRecord {
+  id                   String      @id @default(uuid())
+  mainComplaint        String?
+  consciousnessLevel   LOC?        @relation(fields: [consciousnessLevelId], references: [id])
+  consciousnessLevelId Int?
+  triage               TriageType? @relation(fields: [triageId], references: [id])
+  triageId             Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  visit     Visit  @relation(fields: [visitCode], references: [code])
+  visitCode String @unique
+
+  vitals    Vitals[]
+  Patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId String?
 }
 
-enum RoleEnum {
-  ADMIN
-  RECEPTIONIST
-  DOCTOR
-  NURSE
+model Vitals {
+  id        String @id @default(uuid())
+  temp      Float?
+  PR        Float? //pulse rate
+  RR        Float? //respiratory rate
+  painScore Float?
+  SBP       Float? //systolic blood pressure
+  DBP       Float? //diastolic blood pressure
+  SpO2      Float?
+  CVP       Float?
+  GCS       Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  medicalRecord  MedicalRecord @relation(fields: [medcalRecordId], references: [id])
+  medcalRecordId String
+}
+
+model Transfer {
+  id   String @id @default(uuid())
+  from String
+  to   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  visit     Visit  @relation(fields: [visitCode], references: [code])
+  visitCode String
+}
+
+enum PersonType {
+  PATIENT
+  COMPANION
+  EMPLOYEE
+}
+
+// enum IdentityEnum {
+//   NATIONALIDCARD
+//   PASSPORT
+// }
+model IdentityType {
+  id     Int      @id @default(autoincrement())
+  value  String   @unique
+  Person Person[]
+}
+
+// enum GenderEnum {
+//   MALE
+//   FEMALE
+// }
+model GenderType {
+  id     Int      @id @default(autoincrement())
+  value  String   @unique
+  Person Person[]
+}
+
+// enum KinshipEnum {
+//   BROTHER
+//   SISTER
+//   FATHER
+//   MOTHER
+//   COUSIN
+//   AUNT
+//   OTHER
+// }
+model KinshipType {
+  id        Int         @id @default(autoincrement())
+  value     String      @unique
+  Companion Companion[]
+}
+
+// enum RoleEnum {
+//   ADMIN
+//   EMPLOYEE
+//   DOCTOR
+//   NURSE
+// }
+model RoleType {
+  id       Int        @id @default(autoincrement())
+  value    String     @unique
+  Employee Employee[]
+}
+
+// enum ShiftEnum {
+//   MORNING8
+//   AFTERNOON8
+//   NIGHT8
+//   MORNING12
+//   NIGHT12
+//   LONG
+// }
+model ShiftType {
+  id       Int        @id @default(autoincrement())
+  value    String     @unique
+  Employee Employee[]
+}
+
+// enum CameFromOptions {
+//   HOME
+//   ACCIDENT
+//   PRISONER
+// }
+model CameFromOptions {
+  id                         Int                          @id @default(autoincrement())
+  value                      String                       @unique
+  VisitAdditionalInformation VisitAdditionalInformation[]
+}
+
+// enum AttendantRole {
+//   PARAMEDIC
+//   OFFICER
+// }
+model AttendantRole {
+  id        Int         @id @default(autoincrement())
+  value     String      @unique
+  Attendant Attendant[]
+}
+
+// enum Triage {
+//   STANDARD
+//   IMMEDIATE
+//   CRITICAL
+//   URGENT
+// }
+model TriageType {
+  id            Int             @id @default(autoincrement())
+  value         String          @unique
+  MedicalRecord MedicalRecord[]
+}
+
+// enum ConsciousnessLevel {
+//   ALERT
+//   VERBAL_RESPONSIVE
+//   PAIN_RESPONSIVE
+//   UNRESPONSIVE
+// }
+model LOC {
+  id            Int             @id @default(autoincrement())
+  value         String          @unique
+  MedicalRecord MedicalRecord[]
+}
+
+// enum Comorbidity {
+//   HYPERTENSION
+//   DIABETES
+//   CARDIOVASCULAR_DISEASE
+//   OBESITY
+//   CHRONIC_RESPIRATORY_CONDITION
+//   IMMUNODEFICIENCY_DISORDER
+//   CHRONIC_KIDNEY_DISEASE
+//   LIVER_DISEASE
+//   CANCER
+//   AUTOIMMUNE_DISORDER
+//   NEUROLOGICAL_DISORDER
+//   GASTROINTESTINAL_DISORDER
+//   ENDOCRINE_DISORDER
+//   PSYCHIATRIC_DISORDER
+//   BONE_AND_JOINT_DISORDER
+//   INFECTIOUS_DISEASE
+//   HEMATOLOGICAL_DISORDER
+//   METABOLIC_SYNDROME
+//   SLEEP_APNEA
+//   SUBSTANCE_USE_DISORDER
+// }
+model Comorbidity {
+  id      Int       @id @default(autoincrement())
+  value   String    @unique
+  Patient Patient[]
 }

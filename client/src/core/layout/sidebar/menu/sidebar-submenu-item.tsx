@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { SidebarContext } from "../context/context";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 interface SidebarSubmenuItemProps {
