@@ -17,5 +17,8 @@ const Endpoints = {
         createAnonymously: '/visit/anonymous',
         update: '/patient',
     },
+    lookups: {
+        list: '/enums',
+    }
 };
 export default Endpoints;

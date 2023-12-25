@@ -2,6 +2,8 @@ import AuthDataModel from '@/modules/auth/data/models/auth-data-model';
 import UserModel from '@/modules/auth/data/models/user-model';
 import EmployeeInterface from '../../domain/interfaces/employee-interface';
 import PersonModel from '@/modules/auth/data/models/person-model';
+import AuthDataEntity from '@/modules/auth/domain/entities/auth-data-entity';
+import PersonEntity from '@/modules/auth/domain/entities/person-entity';
 
 export default class EmployeeModel {
 
@@ -15,8 +17,8 @@ export default class EmployeeModel {
 
     static toJsonWithAuthData(entity: EmployeeInterface): any {
         return {
-            personalData: PersonModel.toJson(entity.person),
-            auth: AuthDataModel.toJson(entity.auth),
+            personalData: PersonModel.toJson(PersonEntity.defaultValue()),
+            auth: AuthDataModel.toJson(entity.auth ?? AuthDataEntity.defaultValue()),
             role: entity.role
         };
     }
@@ -32,7 +34,6 @@ export default class EmployeeModel {
             department: baseModel.department,
             createdAt: baseModel.createdAt,
             updatedAt: baseModel.updatedAt,
-            createdById: baseModel.createdById,
             person: baseModel.person,
             auth: baseModel.auth,
         };

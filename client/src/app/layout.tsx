@@ -8,8 +8,9 @@ import { primaryFont } from "@/core/theme/typography";
 import { SettingsProvider } from "@/core/components/settings";
 import "./globals.css";
 // import type { Metadata } from "next";
-import { StoreProvider } from "@/core/redux/provider";
+import { StoreProvider } from "@/core/state/provider";
 import { ServiceLocatorProvider } from "@/core/service-locator/provider";
+import { AppProvider } from "@/core/shared/modules/lookups/presentation";
 
 // ----------------------------------------------------------------------
 
@@ -70,7 +71,9 @@ export default function RootLayout({ children }: Props) {
                 themeStretch: false,
               }}
             >
-              <ThemeProvider>{children}</ThemeProvider>
+              <ThemeProvider>
+                <AppProvider>{children}</AppProvider>
+              </ThemeProvider>
             </SettingsProvider>
           </StoreProvider>
         </ServiceLocatorProvider>

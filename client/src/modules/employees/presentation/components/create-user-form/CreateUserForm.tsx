@@ -6,7 +6,7 @@ import CustomTextField from "@/core/shared/components/CustomTextField";
 import { Grid } from "@mui/material";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
-import { useAppDispatch, useAppSelector } from "@/core/redux/store";
+import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import { createEmployee } from "../../controllers/thunks/employee-thunks";
 import { setCurrentEmployee } from "../../controllers/slices/employee-slice";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";

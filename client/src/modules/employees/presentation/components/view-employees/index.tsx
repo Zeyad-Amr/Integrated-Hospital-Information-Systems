@@ -3,7 +3,7 @@ import { DataItem, header } from "./data";
 import { Box } from "@mui/system";
 import CompleteVisit from "../../../../visits/presentation/components/complete-visit-data/CompleteVisit";
 import { useRef, useState } from "react";
-import { useAppSelector } from "@/core/redux/store";
+import { useAppSelector } from "@/core/state/store";
 import { EmployeeState } from "../../controllers/types";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
 import { Typography } from "@mui/material";

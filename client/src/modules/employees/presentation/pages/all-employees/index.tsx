@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import PageHeader from "@/core/shared/components/headers/PageHeader";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import EmployeesTable from "../../components/view-employees";
-import { useAppDispatch } from "@/core/redux/store";
+import { useAppDispatch } from "@/core/state/store";
 import { getEmployeeList } from "../../controllers/thunks/employee-thunks";
 
 const EmployeesTableComponent = () => {
