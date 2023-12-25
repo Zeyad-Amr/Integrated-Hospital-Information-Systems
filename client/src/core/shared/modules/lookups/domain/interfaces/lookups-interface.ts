@@ -10,6 +10,7 @@ export interface LookupsInterface {
     LOC: LOC[];
     comorbidities: Comorbidities[];
     governates: Governates[];
+    departments: Departments[];
 }
 
 export interface IdentityType {
@@ -63,6 +64,11 @@ export interface Comorbidities {
 }
 
 export interface Governates {
+    id: number;
+    value: string;
+}
+
+export interface Departments {
     id: number;
     value: string;
 }
