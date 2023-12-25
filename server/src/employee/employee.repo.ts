@@ -20,11 +20,12 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
     creatorId: string,
   ): Promise<Employee> {
     try {
-      const { auth, person, role, shift, departmentId } = item;
+      const { auth, person, roleId, shiftId, departmentId } = item;
+      const { verificationMethodId, genderId, ...personData } = person
       const employee = await this.prismaService.employee.create({
         data: {
-          role,
-          shift,
+          role: { connect: { id: roleId } },
+          shift: { connect: { id: shiftId } },
           department: {
             connect: {
               id: departmentId,
@@ -35,7 +36,9 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
             connectOrCreate: {
               where: { SSN: person.SSN },
               create: {
-                ...person,
+                ...personData,
+                verificationMethod: { connect: { id: verificationMethodId } },
+                gender: { connect: { id: genderId } },
                 type: PersonType.EMPLOYEE
               },
             },
@@ -56,13 +59,13 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
 
   async update(id: string, item: UpdateEmployeeDto): Promise<any> {
     try {
-      const { role, shift, departmentId, personalData, auth } = item;
+      const { roleId, shiftId, departmentId, personalData, auth } = item;
 
       const employee = await this.prismaService.employee.update({
         where: { id },
         data: {
-          role,
-          shift,
+          role: { connect: { id: roleId } },
+          shift: { connect: { id: shiftId } },
           department: {
             update: {
               id: departmentId,
@@ -119,7 +122,7 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
   }
 
   private includeObj: Prisma.EmployeeInclude = {
-    person: true,
+    person: { include: { verificationMethod: true, gender: true } },
     department: true,
     auth: {
       select: {
@@ -127,5 +130,7 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
         email: true,
       },
     },
+    role: true,
+    shift: true,
   };
 }

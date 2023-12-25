@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { GenderEnum, IdentityEnum } from '@prisma/client';
 import {
   IsDateString,
+  IsInt,
   IsOptional,
   IsPhoneNumber,
   IsString,
@@ -55,17 +55,16 @@ export class UpdatePersonDto {
     example: 'NATIONALIDCARD',
   })
   @IsOptional()
-  @Validate(IsValidEnumValue, [IdentityEnum])
-  verificationMethod: IdentityEnum;
+  @IsInt()
+  verificationMethodId: number;
 
   @ApiProperty({
     type: String,
     example: 'MALE',
   })
-  @IsString()
   @IsOptional()
-  @Validate(IsValidEnumValue, [GenderEnum])
-  gender: GenderEnum;
+  @IsInt()
+  genderId: number;
 
   @ApiProperty({
     type: String,

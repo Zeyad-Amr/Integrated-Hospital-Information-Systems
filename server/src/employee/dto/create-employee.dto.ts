@@ -1,15 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsInt,
   IsNotEmpty,
   IsObject,
   IsUUID,
-  Validate,
   ValidateNested,
 } from 'class-validator';
 import { AuthDataDto } from '../../auth/dto/auth-data.dto';
 import { CreatePersonDto } from 'src/person/dto/create-person.dto';
-import { IsValidEnumValue } from 'src/shared/special-validator';
-import { RoleEnum, ShiftEnum } from '@prisma/client';
 import { Type } from 'class-transformer';
 
 export class CreateEmployeeDto {
@@ -30,16 +28,16 @@ export class CreateEmployeeDto {
     example: 'EMPLOYEE',
   })
   @IsNotEmpty()
-  @Validate(IsValidEnumValue, [RoleEnum])
-  role: RoleEnum;
+  @IsInt()
+  roleId: number;
 
   @ApiProperty({
     type: String,
     example: 'MORNING12',
   })
   @IsNotEmpty()
-  @Validate(IsValidEnumValue, [ShiftEnum])
-  shift: ShiftEnum;
+  @IsInt()
+  shiftId: number;
 
   @ApiProperty({
     type: String,

@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Comorbidity, ConsciousnessLevel, Triage } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
     IsArray,
@@ -9,10 +8,8 @@ import {
     IsObject,
     IsOptional,
     IsString,
-    Validate,
     ValidateNested,
 } from 'class-validator';
-import { IsValidEnumValue } from 'src/shared/special-validator';
 
 export class VitalsDto {
     @ApiProperty({
@@ -94,26 +91,25 @@ export class TriageAXDto {
         description: "level of consciousness"
     })
     @IsOptional()
-    @Validate(IsValidEnumValue, [ConsciousnessLevel])
-    LOC: ConsciousnessLevel;
+    @IsInt()
+    LOCId: number;
 
     @ApiProperty({
         type: String,
         example: 'STANDARD',
     })
-    @IsString()
-    @IsNotEmpty()
-    @Validate(IsValidEnumValue, [Triage])
-    triage: Triage;
+    @IsOptional()
+    @IsInt()
+    triageTypeId: number;
 
     @ApiProperty({
         type: String,
         example: ["DIABETES", "OBESITY"],
     })
     @IsArray()
-    @IsNotEmpty()
-    @Validate(IsValidEnumValue, [Comorbidity], { each: true })
-    comorbidities: Comorbidity[];
+    @IsOptional()
+    @IsInt({ each: true })
+    comorbidityIds: number[];
 
     @ApiProperty({
         type: String,
