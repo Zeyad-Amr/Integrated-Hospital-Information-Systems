@@ -1,6 +1,7 @@
 import { Controller, Sse } from '@nestjs/common';
 import { StreamingService } from './streaming.service';
 import { Observable, defer, map, repeat } from 'rxjs';
+import { Public } from 'src/shared/decorators/public.decorator';
 interface MessageEvent {
   data: string | object;
 }
@@ -8,11 +9,12 @@ interface MessageEvent {
 export class StreamingController {
   constructor(private readonly streamingService: StreamingService) { }
 
+  @Public()
   @Sse('event') // server sent emitter
   async sendEvent(): Promise<Observable<MessageEvent>> {
     return defer(() => this.streamingService.getERareaVisits()).pipe(
       repeat({
-        delay: 10000,
+        delay: 1000,
       }),
       map((report) => ({
         type: 'message',

@@ -2,19 +2,40 @@ import CustomDataTable from "@/core/shared/components/CustomDataTable";
 import { Button, } from "@mui/material";
 import { DataItem, data, header } from "./data";
 import { Box } from "@mui/system";
-import CompleteVisit from "../complete-visit-data/CompleteVisit";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { HOST_API } from "@/config/settings/app-config";
+import { fetchEventSource } from '@microsoft/fetch-event-source';
+import { LocalStorage, LocalStorageKeys } from "@/core/shared/utils/local-storage";
 
-const VisitsTable = () => {
+
+const ERVisitsTable = () => {
 
     // useRef
     const refIdValue = useRef("");
+    const refStreamedData = useRef("");
 
     // useState
     const [showDialog, setShawDialog] = useState("none");
+    const [streamedData, setStreamedData] = useState([]);
+
+    useEffect(() => {
+        let eventSource = new EventSource(HOST_API + 'streaming/event')
+        eventSource.onmessage = (ev) => {
+
+            console.log(ev);
+            console.log(ev.data);
+            refStreamedData.current = ev.data;
+            setStreamedData(JSON.parse(ev.data).items);
+
+
+        }
+
+
+    }, [])
 
     //* data that in the state 
-    const apiData: any[] = data
+    const apiData: any[] = streamedData
+
     let tableData: DataItem[] = []
     apiData.forEach((item) => {
         tableData.push({
@@ -52,14 +73,9 @@ const VisitsTable = () => {
                 stickyHeader={true}
                 boxShadow={5}
             />
-            <CompleteVisit
-                display={showDialog}
-                DialogStateController={setShawDialog}
-                id={refIdValue.current}
-            />
 
         </Box>
     );
 };
 
-export default VisitsTable;
+export default ERVisitsTable;
