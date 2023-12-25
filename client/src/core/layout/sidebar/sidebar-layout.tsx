@@ -41,15 +41,11 @@ const SidebarLayout = (props: any) => {
             width: collapsed ? "5rem" : "18rem",
             transition: "width 0.3s ease-in-out",
             overflowX: "hidden",
-<<<<<<< Updated upstream
-            overflowY: "hidden",
-=======
             overflowY: "auto",
             color: "white",
             padding: "2rem 0",
             borderTopRightRadius: "10px",
             borderBottomRightRadius: "10px",
->>>>>>> Stashed changes
           }}
         >
           <SidebarComponent />

@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import Box from "@mui/material/Box";
 import SidebarMenuItem from "./menu/sidebar-menu-item";
 import SidebarSubmenuItem from "./menu/sidebar-submenu-item";
-<<<<<<< Updated upstream
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import PeopleIcon from '@mui/icons-material/People';
-import ApartmentIcon from '@mui/icons-material/Apartment';
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PeopleIcon from "@mui/icons-material/People";
+import ApartmentIcon from "@mui/icons-material/Apartment";
+import { Button } from "@mui/material";
+import { SidebarContext } from "./context/context";
+import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { MenuIcon, CloseIcon } from "@/assets/icons/index";
+const SidebarComponent = () => {
+  const { collapsed, onCollapse } = useContext(SidebarContext);
 
-const SidebarComponent = (props: any) => {
   return (
     <Box
       sx={{
@@ -39,58 +44,29 @@ const SidebarComponent = (props: any) => {
         </Box>
       </Box>
       <SidebarMenuItem
-<<<<<<< Updated upstream
-        icon={<DashboardIcon sx={{color:'primary.main', textAlign: 'center'}}/>}
-        activeIcon={<DashboardIcon sx={{color:'white'}}/>}
-=======
         icon={<DashboardIcon sx={{ color: "white", textAlign: "center" }} />}
         activeIcon={<DashboardIcon sx={{ color: "white" }} />}
->>>>>>> Stashed changes
         text="لوحة التحكم"
-        path="/dashboard/home"
+        path="/dashboard"
       />
+
       <SidebarMenuItem
-<<<<<<< Updated upstream
-        icon={<PeopleIcon sx={{color:'primary.main', textAlign: 'center'}}/>}
-        activeIcon={<PeopleIcon sx={{color:'white'}}/>}
-=======
         icon={<PeopleIcon sx={{ color: "white", textAlign: "center" }} />}
         activeIcon={<PeopleIcon sx={{ color: "white" }} />}
->>>>>>> Stashed changes
         text="المستخدمين"
-        path="/dashboard/users"
+        path="/users"
       >
-        <SidebarSubmenuItem
-          text="إضافة مستخدم"
-          path="/dashboard/users/create"
-        />
-        <SidebarSubmenuItem text="عرض المستخدمين" path="/dashboard/users/all" />
+        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
+        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
+        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
+        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
+        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
+        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
+        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
+        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
       </SidebarMenuItem>
-      <SidebarMenuItem
-        icon={
-          <ApartmentIcon sx={{ color: "primary.main", textAlign: "center" }} />
-        }
-        activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
-        text="الإصابات الجماعية"
-        path="/dashboard/incidents/"
-      >
-        <SidebarSubmenuItem text="إضافة إصابة جماعية" path="/dashboard/incidents/add" />
-        <SidebarSubmenuItem
-          text="استكمال الإصابات الجماعية"
-          path="/dashboard/incidents/all"
-        />
-      </SidebarMenuItem>
-      <SidebarMenuItem
-<<<<<<< Updated upstream
-        icon={<ApartmentIcon sx={{color:'primary.main', textAlign: 'center'}}/>}
-        activeIcon={<ApartmentIcon sx={{color:'white'}}/>}
-        text="الأقسام"
-        path="/departments"
-      >
-        <SidebarSubmenuItem text="إضافة قسم" path="/departments/create" />
 
-        <SidebarSubmenuItem text="عرض الأقسام" path="/departments/all" />
-=======
+      <SidebarMenuItem
         icon={<ApartmentIcon sx={{ color: "white", textAlign: "center" }} />}
         activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
         text="الإصابات الجماعية"
@@ -116,7 +92,6 @@ const SidebarComponent = (props: any) => {
           text="الزيارات المجهولة"
           path="/dashboard/visits/anonymous"
         />
->>>>>>> Stashed changes
       </SidebarMenuItem>
     </Box>
   );
