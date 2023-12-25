@@ -63,11 +63,10 @@ class AppServicesLocator {
             sl.get<BaseVisitsDataSource>(ServiceKeys.VisitsDataSource)
         ));
         sl.registerFactory<BaseLookupsRepository>(ServiceKeys.LookupsRepository, () => new LookupsRepository(
-            sl.get<BaseLookupsDataSource>(ServiceKeys.LookupsDataSource)
+            sl.get<BaseLookupsDataSource>(ServiceKeys.LookupsDataSource)));
         sl.registerFactory<BaseTriageAXRepository>(ServiceKeys.TriageAXRepository, () => new TriageAXRepository(
             sl.get<BaseTriageAXRepository>(ServiceKeys.TriageAXDataSource)
         ));
-
 
         //* Use Cases --------------------------------------------------
         sl.registerFactory<GetAllEmployeesUseCase>(ServiceKeys.GetAllEmployeesUseCase, () => new GetAllEmployeesUseCase(
