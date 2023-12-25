@@ -1,6 +1,5 @@
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
 import CustomAlertHeaderData from "@/core/shared/components/CustomAlertHeaderData";
-import CustomDialog from "@/core/shared/components/CustomDialog";
 import CustomFullScreenDialog from "@/core/shared/components/CustomFullScreenDialog";
 import CustomMultiSelectField from "@/core/shared/components/CustomMultiSelectField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
@@ -14,8 +13,13 @@ import { Formik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import * as Yup from "yup";
 
-const ErAreaForm = () => {
-  const [openDialog, setOpenDialog] = useState(false);
+interface IErAreaFormProps {
+  openDialog: boolean;
+  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
+  visitCode: string
+}
+
+const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) => {
   const [submitVitalsFlag, setSubmitVitalsFlag] = useState(false);
   const [expandVitalsAccordion, setExpandVitalsAccordion] = useState(true);
   const [expandRestFormAccordion, setExpandRestFormAccordion] = useState(true);
@@ -107,20 +111,17 @@ const ErAreaForm = () => {
 
   return (
     <div>
-      <Button variant="outlined" onClick={() => setOpenDialog(true)}>
-        Open full-screen dialog
-      </Button>
       <CustomFullScreenDialog
         navTitle="نموذج فحص الفرز الأولي"
         open={openDialog}
         setOpen={setOpenDialog}
       >
         <CustomAlertHeaderData
-        color="primary.dark"
+          color="primary.dark"
           dataList={[
             {
               title: "تيست 1",
-              message: "5555",
+              message: visitCode,
             },
             {
               title: "تيست 2",

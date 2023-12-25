@@ -1,65 +1,69 @@
-import CustomDataTable from "@/core/shared/components/CustomDataTable";
 import { Button, } from "@mui/material";
-import { DataItem, data, header } from "./data";
+import { DataItem, header } from "./data";
 import { Box } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
 import { HOST_API } from "@/config/settings/app-config";
-import { fetchEventSource } from '@microsoft/fetch-event-source';
-import { LocalStorage, LocalStorageKeys } from "@/core/shared/utils/local-storage";
+import CustomBasicTable from "@/core/shared/components/CustomBasicTable";
+import ErAreaForm from "../er-area-form/ErAreaForm";
 
 
 const ERVisitsTable = () => {
 
     // useRef
     const refIdValue = useRef("");
-    const refStreamedData = useRef("");
 
     // useState
-    const [showDialog, setShawDialog] = useState("none");
+    const [showDialog, setShawDialog] = useState(false);
     const [streamedData, setStreamedData] = useState([]);
+    const [tableData, setTableData] = useState<any[]>([]);
 
     useEffect(() => {
         let eventSource = new EventSource(HOST_API + 'streaming/event')
         eventSource.onmessage = (ev) => {
-
-            console.log(ev);
-            console.log(ev.data);
-            refStreamedData.current = ev.data;
-            setStreamedData(JSON.parse(ev.data).items);
-
-
+            // console.log(ev.data);
+            // refStreamedData.current = JSON.parse(ev.data).items;
+            var test = JSON.parse(ev.data).items
+            setStreamedData(test);
+            // console.log(JSON.parse(ev.data).items);
+            // console.log(streamedData);
+            // console.log(refStreamedData);
         }
 
 
     }, [])
 
     //* data that in the state 
-    const apiData: any[] = streamedData
 
-    let tableData: DataItem[] = []
-    apiData.forEach((item) => {
-        tableData.push({
-            sequenceNumber: item?.sequenceNumber,
-            code: item?.code,
-            name: item?.companion ? (item.companion?.firstName + ' ' + item.companion?.secondName + ' ' + item.companion?.thirdName + ' ' + item.companion?.fourthName) :
-                "لا يوجد",
-            date: (item?.createdAt) ? (item.createdAt).split('T')[0] : undefined,
-            time: new Date(item?.createdAt).toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            }),
-            update: <Button
-                color="info"
-                variant="outlined"
-                fullWidth
-                onClick={() => {
-                    refIdValue.current = item.code
-                    setShawDialog("block");
-                }}
-            >استكمال بيانات</Button>
-        })
-    })
+    // Update tableData when streamedData changes
+    useEffect(() => {
+        let apiData: any[] = streamedData
+        let newTableData: DataItem[] = [];
+        apiData.forEach((item) => {
+            newTableData.push({
+                sequenceNumber: item?.sequenceNumber,
+                code: item?.code,
+                name: item?.patient?.person ? (item.patient?.person?.firstName + ' ' + item.patient?.person?.secondName + ' ' + item.patient?.person?.thirdName + ' ' + item.patient?.person?.fourthName) :
+                    "لا يوجد",
+                date: (item?.createdAt) ? (item.createdAt).split('T')[0] : undefined,
+                time: new Date(item?.createdAt).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                }),
+                update: <Button
+                    color="info"
+                    variant="outlined"
+                    fullWidth
+                    onClick={() => {
+                        refIdValue.current = item.code
+                        setShawDialog(true);
+                    }}
+                >استكمال بيانات</Button>
+            })
+        });
+
+        setTableData(newTableData);
+    }, [streamedData]);
 
     return (
         <Box
@@ -67,12 +71,13 @@ const ERVisitsTable = () => {
                 p: 3
             }}
         >
-            <CustomDataTable
+            <CustomBasicTable
                 data={tableData}
                 renderItem={header}
                 stickyHeader={true}
                 boxShadow={5}
             />
+            <ErAreaForm openDialog={showDialog} setOpenDialog={setShawDialog} visitCode={refIdValue.current} />
 
         </Box>
     );
