@@ -26,7 +26,6 @@ interface incidentData {
 }
 
 const CompleteIncident = (props: any) => {
-  console.log(props.id)
   const [intialValues, setIntialValues] = useState<incidentData>({
     visitCode: "",
     id: "",

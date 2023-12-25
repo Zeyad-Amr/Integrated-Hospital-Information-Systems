@@ -16,6 +16,7 @@ const Endpoints = {
         create: '/visit/',
         createAnonymously: '/visit/anonymous',
         update: '/patient',
+        triageAX: '/visit/triage',
     },
     lookups: {
         list: '/enums',

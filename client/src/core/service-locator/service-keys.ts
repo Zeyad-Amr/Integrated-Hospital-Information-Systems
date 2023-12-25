@@ -5,13 +5,15 @@ enum ServiceKeys {
     AuthDataSources = 'AuthDataSources',
     VisitsDataSource = 'VisitsDataSource',
     LookupsDataSource = 'LookupsDataSource',
-
-
+    TriageAXDataSource = 'TriageAXDataSource',
+  
     //* Repositories ----------------------------------------------
     EmployeeRepository = 'EmployeeRepository',
     AuthRepository = 'AuthRepository',
     VisitsRepository = 'VisitsRepository',
     LookupsRepository = 'LookupsRepository',
+    TriageAXRepository = 'TriageAXRepository',
+ 
 
 
     //* Use Cases --------------------------------------------------
@@ -30,6 +32,8 @@ enum ServiceKeys {
     UpdateVisitUseCase = 'UpdateVisitUseCase',
     GetAnonymousVisitsUseCase = 'GetAnonymousVisitsUseCase',
     GetVisitByCodeUseCase = 'GetVisitByCodeUseCase',
+
+    CreateTriageAXUseCase = 'CreateTriageAxUseCase',
 
     //* Exnternal Services --------------------------------------------------
     ApiClient = 'ApiClient',

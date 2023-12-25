@@ -36,42 +36,35 @@ export default function CustomFullScreenDialog({
   };
 
   return (
-      <Dialog
+    <Dialog
       fullScreen
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Transition}
+      open={open}
+      onClose={handleClose}
+      TransitionComponent={Transition}
+    >
+      <AppBar
+        sx={{
+          position: "relative",
+          backgroundColor: "primary.darker",
+          color: "common.white",
+          minheight: "50px !important",
+        }}
       >
-        <AppBar
-          sx={{
-            position: "relative",
-            backgroundColor: "primary.darker",
-            color: "common.white",
-            minheight: "50px !important"
-          }}
-        >
-          <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography variant="h6" component="div">
-              {navTitle}
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Box
-          sx={{
-            width: "95%",
-            margin: "1.5rem auto",
-          }}
-        >
-          {children}
-        </Box>
-      </Dialog>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="h6" component="div">
+            {navTitle}
+          </Typography>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleClose}
+            aria-label="close"
+          >
+            <CloseIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <Box>{children}</Box>
+    </Dialog>
   );
 }

@@ -23,7 +23,7 @@ const ProfileDialog = (props: any) => {
         pointerEvents:'none',
     }}>
 
-        <Box sx={{display:'flex', flexDirection: 'column', color:'primary.main', alignItems:'center', marginBottom:'2rem', }}>
+        <Box sx={{display:'flex', flexDirection: 'column', color:'primary.darker', alignItems:'center', marginBottom:'2rem', }}>
             <AccountCircleRoundedIcon sx={{fontSize:'5rem'}}/>
             <Box sx={{display:'flex',justifyContent:'space-evenly', width:'70%'}}>اهلاً  
                 <Typography sx={{fontWeight:'bold'}}>{props.name}</Typography>

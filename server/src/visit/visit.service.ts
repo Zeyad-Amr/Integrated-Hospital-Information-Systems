@@ -72,6 +72,8 @@ export class VisitService {
       const yesterday = new Date(now.getTime());
       yesterday.setDate(now.getDate() - 1);
       yesterday.setHours(0, 0, 0, 0);
+      // console.log("5555");
+
 
       return await this.visitRepo.getAll({
         additionalWhereConditions: [

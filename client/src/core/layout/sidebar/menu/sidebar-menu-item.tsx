@@ -48,12 +48,12 @@ const SidebarMenuItem = ({
           justifyContent: collapsed ? "center" : "space-between",
           flexWrap: "nowrap",
           cursor: "pointer",
-          backgroundColor: isActive ? "primary.darker" : "transparent",
+          backgroundColor: isActive ? "#ffffff30" : "transparent",
           borderRadius: "10px",
           marginY: "1vh",
           marginX: "1vw",
           "&:hover": {
-            backgroundColor: isActive ? "none" : "primary.lighter",
+            backgroundColor: isActive ? "#ffffff30" : "#ffffff15",
           },
         }}
       >
@@ -82,7 +82,7 @@ const SidebarMenuItem = ({
             variant="body1"
             sx={{
               fontWeight: "bold",
-              color: isActive ? "white" : "primary.main",
+              color: "white",
               // color: 'primary.main',
               display: collapsed ? "none" : "block",
               whiteSpace: "nowrap",
@@ -96,14 +96,14 @@ const SidebarMenuItem = ({
         <ExpandMore
           sx={{
             display: !expanded && !collapsed && children ? "block" : "none",
-            color: isActive ? "white" : "primary.main",
+            color: "white",
             marginX: "0.5rem",
           }}
         />
         <ExpandLess
           sx={{
             display: expanded && !collapsed && children ? "block" : "none",
-            color: isActive ? "white" : "primary.main",
+            color: "white",
             marginX: "0.5rem",
           }}
         />

@@ -10,10 +10,11 @@ const PrimaryButton = (props: any) => {
         display: props.display,
         color: "#fff",
         backgroundColor: "#004B50",
-        width: "15rem",
         fontSize: "0.9rem",
-        // margin: "1rem 0rem 2rem 1rem",
         height: "40px",
+        padding: "0 3rem",
+
+        ...props.sx,
       }}
       onClick={props.onClick}
     >

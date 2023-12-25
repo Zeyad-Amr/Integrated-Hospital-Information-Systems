@@ -40,7 +40,7 @@ const SidebarSubmenuItem = ({ text, path }: SidebarSubmenuItemProps) => {
         <Typography
           variant="body2"
           sx={{
-            color: isActive ? "primary.main" : "grey.500",
+            color: isActive ? "white" : "grey.500",
             display: collapsed ? "none" : "block",
             whiteSpace: "nowrap",
             overflow: "hidden",

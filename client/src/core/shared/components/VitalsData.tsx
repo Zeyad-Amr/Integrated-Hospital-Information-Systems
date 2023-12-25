@@ -5,15 +5,15 @@ import { Box, Button, Grid } from "@mui/material";
 import CustomTextField from "./CustomTextField";
 
 export interface VitalsDataValuesI {
-  painScore: number;
-  SPO2: number;
-  temperature: number;
-  pulseRate: number;
-  respiratoryRate: number;
-  CVP: number;
-  GCS: number;
-  diastolicPressure: number;
-  systolicPressure: number;
+  painScore: number | undefined;
+  SPO2: number | undefined;
+  temperature: number | undefined;
+  pulseRate: number | undefined;
+  respiratoryRate: number | undefined;
+  CVP: number | undefined;
+  GCS: number | undefined;
+  diastolicPressure: number | undefined;
+  systolicPressure: number | undefined;
 }
 
 interface VitalsDataPropsI {

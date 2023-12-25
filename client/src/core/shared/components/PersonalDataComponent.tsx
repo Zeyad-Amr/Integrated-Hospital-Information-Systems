@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import Button from "@mui/material/Button";
 import { Formik } from "formik";
 import { Grid } from "@mui/material";
@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
+import FeaturedVideoRoundedIcon from "@mui/icons-material/FeaturedVideoRounded";
 import PersonEntity from "@/modules/auth/domain/entities/person-entity";
 import {
   GenderType,
@@ -28,9 +29,15 @@ const PersonalDataComponent = ({
   refSubmitButton,
   isResetForm = false,
 }: PersonalDataProps) => {
+
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
+  const fileInputRef = useRef<any>();
+  const selectFile = () => {
+    fileInputRef.current?  fileInputRef.current.click(): null;
+  };
+
   return (
     <Formik
       enableReinitialize
@@ -69,20 +76,53 @@ const PersonalDataComponent = ({
               />
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
-              <CustomTextField
-                isRequired
-                name="SSN"
-                label="رقم الهوية"
-                value={values.SSN}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.SSN}
-                touched={touched.SSN}
-                width="100%"
-                props={{
-                  type: "text",
-                }}
-              />
+              <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+                <CustomTextField
+                  isRequired
+                  name="SSN"
+                  label="رقم الهوية"
+                  value={values.SSN}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.SSN}
+                  touched={touched.SSN}
+                  width="100%"
+                  props={{
+                    type: "text",
+                  }}
+                />
+                <Box
+                  sx={{
+                    padding: "0",
+                    marginLeft: "-0.5rem",
+                    marginTop: "1rem",
+                  }}
+                >
+                  <input
+                    type="file"
+                    id="fileInput"
+                    style={{ display: "none" }}
+                    ref={fileInputRef}
+                  />
+                  <Box
+                    sx={{
+                      backgroundColor: "primary.dark",
+                      color: "white",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderBottomRightRadius: "10px",
+                      borderTopRightRadius: "10px",
+                      padding: "0.6rem 0.7rem 0.6rem 1rem",
+
+                      cursor: "pointer",
+                    }}
+                    onClick={selectFile}
+                  >
+                    <FeaturedVideoRoundedIcon />
+                  </Box>
+                </Box>
+              </Box>
             </Grid>
 
             <Grid item lg={3} md={3} sm={12} xs={12}>

@@ -15,6 +15,7 @@ import * as Yup from "yup";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import { Button } from "@mui/material";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
+import AlertDialog from "@/core/shared/components/AlertDialog";
 
 const AddIncidentForm = () => {
   const refSubmitButton: any = useRef(null);
@@ -51,7 +52,7 @@ const AddIncidentForm = () => {
   const [idx, setIdx] = useState<number>(0);
 
   const intialAdditionalValues: AdditionalDataValues = {
-    comeFromString: "",
+    comeFromString: { id: "", label: "" },
     attendantName: "",
     attendantSSN: "",
     attendantSerialNumber: "",
@@ -101,7 +102,10 @@ const AddIncidentForm = () => {
       (response.current.notes = values.notes);
     setIncidentFormSubmitted(true);
   };
+  //////////////////////////////// AlertDialog ////////////////////////////////
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
 
+  /////////////////////////////////////////////////////////////////////////////
   let response: React.MutableRefObject<{
     numOfPatients: string;
     description: string;
@@ -138,7 +142,6 @@ const AddIncidentForm = () => {
 
   const handleClickedButton = (e: any) => {
     if (e.target.id === "confirm-btn") {
-      console.log('compaionsFormValus')
       if (refSubmitButton.current) {
         refSubmitButton.current.click();
       }
@@ -157,7 +160,11 @@ const AddIncidentForm = () => {
 
   useEffect(() => {
     if (incidentFormSubmitted && clickedBtnId === "confirm-btn") {
-      console.log(response.current);
+      if (true) {
+        setOpenAlert(true);
+      } else {
+        console.log(response.current);
+      }
     }
   }, [addDatasubmitFlag, incidentFormSubmitted]);
 
@@ -165,9 +172,15 @@ const AddIncidentForm = () => {
     numOfPatients: Yup.number().required("يجب إدخال عدد المرضى"),
   });
 
-
   return (
     <>
+      <AlertDialog openAlert={openAlert} setOpenAlert={setOpenAlert} />
+      {/* <CustomAlert
+        msg="test"
+        onClose={() => console.log("ahhh")}
+        duration={5000}
+        openAlert
+      /> */}
       <Formik
         initialValues={{
           numOfPatients: "",
@@ -189,7 +202,8 @@ const AddIncidentForm = () => {
             sx={{ marginTop: "1rem" }}
             component="form"
             onSubmit={handleSubmit}
-            noValidate          >
+            noValidate
+          >
             <Box>
               <CustomTextField
                 isRequired

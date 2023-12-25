@@ -25,6 +25,11 @@ import { BaseLookupsDataSource, LookupsDataSource } from "../shared/modules/look
 import BaseLookupsRepository from "../shared/modules/lookups/domain/repositories/base-lookups-repository";
 import LookupsRepository from "../shared/modules/lookups/data/repositories/lookups-repository";
 import { GetLookupsUseCase } from "../shared/modules/lookups/domain/usecases";
+import { BaseTriageAXDataSource, TriageAXDataSource } from "@/modules/er-area/data/datasources/triageAX-datasource";
+import BaseTriageAXRepository from "@/modules/er-area/domain/repositories/base-triageAX-repository";
+import TriageAXRepository from "@/modules/er-area/data/repositories/triageAX-repository";
+import CreateTriageAXUseCase from "@/modules/er-area/domain/usecases/create-triageAX-usecase";
+
 
 class AppServicesLocator {
     static init() {
@@ -42,7 +47,9 @@ class AppServicesLocator {
         sl.registerFactory<BaseLookupsDataSource>(ServiceKeys.LookupsDataSource, () => new LookupsDataSource(
             sl.get<ApiClient>(ServiceKeys.ApiClient)
         ));
-
+        sl.registerFactory<BaseTriageAXDataSource>(ServiceKeys.TriageAXDataSource, () => new TriageAXDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
 
 
         //* Repositories ----------------------------------------------
@@ -57,6 +64,8 @@ class AppServicesLocator {
         ));
         sl.registerFactory<BaseLookupsRepository>(ServiceKeys.LookupsRepository, () => new LookupsRepository(
             sl.get<BaseLookupsDataSource>(ServiceKeys.LookupsDataSource)
+        sl.registerFactory<BaseTriageAXRepository>(ServiceKeys.TriageAXRepository, () => new TriageAXRepository(
+            sl.get<BaseTriageAXRepository>(ServiceKeys.TriageAXDataSource)
         ));
 
 
@@ -98,6 +107,10 @@ class AppServicesLocator {
         ));
         sl.registerFactory<GetLookupsUseCase>(ServiceKeys.GetLookupsUseCase, () => new GetLookupsUseCase(
             sl.get<BaseLookupsRepository>(ServiceKeys.LookupsRepository)
+        ));
+
+        sl.registerFactory<CreateTriageAXUseCase>(ServiceKeys.CreateTriageAXUseCase, () => new CreateTriageAXUseCase(
+            sl.get<BaseTriageAXRepository>(ServiceKeys.TriageAXRepository)
         ));
 
         //* Exnternal Services --------------------------------------------------

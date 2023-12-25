@@ -6,7 +6,7 @@ import CustomTextField from "./CustomTextField";
 import CustomSelectField from "./CustomSelectField";
 
 export interface AdditionalDataValues {
-  comeFromString: string;
+  comeFromString: { id: any; label: string };
   attendantName: string;
   attendantSSN: string;
   attendantSerialNumber: string;
@@ -160,15 +160,15 @@ const AdditionalData = ({
                   options={[
                     {
                       id: "1",
-                      title: "منــــزل",
+                      label: "منــــزل",
                     },
                     {
                       id: "2",
-                      title: "حـــادث",
+                      label: "حـــادث",
                     },
                     {
                       id: "3",
-                      title: "سجــــن",
+                      label: "سجــــن",
                     },
                   ]}
                 />

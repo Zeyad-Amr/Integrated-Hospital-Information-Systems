@@ -3,7 +3,7 @@ import PersonalData, {
 } from "@/core/shared/components/PersonalData";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import SecondaryButton from "@/core/shared/components/btns/SecondaryButton";
-import { Button, Box } from "@mui/material";
+import { Button, Box, Typography } from "@mui/material";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
@@ -41,7 +41,7 @@ const AddVisitForm = () => {
       kinship: "",
     },
   });
-
+  const [child, setChild] = useState<boolean>(false);
   const sharedInitialValues: PersonalDataValues = {
     firstName: "",
     secondName: "",
@@ -163,25 +163,53 @@ const AddVisitForm = () => {
             handleSubmit,
           }) => (
             <Box component="form" onSubmit={handleSubmit} noValidate>
-              <CustomTextField
-                isRequired
-                name="sequenceNumber"
-                label="رقم التردد"
-                value={values.sequenceNumber}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.sequenceNumber}
-                touched={touched.sequenceNumber}
-                width="100%"
-                props={{
-                  type: "text",
-                }}
-              />
-              <Button
-                type="submit"
-                sx={{ display: "none" }}
-                ref={refSubmitFirstStepButton}
-              ></Button>
+              <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+                <CustomTextField
+                  isRequired
+                  name="sequenceNumber"
+                  label="رقم التردد"
+                  value={values.sequenceNumber}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.sequenceNumber}
+                  touched={touched.sequenceNumber}
+                  width="100%"
+                  props={{
+                    type: "text",
+                  }}
+                />
+                <Box
+                  sx={{
+                    padding: "0",
+                    marginLeft: "0.5rem",
+                    marginTop: "1rem",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      backgroundColor: child ? "primary.dark" : "#eee",
+                      color: child ? "white" : "black",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "5px",
+                      padding: "0.6rem 0.7rem ",
+                      width: "max-content",
+                      cursor: "pointer",
+                      transition:'0.2s',
+                      userSelect:'none'
+                    }}
+                    onClick={() => setChild(!child)}
+                  >
+                    <Typography>طفل / مجهول</Typography>
+                  </Box>
+                </Box>
+                <Button
+                  type="submit"
+                  sx={{ display: "none" }}
+                  ref={refSubmitFirstStepButton}
+                ></Button>
+              </Box>
             </Box>
           )}
         </Formik>
