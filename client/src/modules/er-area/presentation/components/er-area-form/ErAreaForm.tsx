@@ -1,4 +1,5 @@
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
+import CustomAlertHeaderData from "@/core/shared/components/CustomAlertHeaderData";
 import CustomDialog from "@/core/shared/components/CustomDialog";
 import CustomFullScreenDialog from "@/core/shared/components/CustomFullScreenDialog";
 import CustomMultiSelectField from "@/core/shared/components/CustomMultiSelectField";
@@ -7,6 +8,7 @@ import CustomTextField from "@/core/shared/components/CustomTextField";
 import VitalsData, {
   VitalsDataValuesI,
 } from "@/core/shared/components/VitalsData";
+import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { Box, Button, Grid } from "@mui/material";
 import { Formik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
@@ -73,7 +75,7 @@ const ErAreaForm = () => {
   };
 
   const onRestFormSubmit = (values: any) => {
-    refRestFormData.current = values;    
+    refRestFormData.current = values;
     setSubmitVitalsFlag(!submitVitalsFlag);
   };
 
@@ -109,179 +111,206 @@ const ErAreaForm = () => {
         Open full-screen dialog
       </Button>
       <CustomFullScreenDialog
-        navTitle="ترياج"
+        navTitle="نموذج فحص الفرز الأولي"
         open={openDialog}
         setOpen={setOpenDialog}
       >
-        {/* er rest form */}
-        <CustomAccordion
-          isClosable={false}
-          isDisabled={false}
-          isExpanded={expandRestFormAccordion}
-          setExpanded={setExpandRestFormAccordion}
-          title="الفرز"
+        <CustomAlertHeaderData
+        color="primary.dark"
+          dataList={[
+            {
+              title: "تيست 1",
+              message: "5555",
+            },
+            {
+              title: "تيست 2",
+              message: "5555",
+            },
+            {
+              title: "تيست 3",
+              message: "5555",
+            },
+            {
+              title: "تيست 4",
+              message: "5555",
+            },
+          ]}
+        />
+        <Box
+          sx={{
+            width: "95%",
+            margin: "1.5rem auto",
+          }}
         >
-          <Formik
-            enableReinitialize
-            initialValues={restErAreaInitialValues}
-            validationSchema={handleRestFormSchema}
-            onSubmit={(values) => {
-              onRestFormSubmit(values);
-            }}
+          {/* er rest form */}
+          <CustomAccordion
+            isClosable={false}
+            isDisabled={false}
+            isExpanded={expandRestFormAccordion}
+            setExpanded={setExpandRestFormAccordion}
+            title="الفرز"
           >
-            {({
-              values,
-              touched,
-              errors,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-            }) => (
-              <Box component="form" onSubmit={handleSubmit} noValidate>
-                <Grid container columns={12} spacing={2}>
-                  <Grid item lg={3} md={3} sm={12} xs={12}>
-                    <CustomMultiSelectField
-                      isRequired
-                      name="comorbidities"
-                      label="الأمراض المصاحبة"
-                      value={values.comorbidities}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={errors.comorbidities}
-                      touched={touched.comorbidities}
-                      width="100%"
-                      options={[
-                        {
-                          id: "1",
-                          label: "ضغط",
-                        },
-                        {
-                          id: "2",
-                          label: "سكر",
-                        },
-                      ]}
-                    />
-                  </Grid>
-                  <Grid item lg={3} md={3} sm={12} xs={12}>
-                    <CustomSelectField<any>
-                      isRequired
-                      name="transferTo"
-                      label="نقل إلى"
-                      value={values.transferTo}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={errors.transferTo}
-                      touched={touched.transferTo}
-                      width="100%"
-                      options={[
-                        {
-                          id: "1",
-                          label: "تيست 1",
-                        },
-                        {
-                          id: "2",
-                          label: "تيست 2",
-                        },
-                      ]}
-                    />
-                  </Grid>
+            <Formik
+              enableReinitialize
+              initialValues={restErAreaInitialValues}
+              validationSchema={handleRestFormSchema}
+              onSubmit={(values) => {
+                onRestFormSubmit(values);
+              }}
+            >
+              {({
+                values,
+                touched,
+                errors,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+              }) => (
+                <Box component="form" onSubmit={handleSubmit} noValidate>
+                  <Grid container columns={12} spacing={2}>
+                    <Grid item lg={3} md={3} sm={12} xs={12}>
+                      <CustomMultiSelectField
+                        isRequired
+                        name="comorbidities"
+                        label="الأمراض المصاحبة"
+                        value={values.comorbidities}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={errors.comorbidities}
+                        touched={touched.comorbidities}
+                        width="100%"
+                        options={[
+                          {
+                            id: "1",
+                            label: "ضغط",
+                          },
+                          {
+                            id: "2",
+                            label: "سكر",
+                          },
+                        ]}
+                      />
+                    </Grid>
+                    <Grid item lg={3} md={3} sm={12} xs={12}>
+                      <CustomSelectField<any>
+                        isRequired
+                        name="transferTo"
+                        label="نقل إلى"
+                        value={values.transferTo}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={errors.transferTo}
+                        touched={touched.transferTo}
+                        width="100%"
+                        options={[
+                          {
+                            id: "1",
+                            label: "تيست 1",
+                          },
+                          {
+                            id: "2",
+                            label: "تيست 2",
+                          },
+                        ]}
+                      />
+                    </Grid>
 
-                  <Grid item lg={3} md={3} sm={12} xs={12}>
-                    <CustomSelectField<any>
-                      isRequired
-                      name="consciousnessLevel"
-                      label="مستوى الوعي"
-                      value={values.consciousnessLevel}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={errors.consciousnessLevel}
-                      touched={touched.consciousnessLevel}
-                      width="100%"
-                      options={[
-                        {
-                          id: "1",
-                          label: "تيست 1",
-                        },
-                        {
-                          id: "2",
-                          label: "تيست 2",
-                        },
-                      ]}
-                    />
+                    <Grid item lg={3} md={3} sm={12} xs={12}>
+                      <CustomSelectField<any>
+                        isRequired
+                        name="consciousnessLevel"
+                        label="مستوى الوعي"
+                        value={values.consciousnessLevel}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={errors.consciousnessLevel}
+                        touched={touched.consciousnessLevel}
+                        width="100%"
+                        options={[
+                          {
+                            id: "1",
+                            label: "تيست 1",
+                          },
+                          {
+                            id: "2",
+                            label: "تيست 2",
+                          },
+                        ]}
+                      />
+                    </Grid>
+                    <Grid item lg={3} md={3} sm={12} xs={12}>
+                      <CustomSelectField<any>
+                        isRequired
+                        name="triage"
+                        label="الفرز"
+                        value={values.triage}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={errors.triage}
+                        touched={touched.triage}
+                        width="100%"
+                        options={[
+                          {
+                            id: "1",
+                            label: "تيست 1",
+                          },
+                          {
+                            id: "2",
+                            label: "تيست 2",
+                          },
+                        ]}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item lg={3} md={3} sm={12} xs={12}>
-                    <CustomSelectField<any>
-                      isRequired
-                      name="triage"
-                      label="الفرز"
-                      value={values.triage}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={errors.triage}
-                      touched={touched.triage}
-                      width="100%"
-                      options={[
-                        {
-                          id: "1",
-                          label: "تيست 1",
-                        },
-                        {
-                          id: "2",
-                          label: "تيست 2",
-                        },
-                      ]}
-                    />
+                  <Grid container columns={12} spacing={2}>
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                      <CustomTextField
+                        isRequired
+                        name="complaint"
+                        label="الشكوى"
+                        value={values.complaint}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={errors.complaint}
+                        touched={touched.complaint}
+                        width="100%"
+                        multiline
+                        rows={3}
+                        props={{
+                          type: "text",
+                        }}
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
-                <Grid container columns={12} spacing={2}>
-                  <Grid item lg={12} md={12} sm={12} xs={12}>
-                    <CustomTextField
-                      isRequired
-                      name="complaint"
-                      label="الشكوى"
-                      value={values.complaint}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={errors.complaint}
-                      touched={touched.complaint}
-                      width="100%"
-                      multiline
-                      rows={3}
-                      props={{
-                        type: "text",
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-                <Button
-                  type="submit"
-                  sx={{ display: "none" }}
-                  ref={refSubmitFirstStepButton}
-                ></Button>
-              </Box>
-            )}
-          </Formik>
-        </CustomAccordion>
-        <CustomAccordion
-          title="الاشارات الحيوية"
-          isClosable={false}
-          isDisabled={false}
-          isExpanded={expandVitalsAccordion}
-          setExpanded={setExpandVitalsAccordion}
-        >
-          <VitalsData
-            initialValues={initialValues}
-            onSubmit={handleSubmitVitalsData}
-            isSubmitted={submitVitalsFlag}
+                  <Button
+                    type="submit"
+                    sx={{ display: "none" }}
+                    ref={refSubmitFirstStepButton}
+                  ></Button>
+                </Box>
+              )}
+            </Formik>
+          </CustomAccordion>
+          <CustomAccordion
+            title="الاشارات الحيوية"
+            isClosable={false}
+            isDisabled={false}
+            isExpanded={expandVitalsAccordion}
+            setExpanded={setExpandVitalsAccordion}
+          >
+            <VitalsData
+              initialValues={initialValues}
+              onSubmit={handleSubmitVitalsData}
+              isSubmitted={submitVitalsFlag}
+            />
+          </CustomAccordion>
+          <PrimaryButton
+            title="تأكيــد"
+            sx={{ marginTop: "3rem" }}
+            type="button"
+            onClick={() => onTriggerAllForm()}
           />
-        </CustomAccordion>
-        <Button
-          sx={{ marginTop: "3rem" }}
-          variant="outlined"
-          onClick={() => onTriggerAllForm()}
-        >
-          Submit
-        </Button>
+        </Box>
       </CustomFullScreenDialog>
     </div>
   );
