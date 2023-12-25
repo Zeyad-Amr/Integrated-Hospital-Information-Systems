@@ -8,9 +8,9 @@ class TriageAXRepository extends BaseTriageAXRepository {
         super();
 
     }
-    createTriageAX(triageAX: TriageAXInterface): Promise<void> {
+    async createTriageAX(triageAX: TriageAXInterface): Promise<void> {
         try {
-            const result = await this.baseTriageAXDataSource.createEmployee(triageAX);
+            await this.baseTriageAXDataSource.createTriageAX(triageAX);
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;
             throw errorResponse;
