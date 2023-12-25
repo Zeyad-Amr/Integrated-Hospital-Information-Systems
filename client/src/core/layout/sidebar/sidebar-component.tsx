@@ -44,45 +44,45 @@ const SidebarComponent = () => {
         </Box>
       </Box>
       <SidebarMenuItem
-        icon={<DashboardIcon sx={{ color: "white", textAlign: "center" }} />}
+        icon={
+          <DashboardIcon sx={{ color: "primary.main", textAlign: "center" }} />
+        }
         activeIcon={<DashboardIcon sx={{ color: "white" }} />}
         text="لوحة التحكم"
-        path="/dashboard"
+        path="/dashboard/home"
       />
-
       <SidebarMenuItem
-        icon={<PeopleIcon sx={{ color: "white", textAlign: "center" }} />}
+        icon={
+          <PeopleIcon sx={{ color: "primary.main", textAlign: "center" }} />
+        }
         activeIcon={<PeopleIcon sx={{ color: "white" }} />}
         text="المستخدمين"
-        path="/users"
+        path="/dashboard/users"
       >
-        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
-        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
-        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
-        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
-        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
-        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
-        <SidebarSubmenuItem text="إضافة مستخدم" path="/users/create" />
-        <SidebarSubmenuItem text="عرض المستخدمين" path="/users/all" />
+        <SidebarSubmenuItem
+          text="إضافة مستخدم"
+          path="/dashboard/users/create"
+        />
+        <SidebarSubmenuItem text="عرض المستخدمين" path="/dashboard/users/all" />
       </SidebarMenuItem>
-
       <SidebarMenuItem
-        icon={<ApartmentIcon sx={{ color: "white", textAlign: "center" }} />}
+        icon={
+          <ApartmentIcon sx={{ color: "primary.main", textAlign: "center" }} />
+        }
         activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
         text="الإصابات الجماعية"
         path="/dashboard/incidents/"
       >
-        <SidebarSubmenuItem
-          text="إضافة إصابة جماعية"
-          path="/dashboard/incidents/add"
-        />
+        <SidebarSubmenuItem text="إضافة إصابة جماعية" path="/dashboard/incidents/add" />
         <SidebarSubmenuItem
           text="استكمال الإصابات الجماعية"
           path="/dashboard/incidents/all"
         />
       </SidebarMenuItem>
       <SidebarMenuItem
-        icon={<PeopleIcon sx={{ color: "white", textAlign: "center" }} />}
+        icon={
+          <PeopleIcon sx={{ color: "primary.main", textAlign: "center" }} />
+        }
         activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
         text="الزيارات"
         path="/dashboard/visits"
