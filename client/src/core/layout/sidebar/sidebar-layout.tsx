@@ -3,8 +3,13 @@ import { SidebarContext } from "./context/context";
 import React, { useContext } from "react";
 import SidebarHeader from "./sidebar-header";
 import SidebarComponent from "./sidebar-component";
+import { Button, Typography } from "@mui/material";
+import { NotificationIcon } from "@/assets/icons/index";
+import ProfileIcon from "@/core/shared/components/profile/ProfileIcon";
+
 const SidebarLayout = (props: any) => {
   const { collapsed } = useContext(SidebarContext);
+
   return (
     <Box
       sx={{
@@ -17,7 +22,7 @@ const SidebarLayout = (props: any) => {
         alignItems: "center",
       }}
     >
-      <SidebarHeader height="13vh" />
+      {/* <SidebarHeader height="13vh" /> */}
 
       <Box
         flex="1"
@@ -32,12 +37,19 @@ const SidebarLayout = (props: any) => {
       >
         <Box
           sx={{
-            backgroundColor: "white",
-            width: collapsed ? "5rem" : "16rem",
+            backgroundColor: "#061540",
+            width: collapsed ? "5rem" : "18rem",
             transition: "width 0.3s ease-in-out",
-
             overflowX: "hidden",
+<<<<<<< Updated upstream
             overflowY: "hidden",
+=======
+            overflowY: "auto",
+            color: "white",
+            padding: "2rem 0",
+            borderTopRightRadius: "10px",
+            borderBottomRightRadius: "10px",
+>>>>>>> Stashed changes
           }}
         >
           <SidebarComponent />
@@ -47,14 +59,50 @@ const SidebarLayout = (props: any) => {
           sx={{
             overflowX: "hidden",
             overflowY: "scroll",
-            marginRight: "2vw",
             width: "100%",
-            borderRadius: "10px 10px 0px 0px",
-            backgroundColor: "primary.contrastText",
-            // filter: "box-shadow(0px 0px 6px #0000002f);",
-            boxShadow: 'inset 0px 0px 6px #0000003f',
+            backgroundColor: "primary.light",
           }}
         >
+          <Box
+            sx={{
+              width: "85%",
+              margin: "1.5rem auto",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Box>
+              <Typography
+                sx={{
+                  fontSize: "1.5rem",
+                  fontWeight: "bold",
+                  color: "primary.darker",
+                }}
+              >
+                اضافـــــــة مستخدم
+              </Typography>
+            </Box>
+            <Box sx={{ display: "flex" }}>
+              <Button
+                onClick={() => console.log("Notification")}
+                sx={{
+                  paddingX: "0.1rem",
+                  paddingY: "0.7rem",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: "1.3rem",
+                    height: "1.3rem",
+                  }}
+                >
+                  <NotificationIcon primary="#0f70f2" />
+                </Box>
+              </Button>
+              <ProfileIcon name="عبدالرحمن ياسر" pos="موظف استقبال" />
+            </Box>
+          </Box>
           <Box>{props.children}</Box>
         </Box>
       </Box>

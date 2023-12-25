@@ -18,8 +18,7 @@
 
 body {
   color: rgb(var(--background-end-rgb));
-  background: rgb(var(--foreground-rgb));
-
+  background-color: #eff3fc;
 }
 
 /* width */
@@ -32,14 +31,14 @@ body {
 ::-webkit-scrollbar-track {
   border-radius: 5px;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #004B50; 
+  background: #061540;
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #007867; 
+  background: #0f70f2;
 }
