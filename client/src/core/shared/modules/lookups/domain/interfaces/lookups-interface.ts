@@ -9,8 +9,8 @@ export interface LookupsInterface {
     triageTypes: TriageType[];
     LOC: LOC[];
     comorbidities: Comorbidities[];
-    governates: Governates[];
-    departments: Departments[];
+    governates: Governate[];
+    departments: Department[];
 }
 
 export interface IdentityType {
@@ -63,12 +63,12 @@ export interface Comorbidities {
     value: string;
 }
 
-export interface Governates {
+export interface Governate {
     id: number;
     value: string;
 }
 
-export interface Departments {
-    id: number;
+export interface Department {
+    id: string;
     value: string;
 }

@@ -19,6 +19,13 @@ const Endpoints = {
     },
     lookups: {
         list: '/enums',
-    }
+    },
+    department: {
+        list: '/department',
+        details: '/department/:id',
+        create: '/department',
+        update: '/department/:id',
+        delete: '/department/:id',
+    },
 };
 export default Endpoints;

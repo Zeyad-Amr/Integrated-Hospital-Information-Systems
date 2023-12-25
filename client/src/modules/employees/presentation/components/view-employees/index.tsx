@@ -44,7 +44,7 @@ const EmployeesTable = () => {
                 SSN: item.person?.SSN ?? "",
                 email: item.auth?.email ?? "",
                 phone: item.person?.phone ?? "",
-                role: item.role?.label.toLowerCase() ?? "",
+                role: item.role?.value.toLowerCase() ?? "",
                 name:
                   item.person?.firstName +
                   " " +

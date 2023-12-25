@@ -46,7 +46,7 @@ export default class LookupsModel {
                 { id: 24, value: "المنوفية" },
                 { id: 25, value: "المنيا" },
             ],
-            departments: json.triageType || [],
+            departments: json.departments || [],
         };
     }
 

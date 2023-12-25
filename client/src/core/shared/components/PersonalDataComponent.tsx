@@ -6,17 +6,14 @@ import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
-import {
-  IGender,
-  IGovernate,
-  IIdentity,
-} from "@/modules/auth/domain/data-values/interfaces";
-import {
-  genderList,
-  governateList,
-  identityList,
-} from "@/modules/auth/domain/data-values/constants";
 import PersonEntity from "@/modules/auth/domain/entities/person-entity";
+import {
+  GenderType,
+  Governate,
+  IdentityType,
+} from "../modules/lookups/domain/interfaces/lookups-interface";
+import { LookupsState } from "../modules/lookups/presentation/controllers/types";
+import { useAppSelector } from "@/core/state/store";
 
 interface PersonalDataProps {
   initialValues: PersonInterface;
@@ -31,6 +28,9 @@ const PersonalDataComponent = ({
   refSubmitButton,
   isResetForm = false,
 }: PersonalDataProps) => {
+  const lookupsState: LookupsState = useAppSelector(
+    (state: any) => state.lookups
+  );
   return (
     <Formik
       enableReinitialize
@@ -55,7 +55,7 @@ const PersonalDataComponent = ({
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container columns={12} spacing={2}>
             <Grid item lg={3} md={3} sm={12} xs={12}>
-              <CustomSelectField<IIdentity>
+              <CustomSelectField<IdentityType>
                 isRequired
                 name="verificationMethod"
                 label="نوع الهوية"
@@ -65,7 +65,7 @@ const PersonalDataComponent = ({
                 error={errors.verificationMethod}
                 touched={touched.verificationMethod}
                 width="100%"
-                options={identityList}
+                options={lookupsState.lookups.identityTypes}
               />
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
@@ -86,7 +86,7 @@ const PersonalDataComponent = ({
             </Grid>
 
             <Grid item lg={3} md={3} sm={12} xs={12}>
-              <CustomSelectField<IGender>
+              <CustomSelectField<GenderType>
                 isRequired
                 name="gender"
                 label="الجنس"
@@ -96,11 +96,11 @@ const PersonalDataComponent = ({
                 error={errors.gender}
                 touched={touched.gender}
                 width="100%"
-                options={genderList}
+                options={lookupsState.lookups.genderTypes}
               />
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
-              <CustomSelectField<IGovernate>
+              <CustomSelectField<Governate>
                 isRequired
                 name="governate"
                 label="المحافظة"
@@ -110,7 +110,7 @@ const PersonalDataComponent = ({
                 error={errors.governate}
                 touched={touched.governate}
                 width="100%"
-                options={governateList}
+                options={lookupsState.lookups.governates}
               />
             </Grid>
           </Grid>
