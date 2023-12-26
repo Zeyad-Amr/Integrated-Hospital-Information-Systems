@@ -13,9 +13,9 @@ const AddIncident = () => {
         margin: "0 auto 0",
       }}
     >
-      <PageHeader title="اضافـــــة إصـــــابة جمـــــاعية">
+      {/* <PageHeader title="اضافـــــة إصـــــابة جمـــــاعية">
         <HealthAndSafetyOutlinedIcon />
-      </PageHeader>
+      </PageHeader> */}
 
       <AddIncidentForm />
     </Box>

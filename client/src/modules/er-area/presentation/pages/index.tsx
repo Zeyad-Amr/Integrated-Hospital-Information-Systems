@@ -12,8 +12,8 @@ const ErAreaPage = () => {
         margin: "0 auto 0",
       }}
     >
-      <PageHeader title="التــريــاج">
-      </PageHeader> 
+      {/* <PageHeader title="التــريــاج">
+      </PageHeader>  */}
       <ErAreaForm/>
     </Box>
   )

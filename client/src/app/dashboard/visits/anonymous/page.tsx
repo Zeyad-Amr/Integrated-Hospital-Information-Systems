@@ -8,7 +8,7 @@ import VisitsTableComponent from "@/modules/visits/presentation/pages/anomynous-
 export default function AllUsers() {
   return (
     <div>
-      <Sidebar>
+      <Sidebar pageTitle={'الزيـــارات'}>
         <VisitsTableComponent />
       </Sidebar>
     </div>

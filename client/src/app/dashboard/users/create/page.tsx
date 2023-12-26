@@ -8,7 +8,7 @@ import CreateUserComponent from "@/modules/employees/presentation/pages";
 export default function CreateUser() {
   return (
     <div>
-      <Sidebar>
+      <Sidebar pageTitle={'اضـــافة مـــوظف'}>
         <CreateUserComponent />
       </Sidebar>
     </div>
