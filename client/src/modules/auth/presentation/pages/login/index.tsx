@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import Button from "@mui/material/Button";
@@ -7,17 +7,15 @@ import * as Yup from "yup";
 import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
-import styles from './loginPage.module.css'
-import { useAppDispatch, useAppSelector } from "@/core/redux/store";
+import styles from "./loginPage.module.css";
+import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import { AuthState } from "../../controllers/types";
 import { login } from "../../controllers/thunks/auth-thunks";
 import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
 
 const LoginPage = () => {
-
   const dispatch = useAppDispatch();
   const authState: AuthState = useAppSelector((state: any) => state.auth);
-
 
   const handleFormSchema = Yup.object({
     userName: Yup.string()
@@ -27,10 +25,10 @@ const LoginPage = () => {
     password: Yup.string()
       .required("Password is required")
       .min(6, "Password must be at least 6 characters long"),
-  })
+  });
 
-  const onsubmit = (values: { userName: string; password: string; }) => {
-    console.log(values)
+  const onsubmit = (values: { userName: string; password: string }) => {
+    console.log(values);
     dispatch(
       login(
         new AuthDataEntity({
@@ -38,11 +36,10 @@ const LoginPage = () => {
           password: values.password,
         })
       )
-    )
-  }
+    );
+  };
 
   return (
-
     <Box className={`${styles.loginPage} ${styles.flexCenter}`}>
       <Box className={`${styles.loginBG}`}></Box>
       <Box className={`${styles.loginFormContainer} ${styles.flexCenter}`}>
@@ -51,11 +48,10 @@ const LoginPage = () => {
           initialValues={{
             userName: "",
             password: "",
-
           }}
-
           validationSchema={handleFormSchema}
-          onSubmit={(values) => onsubmit(values)}>
+          onSubmit={(values) => onsubmit(values)}
+        >
           {({
             values,
             touched,
@@ -64,9 +60,14 @@ const LoginPage = () => {
             handleBlur,
             handleSubmit,
           }) => (
-            <Box component="form" onSubmit={handleSubmit} noValidate style={{ width: "70%" }}
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              style={{ width: "70%" }}
             >
-              <Grid className={`${styles.flexCenter}`}
+              <Grid
+                className={`${styles.flexCenter}`}
                 style={{ height: "100%" }}
                 lg={6}
                 md={6}
@@ -83,7 +84,6 @@ const LoginPage = () => {
                   error={errors.userName}
                   touched={touched.userName}
                   width="100%"
-
                   props={{
                     type: "text",
                     className: "input",
@@ -102,28 +102,25 @@ const LoginPage = () => {
                   props={{
                     type: "password",
                     className: "input",
-
                   }}
                 />
-
               </Grid>
               <Button
                 type="submit"
                 style={{
                   color: "#fff",
                   backgroundColor: "#232836",
-                  width: "8vw"
+                  width: "8vw",
                 }}
               >
                 دخـــول
               </Button>
             </Box>
           )}
-
         </Formik>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;

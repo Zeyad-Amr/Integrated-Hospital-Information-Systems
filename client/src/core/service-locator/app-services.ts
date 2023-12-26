@@ -21,6 +21,15 @@ import { BaseVisitsDataSource, VisitsDataSource } from "@/modules/visits/data/da
 import VisitsRepository from "@/modules/visits/data/repositories/visits-repository";
 import BaseVisitsRepository from "@/modules/visits/domain/repositories/base-visits-repository";
 import { CreateVisitUseCase, GetAnonymousVisitsUseCase, GetVisitByCodeUseCase, UpdateVisitUseCase } from "@/modules/visits/domain/usecases";
+import { BaseLookupsDataSource, LookupsDataSource } from "../shared/modules/lookups/data/datasources/lookups-datasource";
+import BaseLookupsRepository from "../shared/modules/lookups/domain/repositories/base-lookups-repository";
+import LookupsRepository from "../shared/modules/lookups/data/repositories/lookups-repository";
+import { GetLookupsUseCase } from "../shared/modules/lookups/domain/usecases";
+import { BaseTriageAXDataSource, TriageAXDataSource } from "@/modules/er-area/data/datasources/triageAX-datasource";
+import BaseTriageAXRepository from "@/modules/er-area/domain/repositories/base-triageAX-repository";
+import TriageAXRepository from "@/modules/er-area/data/repositories/triageAX-repository";
+import CreateTriageAXUseCase from "@/modules/er-area/domain/usecases/create-triageAX-usecase";
+
 
 class AppServicesLocator {
     static init() {
@@ -35,6 +44,12 @@ class AppServicesLocator {
         sl.registerFactory<BaseVisitsDataSource>(ServiceKeys.VisitsDataSource, () => new VisitsDataSource(
             sl.get<ApiClient>(ServiceKeys.ApiClient)
         ));
+        sl.registerFactory<BaseLookupsDataSource>(ServiceKeys.LookupsDataSource, () => new LookupsDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
+        sl.registerFactory<BaseTriageAXDataSource>(ServiceKeys.TriageAXDataSource, () => new TriageAXDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
 
 
         //* Repositories ----------------------------------------------
@@ -47,7 +62,11 @@ class AppServicesLocator {
         sl.registerFactory<BaseVisitsRepository>(ServiceKeys.VisitsRepository, () => new VisitsRepository(
             sl.get<BaseVisitsDataSource>(ServiceKeys.VisitsDataSource)
         ));
-
+        sl.registerFactory<BaseLookupsRepository>(ServiceKeys.LookupsRepository, () => new LookupsRepository(
+            sl.get<BaseLookupsDataSource>(ServiceKeys.LookupsDataSource)));
+        sl.registerFactory<BaseTriageAXRepository>(ServiceKeys.TriageAXRepository, () => new TriageAXRepository(
+            sl.get<BaseTriageAXRepository>(ServiceKeys.TriageAXDataSource)
+        ));
 
         //* Use Cases --------------------------------------------------
         sl.registerFactory<GetAllEmployeesUseCase>(ServiceKeys.GetAllEmployeesUseCase, () => new GetAllEmployeesUseCase(
@@ -84,6 +103,13 @@ class AppServicesLocator {
         ));
         sl.registerFactory<GetAnonymousVisitsUseCase>(ServiceKeys.GetAnonymousVisitsUseCase, () => new GetAnonymousVisitsUseCase(
             sl.get<BaseVisitsRepository>(ServiceKeys.VisitsRepository)
+        ));
+        sl.registerFactory<GetLookupsUseCase>(ServiceKeys.GetLookupsUseCase, () => new GetLookupsUseCase(
+            sl.get<BaseLookupsRepository>(ServiceKeys.LookupsRepository)
+        ));
+
+        sl.registerFactory<CreateTriageAXUseCase>(ServiceKeys.CreateTriageAXUseCase, () => new CreateTriageAXUseCase(
+            sl.get<BaseTriageAXRepository>(ServiceKeys.TriageAXRepository)
         ));
 
         //* Exnternal Services --------------------------------------------------

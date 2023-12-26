@@ -3,11 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import employees from "@/modules/employees/presentation/controllers/slices/employee-slice";
 import auth from "@/modules/auth/presentation/controllers/slices/auth-slice";
 import visits from "@/modules/visits/presentation/controllers/slices/visits-slice";
+import lookups from "@/core/shared/modules/lookups/presentation/controllers/slices/lookups-slice";
+
 const store = configureStore({
     reducer: {
         employees: employees,
         auth: auth,
-        visits: visits
+        visits: visits,
+        lookups: lookups,
     },
 });
 

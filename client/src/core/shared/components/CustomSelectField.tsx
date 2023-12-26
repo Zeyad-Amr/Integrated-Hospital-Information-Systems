@@ -22,7 +22,7 @@ export interface SelectFieldProps<T> {
   hideLabel?: boolean;
 }
 
-const CustomSelectField = <T extends { id: any; label: string }>({
+const CustomSelectField = <T extends { id: any; value: string }>({
   onChange,
   onBlur,
   name,
@@ -86,7 +86,7 @@ const CustomSelectField = <T extends { id: any; label: string }>({
             },
           }}
         >
-          {options.map((option) => (
+          {options?.map((option: T) => (
             <MenuItem
               key={option.id}
               value={option.id}
@@ -112,7 +112,7 @@ const CustomSelectField = <T extends { id: any; label: string }>({
                 },
               }}
             >
-              {option.label}
+              {option.value}
             </MenuItem>
           ))}
         </Select>

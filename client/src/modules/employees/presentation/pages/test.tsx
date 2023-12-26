@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "@/core/redux/store";
+import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import { EmployeeState } from "../controllers/types";
 import {
   getEmployeeList,

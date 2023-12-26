@@ -4,11 +4,17 @@ import { EmployeeState } from "../types";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
 import { ErrorResponse } from "@/core/api";
 import EmployeeEntity from "@/modules/employees/domain/entities/employee-entity";
+import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
+import PersonEntity from "@/modules/auth/domain/entities/person-entity";
+import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
+import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
 
 //* Initial State
 const initialState: EmployeeState = {
     employeeList: [],
     currentEmployee: EmployeeEntity.defaultValue(),
+    currentAuth: AuthDataEntity.defaultValue(),
+    currentPerson: PersonEntity.defaultValue(),
     loading: false,
     error: "",
 };
@@ -28,6 +34,12 @@ const employeeSlice = createSlice({
         },
         setCurrentEmployee(state, action: { payload: EmployeeInterface, type: string }) {
             state.currentEmployee = action.payload;
+        },
+        setCurrentAuth(state, action: { payload: AuthInterface, type: string }) {
+            state.currentAuth = action.payload;
+        },
+        setCurrentPerson(state, action: { payload: PersonInterface, type: string }) {
+            state.currentPerson = action.payload;
         },
         setEmployeeList(state, action: { payload: EmployeeInterface[], type: string }) {
             state.employeeList = action.payload;
@@ -124,6 +136,8 @@ export const {
     clearCurrentEmployee,
     clearEmployeeList,
     setCurrentEmployee,
+    setCurrentAuth,
+    setCurrentPerson,
     setEmployeeList,
     setLoading
 } = employeeSlice.actions;
