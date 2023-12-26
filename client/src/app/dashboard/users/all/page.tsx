@@ -8,7 +8,7 @@ import EmployeesTableComponent from "@/modules/employees/presentation/pages/all-
 export default function AllUsers() {
   return (
     <div>
-      <Sidebar>
+      <Sidebar pageTitle={'الموظفـــون'}>
         <EmployeesTableComponent />
       </Sidebar>
     </div>

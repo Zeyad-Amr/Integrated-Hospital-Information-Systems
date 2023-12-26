@@ -8,11 +8,11 @@ const SecondaryButton = (props: any) => {
       type={props.type}
       style={{
         display: props.display,
-        color: "#004B50",
+        color: "#061540",
         backgroundColor: "transparent",
         fontSize: "0.9rem",
         height: "40px",
-        border: "1px solid #004B50",
+        border: "1px solid #0f70f2",
         padding:'0 3rem',
         ...props.sx
       }}

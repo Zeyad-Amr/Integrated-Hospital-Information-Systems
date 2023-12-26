@@ -6,7 +6,7 @@ import AddIncident from "@/modules/incidents/presentation/pages/AddIncident";
 export default function CreateDepartment() {
   return (
     <div>
-      <Sidebar>
+      <Sidebar pageTitle={'اضـــافة إصـــابة جمـــاعية'}>
         <AddIncident />
       </Sidebar>
     </div>

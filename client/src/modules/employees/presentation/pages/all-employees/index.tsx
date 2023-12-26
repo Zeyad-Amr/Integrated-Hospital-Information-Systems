@@ -22,9 +22,9 @@ const EmployeesTableComponent = () => {
         margin: "0 auto 3% auto",
       }}
     >
-      <PageHeader title="الموظفون">
+      {/* <PageHeader title="الموظفون">
         <AccountBoxIcon />
-      </PageHeader>
+      </PageHeader> */}
 
       <EmployeesTable />
     </Box>
