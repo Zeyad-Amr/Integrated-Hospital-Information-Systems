@@ -44,10 +44,12 @@ const PRIMARY = {
   lighter: '#eff3fc',
   light: '#eff3fc',
   main: '#0f70f2',
-  dark: '#0f70f2',
+  dark: '#061540',
   darker: '#061540',
   contrastText: '#FFFFFF',
 };
+
+ 
 
 const SECONDARY = {
   lighter: '#FFD4CC',
