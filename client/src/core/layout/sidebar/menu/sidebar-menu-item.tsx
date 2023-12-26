@@ -81,7 +81,7 @@ const SidebarMenuItem = ({
           <Typography
             variant="body1"
             sx={{
-              fontWeight: "bold",
+              // fontWeight: "bold",
               color: "white",
               // color: 'primary.main',
               display: collapsed ? "none" : "block",
