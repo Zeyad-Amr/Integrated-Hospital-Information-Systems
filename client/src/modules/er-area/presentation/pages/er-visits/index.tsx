@@ -10,6 +10,10 @@ const ERVisitsTableComponent = () => {
             height: "70vh",
             margin: "0 auto 0",
         }}>
+        
+            {/* <PageHeader title="المرضى المجهولون">
+                <AccountBoxIcon />
+            </PageHeader> */}
 
 
             <ERVisitsTable />

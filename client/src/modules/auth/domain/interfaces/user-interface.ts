@@ -1,12 +1,12 @@
-import { IDepartment, IRole, IShift } from "../data-values/interfaces";
+import { Department, RoleType, ShiftType } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 import AuthInterface from "./auth-interface";
 import PersonInterface from "./person-interface";
 
 export default interface UserInterface {
     id: string;
-    role?: IRole;
-    shift?: IShift;
-    department?: IDepartment;
+    role?: RoleType;
+    shift?: ShiftType;
+    department?: Department;
     person?: PersonInterface;
     auth?: AuthInterface;
     createdAt?: Date;

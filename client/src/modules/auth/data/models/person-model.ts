@@ -1,4 +1,4 @@
-import { genderList, governateList, identityList } from '../../domain/data-values/constants';
+import store from '@/core/state/store';
 import PersonInterface from '../../domain/interfaces/person-interface';
 
 export default class PersonModel {
@@ -10,17 +10,18 @@ export default class PersonModel {
             thirdName: entity.thirdName,
             fourthName: entity.fourthName,
             SSN: entity.SSN,
-            verificationMethod: entity.verificationMethod?.id,
-            gender: entity.gender?.id,
-            birthDate: entity.birthDate,
-            phone: entity.phone,
-            governate: entity.governate?.id,
+            verificationMethodId: entity.verificationMethod,
+            genderId: entity.gender,
+            birthDate: new Date(entity.birthDate ?? Date.now().toString()),
+            phone: '+2' + entity.phone,
+            governate: entity.governate?.toString(),
             address: entity.address
         };
     }
 
     //* --------------------- Deserialization: Create a model from JSON data ---------------------
     static fromJson(json: any): PersonInterface {
+        const state = store.getState();
         return {
             id: json.id,
             firstName: json.firstName,
@@ -28,11 +29,11 @@ export default class PersonModel {
             thirdName: json.thirdName,
             fourthName: json.fourthName,
             SSN: json.SSN,
-            verificationMethod: identityList.find((identity) => identity.id === json.verificationMethod) ?? identityList[0],
-            gender: genderList.find((gender) => gender.id === json.gender) ?? genderList[0],
+            verificationMethod: json.verificationMethod ?? state.lookups.lookups.identityTypes[0],
+            gender: json.gender ?? state.lookups.lookups.genderTypes[0],
             birthDate: new Date(json.birthDate),
             phone: json.phone,
-            governate: governateList.find((governate) => governate.id === json.governate) ?? governateList[0],
+            governate: state.lookups.lookups.governates.find((governate) => governate.value === json.governate) ?? state.lookups.lookups.governates[0],
             address: json.address,
             createdAt: new Date(json.createdAt),
             updatedAt: new Date(json.updatedAt),

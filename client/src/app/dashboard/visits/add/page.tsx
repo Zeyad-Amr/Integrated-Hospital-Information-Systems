@@ -6,7 +6,7 @@ import AddVisit from "@/modules/visits/presentation/pages/AddVisit";
 export default function CreateDepartment() {
   return (
     <div>
-      <Sidebar>
+      <Sidebar pageTitle={'اضـــافة زيـــارة'}>
         <AddVisit />
       </Sidebar>
     </div>

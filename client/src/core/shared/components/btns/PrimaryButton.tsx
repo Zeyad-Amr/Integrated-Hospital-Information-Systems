@@ -9,7 +9,7 @@ const PrimaryButton = (props: any) => {
       style={{
         display: props.display,
         color: "#fff",
-        backgroundColor: "#004B50",
+        backgroundColor: "#0f70f2",
         fontSize: "0.9rem",
         height: "40px",
         padding: "0 3rem",

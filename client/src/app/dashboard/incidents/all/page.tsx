@@ -8,7 +8,7 @@ import IncidentTableComponent from "@/modules/incidents/presentation/pages/uncom
 export default function CreateDepartment() {
   return (
     <div>
-      <Sidebar>
+      <Sidebar pageTitle={'استكمـــال إصـــابة جمـــاعية'}>
         <IncidentTableComponent />
       </Sidebar>
     </div>

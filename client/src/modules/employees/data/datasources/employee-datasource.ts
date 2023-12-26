@@ -29,13 +29,13 @@ class EmployeeDataSource extends BaseEmployeeDataSource {
     }
 
     override async createEmployee(employee: EmployeeInterface): Promise<boolean> {
-        console.log('DS', EmployeeModel.toJsonWithAuthData(employee));
-        await this.apiClient.post(Endpoints.employee.create, EmployeeModel.toJsonWithAuthData(employee));
+        console.log('DS', EmployeeModel.toJson(employee));
+        await this.apiClient.post(Endpoints.employee.create, EmployeeModel.toJson(employee));
         return true;
     }
 
     override async updateEmployee(employee: EmployeeInterface): Promise<boolean> {
-        await this.apiClient.patch(Endpoints.employee.update, EmployeeModel.toJsonWithAuthData(employee), {
+        await this.apiClient.patch(Endpoints.employee.update, EmployeeModel.toJson(employee), {
             pathVariables: { id: employee.id },
         });
         return true;

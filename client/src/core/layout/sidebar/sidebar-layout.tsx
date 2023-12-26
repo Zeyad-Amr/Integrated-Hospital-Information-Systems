@@ -37,7 +37,7 @@ const SidebarLayout = (props: any) => {
       >
         <Box
           sx={{
-            backgroundColor: "#061540",
+            background: 'linear-gradient(-30deg,#061540, #152962)',
             width: collapsed ? "5rem" : "18rem",
             transition: "width 0.3s ease-in-out",
             overflowX: "hidden",
@@ -76,7 +76,7 @@ const SidebarLayout = (props: any) => {
                   color: "primary.darker",
                 }}
               >
-                اضافـــــــة مستخدم
+                {props.pageTitle}
               </Typography>
             </Box>
             <Box sx={{ display: "flex" }}>

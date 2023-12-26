@@ -8,5 +8,6 @@ export const ServiceLocatorProvider = ({
   children: React.ReactNode;
 }) => {
   AppServicesLocator.init();
+
   return <>{children}</>;
 };

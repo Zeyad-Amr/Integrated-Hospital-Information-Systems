@@ -8,7 +8,7 @@ import ERVisitsTableComponent from "@/modules/er-area/presentation/pages/er-visi
 export default function AllUsers() {
     return (
         <div>
-            <Sidebar>
+            <Sidebar pageTitle={'ER Area'}>
                 <ERVisitsTableComponent />
             </Sidebar>
         </div>

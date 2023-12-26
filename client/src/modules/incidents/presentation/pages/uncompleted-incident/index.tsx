@@ -12,9 +12,9 @@ const IncidentTableComponent = () => {
             height: "70vh",
             margin: "0 auto 0",
         }}>
-            <PageHeader title="استكمال بيانات حـــادث">
+            {/* <PageHeader title="استكمال بيانات حـــادث">
                 <HealthAndSafetyOutlined />
-            </PageHeader>
+            </PageHeader> */}
             <IncidentTable />
         </Box>
     );

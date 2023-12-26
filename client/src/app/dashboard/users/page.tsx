@@ -8,7 +8,7 @@ import Sidebar from "@/core/layout/sidebar/index";
 export default function Users() {
   return (
     <div>
-      <Sidebar>
+      <Sidebar >
         <TestPage label={"Users"} />
       </Sidebar>
     </div>

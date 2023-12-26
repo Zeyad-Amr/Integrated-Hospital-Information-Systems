@@ -6,9 +6,13 @@ import CustomTextField from "@/core/shared/components/CustomTextField";
 import { Grid } from "@mui/material";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
-import { useAppDispatch, useAppSelector } from "@/core/redux/store";
+import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import { createEmployee } from "../../controllers/thunks/employee-thunks";
-import { setCurrentEmployee } from "../../controllers/slices/employee-slice";
+import {
+  setCurrentEmployee,
+  setCurrentAuth,
+  setCurrentPerson,
+} from "../../controllers/slices/employee-slice";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
 import EmployeeEntity from "@/modules/employees/domain/entities/employee-entity";
 import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
@@ -16,21 +20,20 @@ import PersonEntity from "@/modules/auth/domain/entities/person-entity";
 import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
 import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
-import {
-  roleList,
-  shiftList,
-  departmentList,
-} from "@/modules/auth/domain/data-values/constants";
-import {
-  IRole,
-  IShift,
-  IDepartment,
-} from "@/modules/auth/domain/data-values/interfaces";
 import PersonalDataComponent from "@/core/shared/components/PersonalDataComponent";
 import { EmployeeState } from "../../controllers/types";
+import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
+import {
+  Department,
+  RoleType,
+  ShiftType,
+} from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 
 const CreateUserForm = () => {
   const dispatch = useAppDispatch();
+  const lookupsState: LookupsState = useAppSelector(
+    (state: any) => state.lookups
+  );
   const employeeState: EmployeeState = useAppSelector(
     (state: any) => state.employees
   );
@@ -55,26 +58,28 @@ const CreateUserForm = () => {
   //* Handle on submit person section
   const onSubmitPerson = (values: PersonInterface) => {
     setPersonValid(true);
-    setCurrentEmployee({ ...employeeState.currentEmployee, person: values });
+    dispatch(setCurrentPerson(values));
     console.log("Submit Person:", values);
   };
 
   //* Handle on submit auth data section
   const onSubmitAuth = (values: AuthInterface) => {
     setAuthValid(true);
-    setCurrentEmployee({ ...employeeState.currentEmployee, auth: values });
+    dispatch(setCurrentAuth(values));
     console.log("Submit Auth:", values);
   };
 
   //* handle on submit employee specific data section
   const onSubmitEmployee = (values: EmployeeInterface) => {
     setEmployeeValid(true);
-    setCurrentEmployee({
-      ...employeeState.currentEmployee,
-      shift: values.shift,
-      role: values.role,
-      department: values.department,
-    });
+    dispatch(
+      setCurrentEmployee({
+        ...employeeState.currentEmployee,
+        shift: values.shift,
+        role: values.role,
+        department: values.department,
+      })
+    );
     console.log("Submit Employee:", values);
   };
 
@@ -102,7 +107,13 @@ const CreateUserForm = () => {
   useEffect(() => {
     if (personValid && authValid && employeeValid) {
       console.log("Submit All Forms:", employeeState.currentEmployee);
-      dispatch(createEmployee(employeeState.currentEmployee));
+      dispatch(
+        createEmployee({
+          ...employeeState.currentEmployee,
+          auth: employeeState.currentAuth,
+          person: employeeState.currentPerson,
+        })
+      );
     } else {
       console.log("Not Valid");
     }
@@ -237,7 +248,7 @@ const CreateUserForm = () => {
             <Box component="form" onSubmit={handleSubmit} noValidate>
               <Grid container columns={12} spacing={2}>
                 <Grid item lg={3} md={3} sm={12} xs={12}>
-                  <CustomSelectField<IRole>
+                  <CustomSelectField<RoleType>
                     isRequired
                     name="role"
                     label="الوظيفة"
@@ -247,11 +258,11 @@ const CreateUserForm = () => {
                     error={errors.role}
                     touched={touched.role}
                     width="100%"
-                    options={roleList}
+                    options={lookupsState.lookups.roleTypes}
                   />
                 </Grid>
                 <Grid item lg={3} md={3} sm={12} xs={12}>
-                  <CustomSelectField<IShift>
+                  <CustomSelectField<ShiftType>
                     isRequired
                     name="shift"
                     label="موعد العمل"
@@ -261,11 +272,11 @@ const CreateUserForm = () => {
                     error={errors.shift}
                     touched={touched.shift}
                     width="100%"
-                    options={shiftList}
+                    options={lookupsState.lookups.shiftTypes}
                   />
                 </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
-                  <CustomSelectField<IDepartment>
+                  <CustomSelectField<Department>
                     isRequired
                     name="department"
                     label="القسم"
@@ -275,7 +286,7 @@ const CreateUserForm = () => {
                     error={errors.department}
                     touched={touched.department}
                     width="100%"
-                    options={departmentList}
+                    options={lookupsState.lookups.departments}
                   />
                 </Grid>
               </Grid>
