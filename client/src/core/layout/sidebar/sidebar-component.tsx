@@ -84,12 +84,12 @@ const SidebarComponent = () => {
           <PeopleIcon sx={{ color: "primary.main", textAlign: "center" }} />
         }
         activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
-        text="الزيارات"
+        text="المرضى"
         path="/dashboard/visits/add"
       >
-        <SidebarSubmenuItem text="إضافة زيارة" path="/dashboard/visits/add" />
+        <SidebarSubmenuItem text="إضافة مريض" path="/dashboard/visits/add" />
         <SidebarSubmenuItem
-          text="الزيارات المجهولة"
+          text="المرضى المجهولة"
           path="/dashboard/visits/anonymous"
         />
       </SidebarMenuItem>
