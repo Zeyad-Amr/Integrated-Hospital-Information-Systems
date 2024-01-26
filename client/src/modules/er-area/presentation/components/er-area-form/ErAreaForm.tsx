@@ -4,14 +4,16 @@ import CustomFullScreenDialog from "@/core/shared/components/CustomFullScreenDia
 import CustomMultiSelectField from "@/core/shared/components/CustomMultiSelectField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import CustomTextField from "@/core/shared/components/CustomTextField";
-import VitalsData, {
-  VitalsDataValuesI,
-} from "@/core/shared/components/VitalsData";
+import VitalsData from "@/core/shared/components/VitalsData";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
+import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
+import { useAppSelector } from "@/core/state/store";
+import TriageAXEntity from "@/modules/er-area/domain/entities/triageAX-without-vitals-entity";
+import VitalsEntity from "@/modules/er-area/domain/entities/vitals-entity";
+import VitalsInterface from "@/modules/er-area/domain/interfaces/vitals-interface";
 import { Box, Button, Grid } from "@mui/material";
 import { Formik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
-import * as Yup from "yup";
 
 interface IErAreaFormProps {
   openDialog: boolean;
@@ -28,7 +30,12 @@ const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) 
   const refRestFormData: any = useRef(null);
   const checkFirstRender = useRef(true);
 
-  const handleSubmitVitalsData = (data: VitalsDataValuesI) => {
+
+  const lookupsState: LookupsState = useAppSelector(
+    (state: any) => state.lookups
+  );
+
+  const handleSubmitVitalsData = (data: VitalsInterface) => {
     setCombinedValues((preValues: any) => ({
       ...preValues,
       mainComplaint: refRestFormData.current.complaint,
@@ -58,18 +65,6 @@ const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) 
     consciousnessLevel: string;
   }
 
-  const initialValues: VitalsDataValuesI = {
-    CVP: undefined,
-    diastolicPressure: undefined,
-    GCS: undefined,
-    painScore: undefined,
-    pulseRate: undefined,
-    respiratoryRate: undefined,
-    SPO2: undefined,
-    systolicPressure: undefined,
-    temperature: undefined,
-  };
-
   const restErAreaInitialValues: restErAreaI = {
     comorbidities: [],
     complaint: "",
@@ -82,18 +77,6 @@ const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) 
     refRestFormData.current = values;
     setSubmitVitalsFlag(!submitVitalsFlag);
   };
-
-  const handleRestFormSchema = Yup.object({
-    complaint: Yup.string().required("الشكوى مطلوبة"),
-
-    transferTo: Yup.string().required("نقل إلى مطلوب"),
-
-    // comorbidities: Yup.string().required("الأمراض المصاحبة مطلوبة"),
-
-    triage: Yup.string().required("الفرز مطلوب"),
-
-    consciousnessLevel: Yup.string().required("مستوى الوعي مطلوب"),
-  });
 
   const onTriggerAllForm = () => {
     if (refSubmitFirstStepButton.current) {
@@ -154,7 +137,7 @@ const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) 
             <Formik
               enableReinitialize
               initialValues={restErAreaInitialValues}
-              validationSchema={handleRestFormSchema}
+              validationSchema={TriageAXEntity.getSchema()}
               onSubmit={(values) => {
                 onRestFormSubmit(values);
               }}
@@ -203,16 +186,7 @@ const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) 
                         error={errors.transferTo}
                         touched={touched.transferTo}
                         width="100%"
-                        options={[
-                          {
-                            id: "1",
-                            label: "تيست 1",
-                          },
-                          {
-                            id: "2",
-                            label: "تيست 2",
-                          },
-                        ]}
+                        options={lookupsState.lookups.departments}
                       />
                     </Grid>
 
@@ -227,16 +201,7 @@ const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) 
                         error={errors.consciousnessLevel}
                         touched={touched.consciousnessLevel}
                         width="100%"
-                        options={[
-                          {
-                            id: "1",
-                            label: "تيست 1",
-                          },
-                          {
-                            id: "2",
-                            label: "تيست 2",
-                          },
-                        ]}
+                        options={lookupsState.lookups.LOC}
                       />
                     </Grid>
                     <Grid item lg={3} md={3} sm={12} xs={12}>
@@ -250,16 +215,7 @@ const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) 
                         error={errors.triage}
                         touched={touched.triage}
                         width="100%"
-                        options={[
-                          {
-                            id: "1",
-                            label: "تيست 1",
-                          },
-                          {
-                            id: "2",
-                            label: "تيست 2",
-                          },
-                        ]}
+                        options={lookupsState.lookups.triageTypes}
                       />
                     </Grid>
                   </Grid>
@@ -300,7 +256,7 @@ const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) 
             setExpanded={setExpandVitalsAccordion}
           >
             <VitalsData
-              initialValues={initialValues}
+              initialValues={VitalsEntity.defaultValue()}
               onSubmit={handleSubmitVitalsData}
               isSubmitted={submitVitalsFlag}
             />

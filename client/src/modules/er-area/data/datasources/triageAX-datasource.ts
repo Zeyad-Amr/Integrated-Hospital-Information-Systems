@@ -1,9 +1,9 @@
 import { ApiClient, Endpoints } from "@/core/api";
-import TriageAXInterface from "../../domain/interfaces/triageAX-interface";
+import { TriageAXInterface } from "../../domain/interfaces/triageAX-interface";
 import TriageAXModel from "../models/triageAX-model";
 
 abstract class BaseTriageAXDataSource {
-    abstract createTriageAX(employee: TriageAXInterface): Promise<void>;
+    abstract createTriageAX(data: TriageAXInterface): Promise<void>;
 }
 
 class TriageAXDataSource extends BaseTriageAXDataSource {

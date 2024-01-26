@@ -1,4 +1,5 @@
-import TriageAXInterface from '../../domain/interfaces/triageAX-interface';
+import { TriageAXInterface } from '../../domain/interfaces/triageAX-interface';
+import VitalsModel from './vitals-model';
 
 export default class TriageAXModel {
 
@@ -10,7 +11,7 @@ export default class TriageAXModel {
             triageTypeId: entity.triageTypeId,
             comorbidityIds: entity.comorbidityIds,
             transferTo: entity.transferTo,
-            vitals: entity.vitals,
+            vitals: entity.vitals ? VitalsModel.toJson(entity.vitals) : entity.vitals,
         };
     }
 
@@ -22,7 +23,7 @@ export default class TriageAXModel {
             triageTypeId: json.triageTypeId,
             comorbidityIds: json.comorbidityIds,
             transferTo: json.transferTo,
-            vitals: json.vitals,
+            vitals: VitalsModel.fromJson(json.vitals),
         };
     }
 }

@@ -25,7 +25,7 @@ const ERVisitsTable = () => {
             var test = JSON.parse(ev.data).items
             setStreamedData(test);
             // console.log(JSON.parse(ev.data).items);
-            // console.log(streamedData);
+            console.log(test);
             // console.log(refStreamedData);
         }
 

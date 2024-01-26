@@ -1,24 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import { Formik } from "formik";
-import * as Yup from "yup";
 import { Box, Button, Grid } from "@mui/material";
 import CustomTextField from "./CustomTextField";
-
-export interface VitalsDataValuesI {
-  painScore: number | undefined;
-  SPO2: number | undefined;
-  temperature: number | undefined;
-  pulseRate: number | undefined;
-  respiratoryRate: number | undefined;
-  CVP: number | undefined;
-  GCS: number | undefined;
-  diastolicPressure: number | undefined;
-  systolicPressure: number | undefined;
-}
+import VitalsEntity from "@/modules/er-area/domain/entities/vitals-entity";
+import VitalsInterface from "@/modules/er-area/domain/interfaces/vitals-interface";
 
 interface VitalsDataPropsI {
-  initialValues: VitalsDataValuesI;
-  onSubmit: (values: VitalsDataValuesI) => void;
+  initialValues: VitalsInterface;
+  onSubmit: (values: VitalsInterface) => void;
   isSubmitted: boolean;
   isResetForm?: boolean;
 }
@@ -46,50 +35,6 @@ const VitalsData = ({
     }
   }, [isSubmitted]);
 
-  const handleFormSchema = Yup.object({
-    temperature: Yup.string()
-      .required("درجة الحرارة مطلوبة")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    systolicPressure: Yup.string()
-      .required("ضغط الدم الانقباضي مطلوب")
-      .matches(/^\d+$/, "يجب ألا تحتوي على أرقام عشرية")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    diastolicPressure: Yup.string()
-      .required("ضغط الدم الانبساطي مطلوب")
-      .matches(/^\d+$/, "يجب ألا تحتوي على أرقام عشرية")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    GCS: Yup.string()
-      .required("درجة تحسس الوعي مطلوبة")
-      .matches(/^\d+$/, "يجب ألا تحتوي على أرقام عشرية")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    CVP: Yup.string()
-      .required("ضغط الوريد المركزي مطلوب")
-      .matches(/^\d+$/, "يجب ألا تحتوي على أرقام عشرية")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    respiratoryRate: Yup.string()
-      .required("معدل التنفس مطلوب")
-      .matches(/^\d+$/, "يجب ألا تحتوي على أرقام عشرية")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    pulseRate: Yup.string()
-      .required("معدل نبضات القلب مطلوب")
-      .matches(/^\d+$/, "يجب ألا تحتوي على أرقام عشرية")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    SPO2: Yup.string()
-      .required("مستوى تشبع الأكسجين في الدم مطلوب")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    painScore: Yup.string()
-      .required("درجة الألم مطلوبة")
-      .matches(/^\d+$/, "يجب ألا تحتوي على أرقام عشرية")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-  });
 
   return (
     <Formik
@@ -105,7 +50,7 @@ const VitalsData = ({
         diastolicPressure: initialValues.diastolicPressure,
         systolicPressure: initialValues.systolicPressure,
       }}
-      validationSchema={handleFormSchema}
+      validationSchema={VitalsEntity.getSchema()}
       onSubmit={(values, { resetForm }) => {
         onSubmit(values);
         if (isResetForm) {
