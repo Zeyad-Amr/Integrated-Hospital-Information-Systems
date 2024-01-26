@@ -33,7 +33,7 @@ enum ServiceKeys {
     GetAnonymousVisitsUseCase = 'GetAnonymousVisitsUseCase',
     GetVisitByCodeUseCase = 'GetVisitByCodeUseCase',
 
-    CreateTriageAXUseCase = 'CreateTriageAxUseCase',
+    CreateTriageAXUseCase = 'CreateTriageAXUseCase',
 
     //* Exnternal Services --------------------------------------------------
     ApiClient = 'ApiClient',
