@@ -53,14 +53,14 @@ export class Attendant {
   @IsString()
   SSN;
 
-  @ApiProperty({ type: String, example: 'PARAMEDIC' })
+  @ApiProperty({ type: Number, example: '1' })
   @IsOptional()
   @IsInt()
   roleId: number;
 }
 
 export class AdditionalInformation {
-  @ApiProperty({ type: String, example: 'HOME', required: false })
+  @ApiProperty({ type: Number, example: '1', required: false })
   @IsOptional()
   @IsInt()
   cameFromId: number;

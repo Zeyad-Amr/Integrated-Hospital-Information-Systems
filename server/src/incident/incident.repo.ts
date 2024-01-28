@@ -5,6 +5,7 @@ import {
   Attendant,
   Incident,
   Person,
+  PersonType,
   Prisma,
   Visit,
   VisitAdditionalInformation,
@@ -34,131 +35,158 @@ export class IncidentRepo extends PrismaGenericRepo<
     visits: { select: { code: true, patient: true, creator: true } },
     CompanionsOnIncidents: { select: { companion: true } },
   };
-  // TODO: Handle Incident with new database schema
-  // async createIncident(incidentDto: CreateIncidentDto, creatorId: string) {
-  //   try {
-  //     let car;
-  //     if (incidentDto.additionalInfo?.car) {
-  //       car = {
-  //         connectOrCreate: {
-  //           create: {
-  //             firstChar: incidentDto.additionalInfo.car.firstChar,
-  //             secondChar: incidentDto.additionalInfo.car.secondChar,
-  //             thirdChar: incidentDto.additionalInfo.car.thirdChar,
-  //             number: incidentDto.additionalInfo.car.number,
-  //           },
-  //           where: {
-  //             firstChar_secondChar_thirdChar_number: {
-  //               firstChar: incidentDto.additionalInfo.car.firstChar,
-  //               secondChar: incidentDto.additionalInfo.car.secondChar,
-  //               thirdChar: incidentDto.additionalInfo.car.thirdChar,
-  //               number: incidentDto.additionalInfo.car.number,
-  //             },
-  //           },
-  //         },
-  //       };
-  //     }
 
-  //     return await this.prismaService.$transaction(async (tx) => {
-  //       let additionalInfo: VisitAdditionalInformation;
-  //       let connectAdditionalInfo;
-  //       if (
-  //         incidentDto.additionalInfo &&
-  //         !isEmptyObject(incidentDto.additionalInfo)
-  //       ) {
-  //         let attendant: Attendant;
-  //         let connectAttendant;
-  //         if (incidentDto.additionalInfo?.attendant) {
-  //           attendant = await tx.attendant.findFirst({
-  //             where: {
-  //               OR: [
-  //                 { SSN: incidentDto.additionalInfo.attendant.SSN },
-  //                 { cardId: incidentDto.additionalInfo.attendant.id },
-  //               ],
-  //             },
-  //           });
-  //           if (!attendant) {
-  //             attendant = await tx.attendant.create({
-  //               data: {
-  //                 name: incidentDto.additionalInfo.attendant.name,
-  //                 SSN: incidentDto.additionalInfo.attendant.SSN,
-  //                 cardId: incidentDto.additionalInfo.attendant.id,
-  //                 attendantRole: incidentDto.additionalInfo.attendant.role,
-  //               },
-  //             });
-  //           }
+  async createIncident(incidentDto: CreateIncidentDto, creatorId: string) {
+    try {
+      let car;
+      if (incidentDto.additionalInfo?.car) {
+        car = {
+          connectOrCreate: {
+            create: {
+              firstChar: incidentDto.additionalInfo.car.firstChar,
+              secondChar: incidentDto.additionalInfo.car.secondChar,
+              thirdChar: incidentDto.additionalInfo.car.thirdChar,
+              number: incidentDto.additionalInfo.car.number,
+            },
+            where: {
+              firstChar_secondChar_thirdChar_number: {
+                firstChar: incidentDto.additionalInfo.car.firstChar,
+                secondChar: incidentDto.additionalInfo.car.secondChar,
+                thirdChar: incidentDto.additionalInfo.car.thirdChar,
+                number: incidentDto.additionalInfo.car.number,
+              },
+            },
+          },
+        };
+      }
 
-  //           connectAttendant = {
-  //             connect: { id: attendant?.id },
-  //           };
-  //         }
-  //         additionalInfo = await tx.visitAdditionalInformation.create({
-  //           data: {
-  //             Car: car,
-  //             cameFrom: incidentDto.additionalInfo.cameFrom,
-  //             notes: incidentDto.additionalInfo.notes,
-  //             injuryCause: incidentDto.additionalInfo.injuryCause,
-  //             injuryLocation: incidentDto.additionalInfo.injuryCause,
-  //             Attendant: connectAttendant,
-  //           },
-  //         });
+      return await this.prismaService.$transaction(async (tx) => {
+        let additionalInfo: VisitAdditionalInformation;
+        let connectAdditionalInfo;
 
-  //         connectAdditionalInfo = {
-  //           connect: { id: additionalInfo?.id },
-  //         };
-  //       }
+        // ======================================== Additional Info =========================================================
+        if (
+          incidentDto.additionalInfo &&
+          !isEmptyObject(incidentDto.additionalInfo)
+        ) {
 
-  //       await tx.person.createMany({
-  //         data: incidentDto.companions,
-  //         skipDuplicates: true,
-  //       });
-  //       const companionsSSNs = incidentDto.companions.map((c) => c.SSN);
+          // * Attendant 
+          let attendant: Attendant;
+          let connectAttendant;
+          if (incidentDto.additionalInfo?.attendant) {
+            attendant = await tx.attendant.findFirst({
+              where: {
+                OR: [
+                  { SSN: incidentDto.additionalInfo.attendant.SSN },
+                  { cardId: incidentDto.additionalInfo.attendant.id },
+                ],
+              },
+            });
+            if (!attendant) {
+              attendant = await tx.attendant.create({
+                data: {
+                  name: incidentDto.additionalInfo.attendant.name,
+                  SSN: incidentDto.additionalInfo.attendant.SSN,
+                  cardId: incidentDto.additionalInfo.attendant.id,
+                  attendantRoleId: incidentDto.additionalInfo.attendant.roleId,
+                },
+              });
+            }
 
-  //       const companions = await tx.person.findMany({
-  //         where: { SSN: { in: companionsSSNs } },
-  //       });
+            connectAttendant = {
+              connect: { id: attendant?.id },
+            };
+          }
+          // * Create Additional Info
+          additionalInfo = await tx.visitAdditionalInformation.create({
+            data: {
+              Car: car,
+              cameFrom:
+              {
+                connect: {
+                  id: incidentDto.additionalInfo.cameFromId,
+                }
+              },
+              notes: incidentDto.additionalInfo.notes,
+              injuryCause: incidentDto.additionalInfo.injuryCause,
+              injuryLocation: incidentDto.additionalInfo.injuryCause,
+              Attendant: connectAttendant,
+            },
+          });
 
-  //       const companionsIds: Prisma.CompanionsOnIncidentsCreateManyIncidentInput[] =
-  //         companions.map((c) => {
-  //           return { companionId: c.id };
-  //         });
+          connectAdditionalInfo = {
+            connect: { id: additionalInfo?.id },
+          };
+        }
 
-  //       const incident = await tx.incident.create({
-  //         data: {
-  //           numberOfPatients: incidentDto.numerOfPatients,
-  //           AdditionalInformation: connectAdditionalInfo,
-  //           CompanionsOnIncidents: {
-  //             createMany: {
-  //               data: companionsIds,
-  //               skipDuplicates: true,
-  //             },
-  //           },
-  //         },
-  //       });
+        // ======================================== Companions =========================================================
+        await tx.person.createMany({
+          data: incidentDto.companions.map((companion) => ({ ...companion, type: PersonType.COMPANION })),
+          skipDuplicates: true,
+        });
+        const companionsSSNs = incidentDto.companions.map((c) => c.SSN);
 
-  //       let visitCode = await this.visitRepo.createVisitCode();
+        const companionsPersonal = await tx.person.findMany({
+          where: { SSN: { in: companionsSSNs } },
+        });
 
-  //       const visitsData = [];
-  //       for (let i = 0; i < incidentDto.numerOfPatients; i++) {
-  //         visitsData.push({
-  //           code: visitCode,
-  //           incidentId: incident.id,
-  //           creatorId: creatorId,
-  //         });
-  //         const visitNumber = parseInt(visitCode.slice(8)) + 1;
-  //         visitCode = `${visitCode.slice(0, 8)}${visitNumber}`;
-  //       }
+        const companionsPersonIds =
+          companionsPersonal.map((c) => {
+            return { personId: c.id };
+          });
 
-  //       await tx.visit.createMany({ data: visitsData });
+        await tx.companion.createMany({
+          data: companionsPersonIds,
+          skipDuplicates: true
+        });
 
-  //       const visitsCodes = visitsData.map((visit) => visit.code);
+        const companions = await tx.companion.findMany({
+          where: { person: { SSN: { in: companionsSSNs } } },
+        });
 
-  //       return { incident, visitsCodes };
-  //     });
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
+        const companionsIds =
+          companions.map((c) => {
+            return { companionId: c.id };
+          });
+
+        // * Create Incident
+        const incident = await tx.incident.create({
+          data: {
+            numberOfPatients: incidentDto.numerOfPatients,
+            AdditionalInformation: connectAdditionalInfo,
+            CompanionsOnIncidents: {
+              createMany: {
+                data: companionsIds,
+                skipDuplicates: true,
+              },
+            },
+          },
+        });
+
+        // * Create visits for each patient
+        let visitCode = await this.visitRepo.createVisitCode();
+
+        const visitsData = [];
+        for (let i = 0; i < incidentDto.numerOfPatients; i++) {
+          visitsData.push({
+            code: visitCode,
+            incidentId: incident.id,
+            creatorId: creatorId,
+          });
+          const visitNumber = parseInt(visitCode.slice(8)) + 1;
+          visitCode = `${visitCode.slice(0, 8)}${visitNumber}`;
+        }
+
+        await tx.visit.createMany({ data: visitsData });
+
+        const visitsCodes = visitsData.map((visit) => visit.code);
+
+        return { incident, visitsCodes };
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async getById(id: string) {
     try {
