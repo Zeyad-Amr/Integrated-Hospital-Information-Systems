@@ -11,3 +11,6 @@ Dockerfile
 .github        
 *.md           
 dist
+*.jpeg
+*.jpg
+*.png

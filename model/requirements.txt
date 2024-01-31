@@ -1,6 +1,7 @@
-Flask==3.0.0
-numpy==1.26.2
+Flask==3.0.1
+Flask_Cors==4.0.0
+keras==2.15.0
+numpy==1.26.3
 opencv_python==4.8.1.78
 pytesseract==0.3.10
-tensorflow==2.15.0
 Werkzeug==3.0.1
