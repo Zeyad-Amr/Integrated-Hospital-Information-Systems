@@ -1,8 +1,6 @@
 from flask import Flask, request, make_response, jsonify
 from werkzeug.utils import secure_filename
 
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
 import cv2
 import os 
 from helpers.utils import NationalID, allowed_file
@@ -15,6 +13,9 @@ CORS(app)
 UPLOAD_FOLDER = 'IDs'
 
 
+@app.route('/ping', methods=['GET'])
+def index():
+    return "Hello World!"
 
 @app.route('/extractdata', methods=['POST'])
 def extract_id():
@@ -69,4 +70,5 @@ if __name__ == '__main__':
     os.makedirs(f'./{UPLOAD_FOLDER}',exist_ok=True)
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     nationalIdObj = NationalID()
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
+

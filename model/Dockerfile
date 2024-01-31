@@ -4,8 +4,12 @@ WORKDIR /app
 
 COPY . /app
 
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+
 RUN pip install -r requirements.txt
+RUN pip install tensorflow
+
 
 EXPOSE 5000
 
-CMD ["python3", "app.py"]
+CMD ["flask", "run"]
