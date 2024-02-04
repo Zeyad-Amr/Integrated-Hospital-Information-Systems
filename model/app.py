@@ -36,7 +36,6 @@ def extract_id():
             back_filename = secure_filename("back.jpeg")
             front_path = os.path.join(app.config['UPLOAD_FOLDER'], front_filename)
             back_path = os.path.join(app.config['UPLOAD_FOLDER'], back_filename)
-
             front.save(front_path)
             back.save(back_path)
             frontImg = cv2.imread(front_path)
@@ -67,6 +66,7 @@ def extract_id():
 
 
 if __name__ == '__main__':
+    print("Starting server...")
     os.makedirs(f'./{UPLOAD_FOLDER}',exist_ok=True)
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     nationalIdObj = NationalID()
