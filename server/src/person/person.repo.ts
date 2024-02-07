@@ -33,7 +33,7 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
 
   async findBySSN(ssn: string) {
     try {
-      return await this.prismaService.person.findFirst({
+      return await this.prismaService.person.findUnique({
         where: { SSN: ssn },
         include: this.personInclude
       });

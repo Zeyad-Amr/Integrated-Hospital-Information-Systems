@@ -2,15 +2,14 @@ FROM node:18
 WORKDIR /qasr
 
 COPY package*.json ./
+
+RUN npm install --production
+
 COPY prisma ./prisma/
-
-RUN npm install
-
-COPY . .
-
 
 RUN npx prisma generate
 
+COPY . . 
 
 EXPOSE 4000
 
