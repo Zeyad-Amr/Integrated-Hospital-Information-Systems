@@ -70,7 +70,6 @@ const VitalsData = ({
           <Grid container columns={12} spacing={2}>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="temperature"
                 label="°C درجة الحرارة"
                 value={values.temperature}
@@ -86,7 +85,6 @@ const VitalsData = ({
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="GCS"
                 label="درجة تحسس الوعي"
                 value={values.GCS}
@@ -103,7 +101,6 @@ const VitalsData = ({
 
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="systolicPressure"
                 label="mmHg ضغط الدم الانقباضي"
                 value={values.systolicPressure}
@@ -119,7 +116,6 @@ const VitalsData = ({
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="diastolicPressure"
                 label="mmHg ضغط الدم الانبساطي"
                 value={values.diastolicPressure}
@@ -138,7 +134,6 @@ const VitalsData = ({
           <Grid container columns={12} spacing={2}>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="CVP"
                 label="mmHg ضغط الوريد المركزي"
                 value={values.CVP}
@@ -154,7 +149,6 @@ const VitalsData = ({
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="respiratoryRate"
                 label="bpm معدل التنفس"
                 value={values.respiratoryRate}
@@ -171,7 +165,6 @@ const VitalsData = ({
 
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="pulseRate"
                 label="bpm معدل نبضات القلب"
                 value={values.pulseRate}
@@ -187,7 +180,6 @@ const VitalsData = ({
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="SPO2"
                 label="مستوى تشبع الأكسجين في الدم"
                 value={values.SPO2}
@@ -206,7 +198,6 @@ const VitalsData = ({
           <Grid container columns={12} spacing={2}>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="painScore"
                 label="درجة الألم"
                 value={values.painScore}

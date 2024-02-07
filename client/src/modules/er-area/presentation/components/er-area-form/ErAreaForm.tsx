@@ -7,21 +7,23 @@ import CustomTextField from "@/core/shared/components/CustomTextField";
 import VitalsData from "@/core/shared/components/VitalsData";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
-import { useAppSelector } from "@/core/state/store";
+import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import TriageAXEntity from "@/modules/er-area/domain/entities/triageAX-without-vitals-entity";
 import VitalsEntity from "@/modules/er-area/domain/entities/vitals-entity";
 import VitalsInterface from "@/modules/er-area/domain/interfaces/vitals-interface";
 import { Box, Button, Grid } from "@mui/material";
 import { Formik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
+import { createTriagAX } from "../../controllers/thunks/triagAX-thunk";
+import TriageAXModel from "@/modules/er-area/data/models/triageAX-model";
 
 interface IErAreaFormProps {
   openDialog: boolean;
   setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
-  visitCode: string
+  patientData: any
 }
 
-const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) => {
+const ErAreaForm = ({ openDialog, setOpenDialog, patientData }: IErAreaFormProps) => {
   const [submitVitalsFlag, setSubmitVitalsFlag] = useState(false);
   const [expandVitalsAccordion, setExpandVitalsAccordion] = useState(true);
   const [expandRestFormAccordion, setExpandRestFormAccordion] = useState(true);
@@ -30,10 +32,11 @@ const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) 
   const refRestFormData: any = useRef(null);
   const checkFirstRender = useRef(true);
 
-
+  const dispatch = useAppDispatch();
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
+
 
   const handleSubmitVitalsData = (data: VitalsInterface) => {
     setCombinedValues((preValues: any) => ({
@@ -57,38 +60,32 @@ const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) 
     }));
   };
 
-  interface restErAreaI {
-    complaint: string;
-    transferTo: string;
-    comorbidities: any;
-    triage: string;
-    consciousnessLevel: string;
-  }
-
-  const restErAreaInitialValues: restErAreaI = {
-    comorbidities: [],
-    complaint: "",
-    consciousnessLevel: "",
-    transferTo: "",
-    triage: "",
-  };
-
   const onRestFormSubmit = (values: any) => {
+    console.log(values);
+
     refRestFormData.current = values;
     setSubmitVitalsFlag(!submitVitalsFlag);
   };
 
   const onTriggerAllForm = () => {
+    console.log(refSubmitFirstStepButton.current);
+
     if (refSubmitFirstStepButton.current) {
       refSubmitFirstStepButton.current.click();
     }
   };
 
   useEffect(() => {
+    console.log(checkFirstRender.current);
+
     if (checkFirstRender.current) {
       checkFirstRender.current = false;
+      console.log(checkFirstRender.current);
     } else {
       console.log(combinedValues);
+      dispatch(
+        createTriagAX(TriageAXModel.toJson(combinedValues))
+      )
     }
   }, [combinedValues]);
 
@@ -103,20 +100,20 @@ const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) 
           color="primary.dark"
           dataList={[
             {
-              title: "تيست 1",
-              message: visitCode,
+              title: "رقم المريض",
+              message: patientData.id,
             },
             {
-              title: "تيست 2",
-              message: "5555",
+              title: "اسم المريض",
+              message: <span style={{ fontSize: "0.8rem", fontWeight: 500 }}>{patientData.name}</span>,
             },
             {
-              title: "تيست 3",
-              message: "5555",
+              title: "النوع",
+              message: patientData.gender,
             },
             {
-              title: "تيست 4",
-              message: "5555",
+              title: "السن",
+              message: patientData.age,
             },
           ]}
         />
@@ -136,7 +133,7 @@ const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) 
           >
             <Formik
               enableReinitialize
-              initialValues={restErAreaInitialValues}
+              initialValues={TriageAXEntity.defaultValue()}
               validationSchema={TriageAXEntity.getSchema()}
               onSubmit={(values) => {
                 onRestFormSubmit(values);
@@ -152,30 +149,24 @@ const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) 
               }) => (
                 <Box component="form" onSubmit={handleSubmit} noValidate>
                   <Grid container columns={12} spacing={2}>
-                    <Grid item lg={3} md={3} sm={12} xs={12}>
-                      <CustomMultiSelectField
+                    <Grid item lg={8} md={8} sm={12} xs={12}>
+                      <CustomTextField
                         isRequired
-                        name="comorbidities"
-                        label="الأمراض المصاحبة"
-                        value={values.comorbidities}
+                        name="mainComplaint"
+                        label="الشكوى"
+                        value={values.mainComplaint}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        error={errors.comorbidities}
-                        touched={touched.comorbidities}
+                        error={errors.mainComplaint}
+                        touched={touched.mainComplaint}
                         width="100%"
-                        options={[
-                          {
-                            id: "1",
-                            label: "ضغط",
-                          },
-                          {
-                            id: "2",
-                            label: "سكر",
-                          },
-                        ]}
+                        multiline
+                        props={{
+                          type: "text",
+                        }}
                       />
                     </Grid>
-                    <Grid item lg={3} md={3} sm={12} xs={12}>
+                    <Grid item lg={4} md={4} sm={12} xs={12}>
                       <CustomSelectField<any>
                         isRequired
                         name="transferTo"
@@ -189,53 +180,46 @@ const ErAreaForm = ({ openDialog, setOpenDialog, visitCode }: IErAreaFormProps) 
                         options={lookupsState.lookups.departments}
                       />
                     </Grid>
+                  </Grid>
+                  <Grid container columns={12} spacing={2}>
 
-                    <Grid item lg={3} md={3} sm={12} xs={12}>
+                    <Grid item lg={4} md={4} sm={12} xs={12}>
                       <CustomSelectField<any>
-                        isRequired
-                        name="consciousnessLevel"
+                        name="LOCId"
                         label="مستوى الوعي"
-                        value={values.consciousnessLevel}
+                        value={values.LOCId}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        error={errors.consciousnessLevel}
-                        touched={touched.consciousnessLevel}
+                        error={errors.LOCId}
+                        touched={touched.LOCId}
                         width="100%"
                         options={lookupsState.lookups.LOC}
                       />
                     </Grid>
-                    <Grid item lg={3} md={3} sm={12} xs={12}>
+                    <Grid item lg={4} md={4} sm={12} xs={12}>
                       <CustomSelectField<any>
-                        isRequired
-                        name="triage"
+                        name="triageTypeId"
                         label="الفرز"
-                        value={values.triage}
+                        value={values.triageTypeId}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        error={errors.triage}
-                        touched={touched.triage}
+                        error={errors.triageTypeId}
+                        touched={touched.triageTypeId}
                         width="100%"
                         options={lookupsState.lookups.triageTypes}
                       />
                     </Grid>
-                  </Grid>
-                  <Grid container columns={12} spacing={2}>
-                    <Grid item lg={12} md={12} sm={12} xs={12}>
-                      <CustomTextField
-                        isRequired
-                        name="complaint"
-                        label="الشكوى"
-                        value={values.complaint}
+                    <Grid item lg={4} md={4} sm={12} xs={12}>
+                      <CustomMultiSelectField<any>
+                        name="comorbidityIds"
+                        label="الأمراض المصاحبة"
+                        value={values.comorbidityIds}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        error={errors.complaint}
-                        touched={touched.complaint}
+                        error={errors.comorbidityIds}
+                        touched={touched.comorbidityIds}
                         width="100%"
-                        multiline
-                        rows={3}
-                        props={{
-                          type: "text",
-                        }}
+                        options={lookupsState.lookups.comorbidities}
                       />
                     </Grid>
                   </Grid>

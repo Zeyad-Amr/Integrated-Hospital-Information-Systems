@@ -9,6 +9,7 @@ import {
     TableRow,
     TableCellProps,
     SxProps,
+    TableRowProps,
 } from "@mui/material";
 
 export interface HeaderItem {
@@ -36,6 +37,7 @@ interface Props<T> {
     sx?: SxProps;
     onRowClick?: (row: T) => void;
     hover?: boolean;
+    rowProps?: TableRowProps
 }
 
 const CustomBasicTable = <T,>({
@@ -47,6 +49,7 @@ const CustomBasicTable = <T,>({
     stickyHeader = false,
     sx,
     onRowClick,
+    rowProps,
     hover = true,
 }: Props<T>) => {
     return (
@@ -78,7 +81,9 @@ const CustomBasicTable = <T,>({
                         <TableRow
                             key={(item as any).id}
                             onClick={() => onRowClick && onRowClick(item)}
+                            data-row={JSON.stringify(item)}
                             hover={hover}
+                            {...rowProps}
                         >
                             {renderItem.map((headerItem) =>
                                 headerItem.isIcon ? (

@@ -5,8 +5,8 @@ export default class TriageAXEntity {
   static defaultValue(): TriageAXInterfaceWithoutVitals {
     return {
       mainComplaint: "",
-      LOCId: undefined,
-      triageTypeId: undefined,
+      LOCId: 0,
+      triageTypeId: 0,
       comorbidityIds: [],
       transferTo: "",
     };
@@ -18,11 +18,11 @@ export default class TriageAXEntity {
 
       transferTo: Yup.string().required("نقل إلى مطلوب"),
 
-      comorbidities: Yup.string().required("الأمراض المصاحبة مطلوبة"),
+      comorbidities: Yup.array(),
 
-      triage: Yup.string().required("الفرز مطلوب"),
+      triage: Yup.string(),
 
-      consciousnessLevel: Yup.string().required("مستوى الوعي مطلوب"),
+      consciousnessLevel: Yup.string(),
     });
   }
 }
