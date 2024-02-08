@@ -89,7 +89,7 @@ export class VisitService {
             }
           }
         ],
-        include: { patient: { include: { person: true } }, transfers: true },
+        include: { patient: { include: { person: { include: { verificationMethod: true, gender: true } } } }, transfers: true },
         sort: { direction: 'desc', property: 'createdAt' }
 
       });
@@ -100,6 +100,8 @@ export class VisitService {
 
   async addTriageAX(code: string, data: TriageAXDto) {
     try {
+      console.log(data);
+
       return await this.visitRepo.addTriageAss(code, data)
     } catch (error) {
       throw error

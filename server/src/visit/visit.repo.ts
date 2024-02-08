@@ -5,6 +5,7 @@ import {
   Attendant,
   Companion,
   Patient,
+  Person,
   PersonType,
   Prisma,
   Visit,
@@ -126,11 +127,13 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
           }
           // ======================================== Patient =========================================================
           let patient: Patient;
+          let person: Person;
           let patientConnect: Prisma.PatientWhereUniqueInput;
-          if (!createVisitDto.patient?.SSN) {
-            createVisitDto.patient.SSN = null;
+          if (createVisitDto.patient?.SSN) {
+            person = await this.personRepo.findBySSN(createVisitDto.patient.SSN)
           }
-          const person = await this.personRepo.findBySSN(createVisitDto.patient.SSN)
+
+          console.log(person);
           if (person?.type !== PersonType.PATIENT) {
             const { verificationMethodId, genderId, ...personalData } = createVisitDto.patient
             patient = await tx.patient.create({

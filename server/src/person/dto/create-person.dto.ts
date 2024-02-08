@@ -50,16 +50,16 @@ export class CreatePersonDto {
   SSN: string;
 
   @ApiProperty({
-    type: String,
-    example: 'NATIONALIDCARD',
+    type: Number,
+    example: '1',
   })
   @IsOptional()
   @IsInt()
   verificationMethodId: number;
 
   @ApiProperty({
-    type: String,
-    example: 'MALE',
+    type: Number,
+    example: '1',
   })
   @IsNotEmpty()
   @IsInt()
