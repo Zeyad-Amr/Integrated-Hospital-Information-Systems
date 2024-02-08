@@ -4,9 +4,9 @@ export interface TriageAXInterface {
   mainComplaint: string;
   LOCId?: number;
   triageTypeId?: number;
-  comorbidityIds: number[];
+  comorbidityIds?: number[];
   transferTo: string;
   vitals?: VitalsInterface;
 }
-export interface TriageAXInterfaceWithoutVitals extends Omit<TriageAXInterface,'vitals'> {
+export interface TriageAXInterfaceWithoutVitals extends Omit<TriageAXInterface, 'vitals'> {
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Formik } from "formik";
 import { Box, Button, Grid } from "@mui/material";
 import CustomTextField from "./CustomTextField";
@@ -8,34 +8,16 @@ import VitalsInterface from "@/modules/er-area/domain/interfaces/vitals-interfac
 interface VitalsDataPropsI {
   initialValues: VitalsInterface;
   onSubmit: (values: VitalsInterface) => void;
-  isSubmitted: boolean;
+  refSubmitButton: React.MutableRefObject<null>;
   isResetForm?: boolean;
 }
 
 const VitalsData = ({
   initialValues,
   onSubmit,
-  isSubmitted,
+  refSubmitButton,
   isResetForm,
 }: VitalsDataPropsI) => {
-  const refSubmitButton: any = useRef(null);
-  const checkFirstRender = useRef(true);
-  const checkFirstRender2 = useRef(true);
-  useEffect(() => {
-    if (checkFirstRender.current) {
-      checkFirstRender.current = false;
-    } else {
-      if (checkFirstRender2.current) {
-        checkFirstRender2.current = false;
-      } else {
-        if (refSubmitButton.current) {
-          refSubmitButton.current.click();
-        }
-      }
-    }
-  }, [isSubmitted]);
-
-
   return (
     <Formik
       enableReinitialize

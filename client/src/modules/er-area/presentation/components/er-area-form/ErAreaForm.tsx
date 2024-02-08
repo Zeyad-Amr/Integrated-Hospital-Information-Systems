@@ -15,7 +15,7 @@ import { Box, Button, Grid } from "@mui/material";
 import { Formik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import { createTriagAX } from "../../controllers/thunks/triagAX-thunk";
-import TriageAXModel from "@/modules/er-area/data/models/triageAX-model";
+import { TriageAXInterface } from "@/modules/er-area/domain/interfaces/triageAX-interface";
 
 interface IErAreaFormProps {
   openDialog: boolean;
@@ -24,70 +24,54 @@ interface IErAreaFormProps {
 }
 
 const ErAreaForm = ({ openDialog, setOpenDialog, patientData }: IErAreaFormProps) => {
-  const [submitVitalsFlag, setSubmitVitalsFlag] = useState(false);
   const [expandVitalsAccordion, setExpandVitalsAccordion] = useState(true);
   const [expandRestFormAccordion, setExpandRestFormAccordion] = useState(true);
-  const [combinedValues, setCombinedValues] = useState<any>({});
-  const refSubmitFirstStepButton: any = useRef(null);
-  const refRestFormData: any = useRef(null);
-  const checkFirstRender = useRef(true);
+  const refSubmitTriage: any = useRef(null);
 
   const dispatch = useAppDispatch();
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
 
+  //* buttons useRef
+  const refSubmitVitals: any = useRef(null);
 
-  const handleSubmitVitalsData = (data: VitalsInterface) => {
-    setCombinedValues((preValues: any) => ({
-      ...preValues,
-      mainComplaint: refRestFormData.current.complaint,
-      LOCId: refRestFormData.current.consciousnessLevel,
-      triageTypeId: refRestFormData.current.triage,
-      comorbidityIds: refRestFormData.current.comorbidities,
-      transferTo: refRestFormData.current.transferTo,
-      vitals: {
-        CVP: data.CVP,
-        GCS: data.GCS,
-        painScore: data.painScore,
-        PR: data.pulseRate,
-        RR: data.respiratoryRate,
-        SpO2: data.SPO2,
-        temp: data.temperature,
-        SBP: data.systolicPressure,
-        DBP: data.diastolicPressure,
-      },
-    }));
+  //* Form data refrence
+  const triageData = useRef<TriageAXInterface>()
+  const vitalsData = useRef<VitalsInterface>()
+
+  const handleSubmitTriageData = (values: TriageAXInterface) => {
+    triageData.current = values
+  }
+
+  const handleSubmitVitalsData = (values: VitalsInterface) => {
+    vitalsData.current = values
   };
 
-  const onRestFormSubmit = (values: any) => {
-    console.log(values);
-
-    refRestFormData.current = values;
-    setSubmitVitalsFlag(!submitVitalsFlag);
-  };
-
-  const onTriggerAllForm = () => {
-    console.log(refSubmitFirstStepButton.current);
-
-    if (refSubmitFirstStepButton.current) {
-      refSubmitFirstStepButton.current.click();
+  const handleSubmitAllForms = () => {
+    if (refSubmitTriage.current) {
+      refSubmitTriage.current.click();
     }
-  };
+    if (refSubmitVitals.current) {
+      refSubmitVitals.current.click();
+    }
+  }
 
   useEffect(() => {
-    console.log(checkFirstRender.current);
-
-    if (checkFirstRender.current) {
-      checkFirstRender.current = false;
-      console.log(checkFirstRender.current);
-    } else {
-      console.log(combinedValues);
+    if (triageData.current && vitalsData.current) {
       dispatch(
-        createTriagAX(TriageAXModel.toJson(combinedValues))
-      )
+        createTriagAX({
+          assessment: {
+            ...triageData.current,
+            vitals: vitalsData.current
+          },
+          visitCode: patientData.id
+        })
+      ).then(() => {
+        setOpenDialog(false);
+      })
     }
-  }, [combinedValues]);
+  }, [triageData.current, vitalsData.current]);
 
   return (
     <div>
@@ -132,11 +116,10 @@ const ErAreaForm = ({ openDialog, setOpenDialog, patientData }: IErAreaFormProps
             title="الفرز"
           >
             <Formik
-              enableReinitialize
               initialValues={TriageAXEntity.defaultValue()}
               validationSchema={TriageAXEntity.getSchema()}
               onSubmit={(values) => {
-                onRestFormSubmit(values);
+                handleSubmitTriageData(values);
               }}
             >
               {({
@@ -160,7 +143,6 @@ const ErAreaForm = ({ openDialog, setOpenDialog, patientData }: IErAreaFormProps
                         error={errors.mainComplaint}
                         touched={touched.mainComplaint}
                         width="100%"
-                        multiline
                         props={{
                           type: "text",
                         }}
@@ -226,7 +208,7 @@ const ErAreaForm = ({ openDialog, setOpenDialog, patientData }: IErAreaFormProps
                   <Button
                     type="submit"
                     sx={{ display: "none" }}
-                    ref={refSubmitFirstStepButton}
+                    ref={refSubmitTriage}
                   ></Button>
                 </Box>
               )}
@@ -242,14 +224,14 @@ const ErAreaForm = ({ openDialog, setOpenDialog, patientData }: IErAreaFormProps
             <VitalsData
               initialValues={VitalsEntity.defaultValue()}
               onSubmit={handleSubmitVitalsData}
-              isSubmitted={submitVitalsFlag}
+              refSubmitButton={refSubmitVitals}
             />
           </CustomAccordion>
           <PrimaryButton
             title="تأكيــد"
             sx={{ marginTop: "3rem" }}
             type="button"
-            onClick={() => onTriggerAllForm()}
+            onClick={() => handleSubmitAllForms()}
           />
         </Box>
       </CustomFullScreenDialog>

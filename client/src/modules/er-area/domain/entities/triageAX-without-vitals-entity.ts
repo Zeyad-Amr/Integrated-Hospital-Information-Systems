@@ -14,7 +14,7 @@ export default class TriageAXEntity {
 
   static getSchema(): Yup.ObjectSchema<any> {
     return Yup.object({
-      complaint: Yup.string().required("الشكوى مطلوبة"),
+      mainComplaint: Yup.string().required("الشكوى مطلوبة"),
 
       transferTo: Yup.string().required("نقل إلى مطلوب"),
 
