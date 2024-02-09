@@ -68,6 +68,9 @@ const ErAreaForm = ({ openDialog, setOpenDialog, patientData }: IErAreaFormProps
           visitCode: patientData.id
         })
       ).then(() => {
+        // reset data
+        triageData.current = undefined
+        vitalsData.current = undefined
         setOpenDialog(false);
       })
     }
