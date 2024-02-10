@@ -163,17 +163,9 @@ class NationalID:
             nationalId += str(predicted_class)
 
         return nationalId
-
-
-
-
-
-
-
-
-
-
-
+    
 if __name__ == '__main__':
+    print("Starting server...")
     nationalIdObj = NationalID()
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
+
