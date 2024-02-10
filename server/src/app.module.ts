@@ -10,6 +10,12 @@ import { AuthGuard } from './auth/auth.guard';
 import { DepartmentModule } from './department/department.module';
 import { StreamingModule } from './streaming/streaming.module';
 import { EnumsModule } from './enums/enums.module';
+import { SubdepartmentModule } from './subdepartment/subdepartment.module';
+import { SpecializationModule } from './specialization/specialization.module';
+import { RoomModule } from './room/room.module';
+import { FeatureModule } from './feature/feature.module';
+import { PermissionModule } from './permission/permission.module';
+import { RoleModule } from './role/role.module';
 
 @Module({
   imports: [
@@ -23,6 +29,12 @@ import { EnumsModule } from './enums/enums.module';
     DepartmentModule,
     StreamingModule,
     EnumsModule,
+    SubdepartmentModule,
+    SpecializationModule,
+    RoomModule,
+    FeatureModule,
+    PermissionModule,
+    RoleModule,
   ],
   controllers: [],
   providers: [
@@ -32,4 +44,4 @@ import { EnumsModule } from './enums/enums.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
