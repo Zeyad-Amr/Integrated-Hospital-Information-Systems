@@ -25,38 +25,35 @@ def ConvertBase64ToImage(bs64_data):
 @app.route('/extractdata', methods=['POST'])
 def extract_id():
 
-    try:
-
-        front = request.json.get('front')
-        back = request.json.get('back')
-        if front == "" or back == "":
-            return make_response(jsonify({"message": "Some data is missing in the request"}), 400)
-
-        statusCode = 200
 
 
-        frontImg = ConvertBase64ToImage(front)
-        backImg = ConvertBase64ToImage(back)
+    front = request.json.get('front')
+    back = request.json.get('back')
+    if front == "" or back == "":
+        return make_response(jsonify({"message": "Some data is missing in the request"}), 400)
 
-        firstName, lastName, error = nationalIdObj.extract_name(frontImg)
-        nameObj = {"firstName": firstName, "lastName": lastName, "error": error}
-        
-        if error != "":
-            statusCode = 420
-        
-        nationalId, error = nationalIdObj.extract_id(frontImg, backImg)
-        
-        if error == "failed to detect national id":
-            statusCode = 421
-        elif error == "check national id":
-            statusCode = 422
+    statusCode = 200
 
-        idObj = {"nationalId": nationalId, "error": error}
-        return make_response(jsonify({"name": nameObj, "nationalId": idObj}), statusCode)            
 
-    except Exception as e:
-        print(e)
-        return make_response({"message":"internal server error"}, 500)
+    frontImg = ConvertBase64ToImage(front)
+    backImg = ConvertBase64ToImage(back)
+
+    firstName, lastName, error = nationalIdObj.extract_name(frontImg)
+    nameObj = {"firstName": firstName, "lastName": lastName, "error": error}
+    
+    if error != "":
+        statusCode = 420
+    
+    nationalId, error = nationalIdObj.extract_id(frontImg, backImg)
+    
+    if error == "failed to detect national id":
+        statusCode = 421
+    elif error == "check national id":
+        statusCode = 422
+
+    idObj = {"nationalId": nationalId, "error": error}
+    return make_response(jsonify({"name": nameObj, "nationalId": idObj}), statusCode)            
+
 
 
 
