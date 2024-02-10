@@ -2,12 +2,14 @@ import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
 
 export interface DataItem {
+  id: any;
   sequenceNumber: string;
   name: string;
-  code: string;
   date: string;
   time: string;
-  update?: any;
+  watingTime: any;
+  age?: any;
+  gender?: string;
 }
 
 export const data = [
@@ -56,7 +58,7 @@ export const header: HeaderItem[] = [
     tableCellProps: { align: "center" },
   },
   {
-    id: "code",
+    id: "id",
     label: "رقم المريض",
     minWidth: 50,
     tableCellProps: { align: "center" },
@@ -80,11 +82,12 @@ export const header: HeaderItem[] = [
     tableCellProps: { align: "center", style: { direction: "ltr" } },
   },
   {
-    id: "update",
-    label: "",
+    id: "watingTime",
+    label: `وقت الانتظار (hh:mm)`,
     minWidth: 100,
     tableCellProps: { align: "center" },
   },
+
 
 
 ];

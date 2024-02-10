@@ -90,7 +90,7 @@ export default function CustomAccordion({
         </AccordionSummary>
 
         <AccordionDetails>
-          <Typography>{children}</Typography>
+          {children}
         </AccordionDetails>
       </Accordion>
     </>
