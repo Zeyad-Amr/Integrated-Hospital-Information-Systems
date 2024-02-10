@@ -5,6 +5,8 @@ from tensorflow.keras.preprocessing import image
 import numpy as np
 import cv2
 import os 
+import base64
+
 
 from pytesseract import image_to_string
 
@@ -14,49 +16,43 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'IDs'
 
 
+def ConvertBase64ToImage(bs64_data):
+    decoded_img_data = base64.b64decode(bs64_data)
+    nparr = np.frombuffer(decoded_img_data, np.uint8)
+    image_matrix = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    return image_matrix
 
 @app.route('/extractdata', methods=['POST'])
 def extract_id():
 
     try:
-        if 'front' not in request.files or 'back' not in request.files:
+
+        front = request.json.get('front')
+        back = request.json.get('back')
+        if front == "" or back == "":
             return make_response(jsonify({"message": "Some data is missing in the request"}), 400)
 
-        front = request.files['front']
-        back = request.files['back']
+        statusCode = 200
 
-        if front.filename == '' or back.filename == '':
-            return make_response(jsonify({"message": "One or more files are empty"}), 400)
 
-        if front and allowed_file(front.filename) and back and allowed_file(back.filename):
-            statusCode = 200
-            front_filename = secure_filename("front.jpeg")
-            back_filename = secure_filename("back.jpeg")
-            front_path = os.path.join(app.config['UPLOAD_FOLDER'], front_filename)
-            back_path = os.path.join(app.config['UPLOAD_FOLDER'], back_filename)
+        frontImg = ConvertBase64ToImage(front)
+        backImg = ConvertBase64ToImage(back)
 
-            front.save(front_path)
-            back.save(back_path)
-            frontImg = cv2.imread(front_path)
-            backImg = cv2.imread(back_path)
+        firstName, lastName, error = nationalIdObj.extract_name(frontImg)
+        nameObj = {"firstName": firstName, "lastName": lastName, "error": error}
+        
+        if error != "":
+            statusCode = 420
+        
+        nationalId, error = nationalIdObj.extract_id(frontImg, backImg)
+        
+        if error == "failed to detect national id":
+            statusCode = 421
+        elif error == "check national id":
+            statusCode = 422
 
-            firstName, lastName, error = nationalIdObj.extract_name(frontImg)
-            nameObj = {"firstName": firstName, "lastName": lastName, "error": error}
-            
-            if error != "":
-                statusCode = 420
-            
-            nationalId, error = nationalIdObj.extract_id(frontImg, backImg)
-            
-            if error == "failed to detect national id":
-                statusCode = 421
-            elif error == "check national id":
-                statusCode = 422
-
-            idObj = {"nationalId": nationalId, "error": error}
-            return make_response(jsonify({"name": nameObj, "nationalId": idObj}), statusCode)            
-
-        return make_response(jsonify({"message": "Invalid file format"}), 400)
+        idObj = {"nationalId": nationalId, "error": error}
+        return make_response(jsonify({"name": nameObj, "nationalId": idObj}), statusCode)            
 
     except Exception as e:
         print(e)
@@ -68,13 +64,6 @@ def extract_id():
 
 
 
-
-
-
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 class NationalID:
 
@@ -174,6 +163,7 @@ class NationalID:
             nationalId += str(predicted_class)
 
         return nationalId
+
 
 
 
