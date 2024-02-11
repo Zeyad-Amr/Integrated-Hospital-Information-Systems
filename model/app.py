@@ -164,5 +164,5 @@ class NationalID:
 if __name__ == '__main__':
     print("Starting server...")
     nationalIdObj = NationalID()
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0:1929', debug=True)
 
