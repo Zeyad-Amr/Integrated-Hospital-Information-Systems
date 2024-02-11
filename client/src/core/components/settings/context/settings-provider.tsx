@@ -18,6 +18,13 @@ type SettingsProviderProps = {
   defaultSettings: SettingsValueProps;
 };
 
+// themeMode: "light", // 'light' | 'dark'
+// themeDirection: "rtl", //  'rtl' | 'ltr'
+// themeContrast: "default", // 'default' | 'bold'
+// themeLayout: "vertical", // 'vertical' | 'horizontal' | 'mini'
+// themeColorPresets: "default", // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
+// themeStretch: false,
+
 export function SettingsProvider({
   children,
   defaultSettings,
