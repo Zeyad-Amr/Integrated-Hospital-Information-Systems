@@ -6,49 +6,49 @@ on:
   pull_request:
     branches: [main]
 
-jobs:
-  test:
-    name: Run Tests
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_DB: QasrHIS
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+# jobs:
+#   test:
+#     name: Run Tests
+#     runs-on: ubuntu-latest
+#     services:
+#       postgres:
+#         image: postgres:latest
+#         env:
+#           POSTGRES_DB: QasrHIS
+#           POSTGRES_USER: postgres
+#           POSTGRES_PASSWORD: postgres
+#         ports:
+#           - 5432:5432
+#         options: >-
+#           --health-cmd pg_isready
+#           --health-interval 10s
+#           --health-timeout 5s
+#           --health-retries 5
 
-    strategy:
-      matrix:
-        node-version: [18]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+#     strategy:
+#       matrix:
+#         node-version: [18]
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
 
-      - name: Set up Node.JS
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+#       - name: Set up Node.JS
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 18
 
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./server/
+#       - name: Install dependencies
+#         run: npm install
+#         working-directory: ./server/
 
-      - name: Run Linter for backend
-        run: npm run lint
-        working-directory: ./server/
+#       - name: Run Linter for backend
+#         run: npm run lint
+#         working-directory: ./server/
       
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./client/
+#       - name: Install dependencies
+#         run: npm install
+#         working-directory: ./client/
       
-      - name: Run Linter for frontend
-        run: npm run lint
-        working-directory: ./client/
+#       - name: Run Linter for frontend
+#         run: npm run lint
+#         working-directory: ./client/

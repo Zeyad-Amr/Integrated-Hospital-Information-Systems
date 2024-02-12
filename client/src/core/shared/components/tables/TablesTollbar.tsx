@@ -1,20 +1,28 @@
-import { InputAdornment, InputBase, MenuItem, Typography } from "@mui/material";
+import {
+  FormControl,
+  InputAdornment,
+  InputBase,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import FilterListRoundedIcon from "@mui/icons-material/FilterListRounded";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import InputLabel from "@mui/material/InputLabel";
 
 interface FIlterTableProps {
-  columnHeader: string;
+  columnHeader: [];
   data: [];
   setFilterdData: any;
   setSearchValue: Function;
 }
 
 const TablesTollbar = ({
-  //   columnHeader,
+  columnHeader,
   data,
   setFilterdData,
   setSearchValue,
@@ -80,12 +88,14 @@ const TablesTollbar = ({
     );
   };
 
-
-
   const [checked, setChecked] = React.useState([true, false, false]);
   const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value)
-    setChecked([event.target.checked, event.target.checked, event.target.checked]);
+    console.log(event.target.value);
+    setChecked([
+      event.target.checked,
+      event.target.checked,
+      event.target.checked,
+    ]);
   };
 
   const handleChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,9 +105,24 @@ const TablesTollbar = ({
   const handleChange3 = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked([checked[0], event.target.checked, checked[2]]);
   };
-  
+
   const handleChange4 = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked([checked[0], checked[1], event.target.checked]);
+  };
+
+  const SearchOptions: string[] = [];
+  const handleSearchOptions = () => {
+    columnHeader.map((item: any) => {
+      SearchOptions.push(item.id);
+    });
+    return SearchOptions;
+  };
+
+  console.log(handleSearchOptions());
+  const [searchOn, setSearchOn] = React.useState("");
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setSearchOn(event.target.value as string);
   };
   return (
     <Box
@@ -107,9 +132,10 @@ const TablesTollbar = ({
         padding: "0.5rem 2rem",
         display: "flex",
         justifyContent: "space-between",
+        alignItems: "center",
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
         <InputAdornment position="start">
           <SearchRoundedIcon
             sx={{ cursor: "pointer" }}
@@ -118,6 +144,29 @@ const TablesTollbar = ({
             }
           />
         </InputAdornment>
+        <FormControl sx={{ width: "12rem" }} size="small">
+          {/* <InputLabel id="demo-simple-select-label">بحـــث عن</InputLabel> */}
+          <Select
+            displayEmpty
+            value={searchOn}
+            onChange={handleChange}
+            // input={<OutlinedInput />}
+            renderValue={(selected) => {
+              if (selected.length === 0) {
+                return <em>بحـــث عن</em>;
+              }
+
+              return selected;
+            }}
+            sx={{boxShadow: 'none', '.MuiOutlinedInput-notchedOutline': { border: 0, borderRight:'1px solid #00000030', borderRadius:'0' } }}
+          >
+            {SearchOptions.map((option: string, idx: number) => (
+              <MenuItem value={option} key={idx}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <InputBase
           id="table-search-field"
           sx={{ ml: 1, flex: 1 }}
@@ -162,7 +211,11 @@ const TablesTollbar = ({
             control={
               <Checkbox
                 checked={checked[0] && checked[1] && checked[1]}
-                indeterminate={checked[0] !== checked[1] || checked[0] !== checked[2] || checked[1] !== checked[2]}
+                indeterminate={
+                  checked[0] !== checked[1] ||
+                  checked[0] !== checked[2] ||
+                  checked[1] !== checked[2]
+                }
                 onChange={handleChange1}
               />
             }
@@ -238,7 +291,6 @@ const TablesTollbar = ({
               }
             />
           </Box> */}
-
         </Box>
       </Box>
     </Box>
