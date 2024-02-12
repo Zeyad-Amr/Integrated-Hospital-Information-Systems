@@ -32,8 +32,7 @@ const CustomTextField = ({
   isRequired = false,
   width,
   multiline,
-  rows
-  
+  rows,
 }: CustomTextFieldProps) => {
   const textfieldProps = {
     FormHelperTextProps: { sx: { color: "red" } },
@@ -61,7 +60,7 @@ const CustomTextField = ({
         sx={{ width: { width }, maxWidth: "100%" }}
       >
         <TextField
-          multiline={multiline?true:false}
+          multiline={multiline ? true : false}
           rows={rows}
           sx={{
             width: width,
@@ -76,17 +75,15 @@ const CustomTextField = ({
           name={name}
           value={value}
           hiddenLabel={hideLabel}
-          // helperText={error && touched ? error : ""}
+          helperText={error && touched ? error : ""}
           error={!!(error && touched)}
           {...(!hideLabel && textfieldProps)}
           {...props}
           inputProps={{ maxLength: maxLength }}
-
         />
         <FormHelperText
           sx={{
             color: "#FF5630",
-            fontSize: "12px",
           }}
         >
           {error && touched ? error : ""}
