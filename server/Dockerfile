@@ -1,9 +1,9 @@
-FROM node:18
+FROM node:18  
 WORKDIR /qasr
 
 COPY package*.json ./
 
-RUN npm install --production
+RUN npm install
 
 COPY prisma ./prisma/
 
