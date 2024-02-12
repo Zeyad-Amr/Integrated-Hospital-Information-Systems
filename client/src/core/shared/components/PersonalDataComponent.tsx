@@ -15,19 +15,24 @@ import {
 } from "../modules/lookups/domain/interfaces/lookups-interface";
 import { LookupsState } from "../modules/lookups/presentation/controllers/types";
 import { useAppSelector } from "@/core/state/store";
+import { Yup } from "../utils/validation";
 
 interface PersonalDataProps {
   initialValues: PersonInterface;
   onSubmit: (values: PersonInterface) => void;
   refSubmitButton: React.MutableRefObject<null>;
+  validationSchema?: Yup.ObjectSchema<any>
   isResetForm?: boolean;
+  validateOnMount?: boolean;
 }
 
 const PersonalDataComponent = ({
   initialValues,
+  validationSchema,
   onSubmit,
   refSubmitButton,
   isResetForm = false,
+  validateOnMount = false,
 }: PersonalDataProps) => {
 
   const lookupsState: LookupsState = useAppSelector(
@@ -35,21 +40,21 @@ const PersonalDataComponent = ({
   );
   const fileInputRef = useRef<any>();
   const selectFile = () => {
-    fileInputRef.current?  fileInputRef.current.click(): null;
+    fileInputRef.current ? fileInputRef.current.click() : null;
   };
 
   return (
     <Formik
       enableReinitialize
       initialValues={initialValues}
-      validationSchema={PersonEntity.getSchema()}
+      validationSchema={validationSchema ?? PersonEntity.getSchema()}
       onSubmit={(values, { resetForm }) => {
         onSubmit(values);
-        console.log("onSubmit Person:", values);
         if (isResetForm) {
           resetForm();
         }
       }}
+      validateOnMount={validateOnMount}
     >
       {({
         values,

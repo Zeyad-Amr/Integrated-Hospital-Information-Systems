@@ -39,7 +39,7 @@ export class CarNumber {
 
 export class Attendant {
   @ApiProperty({ type: String, example: 'Ahmed' })
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   name: string;
 
@@ -54,7 +54,7 @@ export class Attendant {
   SSN;
 
   @ApiProperty({ type: Number, example: '1' })
-  @IsOptional()
+  @IsNotEmpty()
   @IsInt()
   roleId: number;
 }
