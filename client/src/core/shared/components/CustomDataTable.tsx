@@ -134,7 +134,7 @@ const CustomDataTable = <T,>({
       }}
     >
       <TablesTollbar
-        // columnHeader={item.id}
+        columnHeader={renderItem}
         setFilterdData={setFilterddData}
         data={data}
         setSearchValue={setSearchValue}

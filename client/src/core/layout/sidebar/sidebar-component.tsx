@@ -12,13 +12,18 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { MenuIcon, CloseIcon } from "@/assets/icons/index";
 const SidebarComponent = () => {
   const { collapsed, onCollapse } = useContext(SidebarContext);
+  const handleSideBarHover = () => {
+    // onCollapse()
 
+  }
   return (
     <Box
       sx={{
         width: "100%",
         height: "100%",
       }}
+      onMouseEnter={() => handleSideBarHover()}
+
     >
       <Box
         sx={{
