@@ -1,16 +1,16 @@
-import { alpha, Theme } from '@mui/material/styles';
-import { inputBaseClasses } from '@mui/material/InputBase';
-import { inputLabelClasses } from '@mui/material/InputLabel';
-import { filledInputClasses } from '@mui/material/FilledInput';
-import { outlinedInputClasses } from '@mui/material/OutlinedInput';
+import { alpha, Theme } from "@mui/material/styles";
+import { inputBaseClasses } from "@mui/material/InputBase";
+import { inputLabelClasses } from "@mui/material/InputLabel";
+import { filledInputClasses } from "@mui/material/FilledInput";
+import { outlinedInputClasses } from "@mui/material/OutlinedInput";
 
 // ----------------------------------------------------------------------
 
 export function textField(theme: Theme) {
   const color = {
     focused: theme.palette.text.primary,
-    active: theme.palette.text.secondary,
-    placeholder: theme.palette.text.disabled,
+    active: theme.palette.text.primary,
+    placeholder: theme.palette.text.primary,
   };
 
   const font = {
@@ -48,7 +48,7 @@ export function textField(theme: Theme) {
               color: theme.palette.text.disabled,
             },
             [`&.${inputLabelClasses.filled}`]: {
-              transform: 'translate(12px, 6px) scale(0.75)',
+              transform: "translate(12px, 6px) scale(0.75)",
             },
           },
         },
@@ -60,14 +60,14 @@ export function textField(theme: Theme) {
       styleOverrides: {
         root: {
           [`&.${inputBaseClasses.disabled}`]: {
-            '& svg': {
+            "& svg": {
               color: theme.palette.text.disabled,
             },
           },
         },
         input: {
           ...font.value,
-          '&::placeholder': {
+          "&::placeholder": {
             opacity: 1,
             color: color.placeholder,
           },
@@ -79,10 +79,10 @@ export function textField(theme: Theme) {
     MuiInput: {
       styleOverrides: {
         underline: {
-          '&:before': {
+          "&:before": {
             borderBottomColor: alpha(theme.palette.grey[500], 0.32),
           },
-          '&:after': {
+          "&:after": {
             borderBottomColor: color.focused,
           },
         },
@@ -110,8 +110,8 @@ export function textField(theme: Theme) {
           },
         },
         notchedOutline: {
-          borderColor: alpha(theme.palette.grey[500], 0.2),
-          transition: theme.transitions.create(['border-color'], {
+          borderColor: alpha(theme.palette.grey[800], 0.6),
+          transition: theme.transitions.create(["border-color"], {
             duration: theme.transitions.duration.shortest,
           }),
         },
@@ -124,7 +124,7 @@ export function textField(theme: Theme) {
         root: {
           borderRadius: theme.shape.borderRadius,
           backgroundColor: alpha(theme.palette.grey[500], 0.08),
-          '&:hover': {
+          "&:hover": {
             backgroundColor: alpha(theme.palette.grey[500], 0.16),
           },
           [`&.${filledInputClasses.focused}`]: {
