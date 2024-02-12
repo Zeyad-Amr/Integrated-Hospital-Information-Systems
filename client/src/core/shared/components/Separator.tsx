@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import AppColors from "../theme/colors";
+import { colors as AppColors } from "@mui/material";
+
 const Separator = ({ text }: { text?: string }) => {
   return (
     <Box
@@ -30,7 +31,7 @@ const Separator = ({ text }: { text?: string }) => {
           height: "1px",
           width: "100%",
 
-          backgroundColor: AppColors.primary[100],
+          backgroundColor: AppColors.grey[300],
         }}
       />
     </Box>

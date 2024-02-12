@@ -1,4 +1,3 @@
-import { memo } from "react";
 import Box from "@mui/material/Box";
 import { IconProps, IconColorProps } from "../icon-props";
 import { useTheme } from "@mui/material/styles";
@@ -7,7 +6,7 @@ import { useTheme } from "@mui/material/styles";
 const NotificationIcon = (props: IconProps) => {
   const theme = useTheme();
 
-  const { primary, secondary }: IconProps = IconColorProps(props, theme);
+  const { primary }: IconProps = IconColorProps(props, theme);
 
   return (
     <Box

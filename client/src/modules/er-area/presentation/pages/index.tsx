@@ -1,7 +1,6 @@
-import PageHeader from '@/core/shared/components/headers/PageHeader'
-import { Box } from '@mui/system'
-import React from 'react'
-import ErAreaForm from '../components/er-area-form/ErAreaForm'
+import { Box } from "@mui/system";
+import React from "react";
+// import ErAreaForm from "../components/er-area-form/ErAreaForm";
 
 const ErAreaPage = () => {
   return (
@@ -14,9 +13,9 @@ const ErAreaPage = () => {
     >
       {/* <PageHeader title="التــريــاج">
       </PageHeader>  */}
-      <ErAreaForm/>
+      {/* <ErAreaForm/> */}
     </Box>
-  )
-}
+  );
+};
 
-export default ErAreaPage
+export default ErAreaPage;

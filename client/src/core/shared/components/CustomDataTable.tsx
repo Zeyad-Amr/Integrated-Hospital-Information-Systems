@@ -121,7 +121,7 @@ const CustomDataTable = <T,>({
       }
     }
   }, [searchValue]);
-////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////
   return (
     <TableContainer
       component={Paper}
@@ -136,8 +136,9 @@ const CustomDataTable = <T,>({
       <TablesTollbar
         // columnHeader={item.id}
         setFilterdData={setFilterddData}
-        data={data}
+        data={[]} // {data}
         setSearchValue={setSearchValue}
+        columnHeader={""}
       />
       <Table
       //  stickyHeader={stickyHeader} aria-label="sticky table"

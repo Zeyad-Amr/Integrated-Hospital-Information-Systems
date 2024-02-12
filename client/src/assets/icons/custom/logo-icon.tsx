@@ -7,7 +7,7 @@ import { useTheme } from "@mui/material/styles";
 const LogoIcon = (props: IconProps) => {
   const theme = useTheme();
 
-  const { primary, secondary }: IconProps = IconColorProps(props, theme);
+  const { primary }: IconProps = IconColorProps(props, theme);
 
   return (
     <Box

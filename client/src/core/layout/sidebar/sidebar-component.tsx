@@ -5,11 +5,9 @@ import SidebarSubmenuItem from "./menu/sidebar-submenu-item";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import ApartmentIcon from "@mui/icons-material/Apartment";
-import { Button } from "@mui/material";
 import { SidebarContext } from "./context/context";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { MenuIcon, CloseIcon } from "@/assets/icons/index";
 const SidebarComponent = () => {
   const { collapsed, onCollapse } = useContext(SidebarContext);
 
@@ -73,7 +71,10 @@ const SidebarComponent = () => {
         text="الإصابات الجماعية"
         path="/dashboard/incidents/"
       >
-        <SidebarSubmenuItem text="إضافة إصابة جماعية" path="/dashboard/incidents/add" />
+        <SidebarSubmenuItem
+          text="إضافة إصابة جماعية"
+          path="/dashboard/incidents/add"
+        />
         <SidebarSubmenuItem
           text="استكمال الإصابات الجماعية"
           path="/dashboard/incidents/all"
@@ -100,9 +101,7 @@ const SidebarComponent = () => {
         activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
         text="ER Area"
         path="/dashboard/er-area"
-      >
-
-      </SidebarMenuItem>
+      ></SidebarMenuItem>
     </Box>
   );
 };

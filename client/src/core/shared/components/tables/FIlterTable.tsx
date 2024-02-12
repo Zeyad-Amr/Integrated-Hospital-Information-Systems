@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import { Box } from "@mui/system";
 import { Input, InputAdornment, Typography } from "@mui/material";
@@ -45,7 +45,7 @@ const sortData = (data: [], header: string, type: string) => {
   return sortedData;
 };
 
-const handleSearch = (data: [], header: string, search: string) => {
+const handleSearch = (data: [], _header: string, search: string) => {
   return data.filter((obj) =>
     Object.values(obj).some(
       (value) => typeof value === "string" && value.includes(search)
@@ -57,8 +57,6 @@ const handleSearch = (data: [], header: string, search: string) => {
   // });
   // return found;
 };
-
-
 
 const FIlterTable = ({
   columnHeader,
@@ -155,3 +153,4 @@ const FIlterTable = ({
 };
 
 export default FIlterTable;
+export { handleColumnData, getUniqueColumnData, sortData, handleSearch };

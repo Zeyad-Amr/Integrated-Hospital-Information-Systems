@@ -1,6 +1,6 @@
-import { InputAdornment, InputBase, MenuItem, Typography } from "@mui/material";
+import { InputAdornment, InputBase } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import FilterListRoundedIcon from "@mui/icons-material/FilterListRounded";
 import Checkbox from "@mui/material/Checkbox";
@@ -80,12 +80,14 @@ const TablesTollbar = ({
     );
   };
 
-
-
   const [checked, setChecked] = React.useState([true, false, false]);
   const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value)
-    setChecked([event.target.checked, event.target.checked, event.target.checked]);
+    console.log(event.target.value);
+    setChecked([
+      event.target.checked,
+      event.target.checked,
+      event.target.checked,
+    ]);
   };
 
   const handleChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +97,7 @@ const TablesTollbar = ({
   const handleChange3 = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked([checked[0], event.target.checked, checked[2]]);
   };
-  
+
   const handleChange4 = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked([checked[0], checked[1], event.target.checked]);
   };
@@ -162,7 +164,11 @@ const TablesTollbar = ({
             control={
               <Checkbox
                 checked={checked[0] && checked[1] && checked[1]}
-                indeterminate={checked[0] !== checked[1] || checked[0] !== checked[2] || checked[1] !== checked[2]}
+                indeterminate={
+                  checked[0] !== checked[1] ||
+                  checked[0] !== checked[2] ||
+                  checked[1] !== checked[2]
+                }
                 onChange={handleChange1}
               />
             }
@@ -238,7 +244,6 @@ const TablesTollbar = ({
               }
             />
           </Box> */}
-
         </Box>
       </Box>
     </Box>

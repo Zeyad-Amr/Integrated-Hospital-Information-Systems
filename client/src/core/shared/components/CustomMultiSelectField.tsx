@@ -8,7 +8,6 @@ import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { FormikErrors, FormikTouched } from "formik";
-import { DeleteOutline, DeleteRounded } from "@mui/icons-material";
 
 // export interface MultiSelectFieldProps {
 //   onChange: (event: SelectChangeEvent<string[]>, child: ReactNode) => void;
@@ -28,7 +27,12 @@ export interface MultiSelectFieldProps<T> {
   onBlur: (event: React.FocusEvent<{ value: unknown }>) => void;
   name: string;
   label: string;
-  error: string | string[] | FormikErrors<any> | FormikErrors<any>[] | undefined;
+  error:
+    | string
+    | string[]
+    | FormikErrors<any>
+    | FormikErrors<any>[]
+    | undefined;
   touched: boolean | FormikTouched<any> | FormikTouched<any>[] | undefined;
   value: T[] | undefined;
   options: T[];
@@ -50,10 +54,9 @@ const CustomMultiSelectField = <T extends { id: any; value: string }>({
   width,
   hideLabel = true,
 }: MultiSelectFieldProps<T>) => {
-
   const selectedValues = Array.isArray(value) ? value : [];
 
-  // delete items from view 
+  // delete items from view
 
   // const handleDelete = (chipId: any, event: React.MouseEvent) => {
   //   event.stopPropagation();
@@ -76,7 +79,7 @@ const CustomMultiSelectField = <T extends { id: any; value: string }>({
       sx={{
         mb: 2,
         width: width,
-        maxWidth: "100%"
+        maxWidth: "100%",
       }}
     >
       {!hideLabel && (
@@ -114,7 +117,14 @@ const CustomMultiSelectField = <T extends { id: any; value: string }>({
           name={name}
           error={error && touched ? true : false}
           renderValue={(selected) => (
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5, color: "primary.dark" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 0.5,
+                color: "primary.dark",
+              }}
+            >
               {options
                 .filter((val) => selected.includes(val.id))
                 .map((item) => (
@@ -127,7 +137,7 @@ const CustomMultiSelectField = <T extends { id: any; value: string }>({
                         color: "#fff",
                       },
                       cursor: "pointer",
-                      backgroundColor: "primary.dark"
+                      backgroundColor: "primary.dark",
                     }}
                   />
                 ))}
@@ -155,9 +165,9 @@ const CustomMultiSelectField = <T extends { id: any; value: string }>({
                 color: "#232836",
                 transitionDuration: "0.5s ease",
                 margin: 1,
-                '&.Mui-selected': {
-                  backgroundColor: 'primary.dark',
-                  color: '#fff',
+                "&.Mui-selected": {
+                  backgroundColor: "primary.dark",
+                  color: "#fff",
                 },
               }}
             >

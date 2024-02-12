@@ -1,4 +1,5 @@
 const Endpoints = {
+    base: 'http://localhost:3000/api',
     user: {
         login: '/user/login',
         me: '/user/me',

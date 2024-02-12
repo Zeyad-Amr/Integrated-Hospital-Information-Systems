@@ -22,7 +22,7 @@ export interface TableColumn {
 const DataTable = ({
   rows,
   columns,
-  onClickRow,
+  // onClickRow,
 }: {
   rows: any;
   columns: readonly TableColumn[];
@@ -31,7 +31,7 @@ const DataTable = ({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 

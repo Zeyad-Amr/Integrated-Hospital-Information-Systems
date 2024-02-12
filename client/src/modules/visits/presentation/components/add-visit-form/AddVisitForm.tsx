@@ -1,6 +1,4 @@
-import PersonalData, {
-  PersonalDataValues,
-} from "@/core/shared/components/PersonalData";
+import PersonalData from "@/core/shared/components/PersonalData";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import SecondaryButton from "@/core/shared/components/btns/SecondaryButton";
 import { Button, Box, Typography } from "@mui/material";
@@ -21,7 +19,7 @@ const AddVisitForm = () => {
   const sequenceNumberValue: any = useRef("");
   const kinshipValue: any = useRef("");
   const patientData: any = useRef({});
-  const companionData: any = useRef({});
+  // const companionData: any = useRef({});
   const additionalData: any = useRef({});
   const checkFirstRender = useRef(true);
 
@@ -55,17 +53,17 @@ const AddVisitForm = () => {
         firstChar: "",
         secondChar: "",
         thirdChar: "",
-        number: null
+        number: null,
       },
       attendant: {
         name: "",
         SSN: "",
-        role: ""
-      }
-    }
+        role: "",
+      },
+    },
   });
   const [child, setChild] = useState<boolean>(false);
-  const sharedInitialValues: PersonalDataValues = {
+  const sharedInitialValues: any = {
     firstName: "",
     secondName: "",
     thirdName: "",
@@ -79,13 +77,13 @@ const AddVisitForm = () => {
     verificationMethod: "",
   };
 
-  const handlePatientSubmit = (values: PersonalDataValues) => {
+  const handlePatientSubmit = (values: any) => {
     if (addCompanionClicked) {
       setShowCompanionFlag(true);
       setPatientDataExpanded(false);
       setCompanionDataExpanded(true);
     } else {
-      setSubmitAdditionalDataFlag(!submitAdditionalDataFlag)
+      setSubmitAdditionalDataFlag(!submitAdditionalDataFlag);
     }
     patientData.current = values;
     //  else {
@@ -117,42 +115,41 @@ const AddVisitForm = () => {
     kinship: Yup.string().required("يجب اختيار درجة القرابة"),
   });
 
-  const handleRestCompanionSubmit = (values: { kinship: string }) => {
-    setSubmitAdditionalDataFlag(!submitAdditionalDataFlag)
+  const handleRestCompanionSubmit = (values: {
+    kinship: { id: string; value: string };
+  }) => {
+    setSubmitAdditionalDataFlag(!submitAdditionalDataFlag);
     setSubmitCompanionFlag(!submitCompanionFlag);
     kinshipValue.current = values.kinship;
   };
 
-  const handleCompanionSubmit = (values: PersonalDataValues) => {
-
-    setCombinedValues(
-      {
-        patient: patientData.current,
-        companion: values,
-        visit: {
-          sequenceNumber: sequenceNumberValue.current,
-          kinship: kinshipValue.current,
+  const handleCompanionSubmit = (values: any) => {
+    setCombinedValues({
+      patient: patientData.current,
+      companion: values,
+      visit: {
+        sequenceNumber: sequenceNumberValue.current,
+        kinship: kinshipValue.current,
+      },
+      additionalInfo: {
+        cameFrom: additionalData.current.comeFromString,
+        injuryLocation: additionalData.current.place,
+        injuryCause: additionalData.current.reason,
+        notes: additionalData.current.notes,
+        car: {
+          firstChar: additionalData.current.firstChar,
+          secondChar: additionalData.current.secondChar,
+          thirdChar: additionalData.current.thirdChar,
+          number: additionalData.current.carNum,
         },
-        additionalInfo: {
-          cameFrom: additionalData.current.comeFromString,
-          injuryLocation: additionalData.current.place,
-          injuryCause: additionalData.current.reason,
-          notes: additionalData.current.notes,
-          car: {
-            firstChar: additionalData.current.firstChar,
-            secondChar: additionalData.current.secondChar,
-            thirdChar: additionalData.current.thirdChar,
-            number: additionalData.current.carNum
-          },
-          attendant: {
-            name: additionalData.current.attendantName,
-            SSN: additionalData.current.attendantSSN,
-            id : additionalData.current.attendantSerialNumber,
-            role: ""
-          }
-        }
-      }
-    )
+        attendant: {
+          name: additionalData.current.attendantName,
+          SSN: additionalData.current.attendantSSN,
+          id: additionalData.current.attendantSerialNumber,
+          role: "",
+        },
+      },
+    });
 
     // setCombinedValues((prevValues: any) => ({
     //   ...prevValues,
@@ -173,7 +170,7 @@ const AddVisitForm = () => {
   // additional data
 
   const intialAdditionalValues: AdditionalDataValues = {
-    comeFromString: "",
+    comeFromString: { id: "", value: "" },
     attendantName: "",
     attendantSSN: "",
     attendantSerialNumber: "",
@@ -188,40 +185,36 @@ const AddVisitForm = () => {
 
   const handleAdditionalDataSubmit = (values: AdditionalDataValues) => {
     if (!addCompanionClicked) {
-      setCombinedValues(
-        {
-          patient: patientData.current,
-          companion: sharedInitialValues,
-          visit: {
-            sequenceNumber: sequenceNumberValue.current,
-            kinship: "",
+      setCombinedValues({
+        patient: patientData.current,
+        companion: sharedInitialValues,
+        visit: {
+          sequenceNumber: sequenceNumberValue.current,
+          kinship: "",
+        },
+        additionalInfo: {
+          cameFrom: values.comeFromString,
+          injuryLocation: values.place,
+          injuryCause: values.reason,
+          notes: values.notes,
+          car: {
+            firstChar: values.firstChar,
+            secondChar: values.secondChar,
+            thirdChar: values.thirdChar,
+            number: values.carNum,
           },
-          additionalInfo: {
-            cameFrom: values.comeFromString,
-            injuryLocation: values.place,
-            injuryCause: values.reason,
-            notes: values.notes,
-            car: {
-              firstChar: values.firstChar,
-              secondChar: values.secondChar,
-              thirdChar: values.thirdChar,
-              number: values.carNum
-            },
-            attendant: {
-              name: values.attendantName,
-              SSN: values.attendantSSN,
-              id : values.attendantSerialNumber,
-              role: ""
-            }
-          }
-        }
-      )
+          attendant: {
+            name: values.attendantName,
+            SSN: values.attendantSSN,
+            id: values.attendantSerialNumber,
+            role: "",
+          },
+        },
+      });
     } else {
-      additionalData.current = values
-      console.log('ana da5lt', additionalData.current);
-      
+      additionalData.current = values;
+      console.log("ana da5lt", additionalData.current);
     }
-    
   };
 
   // global methods
@@ -307,8 +300,8 @@ const AddVisitForm = () => {
                       padding: "0.6rem 0.7rem ",
                       width: "max-content",
                       cursor: "pointer",
-                      transition:'0.2s',
-                      userSelect:'none'
+                      transition: "0.2s",
+                      userSelect: "none",
                     }}
                     onClick={() => setChild(!child)}
                   >
@@ -346,7 +339,12 @@ const AddVisitForm = () => {
           {/* start rest companion form */}
           <Box>
             <Formik
-              initialValues={{ kinship: "" }}
+              initialValues={{
+                kinship: {
+                  id: "",
+                  value: "",
+                },
+              }}
               validationSchema={() => {
                 setCompanionDataExpanded(true);
                 return restCompanionFormSchema;
@@ -374,36 +372,38 @@ const AddVisitForm = () => {
                     error={errors.kinship}
                     touched={touched.kinship}
                     width="100%"
-                    options={[
-                      {
-                        id: "BROTHER",
-                        title: "أخ",
-                      },
-                      {
-                        id: "SISTER",
-                        title: "أخت",
-                      },
-                      {
-                        id: "FATHER",
-                        title: "أب",
-                      },
-                      {
-                        id: "MOTHER",
-                        title: "أم",
-                      },
-                      {
-                        id: "COUSIN",
-                        title: "ابن/ة عم - ابن/ة خال",
-                      },
-                      {
-                        id: "AUNT",
-                        title: "عمة / خالة",
-                      },
-                      {
-                        id: "OTHER",
-                        title: "آخر",
-                      },
-                    ]}
+                    options={
+                      [
+                        // {
+                        //   id: "BROTHER",
+                        //   title: "أخ",
+                        // },
+                        // {
+                        //   id: "SISTER",
+                        //   title: "أخت",
+                        // },
+                        // {
+                        //   id: "FATHER",
+                        //   title: "أب",
+                        // },
+                        // {
+                        //   id: "MOTHER",
+                        //   title: "أم",
+                        // },
+                        // {
+                        //   id: "COUSIN",
+                        //   title: "ابن/ة عم - ابن/ة خال",
+                        // },
+                        // {
+                        //   id: "AUNT",
+                        //   title: "عمة / خالة",
+                        // },
+                        // {
+                        //   id: "OTHER",
+                        //   title: "آخر",
+                        // },
+                      ]
+                    }
                   />
                   <Button
                     type="submit"

@@ -1,6 +1,4 @@
-import PersonalData, {
-  PersonalDataValues,
-} from "@/core/shared/components/PersonalData";
+import PersonalData from "@/core/shared/components/PersonalData"; // PersonalDataValues,
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import SecondaryButton from "@/core/shared/components/btns/SecondaryButton";
 import { Button, Box } from "@mui/material";
@@ -10,17 +8,18 @@ import React, { useEffect, useRef, useState } from "react";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import Dialog from "@/core/shared/components/Dialog";
+import PersonEntity from "@/modules/auth/domain/entities/person-entity";
 
 interface CompleteVisitProps {
   display: string;
   DialogStateController: React.Dispatch<React.SetStateAction<string>>;
-  id?:string
+  id?: string;
 }
 
 const CompleteVisit = ({
   display,
   DialogStateController,
-  id,
+  // id,
 }: CompleteVisitProps) => {
   // useRef
   const refSubmitFirstStepButton: any = useRef(null);
@@ -46,24 +45,24 @@ const CompleteVisit = ({
     },
   });
 
-  const sharedInitialValues = {
-    firstName: "",
-    secondName: "",
-    thirdName: "",
-    forthName: "",
-    email: "",
-    SSN: "",
-    phone: "",
-    id: "",
-    gender: "",
-    governate: "",
-    birthDate: null,
-    address: "",
-    verificationMethod: "",
-    search: "",
-  };
+  // const sharedInitialValues = {
+  //   firstName: "",
+  //   secondName: "",
+  //   thirdName: "",
+  //   forthName: "",
+  //   email: "",
+  //   SSN: "",
+  //   phone: "",
+  //   id: "",
+  //   gender: "",
+  //   governate: "",
+  //   birthDate: null,
+  //   address: "",
+  //   verificationMethod: "",
+  //   search: "",
+  // };
 
-  const handlePatientSubmit = (values: PersonalDataValues) => {
+  const handlePatientSubmit = (values: any) => {
     if (addCompanionClicked) {
       setShowCompanionFlag(true);
       patientData.current = values;
@@ -107,12 +106,14 @@ const CompleteVisit = ({
     kinship: Yup.string().required("يجب اختيار درجة القرابة"),
   });
 
-  const handleRestCompanionSubmit = (values: { kinship: string }) => {
+  const handleRestCompanionSubmit = (values: {
+    kinship: { id: string; value: string };
+  }) => {
     setSubmitCompanionFlag(!submitCompanionFlag);
     kinshipValue.current = values.kinship;
   };
 
-  const handleCompanionSubmit = (values: PersonalDataValues) => {
+  const handleCompanionSubmit = (values: any) => {
     console.log("totalSubmit", values);
     setCombinedValues((prevValues: any) => ({
       ...prevValues,
@@ -145,7 +146,14 @@ const CompleteVisit = ({
       title="استكمال بيانات زيارة"
     >
       {/* start rest patient form */}
-      <Box sx={{ width: "100%", overflowY: "scroll", padding: "2rem", height:'30rem' }}>
+      <Box
+        sx={{
+          width: "100%",
+          overflowY: "scroll",
+          padding: "2rem",
+          height: "30rem",
+        }}
+      >
         <Formik
           initialValues={{ sequenceNumber: "" }}
           validationSchema={restPatientFormSchema}
@@ -187,7 +195,7 @@ const CompleteVisit = ({
 
         {/* start patient form */}
         <PersonalData
-          initialValues={sharedInitialValues}
+          initialValues={PersonEntity.defaultValue()} // sharedInitialValues
           onSubmit={handlePatientSubmit}
           isSubmitted={submitPatientFlag}
         />
@@ -200,7 +208,12 @@ const CompleteVisit = ({
         {/* start rest companion form */}
         <Box sx={{ display: showCompanionFlag === true ? "block" : "none" }}>
           <Formik
-            initialValues={{ kinship: "" }}
+            initialValues={{
+              kinship: {
+                id: "",
+                value: "",
+              },
+            }}
             validationSchema={restCompanionFormSchema}
             onSubmit={(values) => {
               handleRestCompanionSubmit(values);
@@ -225,36 +238,38 @@ const CompleteVisit = ({
                   error={errors.kinship}
                   touched={touched.kinship}
                   width="100%"
-                  options={[
-                    {
-                      id: "BROTHER",
-                      title: "أخ",
-                    },
-                    {
-                      id: "SISTER",
-                      title: "أخت",
-                    },
-                    {
-                      id: "FATHER",
-                      title: "أب",
-                    },
-                    {
-                      id: "MOTHER",
-                      title: "أم",
-                    },
-                    {
-                      id: "COUSIN",
-                      title: "ابن/ة عم - ابن/ة خال",
-                    },
-                    {
-                      id: "AUNT",
-                      title: "عمة / خالة",
-                    },
-                    {
-                      id: "OTHER",
-                      title: "آخر",
-                    },
-                  ]}
+                  options={
+                    [
+                      // {
+                      //   id: "BROTHER",
+                      //   title: "أخ",
+                      // },
+                      // {
+                      //   id: "SISTER",
+                      //   title: "أخت",
+                      // },
+                      // {
+                      //   id: "FATHER",
+                      //   title: "أب",
+                      // },
+                      // {
+                      //   id: "MOTHER",
+                      //   title: "أم",
+                      // },
+                      // {
+                      //   id: "COUSIN",
+                      //   title: "ابن/ة عم - ابن/ة خال",
+                      // },
+                      // {
+                      //   id: "AUNT",
+                      //   title: "عمة / خالة",
+                      // },
+                      // {
+                      //   id: "OTHER",
+                      //   title: "آخر",
+                      // },
+                    ]
+                  }
                 />
                 <Button
                   type="submit"
@@ -267,7 +282,7 @@ const CompleteVisit = ({
 
           {/* start companion form */}
           <PersonalData
-            initialValues={sharedInitialValues}
+            initialValues={PersonEntity.defaultValue()} // sharedInitialValues
             onSubmit={handleCompanionSubmit}
             isSubmitted={submitCompanionFlag}
           />

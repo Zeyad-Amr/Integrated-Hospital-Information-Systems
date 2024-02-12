@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 const GetCompanions = ({
@@ -10,7 +10,6 @@ const GetCompanions = ({
   getIdx,
   submitted,
 }: any) => {
-
   const [select, setSelect] = useState<number>();
 
   return (

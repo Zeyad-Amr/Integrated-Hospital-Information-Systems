@@ -1,11 +1,9 @@
-import PageHeader from '@/core/shared/components/headers/PageHeader'
-import { Box } from '@mui/system'
-import React from 'react'
-import HealthAndSafetyOutlinedIcon from '@mui/icons-material/HealthAndSafetyOutlined';
-import AddVisitForm from '../components/add-visit-form/AddVisitForm';
+import { Box } from "@mui/system";
+import React from "react";
+import AddVisitForm from "../components/add-visit-form/AddVisitForm";
 
 const AddVisit = () => {
-    return (
+  return (
     <Box
       sx={{
         width: "90%",
@@ -16,9 +14,9 @@ const AddVisit = () => {
       {/* <PageHeader title="اضافـــــــة مريض">
         <HealthAndSafetyOutlinedIcon />
       </PageHeader> */}
-      <AddVisitForm/>
+      <AddVisitForm />
     </Box>
-  )}
+  );
+};
 
-
-export default AddVisit
+export default AddVisit;

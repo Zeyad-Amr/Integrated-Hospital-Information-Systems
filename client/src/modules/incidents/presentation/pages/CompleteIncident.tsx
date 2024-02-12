@@ -1,8 +1,7 @@
 import Dialog from "@/core/shared/components/Dialog";
-import PersonalData, {
-  PersonalDataValues,
-} from "@/core/shared/components/PersonalData";
+import PersonalData from "@/core/shared/components/PersonalData";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
+import PersonEntity from "@/modules/auth/domain/entities/person-entity";
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
@@ -46,7 +45,7 @@ const CompleteIncident = (props: any) => {
 
   const [submitFlag, setSubmitFlag] = useState<boolean>(false);
 
-  const handlePersonSubmission = (values: PersonalDataValues) => {
+  const handlePersonSubmission = (values: any) => {
     console.log(selectedId);
     console.log({
       id: selectedId,
@@ -54,10 +53,10 @@ const CompleteIncident = (props: any) => {
     });
   };
 
-  const [patients, setPatients] = useState<incidentData[]>([
+  const patients = [
     {
       id: "1",
-      visitCode:'256498',
+      visitCode: "256498",
       firstName: "احمد",
       secondName: "طلعت",
       thirdName: "محمد",
@@ -74,7 +73,7 @@ const CompleteIncident = (props: any) => {
     },
     {
       id: "2",
-      visitCode:'262584',
+      visitCode: "262584",
       firstName: "",
       secondName: "",
       thirdName: "",
@@ -91,7 +90,7 @@ const CompleteIncident = (props: any) => {
     },
     {
       id: "3",
-      visitCode:'221478',
+      visitCode: "221478",
       firstName: "نور",
       secondName: "فؤاد",
       thirdName: "",
@@ -108,7 +107,7 @@ const CompleteIncident = (props: any) => {
     },
     {
       id: "4",
-      visitCode:'595855',
+      visitCode: "595855",
       firstName: "",
       secondName: "",
       thirdName: "",
@@ -125,7 +124,7 @@ const CompleteIncident = (props: any) => {
     },
     {
       id: "5",
-      visitCode:'156498',
+      visitCode: "156498",
       firstName: "احمد",
       secondName: "مروان",
       thirdName: "محمد",
@@ -142,7 +141,7 @@ const CompleteIncident = (props: any) => {
     },
     {
       id: "6",
-      visitCode:'285724',
+      visitCode: "285724",
       firstName: "",
       secondName: "",
       thirdName: "",
@@ -159,7 +158,7 @@ const CompleteIncident = (props: any) => {
     },
     {
       id: "7",
-      visitCode:'215524',
+      visitCode: "215524",
       firstName: "هاني",
       secondName: "نسيم",
       thirdName: "",
@@ -174,7 +173,7 @@ const CompleteIncident = (props: any) => {
       verificationMethod: "",
       status: "notCompleted",
     },
-  ]);
+  ];
 
   const [selectedId, setSelectedId] = useState<string>("");
 
@@ -342,8 +341,14 @@ const CompleteIncident = (props: any) => {
                   marginRight: "1rem",
                 }}
               ></Box>
-              <Box sx={{display:'flex',flexDirection:'column', pointerEvents: "none" }}>
-                <Typography sx={{ fontWeight: '600'}}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  pointerEvents: "none",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600" }}>
                   {patient.firstName ? patient.firstName : "مريض"}&nbsp;
                   {patient.secondName ? patient.secondName : "جديد"}
                 </Typography>
@@ -354,7 +359,7 @@ const CompleteIncident = (props: any) => {
         </Box>
         <Box sx={{ width: "75%", overflow: "scroll", padding: "2rem" }}>
           <PersonalData
-            initialValues={intialValues}
+            initialValues={PersonEntity.defaultValue()} //intialValues
             onSubmit={handlePersonSubmission}
             isSubmitted={submitFlag}
           />

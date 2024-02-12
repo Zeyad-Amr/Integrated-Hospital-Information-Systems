@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { HOST_API } from '@/config/settings/app-config';
 import ErrorResponse from './error-response';
 import { LocalStorage, LocalStorageKeys } from '../shared/utils/local-storage';
+import { Endpoints } from '.';
 // ----------------------------------------------------------------
 
 //* Create a custom axios instance
-const axiosInstance = axios.create({ baseURL: HOST_API });
+const axiosInstance = axios.create({ baseURL: Endpoints.base });
 
 //* Add a request interceptor
 axiosInstance.interceptors.request.use(

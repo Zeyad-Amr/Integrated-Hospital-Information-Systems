@@ -8,14 +8,17 @@ import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import styles from "./loginPage.module.css";
-import { useAppDispatch, useAppSelector } from "@/core/state/store";
-import { AuthState } from "../../controllers/types";
+import {
+  useAppDispatch,
+  //  useAppSelector
+} from "@/core/state/store";
+// import { AuthState } from "../../controllers/types";
 import { login } from "../../controllers/thunks/auth-thunks";
 import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
-  const authState: AuthState = useAppSelector((state: any) => state.auth);
+  // const authState: AuthState = useAppSelector((state: any) => state.auth);
 
   const handleFormSchema = Yup.object({
     userName: Yup.string()

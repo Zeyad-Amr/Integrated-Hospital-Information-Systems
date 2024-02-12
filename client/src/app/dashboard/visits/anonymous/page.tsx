@@ -1,15 +1,15 @@
 "use client";
 
 import Sidebar from "@/core/layout/sidebar/index";
-import VisitsTableComponent from "@/modules/visits/presentation/pages/anomynous-visit";
+// import VisitsTableComponent from "@/modules/visits/presentation/pages/anomynous-visit";
 
 // ----------------------------------------------------------------------
 
 export default function AllUsers() {
   return (
     <div>
-      <Sidebar pageTitle={'الزيـــارات'}>
-        <VisitsTableComponent />
+      <Sidebar pageTitle={"الزيـــارات"}>
+        {/* <VisitsTableComponent /> */}
       </Sidebar>
     </div>
   );

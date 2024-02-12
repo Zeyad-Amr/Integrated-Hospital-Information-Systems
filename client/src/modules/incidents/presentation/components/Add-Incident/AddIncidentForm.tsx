@@ -2,9 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import SecondaryButton from "@/core/shared/components/btns/SecondaryButton";
-import PersonalData, {
-  PersonalDataValues,
-} from "@/core/shared/components/PersonalData";
+import PersonalData from "@/core/shared/components/PersonalData";
 
 import GetCompanions from "../GetCompanions";
 import AdditionalData, {
@@ -46,13 +44,12 @@ const AddIncidentForm = () => {
   };
 
   const [editing, setEditing] = useState<boolean>(false);
-  const [intialValues, setIntialValues] =
-    useState<PersonalDataValues>(MainInitialVlaues);
+  const [intialValues, setIntialValues] = useState<any>(MainInitialVlaues);
 
   const [idx, setIdx] = useState<number>(0);
 
   const intialAdditionalValues: AdditionalDataValues = {
-    comeFromString: { id: "", label: "" },
+    comeFromString: { id: "", value: "" },
     attendantName: "",
     attendantSSN: "",
     attendantSerialNumber: "",
@@ -67,7 +64,7 @@ const AddIncidentForm = () => {
 
   const [companionsArray, setTestArray] = useState<{}[]>([]);
 
-  const handleCompanionSubmission = (values: PersonalDataValues) => {
+  const handleCompanionSubmission = (values: any) => {
     let newCompanionsArray: {}[];
     if (editing) {
       response.current.companions[idx] = values;
@@ -88,8 +85,8 @@ const AddIncidentForm = () => {
       values.comeFromString === "1"
         ? "home"
         : values.comeFromString === "2"
-        ? "accedent"
-        : "prison";
+          ? "accedent"
+          : "prison";
     (response.current.attendantName = values.attendantName),
       (response.current.attendantSSN = values.attendantSSN),
       (response.current.attendantSerialNumber = values.attendantSerialNumber),

@@ -7,7 +7,7 @@ import { useTheme } from "@mui/material/styles";
 const MenuIcon = (props: IconProps) => {
   const theme = useTheme();
 
-  const { primary, secondary }: IconProps = IconColorProps(props, theme);
+  const { primary }: IconProps = IconColorProps(props, theme);
 
   return (
     <Box

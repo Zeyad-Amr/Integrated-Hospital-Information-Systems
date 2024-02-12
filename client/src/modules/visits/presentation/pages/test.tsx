@@ -9,6 +9,7 @@ import {
   getVisitByCode,
   updateVisit,
 } from "../controllers/thunks/visits-thunks";
+import UserEntity from "@/modules/auth/domain/entities/user-entity";
 
 const VisitsTest = () => {
   const dispatch = useAppDispatch();
@@ -34,34 +35,8 @@ const VisitsTest = () => {
               kinship: "BROTHER",
               createdAt: new Date(),
               updatedAt: new Date(),
-              patient: {
-                firstName: "Ahmed",
-                secondName: "Mohamed",
-                thirdName: "AbdELRaouf",
-                fourthName: "Mohamed",
-                SSN: "30002103101556",
-                verificationMethod: "NATIONALIDCARD",
-                gender: "MALE",
-                birthDate: new Date(),
-                phone: "+201067162458",
-                email: "ahmed821@gmail.com",
-                governate: "Giza",
-                address: "Fasil",
-              },
-              companion: {
-                firstName: "Ahmed",
-                secondName: "Mohamed",
-                thirdName: "AbdELRaouf",
-                fourthName: "Mohamed",
-                SSN: "30002103105556",
-                verificationMethod: "NATIONALIDCARD",
-                gender: "MALE",
-                birthDate: new Date(),
-                phone: "+201067662458",
-                email: "ahmed82@gmail.com",
-                governate: "Giza",
-                address: "Fasil",
-              },
+              patient: UserEntity.defaultValue(),
+              companion: UserEntity.defaultValue(),
             })
           );
         }}
@@ -102,34 +77,8 @@ const VisitsTest = () => {
               kinship: "BROTHER",
               createdAt: new Date(),
               updatedAt: new Date(),
-              patient: {
-                firstName: "Ahmed",
-                secondName: "Mohamed",
-                thirdName: "AbdELRaouf",
-                fourthName: "Mohamed",
-                SSN: "30002103101556",
-                verificationMethod: "NATIONALIDCARD",
-                gender: "MALE",
-                birthDate: new Date(),
-                phone: "+201067162458",
-                email: "ahmed821@gmail.com",
-                governate: "Giza",
-                address: "Fasil",
-              },
-              companion: {
-                firstName: "Ahmed",
-                secondName: "Mohamed",
-                thirdName: "AbdELRaouf",
-                fourthName: "Mohamed",
-                SSN: "30002103105556",
-                verificationMethod: "NATIONALIDCARD",
-                gender: "MALE",
-                birthDate: new Date(),
-                phone: "+201067662458",
-                email: "ahmed82@gmail.com",
-                governate: "Giza",
-                address: "Fasil",
-              },
+              patient: UserEntity.defaultValue(),
+              companion: UserEntity.defaultValue(),
             })
           );
         }}
@@ -141,10 +90,10 @@ const VisitsTest = () => {
         {visitsState.loading
           ? "Loading..."
           : visitsState.error.length > 0
-          ? visitsState.error
-          : visitsState.visits.length > 0
-          ? visitsState.visits.map((v) => <div key={v.code}>{v.code}</div>)
-          : "No Data"}
+            ? visitsState.error
+            : visitsState.visits.length > 0
+              ? visitsState.visits.map((v) => <div key={v.code}>{v.code}</div>)
+              : "No Data"}
       </Typography>
     </Box>
   );

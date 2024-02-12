@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import { SidebarContext } from "./context/context";
 import React, { useContext } from "react";
-import SidebarHeader from "./sidebar-header";
 import SidebarComponent from "./sidebar-component";
 import { Button, Typography } from "@mui/material";
 import { NotificationIcon } from "@/assets/icons/index";
@@ -37,7 +36,7 @@ const SidebarLayout = (props: any) => {
       >
         <Box
           sx={{
-            background: 'linear-gradient(-30deg,#061540, #152962)',
+            background: "linear-gradient(-30deg,#061540, #152962)",
             width: collapsed ? "5rem" : "18rem",
             transition: "width 0.3s ease-in-out",
             overflowX: "hidden",

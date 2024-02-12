@@ -8,6 +8,7 @@ import {
   deleteEmployee,
   getEmployeeDetails,
 } from "../controllers/thunks/employee-thunks";
+import UserEntity from "@/modules/auth/domain/entities/user-entity";
 const EmployeeTest = () => {
   const dispatch = useAppDispatch();
   const employeeState: EmployeeState = useAppSelector(
@@ -31,27 +32,10 @@ const EmployeeTest = () => {
           dispatch(
             createEmployee({
               id: "831b1c69-d5e2-4c86-8087-340e24a92b08",
-              role: "ADMIN",
-              shift: "MORNING",
-              department: "IT",
+
               createdAt: new Date(),
               updatedAt: new Date(),
-              person: {
-                id: "4d11eb35-4dd0-4830-b705-0c7aefecf644",
-                firstName: "Ahmed",
-                secondName: "Mohamed",
-                thirdName: "AbdELRaouf",
-                fourthName: "Mohamed",
-                SSN: "30002103105556",
-                verificationMethod: "NATIONALIDCARD",
-                gender: "MALE",
-                birthDate: new Date(),
-                phone: "+201067662458",
-                governate: "Giza",
-                address: "Fasil",
-                createdAt: new Date(),
-                updatedAt: new Date(),
-              },
+              person: UserEntity.defaultValue(),
               auth: {
                 username: "user123",
                 password: "User123",
@@ -87,27 +71,10 @@ const EmployeeTest = () => {
           dispatch(
             updateEmployee({
               id: "",
-              role: "ADMIN",
-              shift: "MORNING",
-              department: "IT",
+
               createdAt: new Date(),
               updatedAt: new Date(),
-              person: {
-                id: "4d11eb35-4dd0-4830-b705-0c7aefecf644",
-                firstName: "Ahmed44",
-                secondName: "Mohamed",
-                thirdName: "AbdELRaouf",
-                fourthName: "Mohamed",
-                SSN: "30002103105556",
-                verificationMethod: "NATIONALIDCARD",
-                gender: "MALE",
-                birthDate: new Date(),
-                phone: "+201067662458",
-                governate: "Giza",
-                address: "Fasil",
-                createdAt: new Date(),
-                updatedAt: new Date(),
-              },
+              person: UserEntity.defaultValue(),
               auth: {
                 username: "user123",
                 password: "User123",
@@ -131,12 +98,12 @@ const EmployeeTest = () => {
         {employeeState.loading
           ? "Loading..."
           : employeeState.error.length > 0
-          ? employeeState.error
-          : employeeState.employeeList.length > 0
-          ? employeeState.employeeList.map((employee) => (
-              <div key={employee.id}>{employee.id}</div>
-            ))
-          : "No Data"}
+            ? employeeState.error
+            : employeeState.employeeList.length > 0
+              ? employeeState.employeeList.map((employee) => (
+                  <div key={employee.id}>{employee.id}</div>
+                ))
+              : "No Data"}
       </Typography>
     </Box>
   );

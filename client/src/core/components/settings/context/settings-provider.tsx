@@ -1,12 +1,7 @@
 "use client";
-
-import isEqual from "lodash/isEqual";
-import { useEffect, useMemo, useCallback, useState } from "react";
-// hooks
+import { useEffect, useMemo, useCallback } from "react";
 import { useLocalStorage } from "@/core/shared/hooks/use-local-storage";
-// utils
 import { localStorageGetItem } from "@/core/shared/utils/storage-available";
-//
 import { SettingsValueProps } from "../types";
 import { SettingsContext } from "./settings-context";
 // ----------------------------------------------------------------------
@@ -18,23 +13,11 @@ type SettingsProviderProps = {
   defaultSettings: SettingsValueProps;
 };
 
-// themeMode: "light", // 'light' | 'dark'
-// themeDirection: "rtl", //  'rtl' | 'ltr'
-// themeContrast: "default", // 'default' | 'bold'
-// themeLayout: "vertical", // 'vertical' | 'horizontal' | 'mini'
-// themeColorPresets: "default", // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
-// themeStretch: false,
-
 export function SettingsProvider({
   children,
   defaultSettings,
 }: SettingsProviderProps) {
-  const { state, update, reset } = useLocalStorage(
-    STORAGE_KEY,
-    defaultSettings
-  );
-
-  const [openDrawer, setOpenDrawer] = useState(false);
+  const { state, update } = useLocalStorage(STORAGE_KEY, defaultSettings);
 
   const isArabic = localStorageGetItem("i18nextLng") === "ar";
 
@@ -42,8 +25,7 @@ export function SettingsProvider({
     if (isArabic) {
       onChangeDirectionByLang("ar");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isArabic]);
+  }, []);
 
   // Direction by lang
   const onChangeDirectionByLang = useCallback(
@@ -53,41 +35,14 @@ export function SettingsProvider({
     [update]
   );
 
-  // Drawer
-  const onToggleDrawer = useCallback(() => {
-    setOpenDrawer((prev) => !prev);
-  }, []);
-
-  const onCloseDrawer = useCallback(() => {
-    setOpenDrawer(false);
-  }, []);
-
-  const canReset = !isEqual(state, defaultSettings);
-
   const memoizedValue = useMemo(
     () => ({
       ...state,
       onUpdate: update,
       // Direction
       onChangeDirectionByLang,
-      // Reset
-      canReset,
-      onReset: reset,
-      // Drawer
-      open: openDrawer,
-      onToggle: onToggleDrawer,
-      onClose: onCloseDrawer,
     }),
-    [
-      reset,
-      update,
-      state,
-      canReset,
-      openDrawer,
-      onCloseDrawer,
-      onToggleDrawer,
-      onChangeDirectionByLang,
-    ]
+    [update, state, onChangeDirectionByLang]
   );
 
   return (
@@ -96,3 +51,9 @@ export function SettingsProvider({
     </SettingsContext.Provider>
   );
 }
+// themeMode: "light", // 'light' | 'dark'
+// themeDirection: "rtl", //  'rtl' | 'ltr'
+// themeContrast: "default", // 'default' | 'bold'
+// themeLayout: "vertical", // 'vertical' | 'horizontal' | 'mini'
+// themeColorPresets: "default", // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
+// themeStretch: false,
