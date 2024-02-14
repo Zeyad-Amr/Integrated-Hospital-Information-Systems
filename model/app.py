@@ -22,6 +22,11 @@ def ConvertBase64ToImage(bs64_data):
     image_matrix = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     return image_matrix
 
+@app.route('/ping', methods=['GET'])
+def ping():
+    return make_response(jsonify({"message": "pong"}), 200)
+
+
 @app.route('/extractdata', methods=['POST'])
 def extract_id():
 
@@ -161,8 +166,8 @@ class NationalID:
 
         return nationalId
     
+nationalIdObj = NationalID()
 if __name__ == '__main__':
     print("Starting server...")
-    nationalIdObj = NationalID()
-    app.run(host='0.0.0.0:1929', debug=True)
+    app.run(debug=True)
 
