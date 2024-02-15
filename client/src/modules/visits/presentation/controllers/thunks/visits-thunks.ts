@@ -17,6 +17,7 @@ export const createVisit = createAsyncThunk(
     async (data: VisitInterface, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
+            console.log(data)
             const result = await sl.get<CreateVisitUseCase>(ServiceKeys.CreateVisitUseCase).call(data)
             console.log('Result:', result);
             return result;

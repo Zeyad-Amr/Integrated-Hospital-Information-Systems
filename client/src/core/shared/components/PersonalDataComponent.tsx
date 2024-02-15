@@ -8,11 +8,6 @@ import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
 import FeaturedVideoRoundedIcon from "@mui/icons-material/FeaturedVideoRounded";
 import PersonEntity from "@/modules/auth/domain/entities/person-entity";
-import {
-  GenderType,
-  Governate,
-  IdentityType,
-} from "../modules/lookups/domain/interfaces/lookups-interface";
 import { LookupsState } from "../modules/lookups/presentation/controllers/types";
 import { useAppSelector } from "@/core/state/store";
 import { Yup } from "../utils/validation";
@@ -207,7 +202,7 @@ const PersonalDataComponent = ({
           <Box component="form" onSubmit={handleSubmit} noValidate>
             <Grid container columns={12} spacing={2}>
               <Grid item lg={3} md={3} sm={12} xs={12}>
-                <CustomSelectField<IdentityType>
+                <CustomSelectField<any>
                   isRequired
                   name="verificationMethod"
                   label="نوع الهوية"
@@ -272,7 +267,7 @@ const PersonalDataComponent = ({
               </Grid>
 
               <Grid item lg={3} md={3} sm={12} xs={12}>
-                <CustomSelectField<GenderType>
+                <CustomSelectField<any>
                   isRequired
                   name="gender"
                   label="الجنس"
@@ -286,9 +281,9 @@ const PersonalDataComponent = ({
                 />
               </Grid>
               <Grid item lg={3} md={3} sm={12} xs={12}>
-                <CustomSelectField<Governate>
+                <CustomSelectField<any>
                   isRequired
-                  name="governate"
+                  name="governateId"
                   label="المحافظة"
                   value={values.governate}
                   onChange={handleChange}
