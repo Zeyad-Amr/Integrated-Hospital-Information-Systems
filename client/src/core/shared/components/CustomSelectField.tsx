@@ -17,6 +17,7 @@ export interface SelectFieldProps<T> {
   touched: boolean | undefined | FormikTouched<T>;
   value: T | undefined;
   options: T[];
+  defaultValue?: { id: any; value: string };
   isRequired?: boolean;
   width?: number | string;
   hideLabel?: boolean;
@@ -30,11 +31,15 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   error,
   touched,
   value,
-  options,
+  options = [],
+  defaultValue = { id: 0, value: "" },
   isRequired = false,
   width,
   hideLabel = true,
 }: SelectFieldProps<T>) => {
+  // Create a new array with the default value added to the beginning
+  const updatedOptions = [defaultValue, ...options];
+
   return (
     <Box
       sx={{
@@ -74,7 +79,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
             backgroundColor: "#fff ",
             height: "3.5rem",
           }}
-          value={value?.id}
+          value={value}
           name={name}
           error={error && touched ? true : false}
           hidden={hideLabel}
@@ -86,7 +91,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
             },
           }}
         >
-          {options?.map((option: T) => (
+          {updatedOptions?.map((option: { id: any; value: string }) => (
             <MenuItem
               key={option.id}
               value={option.id}

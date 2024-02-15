@@ -1,4 +1,3 @@
-import { GenderType, Governate, IdentityType } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 
 export default interface PersonInterface {
     id?: string;
@@ -7,11 +6,11 @@ export default interface PersonInterface {
     thirdName?: string;
     fourthName?: string;
     SSN?: string;
-    verificationMethod?: IdentityType;
-    gender?: GenderType
+    verificationMethod?: number;
+    gender?: number;
     birthDate?: string;
     phone?: string;
-    governate?: Governate;
+    governate?: number;
     address?: string;
     createdAt?: Date;
     updatedAt?: Date;

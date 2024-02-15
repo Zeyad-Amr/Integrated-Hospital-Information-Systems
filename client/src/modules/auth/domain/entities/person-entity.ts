@@ -6,18 +6,18 @@ export default class PersonEntity {
     //* --------------------- Methods ---------------------
     static defaultValue(): PersonInterface {
         return {
-            id: undefined,
-            firstName: undefined,
-            secondName: undefined,
-            thirdName: undefined,
-            fourthName: undefined,
-            SSN: undefined,
-            verificationMethod: undefined,
-            gender: undefined,
-            birthDate: undefined,
-            phone: undefined,
-            governate: undefined,
-            address: undefined,
+            id: "",
+            firstName: "",
+            secondName: "",
+            thirdName: "",
+            fourthName: "",
+            SSN: "",
+            verificationMethod: 0,
+            gender: 0,
+            birthDate: "",
+            phone: "",
+            governate: 0,
+            address: "",
             createdAt: undefined,
             updatedAt: undefined,
         };
@@ -47,13 +47,13 @@ export default class PersonEntity {
                 .required("الرقم القومي مطلوب")
                 .length(14, "يجب أن يكون الرقم القومي 14 رقمًا")
                 .matches(/^[0-9]+$/, "يجب أن يكون الرقم القومي رقميًا."),
-            verificationMethod: Yup.number().oneOf(state.lookups.lookups.identityTypes.map((e) => e.id)).required("طريقة التحقق مطلوبة"),
-            gender: Yup.number().oneOf(state.lookups.lookups.genderTypes.map((e) => e.id)).required("الجنس مطلوب"),
+            verificationMethod: Yup.number().oneOf(state.lookups.lookups.identityTypes.map((e) => e.id), "طريقة التحقق مطلوبة").required("طريقة التحقق مطلوبة"),
+            gender: Yup.number().oneOf(state.lookups.lookups.genderTypes.map((e) => e.id), "الجنس مطلوب").required("الجنس مطلوب"),
             birthDate: Yup.string().required("التاريخ مطلوب"),
             phone: Yup.string().required("رقم الهاتف مطلوب")
                 .length(11, "يجب أن يكون رقم الهاتف 11 حرفًا")
                 .matches(/^[0-9]+$/, "يجب أن يكون رقم الهاتف رقميًا."),
-            governate: Yup.number().oneOf(state.lookups.lookups.governates.map((e) => e.id)).required("المحافظة مطلوبة"),
+            governate: Yup.number().oneOf(state.lookups.lookups.governates.map((e) => e.id), "المحافظة مطلوبة").required("المحافظة مطلوبة"),
             address: Yup.string()
                 .required("العنوان مطلوب")
                 .min(3, "يجب أن يكون العنوان على الأقل 3 أحرف")

@@ -44,7 +44,7 @@ const AddVisitForm = () => {
   const refSubmitAdditionalData: any = useRef(null);
 
   //* Form data refrence
-  const sequenceNumberValue = useRef<number>();
+  const sequenceNumberValue = useRef<string>();
   const kinshipValue = useRef<number>();
   const patientData = useRef<PersonInterface>();
   const companionData = useRef<PersonInterface>();
@@ -151,14 +151,13 @@ const AddVisitForm = () => {
       >
         {/* //* Start Patient form ********************* */}
         <Formik
-          initialValues={{ sequenceNumber: undefined }}
+          initialValues={{ sequenceNumber: "" }}
           validationSchema={() => {
             setPatientDataExpanded(true);
             return VisitEntity.sequenceNumberSchema()
           }}
-          onSubmit={(values, { resetForm }) => {
+          onSubmit={(values,) => {
             handleSequenceNumSubmit(values);
-            resetForm();
           }}
         >
           {({
@@ -228,7 +227,7 @@ const AddVisitForm = () => {
           refSubmitButton={refSubmitPatientPerson}
           validateOnMount={true}
           validationSchema={VisitEntity.getPatientSchema(!isChild)}
-          isResetForm={true}
+        // isResetForm={true}
         />
       </CustomAccordion>
 
@@ -245,7 +244,7 @@ const AddVisitForm = () => {
             initialValues={AdditionalDataEntity.defaultValue()}
             refSubmitButton={refSubmitAdditionalData}
             onSubmit={handleAdditionalDataSubmit}
-            isResetForm={true}
+          // isResetForm={true}
           />
         </CustomAccordion>
       </Box>
@@ -263,15 +262,15 @@ const AddVisitForm = () => {
           {/* //* start rest companion form */}
           <Box>
             <Formik
-              initialValues={{ kinship: undefined }}
+              initialValues={{ kinship: 0 }}
               validationSchema={() => {
                 setCompanionDataExpanded(true);
                 return VisitEntity.kinshipSchema(companionData.current ? allValuesUndefined(companionData.current) : false);
               }}
-              onSubmit={(values, { resetForm }) => {
+              onSubmit={(values) => {
                 handleKinshipSubmit(values)
-                resetForm();
               }}
+              validateOnChange={true}
             >
               {({
                 values,
@@ -282,7 +281,7 @@ const AddVisitForm = () => {
                 handleSubmit,
               }) => (
                 <Box component="form" onSubmit={handleSubmit} noValidate>
-                  <CustomSelectField
+                  <CustomSelectField<any>
                     isRequired
                     name="kinship"
                     label="درجة القرابة"
@@ -306,10 +305,11 @@ const AddVisitForm = () => {
             {/* //* start companion form */}
             <PersonalDataComponent
               initialValues={PersonEntity.defaultValue()}
-              onSubmit={handleCompanionSubmit}
+              onSubmit={(values) => { console.log(values); return handleCompanionSubmit(values) }}
               refSubmitButton={refSubmitCompanionPerson}
-              validationSchema={(kinshipValue.current ? true : false) || isChild ? undefined : VisitEntity.getCompanionSchema()}
-              isResetForm={true}
+              validationSchema={VisitEntity.getCompanionSchema((kinshipValue.current ? true : false) || isChild)}
+              // isResetForm={true}
+              validateOnMount={true}
             />
           </Box>
         </CustomAccordion>
