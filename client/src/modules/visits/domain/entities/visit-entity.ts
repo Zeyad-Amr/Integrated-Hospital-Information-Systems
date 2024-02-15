@@ -6,14 +6,12 @@ export default class VisitEntity {
 
     static defaultValue(): VisitInterface {
         return {
-            code: "",
+            code: undefined,
             sequenceNumber: 0,
             kinship: undefined,
             createdAt: undefined,
             updatedAt: undefined,
-            patient: {
-                id: ''
-            },
+            patient: undefined,
             companion: undefined,
             additionalInfo: undefined
         }
@@ -21,6 +19,8 @@ export default class VisitEntity {
 
 
     static getCompanionSchema(allRequired: boolean = false): Yup.ObjectSchema<any> {
+        console.log(allRequired);
+
         const state = store.getState();
         const coditionCallback = (values: any[], schema: any, msg?: string) => {
             if (!values.every((value) => value === undefined || value === "") || allRequired) {
@@ -91,9 +91,10 @@ export default class VisitEntity {
                 .max(100, "يجب أن يكون العنوان على الأكثر 100 حرفًا"),
         }, generateFieldCombinations(['firstName', 'secondName', 'thirdName', 'fourthName', 'SSN', 'verificationMethod', 'gender', 'birthDate', 'phone', 'governate', 'address']));
     }
+
     static getPatientSchema(isRequired: boolean = true): Yup.ObjectSchema<any> {
         const state = store.getState();
-        const coditionCallback = (values: any[], schema: any, msg?: string) => {
+        const coditionCallback = (_values: any[], schema: any, msg?: string) => {
             if (isRequired) {
                 return schema.required(msg)
             }

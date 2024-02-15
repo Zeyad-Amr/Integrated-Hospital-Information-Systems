@@ -9,7 +9,7 @@ export default interface PersonInterface {
     SSN?: string;
     verificationMethod?: IdentityType;
     gender?: GenderType
-    birthDate?: Date;
+    birthDate?: string;
     phone?: string;
     governate?: Governate;
     address?: string;

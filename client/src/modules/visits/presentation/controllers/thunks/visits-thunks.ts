@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { sl, ServiceKeys } from "@/core/service-locator";
 import {
-    CreateVisitUseCaseParameters,
     UpdateVisitUseCaseParameters,
     GetVisitByCodeUseCaseParameters,
     CreateVisitUseCase,
@@ -15,12 +14,10 @@ import VisitInterface from "@/modules/visits/domain/interfaces/visit-interface";
 //* Create Visit
 export const createVisit = createAsyncThunk(
     "visits/create",
-    async (_data: VisitInterface, thunkApi) => {
+    async (data: VisitInterface, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
-            const result = await sl.get<CreateVisitUseCase>(ServiceKeys.CreateVisitUseCase).call(
-                new CreateVisitUseCaseParameters(_data)
-            );
+            const result = await sl.get<CreateVisitUseCase>(ServiceKeys.CreateVisitUseCase).call(data)
             console.log('Result:', result);
             return result;
         } catch (error) {

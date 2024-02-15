@@ -14,6 +14,7 @@ interface AdditionalDataProps {
   onSubmit: (values: AdditionalDataInterface) => void;
   refSubmitButton: React.MutableRefObject<null>;
   display?: string;
+  isResetForm?: boolean;
 }
 
 const AdditionalData = ({
@@ -21,6 +22,7 @@ const AdditionalData = ({
   onSubmit,
   refSubmitButton,
   display,
+  isResetForm = false
 }: AdditionalDataProps) => {
 
   const lookupsState: LookupsState = useAppSelector(
@@ -77,8 +79,11 @@ const AdditionalData = ({
         notes: initialValues.notes,
       }}
       validationSchema={AdditionalDataEntity.getSchema()}
-      onSubmit={(values) => {
-        onSubmit(values);
+      onSubmit={(values, { resetForm }) => {
+        onSubmit(values)
+        if (isResetForm) {
+          resetForm();
+        }
       }}
     >
       {({

@@ -6,7 +6,7 @@ export default class PersonEntity {
     //* --------------------- Methods ---------------------
     static defaultValue(): PersonInterface {
         return {
-            id: '',
+            id: undefined,
             firstName: undefined,
             secondName: undefined,
             thirdName: undefined,

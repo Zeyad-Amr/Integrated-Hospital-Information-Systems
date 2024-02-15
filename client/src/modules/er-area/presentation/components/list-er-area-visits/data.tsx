@@ -55,7 +55,8 @@ export const header: HeaderItem[] = [
     id: "sequenceNumber",
     label: "رقم التردد",
     minWidth: 50,
-    tableCellProps: { align: "center" }, showBorder: true,
+    tableCellProps: { align: "center" },
+    showBorder: true,
 
   },
   {

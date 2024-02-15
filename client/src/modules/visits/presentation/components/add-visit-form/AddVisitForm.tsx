@@ -7,7 +7,7 @@ import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
 import AdditionalData from "@/core/shared/components/AdditionalData";
 import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
-import { useAppSelector } from "@/core/state/store";
+import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import { AdditionalDataInterface } from "@/modules/visits/domain/interfaces/additional-data-interface";
 import AdditionalDataEntity from "@/modules/visits/domain/entities/additional-data-entity";
 import PersonalDataComponent from "@/core/shared/components/PersonalDataComponent";
@@ -15,8 +15,12 @@ import PersonEntity from "@/modules/auth/domain/entities/person-entity";
 import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
 import VisitEntity from "@/modules/visits/domain/entities/visit-entity";
 import VisitInterface from "@/modules/visits/domain/interfaces/visit-interface";
+import { createVisit } from "../../controllers/thunks/visits-thunks";
+import { allValuesUndefined } from "@/core/shared/utils/object-operations";
 
 const AddVisitForm = () => {
+  const dispatch = useAppDispatch();
+
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
@@ -29,7 +33,7 @@ const AddVisitForm = () => {
     useState<boolean>(false);
   const [combinedValues, setCombinedValues] = useState<VisitInterface>();
 
-  const [child, setChild] = useState<boolean>(false);
+  const [isChild, setIsChild] = useState<boolean>(false);
 
 
   //* buttons useRef
@@ -43,6 +47,8 @@ const AddVisitForm = () => {
   const sequenceNumberValue = useRef<number>();
   const kinshipValue = useRef<number>();
   const patientData = useRef<PersonInterface>();
+  const companionData = useRef<PersonInterface>();
+  const additionalData = useRef<AdditionalDataInterface>();
 
   //* Submit functions
   const submitPatient = () => {
@@ -84,6 +90,7 @@ const AddVisitForm = () => {
   };
 
   const handleCompanionSubmit = (values: PersonInterface) => {
+    companionData.current = values
     setCombinedValues((previous) => ({
       ...previous,
       companion: values,
@@ -94,6 +101,7 @@ const AddVisitForm = () => {
 
   //* Handle Additional Data Submit
   const handleAdditionalDataSubmit = (values: AdditionalDataInterface) => {
+    additionalData.current = values
     setCombinedValues((previous) => ({
       ...previous,
       additionalInfo: values,
@@ -109,9 +117,24 @@ const AddVisitForm = () => {
 
 
   useEffect(() => {
-    if (patientData.current && sequenceNumberValue.current) {
+    if (patientData.current &&
+      sequenceNumberValue.current &&
+      companionData.current &&
+      additionalData.current) {
       // TODO: Make Dispatch
-      console.log(combinedValues)
+      if (combinedValues) {
+
+        dispatch(
+          createVisit(combinedValues)
+        ).then(() => {
+          patientData.current = undefined
+          sequenceNumberValue.current = undefined
+          companionData.current = undefined
+          kinshipValue.current = undefined
+          additionalData.current = undefined
+        })
+        console.log(combinedValues)
+      }
     }
   },
     [combinedValues]
@@ -133,8 +156,9 @@ const AddVisitForm = () => {
             setPatientDataExpanded(true);
             return VisitEntity.sequenceNumberSchema()
           }}
-          onSubmit={(values) => {
+          onSubmit={(values, { resetForm }) => {
             handleSequenceNumSubmit(values);
+            resetForm();
           }}
         >
           {({
@@ -170,8 +194,8 @@ const AddVisitForm = () => {
                 >
                   <Box
                     sx={{
-                      backgroundColor: child ? "primary.dark" : "#eee",
-                      color: child ? "white" : "black",
+                      backgroundColor: isChild ? "primary.dark" : "#eee",
+                      color: isChild ? "white" : "black",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
@@ -182,7 +206,7 @@ const AddVisitForm = () => {
                       transition: '0.2s',
                       userSelect: 'none'
                     }}
-                    onClick={() => setChild(!child)}
+                    onClick={() => setIsChild(!isChild)}
                   >
                     <Typography>طفل / مجهول</Typography>
                   </Box>
@@ -203,7 +227,8 @@ const AddVisitForm = () => {
           onSubmit={handlePatientSubmit}
           refSubmitButton={refSubmitPatientPerson}
           validateOnMount={true}
-          validationSchema={VisitEntity.getPatientSchema(!child)}
+          validationSchema={VisitEntity.getPatientSchema(!isChild)}
+          isResetForm={true}
         />
       </CustomAccordion>
 
@@ -220,6 +245,7 @@ const AddVisitForm = () => {
             initialValues={AdditionalDataEntity.defaultValue()}
             refSubmitButton={refSubmitAdditionalData}
             onSubmit={handleAdditionalDataSubmit}
+            isResetForm={true}
           />
         </CustomAccordion>
       </Box>
@@ -240,10 +266,11 @@ const AddVisitForm = () => {
               initialValues={{ kinship: undefined }}
               validationSchema={() => {
                 setCompanionDataExpanded(true);
-                return VisitEntity.kinshipSchema();
+                return VisitEntity.kinshipSchema(companionData.current ? allValuesUndefined(companionData.current) : false);
               }}
-              onSubmit={(values) => {
-                handleKinshipSubmit(values);
+              onSubmit={(values, { resetForm }) => {
+                handleKinshipSubmit(values)
+                resetForm();
               }}
             >
               {({
@@ -281,7 +308,8 @@ const AddVisitForm = () => {
               initialValues={PersonEntity.defaultValue()}
               onSubmit={handleCompanionSubmit}
               refSubmitButton={refSubmitCompanionPerson}
-              validationSchema={VisitEntity.getCompanionSchema()}
+              validationSchema={(kinshipValue.current ? true : false) || isChild ? undefined : VisitEntity.getCompanionSchema()}
+              isResetForm={true}
             />
           </Box>
         </CustomAccordion>

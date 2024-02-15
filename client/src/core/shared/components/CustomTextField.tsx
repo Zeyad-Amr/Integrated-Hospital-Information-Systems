@@ -75,7 +75,6 @@ const CustomTextField = ({
           name={name}
           value={value}
           hiddenLabel={hideLabel}
-          helperText={error && touched ? error : ""}
           error={!!(error && touched)}
           {...(!hideLabel && textfieldProps)}
           {...props}

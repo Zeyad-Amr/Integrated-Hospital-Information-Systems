@@ -7,17 +7,17 @@ export default class AdditionalDataEntity {
     static defaultValue(): AdditionalDataInterface {
         return {
             comeFrom: undefined,
-            attendantName: "",
-            attendantSSN: "",
-            attendantSerialNumber: "",
+            attendantName: undefined,
+            attendantSSN: undefined,
+            attendantSerialNumber: undefined,
             attendantRole: undefined,
-            carNum: "",
-            firstChar: "",
-            secondChar: "",
-            thirdChar: "",
-            reason: "",
-            place: "",
-            notes: "",
+            carNum: undefined,
+            firstChar: undefined,
+            secondChar: undefined,
+            thirdChar: undefined,
+            reason: undefined,
+            place: undefined,
+            notes: undefined,
         }
     }
 

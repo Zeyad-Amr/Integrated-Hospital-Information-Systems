@@ -1,3 +1,4 @@
+import { allValuesUndefined } from "@/core/shared/utils/object-operations";
 import { AdditionalDataInterface } from "../../domain/interfaces/additional-data-interface";
 
 export default class AdditionalDataModel {
@@ -9,18 +10,28 @@ export default class AdditionalDataModel {
             injuryLocation: data.place,
             injuryCause: data.reason,
             notes: data.notes,
-            car: {
+            car: !allValuesUndefined({
                 firstChar: data.firstChar,
                 secondChar: data.secondChar,
                 thirdChar: data.thirdChar,
                 number: data.carNum
-            },
-            attendant: {
+            }) ? {
+                firstChar: data.firstChar,
+                secondChar: data.secondChar,
+                thirdChar: data.thirdChar,
+                number: data.carNum
+            } : undefined,
+            attendant: !allValuesUndefined({
                 name: data.attendantName,
                 id: data.attendantSerialNumber,
                 SSN: data.attendantSSN,
                 roleId: data.attendantRole
-            }
+            }) ? {
+                name: data.attendantName,
+                id: data.attendantSerialNumber,
+                SSN: data.attendantSSN,
+                roleId: data.attendantRole
+            } : undefined
         }
     }
 
