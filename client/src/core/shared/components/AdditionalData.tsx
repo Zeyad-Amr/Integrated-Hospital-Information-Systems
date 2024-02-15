@@ -1,80 +1,41 @@
-import { Box, Grid, Typography, Button } from "@mui/material";
+import { Box, Grid, Button } from "@mui/material";
 import { Formik } from "formik";
-import * as Yup from "yup";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import CustomTextField from "./CustomTextField";
 import CustomSelectField from "./CustomSelectField";
+import { LookupsState } from "../modules/lookups/presentation/controllers/types";
+import { useAppSelector } from "@/core/state/store";
+import { AdditionalDataInterface } from "@/modules/visits/domain/interfaces/additional-data-interface";
+import AdditionalDataEntity from "@/modules/visits/domain/entities/additional-data-entity";
 
-export interface AdditionalDataValues {
-  comeFromString: { id: any; label: string };
-  attendantName: string;
-  attendantSSN: string;
-  attendantSerialNumber: string;
-  carNum: string;
-  firstChar: string;
-  secondChar: string;
-  thirdChar: string;
-  reason: string | null;
-  place: string | null;
-  notes: string | null;
-}
 
 interface AdditionalDataProps {
-  initialValues: AdditionalDataValues;
-  onSubmit: (values: AdditionalDataValues) => void;
-  isSubmitted: boolean;
+  initialValues: AdditionalDataInterface;
+  onSubmit: (values: AdditionalDataInterface) => void;
+  refSubmitButton: React.MutableRefObject<null>;
   display?: string;
+  isResetForm?: boolean;
 }
 
 const AdditionalData = ({
   initialValues,
   onSubmit,
-  isSubmitted,
+  refSubmitButton,
   display,
+  isResetForm = false
 }: AdditionalDataProps) => {
-  const refSubmitButton: any = useRef(null);
-  const checkFirstRender = useRef(true);
-  const checkFirstRender2 = useRef(true);
-  useEffect(() => {
-    if (checkFirstRender.current) {
-      checkFirstRender.current = false;
-    } else {
-      if (checkFirstRender2.current) {
-        checkFirstRender2.current = false;
-      } else {
-        if (refSubmitButton.current) {
-          refSubmitButton.current.click();
-        }
-      }
-    }
-  }, [isSubmitted]);
 
-  const handleFormSchema = Yup.object({
-    comeFromString: Yup.string().required("يجب إدخال جهة القدوم"),
-    attendantName: Yup.string()
-      .required("يجب إدخال اسم المسعف")
-      .min(3, "First name must be at least 3 characters")
-      .max(45, "First name must be at most 45 characters"),
-    attendantSSN: Yup.number().required("يجب الادخال"),
-    attendantSerialNumber: Yup.number().required("يجب الادخال"),
-    firstChar: Yup.string()
-      .required("يجب إدخال رقم سيارة الاسعاف")
-      .max(1, "حرف واحد على الاكثر"),
-    secondChar: Yup.string()
-      .required("يجب إدخال رقم سيارة الاسعاف")
-      .max(1, "حرف واحد على الاكثر"),
-    thirdChar: Yup.string().max(1, "حرف واحد على الاكثر"),
-    carNum: Yup.string().required("يجب إدخال رقم سيارة الاسعاف"),
-    reason: Yup.string(),
-    place: Yup.string(),
-    notes: Yup.string(),
-  });
+  const lookupsState: LookupsState = useAppSelector(
+    (state: any) => state.lookups
+  );
+
+
   const handleKeyDown = (id: string, key: number, value: any) => {
     let x: number = parseInt(id[id.length - 1]);
     if (key !== 18 && key !== 16) {
       x < 4 && key !== 8
         ? ((document.getElementById(`amb-car-${x}`) as HTMLInputElement).value =
-            "")
+          "")
         : null;
       x = parseInt(id[id.length - 1]) + 1;
       if (parseInt(id[id.length - 1]) <= 4) {
@@ -93,8 +54,8 @@ const AdditionalData = ({
         setTimeout(() => {
           x <= 4 && x >= 1
             ? (
-                document.getElementById(`amb-car-${x}`) as HTMLInputElement
-              ).focus()
+              document.getElementById(`amb-car-${x}`) as HTMLInputElement
+            ).focus()
             : null;
         }, 10);
       }
@@ -104,10 +65,11 @@ const AdditionalData = ({
   return (
     <Formik
       initialValues={{
-        comeFromString: initialValues.comeFromString,
+        comeFrom: initialValues.comeFrom,
         attendantName: initialValues.attendantName,
         attendantSSN: initialValues.attendantSSN,
         attendantSerialNumber: initialValues.attendantSerialNumber,
+        attendantRole: initialValues.attendantRole,
         carNum: initialValues.carNum,
         firstChar: initialValues.firstChar,
         secondChar: initialValues.secondChar,
@@ -116,9 +78,12 @@ const AdditionalData = ({
         place: initialValues.place,
         notes: initialValues.notes,
       }}
-      validationSchema={handleFormSchema}
-      onSubmit={(values) => {
-        onSubmit(values);
+      validationSchema={AdditionalDataEntity.getSchema()}
+      onSubmit={(values, { resetForm }) => {
+        onSubmit(values)
+        if (isResetForm) {
+          resetForm();
+        }
       }}
     >
       {({
@@ -140,37 +105,24 @@ const AdditionalData = ({
                   alignItems: "center",
                   height: "100%",
                 }}
-                lg={3}
-                md={3}
-                sm={6}
+                lg={2}
+                md={2}
+                sm={12}
                 xs={12}
               >
                 <CustomSelectField
                   isRequired
-                  name="comeFromString"
+                  name="comeFrom"
                   label="قادم من"
-                  value={values.comeFromString}
+                  value={values.comeFrom}
                   onChange={(e) => {
                     handleChange(e);
                   }}
                   onBlur={handleBlur}
-                  error={errors.comeFromString}
-                  touched={touched.comeFromString}
+                  error={errors.comeFrom}
+                  touched={touched.comeFrom}
                   width="100%"
-                  options={[
-                    {
-                      id: "1",
-                      label: "منــــزل",
-                    },
-                    {
-                      id: "2",
-                      label: "حـــادث",
-                    },
-                    {
-                      id: "3",
-                      label: "سجــــن",
-                    },
-                  ]}
+                  options={lookupsState.lookups.cameFromOptions}
                 />
               </Grid>
               <Grid
@@ -181,9 +133,37 @@ const AdditionalData = ({
                   alignItems: "center",
                   height: "100%",
                 }}
-                lg={3}
-                md={3}
-                sm={6}
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+              >
+                <CustomSelectField
+                  isRequired
+                  name="attendantRole"
+                  label="نوع المحضر"
+                  value={values.attendantRole}
+                  onChange={(e) => {
+                    handleChange(e);
+                  }}
+                  onBlur={handleBlur}
+                  error={errors.attendantRole}
+                  touched={touched.attendantRole}
+                  width="100%"
+                  options={lookupsState.lookups.attendantRoles}
+                />
+              </Grid>
+              <Grid
+                item
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+                lg={2}
+                md={2}
+                sm={12}
                 xs={12}
               >
                 <CustomTextField
@@ -211,7 +191,7 @@ const AdditionalData = ({
                 }}
                 lg={3}
                 md={3}
-                sm={6}
+                sm={12}
                 xs={12}
               >
                 <CustomTextField
@@ -239,7 +219,7 @@ const AdditionalData = ({
                 }}
                 lg={3}
                 md={3}
-                sm={6}
+                sm={12}
                 xs={12}
               >
                 <CustomTextField
@@ -295,10 +275,10 @@ const AdditionalData = ({
                         onKeyDown: (e: any) =>
                           isNaN(e.key)
                             ? handleKeyDown(
-                                e.target.id,
-                                e.keyCode,
-                                e.target.value
-                              )
+                              e.target.id,
+                              e.keyCode,
+                              e.target.value
+                            )
                             : e.preventDefault(),
                         id: "amb-car-1",
                         type: "text",
@@ -322,10 +302,10 @@ const AdditionalData = ({
                         onKeyDown: (e: any) =>
                           isNaN(e.key)
                             ? handleKeyDown(
-                                e.target.id,
-                                e.keyCode,
-                                e.target.value
-                              )
+                              e.target.id,
+                              e.keyCode,
+                              e.target.value
+                            )
                             : e.preventDefault(),
 
                         id: "amb-car-2",
@@ -348,10 +328,10 @@ const AdditionalData = ({
                         onKeyDown: (e: any) =>
                           isNaN(e.key)
                             ? handleKeyDown(
-                                e.target.id,
-                                e.keyCode,
-                                e.target.value
-                              )
+                              e.target.id,
+                              e.keyCode,
+                              e.target.value
+                            )
                             : e.preventDefault(),
                         id: "amb-car-3",
                         type: "text",
@@ -375,10 +355,10 @@ const AdditionalData = ({
                         onKeyDown: (e: any) =>
                           !isNaN(e.key) || e.key === "Backspace"
                             ? handleKeyDown(
-                                e.target.id,
-                                e.keyCode,
-                                e.target.value
-                              )
+                              e.target.id,
+                              e.keyCode,
+                              e.target.value
+                            )
                             : e.preventDefault(),
                         id: "amb-car-4",
                         type: "text",
@@ -474,13 +454,14 @@ const AdditionalData = ({
             </Grid>
             <Button
               type="submit"
-              sx={{ display: "none" }}
+              // sx={{ display: "none" }}
               ref={refSubmitButton}
             ></Button>
           </Box>
         </Box>
-      )}
-    </Formik>
+      )
+      }
+    </Formik >
   );
 };
 

@@ -15,21 +15,26 @@ import {
 } from "../modules/lookups/domain/interfaces/lookups-interface";
 import { LookupsState } from "../modules/lookups/presentation/controllers/types";
 import { useAppSelector } from "@/core/state/store";
-import CustomDialog from "./CustomDialog";
+import { Yup } from "../utils/validation";
+
 import Dialog from "./Dialog";
 import PersonIcon from "@mui/icons-material/Person";
 interface PersonalDataProps {
   initialValues: PersonInterface;
   onSubmit: (values: PersonInterface) => void;
   refSubmitButton: React.MutableRefObject<null>;
+  validationSchema?: Yup.ObjectSchema<any>
   isResetForm?: boolean;
+  validateOnMount?: boolean;
 }
 
 const PersonalDataComponent = ({
   initialValues,
+  validationSchema,
   onSubmit,
   refSubmitButton,
   isResetForm = false,
+  validateOnMount = false,
 }: PersonalDataProps) => {
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
@@ -56,14 +61,14 @@ const PersonalDataComponent = ({
     <Formik
       enableReinitialize
       initialValues={initialValues}
-      validationSchema={PersonEntity.getSchema()}
+      validationSchema={validationSchema ?? PersonEntity.getSchema()}
       onSubmit={(values, { resetForm }) => {
         onSubmit(values);
-        console.log("onSubmit Person:", values);
         if (isResetForm) {
           resetForm();
         }
       }}
+      validateOnMount={validateOnMount}
     >
       {({
         values,
@@ -80,7 +85,7 @@ const PersonalDataComponent = ({
             DialogStateController={setShawDialog}
           >
             <Typography
-              sx={{ width: "100%", textAlign: "center", marginTop: "1rem" }}
+              sx={{ width: "100%", textAlign: "center", marginTop: "1rem", fontSize: "1.2rem", fontWeight: "600" }}
             >
               {sub ? "قم بفحص الوجه الامامي" : "قم بفحص الوجه الخلفي"}
             </Typography>
@@ -129,7 +134,7 @@ const PersonalDataComponent = ({
                             width: "60%",
                             height: "0.5rem",
                             backgroundColor: "#aaa",
-                            margin: "4rem 0",
+                            margin: "2rem 0",
                           }}
                         ></Box>
                         <Box
@@ -137,7 +142,7 @@ const PersonalDataComponent = ({
                             width: "100%",
                             height: "0.5rem",
                             backgroundColor: "#aaa",
-                            margin: "4rem 0",
+                            margin: "2rem 0",
                           }}
                         ></Box>
                         <Box
@@ -145,7 +150,7 @@ const PersonalDataComponent = ({
                             width: "100%",
                             height: "0.5rem",
                             backgroundColor: "#aaa",
-                            margin: "4rem 0",
+                            margin: "2rem 0",
                           }}
                         ></Box>
                         <Box
@@ -153,7 +158,7 @@ const PersonalDataComponent = ({
                             width: "100%",
                             height: "6rem",
                             backgroundColor: "#aaa",
-                            margin: "6rem 0 2rem ",
+                            margin: "7rem 0 1rem ",
                             borderRadius: "5px",
                           }}
                         ></Box>
@@ -162,19 +167,19 @@ const PersonalDataComponent = ({
                   </Box>
                 </Box>
               </Grid>
-              <Grid item lg={4} md={4} sm={12} xs={12}>
-                <Box sx={{ width: "100%" }}>
+              <Grid item lg={4} md={4} sm={12} xs={12} sx={{ maxHeight: '100%' }}>
+                <Box sx={{ width: "100%", maxHeight: '30rem' }}>
                   {selectedFile !== null ? (
                     <Box
                       component="img"
                       src={URL.createObjectURL(selectedFile)}
                       alt="Selected"
                       sx={{
-                        maxHeight: "100%",
                         maxWidth: "100%",
                         padding: "0.5rem",
                         boxSizing: "border-box",
                         borderRadius: "10px",
+                        maxHeight: '13rem'
                       }}
                       loading="lazy"
                     />
@@ -187,11 +192,10 @@ const PersonalDataComponent = ({
                       src={URL.createObjectURL(selectedBack)}
                       alt="Selected"
                       sx={{
-                        maxHeight: "100%",
                         maxWidth: "100%",
                         padding: "0.5rem",
                         boxSizing: "border-box",
-                        borderRadius: "10px",
+                        borderRadius: "10px", maxHeight: '13rem'
                       }}
                       loading="lazy"
                     />

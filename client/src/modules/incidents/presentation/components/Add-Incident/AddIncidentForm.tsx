@@ -27,7 +27,7 @@ const AddIncidentForm = () => {
   const [addDatasubmitFlag, setAddDatasubmitFlag] = useState<boolean>(false);
 
   const [clickedBtnId, setClickedBtnId] = useState("");
-  const [additionalDataAccordion, setAdditionalDataAccordion] =
+  const [AdditionalDataAccordion, setAdditionalDataAccordion] =
     useState<boolean>(true);
   const [userDataAccordion, setUserDataAccordion] = useState<boolean>(false);
 
@@ -88,8 +88,8 @@ const AddIncidentForm = () => {
       values.comeFromString === "1"
         ? "home"
         : values.comeFromString === "2"
-        ? "accedent"
-        : "prison";
+          ? "accedent"
+          : "prison";
     (response.current.attendantName = values.attendantName),
       (response.current.attendantSSN = values.attendantSSN),
       (response.current.attendantSerialNumber = values.attendantSerialNumber),
@@ -230,7 +230,7 @@ const AddIncidentForm = () => {
       </Formik>
       <CustomAccordion
         isDisabled={false}
-        isExpanded={additionalDataAccordion}
+        isExpanded={AdditionalDataAccordion}
         setExpanded={setAdditionalDataAccordion}
         title="البيــانات الاضـــافية"
         isClosable={false}

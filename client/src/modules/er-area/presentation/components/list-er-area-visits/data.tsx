@@ -1,4 +1,4 @@
-import { HeaderItem } from "@/core/shared/components/CustomDataTable";
+import { HeaderItem } from "@/core/shared/components/CustomBasicTable";
 
 
 export interface DataItem {
@@ -56,6 +56,8 @@ export const header: HeaderItem[] = [
     label: "رقم التردد",
     minWidth: 50,
     tableCellProps: { align: "center" },
+    showBorder: true,
+
   },
   {
     id: "id",

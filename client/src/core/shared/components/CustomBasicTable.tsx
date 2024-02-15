@@ -25,6 +25,8 @@ export interface HeaderItem {
     sortable?: boolean;
     filterable?: boolean;
     searchable?: boolean;
+    cellSx?: SxProps
+    showBorder?: boolean
 }
 
 interface Props<T> {
@@ -98,7 +100,11 @@ const CustomBasicTable = <T,>({
                                     <TableCell
                                         key={headerItem.id}
                                         {...headerItem.tableCellProps}
-                                        sx={{ minWidth: headerItem.minWidth }}
+                                        sx={{
+                                            minWidth: headerItem.minWidth,
+                                            borderLeft: headerItem.showBorder ? `0.25rem solid ${(item as any).gender == 'ذكر' ? "aqua" : "pink"}` : "transparent",
+                                            ...headerItem.cellSx
+                                        }}
                                     >
                                         {(item as any)[headerItem.id]}
                                     </TableCell>

@@ -1,249 +1,144 @@
-import PersonalData, {
-  PersonalDataValues,
-} from "@/core/shared/components/PersonalData";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
-import SecondaryButton from "@/core/shared/components/btns/SecondaryButton";
 import { Button, Box, Typography } from "@mui/material";
-import * as Yup from "yup";
 import { Formik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
-import AdditionalData, {
-  AdditionalDataValues,
-} from "@/core/shared/components/AdditionalData";
+import AdditionalData from "@/core/shared/components/AdditionalData";
+import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
+import { useAppDispatch, useAppSelector } from "@/core/state/store";
+import { AdditionalDataInterface } from "@/modules/visits/domain/interfaces/additional-data-interface";
+import AdditionalDataEntity from "@/modules/visits/domain/entities/additional-data-entity";
+import PersonalDataComponent from "@/core/shared/components/PersonalDataComponent";
+import PersonEntity from "@/modules/auth/domain/entities/person-entity";
+import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
+import VisitEntity from "@/modules/visits/domain/entities/visit-entity";
+import VisitInterface from "@/modules/visits/domain/interfaces/visit-interface";
+import { createVisit } from "../../controllers/thunks/visits-thunks";
+import { allValuesUndefined } from "@/core/shared/utils/object-operations";
 
 const AddVisitForm = () => {
-  // useRef
-  const refSubmitFirstStepButton: any = useRef(null);
-  const refSubmitSecondStepButton: any = useRef(null);
-  const sequenceNumberValue: any = useRef("");
-  const kinshipValue: any = useRef("");
-  const patientData: any = useRef({});
-  const companionData: any = useRef({});
-  const additionalData: any = useRef({});
-  const checkFirstRender = useRef(true);
+  const dispatch = useAppDispatch();
+
+  const lookupsState: LookupsState = useAppSelector(
+    (state: any) => state.lookups
+  );
 
   // useState
-  const [submitPatientFlag, setSubmitPatientFlag] = useState<boolean>(false);
-  const [submitAdditionalDataFlag, setSubmitAdditionalDataFlag] =
-    useState<boolean>(false);
   const [patientDataExpanded, setPatientDataExpanded] = useState<boolean>(true);
   const [companionDataExpanded, setCompanionDataExpanded] =
     useState<boolean>(false);
   const [additionalDataExpanded, setAdditionalDataExpanded] =
     useState<boolean>(false);
-  const [showCompanionFlag, setShowCompanionFlag] = useState<boolean>(false);
-  const [addCompanionClicked, setAddCompanionClicked] =
-    useState<boolean>(false);
-  const [submitCompanionFlag, setSubmitCompanionFlag] =
-    useState<boolean>(false);
-  const [combinedValues, setCombinedValues] = useState<any>({
-    patient: {},
-    companion: {},
-    visit: {
-      sequenceNumber: "",
-      kinship: "",
-    },
-    additionalInfo: {
-      cameFrom: "",
-      injuryLocation: "",
-      injuryCause: "",
-      notes: "",
-      car: {
-        firstChar: "",
-        secondChar: "",
-        thirdChar: "",
-        number: null
-      },
-      attendant: {
-        name: "",
-        SSN: "",
-        role: ""
-      }
-    }
-  });
-  const [child, setChild] = useState<boolean>(false);
-  const sharedInitialValues: PersonalDataValues = {
-    firstName: "",
-    secondName: "",
-    thirdName: "",
-    fourthName: "",
-    SSN: "",
-    phone: "",
-    gender: "",
-    governate: "",
-    birthDate: null,
-    address: "",
-    verificationMethod: "",
-  };
+  const [combinedValues, setCombinedValues] = useState<VisitInterface>();
 
-  const handlePatientSubmit = (values: PersonalDataValues) => {
-    if (addCompanionClicked) {
-      setShowCompanionFlag(true);
-      setPatientDataExpanded(false);
-      setCompanionDataExpanded(true);
-    } else {
-      setSubmitAdditionalDataFlag(!submitAdditionalDataFlag)
-    }
-    patientData.current = values;
-    //  else {
-    //   setCombinedValues((prevValues: any) => ({
-    //     ...prevValues,
-    //     patient: values,
-    //     companion: {sharedInitialValues},
-    //     visit: {
-    //       sequenceNumber: sequenceNumberValue.current,
-    //       kinship: "",
-    //     },
-    //   }));
-    // }
-  };
+  const [isChild, setIsChild] = useState<boolean>(false);
 
-  const handleRestPatientSubmit = (values: { sequenceNumber: string }) => {
-    setSubmitPatientFlag(!submitPatientFlag);
+
+  //* buttons useRef
+  const refSubmitPatientPerson: any = useRef(null);
+  const refSubmitCompanionPerson: any = useRef(null);
+  const refSubmitSequenceNum: any = useRef(null);
+  const refSubmitKinship: any = useRef(null);
+  const refSubmitAdditionalData: any = useRef(null);
+
+  //* Form data refrence
+  const sequenceNumberValue = useRef<number>();
+  const kinshipValue = useRef<number>();
+  const patientData = useRef<PersonInterface>();
+  const companionData = useRef<PersonInterface>();
+  const additionalData = useRef<AdditionalDataInterface>();
+
+  //* Submit functions
+  const submitPatient = () => {
+    if (refSubmitPatientPerson.current && refSubmitSequenceNum.current) {
+      refSubmitSequenceNum.current.click();
+      refSubmitPatientPerson.current.click();
+    }
+  }
+  const submitCompanion = () => {
+    if (refSubmitCompanionPerson.current && refSubmitKinship.current) {
+      refSubmitKinship.current.click();
+      refSubmitCompanionPerson.current.click();
+    }
+  }
+  const submitAdditionalData = () => {
+    if (refSubmitAdditionalData.current) {
+      refSubmitAdditionalData.current.click();
+    }
+  }
+
+  //* Handle Patient Submit
+  const handleSequenceNumSubmit = (values: Pick<VisitInterface, 'sequenceNumber'>) => {
     sequenceNumberValue.current = values.sequenceNumber;
   };
 
-  const restPatientFormSchema = Yup.object({
-    sequenceNumber: Yup.string()
-      .required("يجب ادخال رقم التردد")
-      .matches(/^[0-9]+$/, "رقم التردد يجب ان يكون ارقام عددية"),
-  });
+  const handlePatientSubmit = (values: PersonInterface) => {
+    patientData.current = values;
+    setCombinedValues((previous) => ({
+      ...previous,
+      patient: values,
+      sequenceNumber: sequenceNumberValue.current
+    }))
+  };
 
-  // second step
-  const restCompanionFormSchema = Yup.object({
-    kinship: Yup.string().required("يجب اختيار درجة القرابة"),
-  });
 
-  const handleRestCompanionSubmit = (values: { kinship: string }) => {
-    setSubmitAdditionalDataFlag(!submitAdditionalDataFlag)
-    setSubmitCompanionFlag(!submitCompanionFlag);
+  //* Handle Companion Submit
+  const handleKinshipSubmit = (values: Pick<VisitInterface, 'kinship'>) => {
     kinshipValue.current = values.kinship;
   };
 
-  const handleCompanionSubmit = (values: PersonalDataValues) => {
-
-    setCombinedValues(
-      {
-        patient: patientData.current,
-        companion: values,
-        visit: {
-          sequenceNumber: sequenceNumberValue.current,
-          kinship: kinshipValue.current,
-        },
-        additionalInfo: {
-          cameFrom: additionalData.current.comeFromString,
-          injuryLocation: additionalData.current.place,
-          injuryCause: additionalData.current.reason,
-          notes: additionalData.current.notes,
-          car: {
-            firstChar: additionalData.current.firstChar,
-            secondChar: additionalData.current.secondChar,
-            thirdChar: additionalData.current.thirdChar,
-            number: additionalData.current.carNum
-          },
-          attendant: {
-            name: additionalData.current.attendantName,
-            SSN: additionalData.current.attendantSSN,
-            id : additionalData.current.attendantSerialNumber,
-            role: ""
-          }
-        }
-      }
-    )
-
-    // setCombinedValues((prevValues: any) => ({
-    //   ...prevValues,
-    //   patient: patientData.current,
-    //   companion: values,
-    //   visit: {
-    //     sequenceNumber: sequenceNumberValue.current,
-    //     kinship: kinshipValue.current,
-    //   },
-    // }));
+  const handleCompanionSubmit = (values: PersonInterface) => {
+    companionData.current = values
+    setCombinedValues((previous) => ({
+      ...previous,
+      companion: values,
+      kinship: kinshipValue.current
+    }))
   };
 
-  const onDeleteCompanion = () => {
-    setShowCompanionFlag(false);
-    setAddCompanionClicked(false);
+
+  //* Handle Additional Data Submit
+  const handleAdditionalDataSubmit = (values: AdditionalDataInterface) => {
+    additionalData.current = values
+    setCombinedValues((previous) => ({
+      ...previous,
+      additionalInfo: values,
+    }))
   };
 
-  // additional data
+  //* Handle Submit all Forms
+  const handleSubmitAllForms = () => {
+    submitPatient()
+    submitCompanion()
+    submitAdditionalData()
+  }
 
-  const intialAdditionalValues: AdditionalDataValues = {
-    comeFromString: "",
-    attendantName: "",
-    attendantSSN: "",
-    attendantSerialNumber: "",
-    carNum: "",
-    firstChar: "",
-    secondChar: "",
-    thirdChar: "",
-    reason: "",
-    place: "",
-    notes: "",
-  };
-
-  const handleAdditionalDataSubmit = (values: AdditionalDataValues) => {
-    if (!addCompanionClicked) {
-      setCombinedValues(
-        {
-          patient: patientData.current,
-          companion: sharedInitialValues,
-          visit: {
-            sequenceNumber: sequenceNumberValue.current,
-            kinship: "",
-          },
-          additionalInfo: {
-            cameFrom: values.comeFromString,
-            injuryLocation: values.place,
-            injuryCause: values.reason,
-            notes: values.notes,
-            car: {
-              firstChar: values.firstChar,
-              secondChar: values.secondChar,
-              thirdChar: values.thirdChar,
-              number: values.carNum
-            },
-            attendant: {
-              name: values.attendantName,
-              SSN: values.attendantSSN,
-              id : values.attendantSerialNumber,
-              role: ""
-            }
-          }
-        }
-      )
-    } else {
-      additionalData.current = values
-      console.log('ana da5lt', additionalData.current);
-      
-    }
-    
-  };
-
-  // global methods
-
-  const onTriggerRestAndPatientForm = () => {
-    if (refSubmitFirstStepButton.current) {
-      refSubmitFirstStepButton.current.click();
-      if (showCompanionFlag) {
-        if (refSubmitSecondStepButton.current) {
-          refSubmitSecondStepButton.current.click();
-        }
-      }
-    }
-  };
 
   useEffect(() => {
-    if (checkFirstRender.current) {
-      checkFirstRender.current = false;
-    } else {
-      console.log(combinedValues);
+    if (patientData.current &&
+      sequenceNumberValue.current &&
+      companionData.current &&
+      additionalData.current) {
+      // TODO: Make Dispatch
+      if (combinedValues) {
+
+        dispatch(
+          createVisit(combinedValues)
+        ).then(() => {
+          patientData.current = undefined
+          sequenceNumberValue.current = undefined
+          companionData.current = undefined
+          kinshipValue.current = undefined
+          additionalData.current = undefined
+        })
+        console.log(combinedValues)
+      }
     }
-  }, [combinedValues]);
+  },
+    [combinedValues]
+  );
 
   return (
     <Box sx={{ marginTop: "2.5rem" }}>
@@ -254,15 +149,16 @@ const AddVisitForm = () => {
         isExpanded={patientDataExpanded}
         setExpanded={setPatientDataExpanded}
       >
-        {/* start rest patient form */}
+        {/* //* Start Patient form ********************* */}
         <Formik
-          initialValues={{ sequenceNumber: "" }}
+          initialValues={{ sequenceNumber: undefined }}
           validationSchema={() => {
             setPatientDataExpanded(true);
-            return restPatientFormSchema;
+            return VisitEntity.sequenceNumberSchema()
           }}
-          onSubmit={(values) => {
-            handleRestPatientSubmit(values);
+          onSubmit={(values, { resetForm }) => {
+            handleSequenceNumSubmit(values);
+            resetForm();
           }}
         >
           {({
@@ -286,7 +182,7 @@ const AddVisitForm = () => {
                   touched={touched.sequenceNumber}
                   width="100%"
                   props={{
-                    type: "text",
+                    type: "number",
                   }}
                 />
                 <Box
@@ -298,8 +194,8 @@ const AddVisitForm = () => {
                 >
                   <Box
                     sx={{
-                      backgroundColor: child ? "primary.dark" : "#eee",
-                      color: child ? "white" : "black",
+                      backgroundColor: isChild ? "primary.dark" : "#eee",
+                      color: isChild ? "white" : "black",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
@@ -307,10 +203,10 @@ const AddVisitForm = () => {
                       padding: "0.6rem 0.7rem ",
                       width: "max-content",
                       cursor: "pointer",
-                      transition:'0.2s',
-                      userSelect:'none'
+                      transition: '0.2s',
+                      userSelect: 'none'
                     }}
-                    onClick={() => setChild(!child)}
+                    onClick={() => setIsChild(!isChild)}
                   >
                     <Typography>طفل / مجهول</Typography>
                   </Box>
@@ -318,41 +214,63 @@ const AddVisitForm = () => {
                 <Button
                   type="submit"
                   sx={{ display: "none" }}
-                  ref={refSubmitFirstStepButton}
+                  ref={refSubmitSequenceNum}
                 ></Button>
               </Box>
             </Box>
           )}
         </Formik>
 
-        {/* start patient form */}
-        <PersonalData
-          initialValues={sharedInitialValues}
+        {/* //* start Patient Personal form *************************** */}
+        <PersonalDataComponent
+          initialValues={PersonEntity.defaultValue()}
           onSubmit={handlePatientSubmit}
-          isSubmitted={submitPatientFlag}
+          refSubmitButton={refSubmitPatientPerson}
+          validateOnMount={true}
+          validationSchema={VisitEntity.getPatientSchema(!isChild)}
+          isResetForm={true}
         />
       </CustomAccordion>
 
-      {/* second step */}
-      <Box sx={{ display: showCompanionFlag === true ? "block" : "none" }}>
+      {/* //* Start Additional Data ******************* */}
+      <Box>
         <CustomAccordion
-          isClosable={true}
-          handleClosed={onDeleteCompanion}
+          isClosable={false}
+          title="البيانات الأضافية"
+          isDisabled={false}
+          isExpanded={additionalDataExpanded}
+          setExpanded={setAdditionalDataExpanded}
+        >
+          <AdditionalData
+            initialValues={AdditionalDataEntity.defaultValue()}
+            refSubmitButton={refSubmitAdditionalData}
+            onSubmit={handleAdditionalDataSubmit}
+            isResetForm={true}
+          />
+        </CustomAccordion>
+      </Box>
+
+
+      {/* //* Start Companion ************************************* */}
+      <Box>
+        <CustomAccordion
+          isClosable={false}
           title="بيانات المرافق"
           isDisabled={false}
           isExpanded={companionDataExpanded}
           setExpanded={setCompanionDataExpanded}
         >
-          {/* start rest companion form */}
+          {/* //* start rest companion form */}
           <Box>
             <Formik
-              initialValues={{ kinship: "" }}
+              initialValues={{ kinship: undefined }}
               validationSchema={() => {
                 setCompanionDataExpanded(true);
-                return restCompanionFormSchema;
+                return VisitEntity.kinshipSchema(companionData.current ? allValuesUndefined(companionData.current) : false);
               }}
-              onSubmit={(values) => {
-                handleRestCompanionSubmit(values);
+              onSubmit={(values, { resetForm }) => {
+                handleKinshipSubmit(values)
+                resetForm();
               }}
             >
               {({
@@ -374,69 +292,26 @@ const AddVisitForm = () => {
                     error={errors.kinship}
                     touched={touched.kinship}
                     width="100%"
-                    options={[
-                      {
-                        id: "BROTHER",
-                        title: "أخ",
-                      },
-                      {
-                        id: "SISTER",
-                        title: "أخت",
-                      },
-                      {
-                        id: "FATHER",
-                        title: "أب",
-                      },
-                      {
-                        id: "MOTHER",
-                        title: "أم",
-                      },
-                      {
-                        id: "COUSIN",
-                        title: "ابن/ة عم - ابن/ة خال",
-                      },
-                      {
-                        id: "AUNT",
-                        title: "عمة / خالة",
-                      },
-                      {
-                        id: "OTHER",
-                        title: "آخر",
-                      },
-                    ]}
+                    options={lookupsState.lookups.kinshipTypes}
                   />
                   <Button
                     type="submit"
                     sx={{ display: "none" }}
-                    ref={refSubmitSecondStepButton}
+                    ref={refSubmitKinship}
                   ></Button>
                 </Box>
               )}
             </Formik>
 
-            {/* start companion form */}
-            <PersonalData
-              initialValues={sharedInitialValues}
+            {/* //* start companion form */}
+            <PersonalDataComponent
+              initialValues={PersonEntity.defaultValue()}
               onSubmit={handleCompanionSubmit}
-              isSubmitted={submitCompanionFlag}
+              refSubmitButton={refSubmitCompanionPerson}
+              validationSchema={(kinshipValue.current ? true : false) || isChild ? undefined : VisitEntity.getCompanionSchema()}
+              isResetForm={true}
             />
           </Box>
-        </CustomAccordion>
-      </Box>
-
-      <Box>
-        <CustomAccordion
-          isClosable={false}
-          title="البيانات الأضافية"
-          isDisabled={false}
-          isExpanded={additionalDataExpanded}
-          setExpanded={setAdditionalDataExpanded}
-        >
-          <AdditionalData
-            initialValues={intialAdditionalValues}
-            isSubmitted={submitAdditionalDataFlag}
-            onSubmit={handleAdditionalDataSubmit}
-          />
         </CustomAccordion>
       </Box>
 
@@ -452,17 +327,18 @@ const AddVisitForm = () => {
         <PrimaryButton
           title="تأكيــد"
           type="button"
-          onClick={() => onTriggerRestAndPatientForm()}
+          onClick={() => handleSubmitAllForms()}
         />
-        <SecondaryButton
+        {/* <SecondaryButton
           title="اضــــافة مـــرافق"
           type="button"
           onClick={() => {
             setAddCompanionClicked(true);
-            onTriggerRestAndPatientForm();
+            setShowCompanionFlag(true)
+            // onTriggerRestAndPatientForm();
           }}
           sx={{ display: showCompanionFlag ? "none" : "block" }}
-        />
+        /> */}
       </Box>
     </Box>
   );

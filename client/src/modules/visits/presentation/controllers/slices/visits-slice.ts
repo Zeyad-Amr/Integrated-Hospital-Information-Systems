@@ -48,10 +48,10 @@ const authSlice = createSlice({
             state.loading = true;
             state.error = "";
         });
-        builder.addCase(createVisit.fulfilled, (state, _action) => {
+        builder.addCase(createVisit.fulfilled, (state, action) => {
             state.loading = false;
             state.error = "";
-            state.visits = [_action.payload]
+            state.visits = [action.payload]
             console.log('state.visits', state.visits);
         });
         builder.addCase(createVisit.rejected, (state, action) => {

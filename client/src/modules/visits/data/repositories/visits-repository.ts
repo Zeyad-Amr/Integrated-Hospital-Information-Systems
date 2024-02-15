@@ -10,12 +10,10 @@ class VisitsRepository extends BaseVisitsRepository {
 
     override async createVisit(visit: VisitInterface): Promise<VisitInterface> {
         try {
-            console.log("Creating Visit");
-            console.log('VR', visit);
             const result = await this.baseVisitsDataSource.createVisit(visit);
-            console.log(result);
             return result;
         } catch (error) {
+            console.log(error)
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;
             console.log(errorResponse);
             throw errorResponse;
