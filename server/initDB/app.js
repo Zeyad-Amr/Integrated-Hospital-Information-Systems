@@ -12,7 +12,8 @@ const {
   comorbidities,
   triageTypes,
   attendantRoles,
-  KinshipTypes
+  KinshipTypes,
+  governate
 } = require('./data')
 
 async function insertAdmin() {
@@ -36,7 +37,7 @@ async function insertAdmin() {
                 verificationMethod: { connect: { value: 'بطاقة الهوية الوطنية' } },
                 gender: { connect: { value: "ذكر" } },
                 birthDate: '2001-07-12T00:00:00.000Z',
-                governate: 'Giza',
+                governate: { connect: { id: 1 } },
                 address: 'Fasil',
                 type: PrismaClient.PersonType.EMPLOYEE
               },
@@ -215,6 +216,20 @@ async function insertEnums() {
     });
   prisma.kinshipType.createMany({
     data: KinshipTypes,
+    skipDuplicates: true
+  })
+    .then((res) => {
+      console.log('Init data created');
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      prisma.$disconnect();
+    });
+  prisma.governate.createMany({
+    data: governate,
     skipDuplicates: true
   })
     .then((res) => {
