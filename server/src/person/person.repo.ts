@@ -45,7 +45,8 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
 
   personInclude: Prisma.PersonInclude = {
     verificationMethod: true,
-    gender: true
+    gender: true,
+    governate: true,
   }
 
 }
