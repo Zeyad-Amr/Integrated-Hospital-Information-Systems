@@ -135,7 +135,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
 
           console.log(person);
           if (person?.type !== PersonType.PATIENT) {
-            const { verificationMethodId, genderId, ...personalData } = createVisitDto.patient
+            const { verificationMethodId, genderId, governateId, ...personalData } = createVisitDto.patient
             patient = await tx.patient.create({
               data: {
                 person: {
@@ -146,6 +146,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
                     create: {
                       ...personalData,
                       verificationMethod: verificationMethodId ? { connect: { id: verificationMethodId } } : undefined,
+                      governate: governateId ? { connect: { id: governateId } } : undefined,
                       gender: { connect: { id: genderId } },
                       type: PersonType.PATIENT
                     }
@@ -165,7 +166,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
           let companion: Companion;
           let companionConnect: Prisma.CompanionWhereUniqueInput;
           if (createVisitDto.companion) {
-            const { verificationMethodId, genderId, kinshipId, ...personalData } = createVisitDto.companion
+            const { verificationMethodId, genderId, kinshipId, governateId, ...personalData } = createVisitDto.companion
             const person = await this.personRepo.findBySSN(createVisitDto.companion.SSN)
             if (person?.type !== PersonType.COMPANION) {
               companion = await tx.companion.create({
@@ -177,6 +178,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
                       create: {
                         ...personalData,
                         verificationMethod: verificationMethodId ? { connect: { id: verificationMethodId } } : undefined,
+                        governate: governateId ? { connect: { id: governateId } } : undefined,
                         gender: { connect: { id: genderId } },
                         type: PersonType.COMPANION
                       }

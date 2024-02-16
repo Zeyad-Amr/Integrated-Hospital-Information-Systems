@@ -21,7 +21,7 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
   ): Promise<Employee> {
     try {
       const { auth, person, roleId, shiftId, departmentId } = item;
-      const { verificationMethodId, genderId, ...personData } = person
+      const { verificationMethodId, genderId, governateId, ...personData } = person
       const employee = await this.prismaService.employee.create({
         data: {
           role: { connect: { id: roleId } },
@@ -38,6 +38,7 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
               create: {
                 ...personData,
                 verificationMethod: { connect: { id: verificationMethodId } },
+                governate: governateId ? { connect: { id: governateId } } : undefined,
                 gender: { connect: { id: genderId } },
                 type: PersonType.EMPLOYEE
               },
