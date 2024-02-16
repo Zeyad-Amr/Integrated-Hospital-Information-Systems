@@ -5,15 +5,17 @@ import { Grid, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
-import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
+import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
 import FeaturedVideoRoundedIcon from "@mui/icons-material/FeaturedVideoRounded";
-import PersonEntity from "@/modules/auth/domain/entities/person-entity";
+import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
 import { LookupsState } from "../modules/lookups/presentation/controllers/types";
-import { useAppSelector } from "@/core/state/store";
+import { AppDispatch, useAppSelector } from "@/core/state/store";
 import { Yup } from "../utils/validation";
 
 import Dialog from "./Dialog";
 import PersonIcon from "@mui/icons-material/Person";
+import { useDispatch } from "react-redux";
+import { getPerson } from "../modules/person/presentation/controllers/thunks/person-thunk";
 interface PersonalDataProps {
   initialValues: PersonInterface;
   onSubmit: (values: PersonInterface) => void;
@@ -31,9 +33,13 @@ const PersonalDataComponent = ({
   isResetForm = false,
   validateOnMount = false,
 }: PersonalDataProps) => {
+  const dispatch = useDispatch<AppDispatch>()
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
+
+  dispatch(getPerson({ ssn: "30012134105193" }))
+
   const fileInputRef = useRef<any>();
   const selectFile = () => {
     setShawDialog("block");

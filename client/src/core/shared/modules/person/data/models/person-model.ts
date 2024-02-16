@@ -29,14 +29,14 @@ export default class PersonModel {
             thirdName: json.thirdName,
             fourthName: json.fourthName,
             SSN: json.SSN,
-            verificationMethod: json.verificationMethod ?? state.lookups.lookups.identityTypes[0],
-            gender: json.gender ?? state.lookups.lookups.genderTypes[0],
-            birthDate: new Date(json.birthDate),
+            verificationMethod: json.verificationMethodId,
+            gender: json.genderId,
+            birthDate: json.birthDate ? new Date(json.birthDate) : undefined,
             phone: json.phone,
-            governate: state.lookups.lookups.governates.find((governate) => governate.value === json.governate) ?? state.lookups.lookups.governates[0],
+            governate: json.governate,
             address: json.address,
-            createdAt: new Date(json.createdAt),
-            updatedAt: new Date(json.updatedAt),
+            createdAt: json.createdAt ? new Date(json.createdAt) : undefined,
+            updatedAt: json.updatedAt ? new Date(json.updatedAt) : undefined,
         };
     }
 }

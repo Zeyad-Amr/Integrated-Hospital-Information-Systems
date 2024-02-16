@@ -5,9 +5,9 @@ import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-in
 import { ErrorResponse } from "@/core/api";
 import EmployeeEntity from "@/modules/employees/domain/entities/employee-entity";
 import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
-import PersonEntity from "@/modules/auth/domain/entities/person-entity";
+import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
 import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
-import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
+import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
 
 //* Initial State
 const initialState: EmployeeState = {

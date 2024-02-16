@@ -1,5 +1,5 @@
 import { allValuesUndefined } from '@/core/shared/utils/object-operations';
-import PersonModel from '../../../auth/data/models/person-model';
+import PersonModel from '../../../../core/shared/modules/person/data/models/person-model';
 import VisitInterface from '../../domain/interfaces/visit-interface';
 import AdditionalDataModel from './additional-data-model';
 

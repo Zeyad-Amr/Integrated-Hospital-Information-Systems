@@ -1,4 +1,4 @@
-import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
+import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
 import { AdditionalDataInterface } from "./additional-data-interface";
 
 interface VisitInterface {

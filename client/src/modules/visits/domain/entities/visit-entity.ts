@@ -1,7 +1,7 @@
 import { Yup } from '@/core/shared/utils/validation';
 import VisitInterface from '../interfaces/visit-interface';
 import store from '@/core/state/store';
-import PersonInterface from '@/modules/auth/domain/interfaces/person-interface';
+import PersonInterface from '@/core/shared/modules/person/domain/interfaces/person-interface';
 
 interface PersonInputInterface extends Omit<PersonInterface, 'id' | 'createdAt' | 'updatedAt'> { }
 
