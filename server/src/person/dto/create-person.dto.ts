@@ -51,7 +51,7 @@ export class CreatePersonDto {
 
   @ApiProperty({
     type: Number,
-    example: '1',
+    example: 1,
   })
   @IsOptional()
   @IsInt()
@@ -59,7 +59,7 @@ export class CreatePersonDto {
 
   @ApiProperty({
     type: Number,
-    example: '1',
+    example: 1,
   })
   @IsNotEmpty()
   @IsInt()
@@ -82,12 +82,12 @@ export class CreatePersonDto {
   phone: string;
 
   @ApiProperty({
-    type: String,
-    example: 'Giza',
+    type: Number,
+    example: 1,
   })
   @IsOptional()
-  @IsString()
-  governate: string;
+  @IsInt()
+  governateId: number;
 
   @ApiProperty({
     type: String,

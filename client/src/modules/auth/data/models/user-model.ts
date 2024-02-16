@@ -1,7 +1,7 @@
 import store from '@/core/state/store';
 import UserInterface from '../../domain/interfaces/user-interface';
 import AuthDataModel from './auth-data-model';
-import PersonModel from './person-model';
+import PersonModel from '../../../../core/shared/modules/person/data/models/person-model';
 
 export default class UserModel {
 

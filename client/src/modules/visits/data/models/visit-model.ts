@@ -1,5 +1,5 @@
 import { allValuesUndefined } from '@/core/shared/utils/object-operations';
-import PersonModel from '../../../auth/data/models/person-model';
+import PersonModel from '../../../../core/shared/modules/person/data/models/person-model';
 import VisitInterface from '../../domain/interfaces/visit-interface';
 import AdditionalDataModel from './additional-data-model';
 
@@ -9,7 +9,7 @@ export default class VisitModel {
     static toJson(entity: VisitInterface): any {
         return {
             patient: entity.patient ? PersonModel.toJson(entity.patient) : undefined,
-            companion: entity.companion && !allValuesUndefined(entity.companion) ? { ...PersonModel.toJson(entity.companion), kinship: entity.kinship } : undefined,
+            companion: entity.companion && !allValuesUndefined(entity.companion) ? { ...PersonModel.toJson(entity.companion), kinshipId: entity.kinship } : undefined,
             visit: {
                 sequenceNumber: entity.sequenceNumber,
             },

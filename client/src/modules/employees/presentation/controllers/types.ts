@@ -1,5 +1,5 @@
 import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
-import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
+import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
 
 // Define the initial state using that type

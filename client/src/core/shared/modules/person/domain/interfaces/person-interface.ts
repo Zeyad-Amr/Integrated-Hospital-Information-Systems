@@ -12,6 +12,4 @@ export default interface PersonInterface {
     phone?: string;
     governate?: number;
     address?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
 }

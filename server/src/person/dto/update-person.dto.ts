@@ -51,16 +51,16 @@ export class UpdatePersonDto {
   SSN: string;
 
   @ApiProperty({
-    type: String,
-    example: 'NATIONALIDCARD',
+    type: Number,
+    example: 1,
   })
   @IsOptional()
   @IsInt()
   verificationMethodId: number;
 
   @ApiProperty({
-    type: String,
-    example: 'MALE',
+    type: Number,
+    example: 1,
   })
   @IsOptional()
   @IsInt()
@@ -87,12 +87,12 @@ export class UpdatePersonDto {
     example: 'diaabadr82@gmail.com',
   })
   @ApiProperty({
-    type: String,
-    example: 'Giza',
+    type: Number,
+    example: 1,
   })
-  @IsString()
+  @IsInt()
   @IsOptional()
-  governate: string;
+  governateId: number;
 
   @ApiProperty({
     type: String,

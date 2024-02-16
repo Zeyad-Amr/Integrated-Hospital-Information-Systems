@@ -361,7 +361,7 @@ const AdditionalData = ({
                             )
                             : e.preventDefault(),
                         id: "amb-car-4",
-                        type: "text",
+                        type: "number",
                         placeholder: "الرقم",
                       }}
                     />

@@ -6,7 +6,7 @@ export interface AdditionalDataInterface {
     attendantSSN?: string;
     attendantSerialNumber?: string;
     attendantRole?: AttendantRole
-    carNum?: string;
+    carNum?: number;
     firstChar?: string;
     secondChar?: string;
     thirdChar?: string;

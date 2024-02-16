@@ -28,5 +28,8 @@ const Endpoints = {
         update: '/department/:id',
         delete: '/department/:id',
     },
+    person: {
+        details: '/person/:ssn'
+    }
 };
 export default Endpoints;

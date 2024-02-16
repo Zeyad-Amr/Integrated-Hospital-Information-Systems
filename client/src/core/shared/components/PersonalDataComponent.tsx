@@ -1,19 +1,22 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
-import { Formik } from "formik";
+import { Formik, useFormikContext } from "formik";
 import { Grid, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
-import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
+import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
 import FeaturedVideoRoundedIcon from "@mui/icons-material/FeaturedVideoRounded";
-import PersonEntity from "@/modules/auth/domain/entities/person-entity";
+import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
 import { LookupsState } from "../modules/lookups/presentation/controllers/types";
 import { useAppSelector } from "@/core/state/store";
 import { Yup } from "../utils/validation";
 
 import Dialog from "./Dialog";
 import PersonIcon from "@mui/icons-material/Person";
+import { ServiceKeys, sl } from "@/core/service-locator";
+import { allValuesUndefined } from "../utils/object-operations";
+import { GetPersonUseCase } from "../modules/person/domain/usecases";
 interface PersonalDataProps {
   initialValues: PersonInterface;
   onSubmit: (values: PersonInterface) => void;
@@ -21,6 +24,25 @@ interface PersonalDataProps {
   validationSchema?: Yup.ObjectSchema<any>
   isResetForm?: boolean;
   validateOnMount?: boolean;
+}
+
+// how to use useFormikContext mentioned in the documentation https://formik.org/docs/api/useFormikContext
+const FindPersonySSN = () => {
+  const { values }: { values: PersonInterface } = useFormikContext();
+  const { setValues } = useFormikContext();
+
+  useEffect(() => {
+    if ((values?.SSN as string).length === 14) {
+      sl.get<GetPersonUseCase>(ServiceKeys.GetPersonUseCase).call(values.SSN as string).then((res) => {
+        if (!allValuesUndefined(res)) {
+          setValues(PersonEntity.handleFormValues(res))
+        }
+
+      })
+    }
+  }, [values.SSN])
+
+  return null;
 }
 
 const PersonalDataComponent = ({
@@ -34,6 +56,7 @@ const PersonalDataComponent = ({
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
+
   const fileInputRef = useRef<any>();
   const selectFile = () => {
     setShawDialog("block");
@@ -415,6 +438,7 @@ const PersonalDataComponent = ({
               sx={{ display: "none" }}
               ref={refSubmitButton}
             ></Button>
+            <FindPersonySSN />
           </Box>
         </>
       )}

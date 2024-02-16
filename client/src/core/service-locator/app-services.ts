@@ -29,6 +29,10 @@ import { BaseTriageAXDataSource, TriageAXDataSource } from "@/modules/er-area/da
 import BaseTriageAXRepository from "@/modules/er-area/domain/repositories/base-triageAX-repository";
 import TriageAXRepository from "@/modules/er-area/data/repositories/triageAX-repository";
 import CreateTriageAXUseCase from "@/modules/er-area/domain/usecases/create-triageAX-usecase";
+import { BasePersonDataSource, PersonDataSource } from "../shared/modules/person/data/datasources/person-datasource";
+import BasePersonRepository from "../shared/modules/person/domain/repositories/base-person-repository";
+import PersonRepository from "../shared/modules/person/data/repositories/person-repository";
+import { GetPersonUseCase } from "../shared/modules/person/domain/usecases";
 
 
 class AppServicesLocator {
@@ -50,6 +54,9 @@ class AppServicesLocator {
         sl.registerFactory<BaseTriageAXDataSource>(ServiceKeys.TriageAXDataSource, () => new TriageAXDataSource(
             sl.get<ApiClient>(ServiceKeys.ApiClient)
         ));
+        sl.registerFactory<BasePersonDataSource>(ServiceKeys.PersonDataSource, () => new PersonDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
 
 
         //* Repositories ----------------------------------------------
@@ -66,6 +73,9 @@ class AppServicesLocator {
             sl.get<BaseLookupsDataSource>(ServiceKeys.LookupsDataSource)));
         sl.registerFactory<BaseTriageAXRepository>(ServiceKeys.TriageAXRepository, () => new TriageAXRepository(
             sl.get<BaseTriageAXRepository>(ServiceKeys.TriageAXDataSource)
+        ));
+        sl.registerFactory<BasePersonRepository>(ServiceKeys.PersonRepository, () => new PersonRepository(
+            sl.get<BasePersonDataSource>(ServiceKeys.PersonDataSource)
         ));
 
         //* Use Cases --------------------------------------------------
@@ -110,6 +120,10 @@ class AppServicesLocator {
 
         sl.registerFactory<CreateTriageAXUseCase>(ServiceKeys.CreateTriageAXUseCase, () => new CreateTriageAXUseCase(
             sl.get<BaseTriageAXRepository>(ServiceKeys.TriageAXRepository)
+        ));
+
+        sl.registerFactory<GetPersonUseCase>(ServiceKeys.GetPersonUseCase, () => new GetPersonUseCase(
+            sl.get<BasePersonRepository>(ServiceKeys.PersonRepository)
         ));
 
         //* Exnternal Services --------------------------------------------------

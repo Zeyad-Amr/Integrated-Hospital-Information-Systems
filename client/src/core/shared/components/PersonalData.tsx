@@ -5,7 +5,7 @@ import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
-import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
+import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
 import {
   IGender,
   IGovernate,
@@ -16,7 +16,7 @@ import {
   governateList,
   identityList,
 } from "@/modules/auth/domain/data-values/constants";
-import PersonEntity from "@/modules/auth/domain/entities/person-entity";
+import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
 import Dialog from "./Dialog";
 
 interface PersonalDataProps {
