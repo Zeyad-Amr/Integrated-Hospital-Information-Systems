@@ -8,10 +8,8 @@ export default interface PersonInterface {
     SSN?: string;
     verificationMethod?: number;
     gender?: number;
-    birthDate?: string | Date;
+    birthDate?: string;
     phone?: string;
     governate?: number;
     address?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
 }

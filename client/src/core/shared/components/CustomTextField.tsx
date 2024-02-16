@@ -8,7 +8,7 @@ export interface CustomTextFieldProps {
   label: string;
   error: string | undefined;
   touched: boolean | undefined;
-  value: string | number | undefined | null;
+  value: any;
   multiline?: boolean | undefined;
   maxLength?: number;
   rows?: number;

@@ -1,4 +1,3 @@
-import store from '@/core/state/store';
 import PersonInterface from '../../domain/interfaces/person-interface';
 
 export default class PersonModel {
@@ -12,16 +11,15 @@ export default class PersonModel {
             SSN: entity.SSN,
             verificationMethodId: entity.verificationMethod,
             genderId: entity.gender,
-            birthDate: new Date(entity.birthDate ?? Date.now().toString()),
+            birthDate: entity.birthDate ? new Date(entity.birthDate) : undefined,
             phone: '+2' + entity.phone,
-            governate: entity.governate?.toString(),
+            governateId: entity.governate,
             address: entity.address
         };
     }
 
     //* --------------------- Deserialization: Create a model from JSON data ---------------------
     static fromJson(json: any): PersonInterface {
-        const state = store.getState();
         return {
             id: json.id,
             firstName: json.firstName,
@@ -31,12 +29,10 @@ export default class PersonModel {
             SSN: json.SSN,
             verificationMethod: json.verificationMethodId,
             gender: json.genderId,
-            birthDate: json.birthDate ? new Date(json.birthDate) : undefined,
+            birthDate: json.birthDate,
             phone: json.phone,
-            governate: json.governate,
+            governate: json.governateId,
             address: json.address,
-            createdAt: json.createdAt ? new Date(json.createdAt) : undefined,
-            updatedAt: json.updatedAt ? new Date(json.updatedAt) : undefined,
         };
     }
 }

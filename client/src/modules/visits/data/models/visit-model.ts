@@ -9,7 +9,7 @@ export default class VisitModel {
     static toJson(entity: VisitInterface): any {
         return {
             patient: entity.patient ? PersonModel.toJson(entity.patient) : undefined,
-            companion: entity.companion && !allValuesUndefined(entity.companion) ? { ...PersonModel.toJson(entity.companion), kinship: entity.kinship } : undefined,
+            companion: entity.companion && !allValuesUndefined(entity.companion) ? { ...PersonModel.toJson(entity.companion), kinshipId: entity.kinship } : undefined,
             visit: {
                 sequenceNumber: entity.sequenceNumber,
             },

@@ -18,9 +18,24 @@ export default class PersonEntity {
             phone: "",
             governate: 0,
             address: "",
-            createdAt: undefined,
-            updatedAt: undefined,
         };
+    }
+
+    static handleFormValues(values: PersonInterface): PersonInterface {
+        return {
+            id: values.id ?? this.defaultValue().id,
+            firstName: values.firstName ?? this.defaultValue().firstName,
+            secondName: values.secondName ?? this.defaultValue().secondName,
+            thirdName: values.thirdName ?? this.defaultValue().thirdName,
+            fourthName: values.fourthName ?? this.defaultValue().fourthName,
+            address: values.address ?? this.defaultValue().address,
+            birthDate: values.birthDate ? values.birthDate.split("T")[0] : this.defaultValue().birthDate,
+            gender: values.gender ?? this.defaultValue().gender,
+            governate: values.governate ?? this.defaultValue().governate,
+            phone: values.phone ?? this.defaultValue().phone,
+            verificationMethod: values.verificationMethod ?? this.defaultValue().verificationMethod,
+            SSN: values.SSN ?? this.defaultValue().SSN
+        }
     }
 
     // TODO: Replace any with PersonInterface, and fix the error

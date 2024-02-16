@@ -16,7 +16,7 @@ class PersonDataSource extends BasePersonDataSource {
         const response = await this.apiClient.get(Endpoints.person.details, { pathVariables: { ssn } });
         console.log(response.data);
 
-        return response.data
+        return PersonModel.fromJson(response.data)
     }
 
 }
