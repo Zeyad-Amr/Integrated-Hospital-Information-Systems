@@ -29,20 +29,47 @@ interface PersonalDataProps {
 // how to use useFormikContext mentioned in the documentation https://formik.org/docs/api/useFormikContext
 const FindPersonySSN = () => {
   const { values }: { values: PersonInterface } = useFormikContext();
-  const { setValues } = useFormikContext();
+  const { setValues , setFieldValue } = useFormikContext();
 
   useEffect(() => {
     if ((values?.SSN as string).length === 14) {
-      sl.get<GetPersonUseCase>(ServiceKeys.GetPersonUseCase).call(values.SSN as string).then((res) => {
+      sl.get<GetPersonUseCase>(ServiceKeys.GetPersonUseCase).call(values.SSN as string).then((res : any) => {
         if (!allValuesUndefined(res)) {
           setValues(PersonEntity.handleFormValues(res))
+        } else {
+          setFieldValue('gender',extractSSNData(values.SSN as string)?.gender)
+          setFieldValue('birthDate',extractSSNData(values.SSN as string)?.birthdate)
         }
-
+      }, (err : any) => {
+        console.log('find user by SSN Error',err);
       })
     }
   }, [values.SSN])
 
   return null;
+}
+
+const extractSSNData = (SSN: string) : { gender : number , birthdate : string} | null => {
+
+  if (SSN.length !== 14) {
+      return null;
+  }
+  
+  // Extract birthdate
+  const twoDigitsYearBirth = parseInt(SSN.substring(1, 3), 10);  
+  const calculatedYear = (SSN.charAt(0) === '3' ? 2000 : 1900) + twoDigitsYearBirth;
+  const month = parseInt(SSN.substring(3, 5), 10);
+  const day = parseInt(SSN.substring(5, 7), 10);
+  const birthdate = `${calculatedYear}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+  // Extract gender
+  const genderDigit = parseInt(SSN.charAt(12), 10);
+  const gender = genderDigit % 2 === 0 ? 2 : 1;  // 1 for male, 2 for female
+
+  return {
+      gender,
+      birthdate,
+  };
 }
 
 const PersonalDataComponent = ({
