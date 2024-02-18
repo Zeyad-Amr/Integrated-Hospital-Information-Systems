@@ -7,23 +7,21 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import FilterListRoundedIcon from "@mui/icons-material/FilterListRounded";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import InputLabel from "@mui/material/InputLabel";
+import { HeaderItem } from "../CustomBasicTable";
 
 interface FIlterTableProps {
-  columnHeader: [];
-  data: [];
-  setFilterdData: any;
+  columnHeader: HeaderItem[];
+  setFilterdData: Function;
   setSearchValue: Function;
 }
 
 const TablesTollbar = ({
   columnHeader,
-  data,
   setFilterdData,
   setSearchValue,
 }: FIlterTableProps) => {
@@ -80,13 +78,13 @@ const TablesTollbar = ({
     };
   }, [myDivRef]);
 
-  const handleSearch = (data: [], search: string) => {
-    return data.filter((obj) =>
-      Object.values(obj).some(
-        (value) => typeof value === "string" && value.includes(search)
-      )
-    );
-  };
+  // const handleSearch = (data: T[], search: string) => {
+  //   return data.filter((obj) =>
+  //     Object.values(obj).some(
+  //       (value) => typeof value === "string" && value.includes(search)
+  //     )
+  //   );
+  // };
 
   const [checked, setChecked] = React.useState([true, false, false]);
   const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,7 +111,7 @@ const TablesTollbar = ({
   const SearchOptions: string[] = [];
   const handleSearchOptions = () => {
     columnHeader.map((item: any) => {
-      SearchOptions.push(item.id);
+      SearchOptions.push(item.label);
     });
     return SearchOptions;
   };
@@ -129,7 +127,10 @@ const TablesTollbar = ({
       sx={{
         width: "100%",
         backgroundColor: "white",
-        padding: "0.5rem 2rem",
+        padding: "0.3rem 1rem",
+        marginBottom: "0.5rem",
+        boxShadow: "0 0 6px #00000025",
+        borderRadius: "10px",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
@@ -158,7 +159,14 @@ const TablesTollbar = ({
 
               return selected;
             }}
-            sx={{boxShadow: 'none', '.MuiOutlinedInput-notchedOutline': { border: 0, borderRight:'1px solid #00000030', borderRadius:'0' } }}
+            sx={{
+              boxShadow: "none",
+              ".MuiOutlinedInput-notchedOutline": {
+                border: 0,
+                borderRight: "1px solid #00000030",
+                borderRadius: "0",
+              },
+            }}
           >
             {SearchOptions.map((option: string, idx: number) => (
               <MenuItem value={option} key={idx}>
@@ -172,9 +180,9 @@ const TablesTollbar = ({
           sx={{ ml: 1, flex: 1 }}
           placeholder="بحـــث"
           onChange={(e) => (
-            setSearchValue(e.target.value),
-            (search.current = e.target.value),
-            setFilterdData([...handleSearch(data, search.current)])
+            setSearchValue(e.target.value), (search.current = e.target.value)
+            // ,
+            // setFilterdData([...handleSearch(data, search.current)])
           )}
         />{" "}
       </Box>
