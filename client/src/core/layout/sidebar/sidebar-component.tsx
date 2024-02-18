@@ -5,48 +5,36 @@ import SidebarSubmenuItem from "./menu/sidebar-submenu-item";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import ApartmentIcon from "@mui/icons-material/Apartment";
-import { Button } from "@mui/material";
 import { SidebarContext } from "./context/context";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { MenuIcon, CloseIcon } from "@/assets/icons/index";
 const SidebarComponent = () => {
   const { collapsed, onCollapse } = useContext(SidebarContext);
-  const handleSideBarHover = () => {
-    // onCollapse()
 
-  }
   return (
     <Box
       sx={{
         width: "100%",
         height: "100%",
       }}
-      onMouseEnter={() => handleSideBarHover()}
-
     >
       <Box
         sx={{
-          cursor: "pointer",
           display: "flex",
-          justifyContent: "center",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: collapsed ? "center" : "flex-end",
+          cursor: "pointer",
+          // marginY: "1vh",
+          marginX: "1vw",
         }}
+        onClick={onCollapse}
       >
-        <Box
-          onClick={onCollapse}
-          sx={{
-            paddingX: "0.1rem",
-            paddingY: "0.7rem",
-          }}
-        >
-          <Box>
-            {!collapsed ? (
-              <CloseRoundedIcon sx={{ color: "white", fontSize: "1.5rem" }} />
-            ) : (
-              <MenuRoundedIcon sx={{ color: "white", fontSize: "1.5rem" }} />
-            )}
-          </Box>
-        </Box>
+        {!collapsed ? (
+          <CloseRoundedIcon sx={{ color: "white", fontSize: "1.5rem" }} />
+        ) : (
+          <MenuRoundedIcon sx={{ color: "white", fontSize: "1.5rem" }} />
+        )}
       </Box>
       <SidebarMenuItem
         icon={
@@ -78,7 +66,10 @@ const SidebarComponent = () => {
         text="الإصابات الجماعية"
         path="/dashboard/incidents/"
       >
-        <SidebarSubmenuItem text="إضافة إصابة جماعية" path="/dashboard/incidents/add" />
+        <SidebarSubmenuItem
+          text="إضافة إصابة جماعية"
+          path="/dashboard/incidents/add"
+        />
         <SidebarSubmenuItem
           text="استكمال الإصابات الجماعية"
           path="/dashboard/incidents/all"
@@ -105,9 +96,7 @@ const SidebarComponent = () => {
         activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
         text="ER Area"
         path="/dashboard/er-area"
-      >
-
-      </SidebarMenuItem>
+      ></SidebarMenuItem>
     </Box>
   );
 };

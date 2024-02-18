@@ -1,6 +1,5 @@
 import AccessibleIcon from "@mui/icons-material/Accessible";
 import AccessibilityIcon from "@mui/icons-material/Accessibility";
-import HealingIcon from "@mui/icons-material/Healing";
 import DescriptionIcon from "@mui/icons-material/Description";
 import { HeaderItem } from "../../../../core/shared/components/CustomDataTable";
 export interface DataItem {
@@ -161,9 +160,10 @@ export const data: DataItem[] = [
   },
   {
     id: "18",
-    name: "Leanne Graham",
-    email: "user1@healu.com",
-    phone: "1-770-736-8031 x56442",
+    name: "Leanne Graham Leanne Graham Leanne Graham Leanne Graham",
+    email: "user1@healu.com user1@healu.com user1@healu.com user1@healu.com",
+    phone:
+      "1-770-736-8031x564421-770-736-8031 x564421-770-736-8031 x564421-770-736-8031 x56442",
     address: "Kulas Light",
     description: "description",
   },
@@ -198,6 +198,7 @@ export const header: HeaderItem[] = [
     id: "id",
     label: "ID",
     minWidth: 50,
+    maxWidth: 50,
     tableCellProps: { align: "center" },
     sortable: true,
     filterable: true,
@@ -208,6 +209,7 @@ export const header: HeaderItem[] = [
     id: "name",
     label: "Name",
     minWidth: 100,
+    maxWidth: 100,
     tableCellProps: { align: "center" },
     sortable: true,
     filterable: true,
@@ -218,6 +220,7 @@ export const header: HeaderItem[] = [
     id: "email",
     label: "Email",
     minWidth: 100,
+    maxWidth: 100,
     tableCellProps: { align: "center" },
     sortable: true,
     filterable: true,
@@ -228,6 +231,7 @@ export const header: HeaderItem[] = [
     id: "phone",
     label: "Phone",
     minWidth: 100,
+    maxWidth: 100,
     tableCellProps: { align: "center" },
     sortable: true,
     filterable: true,
@@ -238,6 +242,7 @@ export const header: HeaderItem[] = [
     id: "address",
     label: "Address",
     minWidth: 100,
+    maxWidth: 100,
     tableCellProps: { align: "center" },
     sortable: true,
     filterable: true,
@@ -248,6 +253,7 @@ export const header: HeaderItem[] = [
     id: "description",
     label: "Description",
     minWidth: 100,
+    maxWidth: 100,
     tableCellProps: { align: "center" },
     sortable: true,
     filterable: true,
@@ -259,12 +265,12 @@ export const header: HeaderItem[] = [
     id: "status",
     label: "Status",
     minWidth: 100,
+    maxWidth: 100,
     tableCellProps: { align: "center" },
     sortable: false,
     filterable: false,
     searchable: false,
     onClick: () => {},
     isIcon: true,
-    icon: <HealingIcon />,
   },
 ];
