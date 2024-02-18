@@ -22,7 +22,6 @@ import {
 } from 'src/shared/decorators/filters.decorator';
 import { Public } from 'src/shared/decorators/public.decorator';
 
-@Public()
 @ApiBearerAuth()
 @ApiTags('patient')
 @Controller('patient')

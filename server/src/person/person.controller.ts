@@ -18,6 +18,7 @@ import {
   Filter,
   FilteringParams,
 } from 'src/shared/decorators/filters.decorator';
+import { Public } from 'src/shared/decorators/public.decorator';
 
 @ApiBearerAuth()
 @ApiTags('person')
