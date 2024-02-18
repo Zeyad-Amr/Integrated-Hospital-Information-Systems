@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
-import { Formik, useFormikContext } from "formik";
+import { Formik, FormikErrors, useFormikContext } from "formik";
 import { Grid, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
@@ -17,11 +17,12 @@ import PersonIcon from "@mui/icons-material/Person";
 import { ServiceKeys, sl } from "@/core/service-locator";
 import { allValuesUndefined } from "../utils/object-operations";
 import { GetPersonUseCase } from "../modules/person/domain/usecases";
+import axios from "axios";
 interface PersonalDataProps {
   initialValues: PersonInterface;
   onSubmit: (values: PersonInterface) => void;
   refSubmitButton: React.MutableRefObject<null>;
-  validationSchema?: Yup.ObjectSchema<any>
+  validationSchema?: Yup.ObjectSchema<any>;
   isResetForm?: boolean;
   validateOnMount?: boolean;
 }
@@ -29,48 +30,63 @@ interface PersonalDataProps {
 // how to use useFormikContext mentioned in the documentation https://formik.org/docs/api/useFormikContext
 const FindPersonySSN = () => {
   const { values }: { values: PersonInterface } = useFormikContext();
-  const { setValues , setFieldValue } = useFormikContext();
+  const { setValues, setFieldValue } = useFormikContext();
 
   useEffect(() => {
     if ((values?.SSN as string).length === 14) {
-      sl.get<GetPersonUseCase>(ServiceKeys.GetPersonUseCase).call(values.SSN as string).then((res : any) => {
-        if (!allValuesUndefined(res)) {
-          setValues(PersonEntity.handleFormValues(res))
-        } else {
-          setFieldValue('gender',extractSSNData(values.SSN as string)?.gender)
-          setFieldValue('birthDate',extractSSNData(values.SSN as string)?.birthdate)
-        }
-      }, (err : any) => {
-        console.log('find user by SSN Error',err);
-      })
+      sl.get<GetPersonUseCase>(ServiceKeys.GetPersonUseCase)
+        .call(values.SSN as string)
+        .then(
+          (res: any) => {
+            if (!allValuesUndefined(res)) {
+              setValues(PersonEntity.handleFormValues(res));
+            } else {
+              setFieldValue(
+                "gender",
+                extractSSNData(values.SSN as string)?.gender
+              );
+              setFieldValue(
+                "birthDate",
+                extractSSNData(values.SSN as string)?.birthdate
+              );
+            }
+          },
+          (err: any) => {
+            console.log("not find user by SSN Error", err);
+          }
+        );
     }
-  }, [values.SSN])
+  }, [values.SSN]);
 
   return null;
-}
+};
 
-const extractSSNData = (SSN: string) : { gender : number , birthdate : string} | null => {
-
+const extractSSNData = (
+  SSN: string
+): { gender: number; birthdate: string } | null => {
   if (SSN.length !== 14) {
-      return null;
+    return null;
   }
-  
+
   // Extract birthdate
-  const twoDigitsYearBirth = parseInt(SSN.substring(1, 3), 10);  
-  const calculatedYear = (SSN.charAt(0) === '3' ? 2000 : 1900) + twoDigitsYearBirth;
+  const twoDigitsYearBirth = parseInt(SSN.substring(1, 3), 10);
+  const calculatedYear =
+    (SSN.charAt(0) === "3" ? 2000 : 1900) + twoDigitsYearBirth;
   const month = parseInt(SSN.substring(3, 5), 10);
   const day = parseInt(SSN.substring(5, 7), 10);
-  const birthdate = `${calculatedYear}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+  const birthdate = `${calculatedYear}-${month
+    .toString()
+    .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
 
   // Extract gender
   const genderDigit = parseInt(SSN.charAt(12), 10);
-  const gender = genderDigit % 2 === 0 ? 2 : 1;  // 1 for male, 2 for female
+  const gender = genderDigit % 2 === 0 ? 2 : 1; // 1 for male, 2 for female
 
   return {
-      gender,
-      birthdate,
+    gender,
+    birthdate,
   };
-}
+};
 
 const PersonalDataComponent = ({
   initialValues,
@@ -92,6 +108,8 @@ const PersonalDataComponent = ({
   const [sub, setSub] = useState(true);
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [selectedBack, setSelectedBack] = useState<any>(null);
+  const [initialFormikValues, setInitialValues] =
+    useState<PersonInterface>(initialValues);
 
   const handleFileInput = (e: any) => {
     sub
@@ -102,10 +120,38 @@ const PersonalDataComponent = ({
     //   return [...prevSelectedFile, e.target.files[0]];
     // });
   };
+
+  // integrate with model after take back SSN picture
+  useEffect(() => {
+    if (selectedBack !== null) {
+      setTimeout(() => {
+        setShawDialog("none");
+      }, 1500);
+      axios.get("https://z749g.wiremockapi.cloud/ocr/extract").then(
+        (response: any) => {
+          console.log(response.data);
+          const names = response.data.name.lastName.split(/\s+/);
+          const updatedValues = {
+            ...initialFormikValues,
+            firstName: response.data.name.firstName,
+            secondName: names[0],
+            thirdName: names[1],
+            fourthName: names[2],
+            SSN: response.data.nationalId.nationalId,
+          };
+          setInitialValues(updatedValues);
+        },
+        (err: any) => {
+          console.log(err);
+        }
+      );
+    }
+  }, [selectedBack])
+
   return (
     <Formik
       enableReinitialize
-      initialValues={initialValues}
+      initialValues={initialFormikValues}
       validationSchema={validationSchema ?? PersonEntity.getSchema()}
       onSubmit={(values, { resetForm }) => {
         onSubmit(values);
@@ -130,7 +176,13 @@ const PersonalDataComponent = ({
             DialogStateController={setShawDialog}
           >
             <Typography
-              sx={{ width: "100%", textAlign: "center", marginTop: "1rem", fontSize: "1.2rem", fontWeight: "600" }}
+              sx={{
+                width: "100%",
+                textAlign: "center",
+                marginTop: "1rem",
+                fontSize: "1.2rem",
+                fontWeight: "600",
+              }}
             >
               {sub ? "قم بفحص الوجه الامامي" : "قم بفحص الوجه الخلفي"}
             </Typography>
@@ -212,8 +264,15 @@ const PersonalDataComponent = ({
                   </Box>
                 </Box>
               </Grid>
-              <Grid item lg={4} md={4} sm={12} xs={12} sx={{ maxHeight: '100%' }}>
-                <Box sx={{ width: "100%", maxHeight: '30rem' }}>
+              <Grid
+                item
+                lg={4}
+                md={4}
+                sm={12}
+                xs={12}
+                sx={{ maxHeight: "100%" }}
+              >
+                <Box sx={{ width: "100%", maxHeight: "30rem" }}>
                   {selectedFile !== null ? (
                     <Box
                       component="img"
@@ -224,7 +283,7 @@ const PersonalDataComponent = ({
                         padding: "0.5rem",
                         boxSizing: "border-box",
                         borderRadius: "10px",
-                        maxHeight: '13rem'
+                        maxHeight: "13rem",
                       }}
                       loading="lazy"
                     />
@@ -240,7 +299,8 @@ const PersonalDataComponent = ({
                         maxWidth: "100%",
                         padding: "0.5rem",
                         boxSizing: "border-box",
-                        borderRadius: "10px", maxHeight: '13rem'
+                        borderRadius: "10px",
+                        maxHeight: "13rem",
                       }}
                       loading="lazy"
                     />

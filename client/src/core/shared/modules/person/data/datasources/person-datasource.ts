@@ -4,6 +4,7 @@ import PersonModel from "../models/person-model";
 
 abstract class BasePersonDataSource {
     abstract getPerson(ssn: string): Promise<PersonInterface>;
+    abstract getOcrData(): Promise<any>;
 
 }
 
@@ -17,6 +18,12 @@ class PersonDataSource extends BasePersonDataSource {
         console.log(response.data);
 
         return PersonModel.fromJson(response.data)
+    }
+
+    override async getOcrData(): Promise<any> {
+        const response = await this.apiClient.get('');
+        console.log(response.data);
+        return response.data;
     }
 
 }

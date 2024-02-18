@@ -39,6 +39,8 @@ enum ServiceKeys {
 
     GetPersonUseCase = 'GetPersonUseCase',
 
+    GetOcrDataUseCase = 'GetOcrDataUseCase',
+
     //* Exnternal Services --------------------------------------------------
     ApiClient = 'ApiClient',
 
