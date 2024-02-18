@@ -19,5 +19,17 @@ export default class PersonRepository extends BasePersonRepository {
             throw errorResponse;
         }
     }
+
+    override async getOcrData(): Promise<any> {
+        try {
+            console.log('Repo');
+            const result = await this.basePersonDataSource.getOcrData();
+            console.log('Repo:', result);
+            return result;
+        } catch (error) {
+            const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;
+            throw errorResponse;
+        }
+    }
 }
 
