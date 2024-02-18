@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Person, PersonType, Prisma } from '@prisma/client';
 import { PrismaGenericRepo } from 'src/shared/services/prisma-client/prisma-generic.repo';
 import { PrismaService } from 'src/shared/services/prisma-client/prisma.service';
@@ -34,10 +34,13 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
 
   async findBySSN(ssn: string) {
     try {
-      return await this.prismaService.person.findUnique({
+      const res = await this.prismaService.person.findUnique({
         where: { SSN: ssn },
         include: this.personInclude
       });
+      if (!res)
+        throw new NotFoundException()
+      return res
     } catch (error) {
       throw error;
     }
