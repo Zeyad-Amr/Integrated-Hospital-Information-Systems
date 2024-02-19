@@ -18,6 +18,14 @@ import { ServiceKeys, sl } from "@/core/service-locator";
 import { allValuesUndefined } from "../utils/object-operations";
 import { GetPersonUseCase } from "../modules/person/domain/usecases";
 import axios from "axios";
+
+import CircularProgress from "@mui/material/CircularProgress";
+import { green } from "@mui/material/colors";
+import Fab from "@mui/material/Fab";
+import CheckIcon from "@mui/icons-material/Check";
+import SaveIcon from "@mui/icons-material/Save";
+import PrimaryButton from "./btns/PrimaryButton";
+import defaultImg from "../../../assets/imgs/loginBG.jpg"
 interface PersonalDataProps {
   initialValues: PersonInterface;
   onSubmit: (values: PersonInterface) => void;
@@ -40,19 +48,18 @@ const FindPersonySSN = () => {
           (res: any) => {
             if (!allValuesUndefined(res)) {
               setValues(PersonEntity.handleFormValues(res));
-            } else {
-              setFieldValue(
-                "gender",
-                extractSSNData(values.SSN as string)?.gender
-              );
-              setFieldValue(
-                "birthDate",
-                extractSSNData(values.SSN as string)?.birthdate
-              );
             }
           },
           (err: any) => {
             console.log("not find user by SSN Error", err);
+            setFieldValue(
+              "gender",
+              extractSSNData(values.SSN as string)?.gender
+            );
+            setFieldValue(
+              "birthDate",
+              extractSSNData(values.SSN as string)?.birthdate
+            );
           }
         );
     }
@@ -82,6 +89,8 @@ const extractSSNData = (
   const genderDigit = parseInt(SSN.charAt(12), 10);
   const gender = genderDigit % 2 === 0 ? 2 : 1; // 1 for male, 2 for female
 
+  console.log(birthdate);
+
   return {
     gender,
     birthdate,
@@ -99,6 +108,37 @@ const PersonalDataComponent = ({
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
+
+  const [loadingFront, setLoadingFront] = React.useState(false);
+  const [successFront, setSuccessFront] = React.useState(false);
+
+  const [loadingBack, setLoadingBack] = React.useState(false);
+  const [successBack, setSuccessBack] = React.useState(false);
+  const timer = React.useRef<number>();
+
+  const buttonSxFront = {
+    ...(successFront && {
+      bgcolor: green[500],
+      "&:hover": {
+        bgcolor: green[700],
+      },
+    }),
+  };
+
+  const buttonSxBack = {
+    ...(successBack && {
+      bgcolor: green[500],
+      "&:hover": {
+        bgcolor: green[700],
+      },
+    }),
+  };
+
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
 
   const fileInputRef = useRef<any>();
   const selectFile = () => {
@@ -124,9 +164,14 @@ const PersonalDataComponent = ({
   // integrate with model after take back SSN picture
   useEffect(() => {
     if (selectedBack !== null) {
-      setTimeout(() => {
-        setShawDialog("none");
-      }, 1500);
+      if (!loadingBack) {
+        setSuccessBack(false);
+        setLoadingBack(true);
+        timer.current = window.setTimeout(() => {
+          setSuccessBack(true);
+          setLoadingBack(false);
+        }, 2000);
+      }
       axios.get("https://z749g.wiremockapi.cloud/ocr/extract").then(
         (response: any) => {
           console.log(response.data);
@@ -138,15 +183,30 @@ const PersonalDataComponent = ({
             thirdName: names[1],
             fourthName: names[2],
             SSN: response.data.nationalId.nationalId,
+            verificationMethod : 1
           };
           setInitialValues(updatedValues);
+          setTimeout(() => {
+            setShawDialog("none");
+          }, 2000);
         },
         (err: any) => {
           console.log(err);
         }
       );
     }
-  }, [selectedBack])
+  }, [selectedBack]);
+
+  useEffect(() => {
+    if (!loadingFront) {
+      setSuccessFront(false);
+      setLoadingFront(true);
+      timer.current = window.setTimeout(() => {
+        setSuccessFront(true);
+        setLoadingFront(false);
+      }, 2000);
+    }
+  }, [selectedFile]);
 
   return (
     <Formik
@@ -189,126 +249,166 @@ const PersonalDataComponent = ({
             <Grid
               container
               spacing={0}
-              sx={{ padding: "1rem", width: "100%", height: "80%" }}
+              sx={{
+                padding: "1rem",
+                width: "100%",
+                height: "80%",
+                display: "flex",
+                justifyContent: "center",
+              }}
             >
-              <Grid item lg={8} md={8} sm={12} xs={12}>
+              <Grid
+                item
+                lg={5}
+                md={5}
+                sm={12}
+                xs={12}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "flex-end",
+                }}
+              >
                 <Box
                   sx={{
-                    backgroundColor: "white",
-                    boxSizing: "border-box",
-                    // borderRadius: "10px",
                     width: "100%",
-                    margin: "0 auto",
-                    height: "100%",
-                    cursor: "pointer",
+                    maxHeight: "30rem",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    overflow: "hidden",
+                    flexDirection: "column",
                   }}
-                  onClick={() =>
-                    fileInputRef.current ? fileInputRef.current.click() : null
-                  }
                 >
-                  <Box
-                    sx={{
-                      borderRadius: "10px",
-                      border: "#aaa 2px solid",
-                      width: "90%",
-                      height: "100%",
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "flex-start",
-                      padding: "2rem",
-                    }}
-                  >
-                    {sub ? (
-                      <PersonIcon sx={{ color: "#aaa", fontSize: "10rem" }} />
-                    ) : (
-                      <Box sx={{ width: "100%", height: "100%" }}>
-                        <Box
-                          sx={{
-                            width: "60%",
-                            height: "0.5rem",
-                            backgroundColor: "#aaa",
-                            margin: "2rem 0",
-                          }}
-                        ></Box>
-                        <Box
-                          sx={{
-                            width: "100%",
-                            height: "0.5rem",
-                            backgroundColor: "#aaa",
-                            margin: "2rem 0",
-                          }}
-                        ></Box>
-                        <Box
-                          sx={{
-                            width: "100%",
-                            height: "0.5rem",
-                            backgroundColor: "#aaa",
-                            margin: "2rem 0",
-                          }}
-                        ></Box>
-                        <Box
-                          sx={{
-                            width: "100%",
-                            height: "6rem",
-                            backgroundColor: "#aaa",
-                            margin: "7rem 0 1rem ",
-                            borderRadius: "5px",
-                          }}
-                        ></Box>
+                  {selectedFile !== null ? (
+                    <>
+                      <Box
+                        component="img"
+                        src={URL.createObjectURL(selectedFile)}
+                        alt="Selected"
+                        sx={{
+                          maxWidth: "90%",
+                          padding: "0.5rem",
+                          boxSizing: "border-box",
+                          borderRadius: "20px",
+                          height: "30%",
+                        }}
+                        loading="lazy"
+                      />
+                      {/*  */}
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Box sx={{ m: 1, position: "relative" }}>
+                          <Fab
+                            aria-label="save"
+                            color="primary"
+                            sx={buttonSxFront}
+                          >
+                            {successFront ? <CheckIcon /> : <PersonIcon />}
+                          </Fab>
+                          {loadingFront && (
+                            <CircularProgress
+                              size={68}
+                              sx={{
+                                color: green[500],
+                                position: "absolute",
+                                top: -6,
+                                left: -6,
+                                zIndex: 1,
+                              }}
+                            />
+                          )}
+                        </Box>
                       </Box>
-                    )}
-                  </Box>
+                      {/*  */}
+                    </>
+                  ) : null}
+                </Box>
+              </Grid>
+              <Grid item lg={2} md={2} sm={12} xs={12}>
+                <Box
+                  sx={{
+                    width: "100%",
+                    maxHeight: "30rem",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "flex-end",
+                  }}
+                >
+                  <PrimaryButton
+                    title="Scan"
+                    onClick={() =>
+                      fileInputRef.current ? fileInputRef.current.click() : null
+                    }
+                  />
                 </Box>
               </Grid>
               <Grid
                 item
-                lg={4}
-                md={4}
+                lg={5}
+                md={5}
                 sm={12}
                 xs={12}
-                sx={{ maxHeight: "100%" }}
+                sx={{
+                  maxHeight: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "flex-end",
+                }}
               >
-                <Box sx={{ width: "100%", maxHeight: "30rem" }}>
-                  {selectedFile !== null ? (
-                    <Box
-                      component="img"
-                      src={URL.createObjectURL(selectedFile)}
-                      alt="Selected"
-                      sx={{
-                        maxWidth: "100%",
-                        padding: "0.5rem",
-                        boxSizing: "border-box",
-                        borderRadius: "10px",
-                        maxHeight: "13rem",
-                      }}
-                      loading="lazy"
-                    />
-                  ) : null}
-                </Box>
-                <Box sx={{ width: "100%" }}>
-                  {selectedBack !== null ? (
-                    <Box
-                      component="img"
-                      src={URL.createObjectURL(selectedBack)}
-                      alt="Selected"
-                      sx={{
-                        maxWidth: "100%",
-                        padding: "0.5rem",
-                        boxSizing: "border-box",
-                        borderRadius: "10px",
-                        maxHeight: "13rem",
-                      }}
-                      loading="lazy"
-                    />
+                <Box
+                  sx={{
+                    width: "100%",
+                    maxHeight: "30rem",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                    {selectedBack !== null ? (
+                    <>
+                      <Box
+                        component="img"
+                        src={ URL.createObjectURL(selectedBack)}
+                        alt="Selected"
+                        sx={{
+                          maxWidth: "90%",
+                          padding: "0.5rem",
+                          boxSizing: "border-box",
+                          borderRadius: "20px",
+                          height: "30%",
+                        }}
+                        loading="lazy"
+                        />
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Box sx={{ m: 1, position: "relative" }}>
+                          <Fab
+                            aria-label="save"
+                            color="primary"
+                            sx={buttonSxBack}
+                          >
+                            {successBack ? <CheckIcon /> : <PersonIcon />}
+                          </Fab>
+                          {loadingBack && (
+                            <CircularProgress
+                              size={68}
+                              sx={{
+                                color: green[500],
+                                position: "absolute",
+                                top: -6,
+                                left: -6,
+                                zIndex: 1,
+                              }}
+                            />
+                          )}
+                        </Box>
+                      </Box>
+                    </>
                   ) : null}
                 </Box>
               </Grid>
             </Grid>
           </Dialog>
+
           <Box component="form" onSubmit={handleSubmit} noValidate>
             <Grid container columns={12} spacing={2}>
               <Grid item lg={3} md={3} sm={12} xs={12}>
