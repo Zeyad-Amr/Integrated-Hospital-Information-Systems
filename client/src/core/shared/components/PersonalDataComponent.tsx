@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
-import { Formik, FormikErrors, useFormikContext } from "formik";
+import { Formik, useFormikContext } from "formik";
 import { Grid, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
@@ -23,9 +23,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { green } from "@mui/material/colors";
 import Fab from "@mui/material/Fab";
 import CheckIcon from "@mui/icons-material/Check";
-import SaveIcon from "@mui/icons-material/Save";
 import PrimaryButton from "./btns/PrimaryButton";
-import defaultImg from "../../../assets/imgs/loginBG.jpg"
 interface PersonalDataProps {
   initialValues: PersonInterface;
   onSubmit: (values: PersonInterface) => void;
@@ -60,10 +58,7 @@ const FindPersonySSN = () => {
               "birthDate",
               extractSSNData(values.SSN as string)?.birthdate
             );
-            setFieldValue(
-              "verificationMethod",
-              1
-            );
+            setFieldValue("verificationMethod", 1);
           }
         );
     }
@@ -187,7 +182,7 @@ const PersonalDataComponent = ({
             thirdName: names[1],
             fourthName: names[2],
             SSN: response.data.nationalId.nationalId,
-            verificationMethod : 1
+            verificationMethod: 1,
           };
           setInitialValues(updatedValues);
           setTimeout(() => {
@@ -248,7 +243,11 @@ const PersonalDataComponent = ({
                 fontWeight: "600",
               }}
             >
-              {sub ? "قم بفحص الوجه الامامي" : "قم بفحص الوجه الخلفي"}
+              {selectedFile && selectedBack
+                ? "تم فحص الوجهين بنجاح"
+                : sub
+                ? "قم بفحص الوجه الامامي"
+                : "قم بفحص الوجه الخلفي"}
             </Typography>
             <Grid
               container
@@ -368,11 +367,11 @@ const PersonalDataComponent = ({
                     flexDirection: "column",
                   }}
                 >
-                    {selectedBack !== null ? (
+                  {selectedBack !== null ? (
                     <>
                       <Box
                         component="img"
-                        src={ URL.createObjectURL(selectedBack)}
+                        src={URL.createObjectURL(selectedBack)}
                         alt="Selected"
                         sx={{
                           maxWidth: "90%",
@@ -382,7 +381,7 @@ const PersonalDataComponent = ({
                           height: "30%",
                         }}
                         loading="lazy"
-                        />
+                      />
                       <Box sx={{ display: "flex", alignItems: "center" }}>
                         <Box sx={{ m: 1, position: "relative" }}>
                           <Fab
