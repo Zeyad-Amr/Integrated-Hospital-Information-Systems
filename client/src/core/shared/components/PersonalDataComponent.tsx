@@ -60,6 +60,10 @@ const FindPersonySSN = () => {
               "birthDate",
               extractSSNData(values.SSN as string)?.birthdate
             );
+            setFieldValue(
+              "verificationMethod",
+              1
+            );
           }
         );
     }
