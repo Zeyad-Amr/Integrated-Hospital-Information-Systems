@@ -5,8 +5,8 @@ import CustomTextField from "./CustomTextField";
 import CustomSelectField from "./CustomSelectField";
 import { LookupsState } from "../modules/lookups/presentation/controllers/types";
 import { useAppSelector } from "@/core/state/store";
-import { AdditionalDataInterface } from "@/modules/visits/domain/interfaces/additional-data-interface";
-import AdditionalDataEntity from "@/modules/visits/domain/entities/additional-data-entity";
+import { AdditionalDataInterface } from "@/modules/registration/domain/interfaces/additional-data-interface";
+import AdditionalDataEntity from "@/modules/registration/domain/entities/additional-data-entity";
 
 
 interface AdditionalDataProps {
