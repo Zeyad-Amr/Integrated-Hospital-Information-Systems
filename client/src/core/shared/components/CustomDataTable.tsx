@@ -12,6 +12,7 @@ import {
   Box,
   Typography,
   Tooltip,
+  TablePagination,
 } from "@mui/material";
 import TablesTollbar from "./tables/TablesTollbar";
 import ColumnsSort from "./tables/ColumnsSort";
@@ -124,6 +125,24 @@ const CustomDataTable = <T,>({
       }
     }
   }, [searchValue]);
+
+  const [page, setPage] = React.useState(2);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   ////////////////////////////////////////////////////////////////////////
   return (
     <Box
@@ -184,12 +203,7 @@ const CustomDataTable = <T,>({
                         type={sort.sortType}
                         column={sort.sortColumn}
                       />
-                    ) : // <FIlterTable
-                    //   columnHeader={item.id}
-                    //   setFilterdData={setFilterddData}
-                    //   data={data}
-                    // />
-                    null}
+                    ) : null}
                   </Box>
                 </TableCell>
               ))}
@@ -269,6 +283,27 @@ const CustomDataTable = <T,>({
           </TableBody>
         </Table>
       </TableContainer>
+      <Box
+        sx={{
+          width: width,
+        }}
+      >
+        <TablePagination
+          component="div"
+          count={100}
+          page={page}
+          showFirstButton
+          showLastButton
+          labelRowsPerPage={"صفوف في كل صفحة"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return `${from}-${to} من ${count !== -1 ? count : `أكثر من ${to}`}`;
+          }}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          rowsPerPageOptions={[10, 25, 100]}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Box>
     </Box>
   );
 };
