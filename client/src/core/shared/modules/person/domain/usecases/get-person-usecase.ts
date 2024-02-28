@@ -1,5 +1,5 @@
 import BaseUseCase from "@/core/base/base-usecase";
-import { NoParams } from "@/modules/visits/domain/usecases";
+import { NoParams } from "@/modules/registration/domain/usecases";
 import PersonInterface from "../interfaces/person-interface";
 import BasePersonRepository from "../repositories/base-person-repository";
 

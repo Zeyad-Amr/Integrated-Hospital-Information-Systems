@@ -1,7 +1,7 @@
 import CustomDataTable from "@/core/shared/components/CustomDataTable";
 import { DataItem, header } from "./data";
 import { Box } from "@mui/system";
-import CompleteVisit from "../../../../visits/presentation/components/complete-visit-data/CompleteVisit";
+import CompleteVisit from "../../../../registration/presentation/components/visit/complete-visit-data/CompleteVisit";
 import { useRef, useState } from "react";
 import { useAppSelector } from "@/core/state/store";
 import { EmployeeState } from "../../controllers/types";
