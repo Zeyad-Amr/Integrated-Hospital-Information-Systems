@@ -11,6 +11,7 @@ import {
   SxProps,
   Box,
   Typography,
+  Tooltip,
 } from "@mui/material";
 import TablesTollbar from "./tables/TablesTollbar";
 import ColumnsSort from "./tables/ColumnsSort";
@@ -19,11 +20,11 @@ export interface HeaderItem {
   id: string;
   label: string;
   minWidth?: number;
+  maxWidth?: number;
   tableCellProps?: TableCellProps;
   format?: (value: number) => string;
   onClick?: () => void;
   isIcon?: boolean;
-  icon?: React.ReactNode;
   component?: React.ReactNode;
   sortable?: boolean;
   filterable?: boolean;
@@ -40,18 +41,20 @@ interface Props<T> {
   sx?: SxProps;
   onRowClick?: (row: T) => void;
   hover?: boolean;
+  variantBackground?: boolean;
 }
 
 const CustomDataTable = <T,>({
   data,
   renderItem,
-  width,
-  height,
-  boxShadow,
-  // stickyHeader = false,
+  width = "80vw",
+  height = "70vh",
+  boxShadow = 10,
+  stickyHeader = false,
   sx,
   onRowClick,
   hover = true,
+  variantBackground = true,
 }: Props<T>) => {
   const [filterdData, setFilterddData] = useState<any>(data);
 
@@ -121,90 +124,152 @@ const CustomDataTable = <T,>({
       }
     }
   }, [searchValue]);
-////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////
   return (
-    <TableContainer
-      component={Paper}
+    <Box
       sx={{
-        overflowX: "visible",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
         width: width,
         height: height,
-        boxShadow: boxShadow,
         ...sx,
       }}
     >
-      <TablesTollbar
-        // columnHeader={item.id}
-        setFilterdData={setFilterddData}
-        data={data}
-        setSearchValue={setSearchValue}
-      />
-      <Table
-      //  stickyHeader={stickyHeader} aria-label="sticky table"
+      <Box
+        sx={{
+          width: width,
+        }}
       >
-        <TableHead>
-          <TableRow>
-            {renderItem.map((item) => (
-              <TableCell
-                key={item.id}
-                {...item.tableCellProps}
-                sx={{ minWidth: item.minWidth }}
-              >
-                <Box sx={{ display: "flex", justifyContent: "center" }}>
-                  <Typography>
-                    {item.component ? item.component : item.label}
-                  </Typography>
-                  {item.label ? (
-                    <ColumnsSort
-                      columnHeader={item.id}
-                      setSortInfo={setSortColumn}
-                      setClick={setClick}
-                      click={click}
-                      type={sort.sortType}
-                      column={sort.sortColumn}
-                    />
-                  ) : // <FIlterTable
-                  //   columnHeader={item.id}
-                  //   setFilterdData={setFilterddData}
-                  //   data={data}
-                  // />
-                  null}
-                </Box>
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {filterdData.map((item: any) => (
-            <TableRow
-              key={(item as any).id}
-              onClick={() => onRowClick && onRowClick(item)}
-              hover={hover}
-            >
-              {renderItem.map((headerItem) =>
-                headerItem.isIcon ? (
-                  <TableCell
-                    key={headerItem.id}
-                    {...headerItem.tableCellProps}
-                    sx={{ minWidth: headerItem.minWidth }}
-                  >
-                    {(item as any)["icon"]}
-                  </TableCell>
-                ) : (
-                  <TableCell
-                    key={headerItem.id}
-                    {...headerItem.tableCellProps}
-                    sx={{ minWidth: headerItem.minWidth }}
-                  >
-                    {(item as any)[headerItem.id]}
-                  </TableCell>
-                )
-              )}
+        <TablesTollbar
+          columnHeader={renderItem}
+          setFilterdData={setFilterddData}
+          setSearchValue={setSearchValue}
+        />
+      </Box>
+
+      <TableContainer
+        component={Paper}
+        sx={{
+          width: width,
+          height: "100%",
+          boxShadow: boxShadow,
+        }}
+      >
+        <Table stickyHeader={stickyHeader} aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              {renderItem.map((item) => (
+                <TableCell
+                  key={item.id}
+                  {...item.tableCellProps}
+                  sx={{ minWidth: item.minWidth }}
+                >
+                  <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    <Typography
+                      sx={{
+                        fontSize: "0.8rem",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {item.component ? item.component : item.label}
+                    </Typography>
+                    {item.sortable ? (
+                      <ColumnsSort
+                        columnHeader={item.id}
+                        setSortInfo={setSortColumn}
+                        setClick={setClick}
+                        click={click}
+                        type={sort.sortType}
+                        column={sort.sortColumn}
+                      />
+                    ) : // <FIlterTable
+                    //   columnHeader={item.id}
+                    //   setFilterdData={setFilterddData}
+                    //   data={data}
+                    // />
+                    null}
+                  </Box>
+                </TableCell>
+              ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {filterdData.map((item: any, index: number) => (
+              <TableRow
+                key={(item as any).id}
+                onClick={() => onRowClick && onRowClick(item)}
+                hover={hover}
+                sx={{
+                  backgroundColor:
+                    variantBackground && index % 2 === 0 ? "white" : "#f5f5f5",
+                  "&:hover": {
+                    backgroundColor: "#f0f0f0",
+                  },
+                }}
+              >
+                {renderItem.map((headerItem) =>
+                  headerItem.isIcon ? (
+                    <TableCell
+                      key={headerItem.id}
+                      {...headerItem.tableCellProps}
+                      sx={{
+                        minWidth: headerItem.minWidth,
+                        maxWidth: headerItem.maxWidth,
+                        height: "1rem",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          height: "1rem",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        {(item as any)["icon"]}
+                      </Box>
+                    </TableCell>
+                  ) : (
+                    <TableCell
+                      key={headerItem.id}
+                      {...headerItem.tableCellProps}
+                      sx={{
+                        minWidth: headerItem.minWidth,
+                        maxWidth: headerItem.maxWidth,
+                        height: "1rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      <Tooltip
+                        enterDelay={1000}
+                        title={(item as any)[headerItem.id]}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: "0.8rem",
+                            wordWrap: "break-word",
+                            height: "1rem",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          {(item as any)[headerItem.id]}
+                        </Typography>
+                      </Tooltip>
+                    </TableCell>
+                  )
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 

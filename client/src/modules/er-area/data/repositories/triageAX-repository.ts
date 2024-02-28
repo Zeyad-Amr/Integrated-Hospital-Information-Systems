@@ -4,12 +4,12 @@ import { TriageAXInterface } from "../../domain/interfaces/triageAX-interface";
 import { BaseTriageAXDataSource } from "../datasources/triageAX-datasource";
 
 class TriageAXRepository extends BaseTriageAXRepository {
-  constructor(private baseTriageAXDataSource: BaseTriageAXDataSource) {
+  constructor(private triageAXDataSource: BaseTriageAXDataSource) {
     super();
   }
-  async createTriageAX(triageAX: TriageAXInterface): Promise<void> {
+  async createTriageAX(triageAX: TriageAXInterface, visitCode: string): Promise<void> {
     try {
-      await this.baseTriageAXDataSource.createTriageAX(triageAX);
+      await this.triageAXDataSource.createTriageAX(triageAX, visitCode);
     } catch (error) {
       const errorResponse: ErrorResponse =
         error instanceof Error ? ErrorMessage.get(error.message) : error;

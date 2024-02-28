@@ -1,96 +1,23 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Formik } from "formik";
-import * as Yup from "yup";
 import { Box, Button, Grid } from "@mui/material";
 import CustomTextField from "./CustomTextField";
-
-export interface VitalsDataValuesI {
-  painScore: number | undefined;
-  SPO2: number | undefined;
-  temperature: number | undefined;
-  pulseRate: number | undefined;
-  respiratoryRate: number | undefined;
-  CVP: number | undefined;
-  GCS: number | undefined;
-  diastolicPressure: number | undefined;
-  systolicPressure: number | undefined;
-}
+import VitalsEntity from "@/modules/er-area/domain/entities/vitals-entity";
+import VitalsInterface from "@/modules/er-area/domain/interfaces/vitals-interface";
 
 interface VitalsDataPropsI {
-  initialValues: VitalsDataValuesI;
-  onSubmit: (values: VitalsDataValuesI) => void;
-  isSubmitted: boolean;
+  initialValues: VitalsInterface;
+  onSubmit: (values: VitalsInterface) => void;
+  refSubmitButton: React.MutableRefObject<null>;
   isResetForm?: boolean;
 }
 
 const VitalsData = ({
   initialValues,
   onSubmit,
-  isSubmitted,
+  refSubmitButton,
   isResetForm,
 }: VitalsDataPropsI) => {
-  const refSubmitButton: any = useRef(null);
-  const checkFirstRender = useRef(true);
-  const checkFirstRender2 = useRef(true);
-  useEffect(() => {
-    if (checkFirstRender.current) {
-      checkFirstRender.current = false;
-    } else {
-      if (checkFirstRender2.current) {
-        checkFirstRender2.current = false;
-      } else {
-        if (refSubmitButton.current) {
-          refSubmitButton.current.click();
-        }
-      }
-    }
-  }, [isSubmitted]);
-
-  const handleFormSchema = Yup.object({
-    temperature: Yup.string()
-      .required("درجة الحرارة مطلوبة")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    systolicPressure: Yup.string()
-      .required("ضغط الدم الانقباضي مطلوب")
-      .matches(/^\d+$/, "يجب ألا تحتوي على أرقام عشرية")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    diastolicPressure: Yup.string()
-      .required("ضغط الدم الانبساطي مطلوب")
-      .matches(/^\d+$/, "يجب ألا تحتوي على أرقام عشرية")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    GCS: Yup.string()
-      .required("درجة تحسس الوعي مطلوبة")
-      .matches(/^\d+$/, "يجب ألا تحتوي على أرقام عشرية")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    CVP: Yup.string()
-      .required("ضغط الوريد المركزي مطلوب")
-      .matches(/^\d+$/, "يجب ألا تحتوي على أرقام عشرية")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    respiratoryRate: Yup.string()
-      .required("معدل التنفس مطلوب")
-      .matches(/^\d+$/, "يجب ألا تحتوي على أرقام عشرية")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    pulseRate: Yup.string()
-      .required("معدل نبضات القلب مطلوب")
-      .matches(/^\d+$/, "يجب ألا تحتوي على أرقام عشرية")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    SPO2: Yup.string()
-      .required("مستوى تشبع الأكسجين في الدم مطلوب")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-
-    painScore: Yup.string()
-      .required("درجة الألم مطلوبة")
-      .matches(/^\d+$/, "يجب ألا تحتوي على أرقام عشرية")
-      .matches(/^\d+(\.\d+)?(?!.\.$)$/, "يرجى إدخال رقم صحيح"),
-  });
-
   return (
     <Formik
       enableReinitialize
@@ -105,7 +32,7 @@ const VitalsData = ({
         diastolicPressure: initialValues.diastolicPressure,
         systolicPressure: initialValues.systolicPressure,
       }}
-      validationSchema={handleFormSchema}
+      validationSchema={VitalsEntity.getSchema()}
       onSubmit={(values, { resetForm }) => {
         onSubmit(values);
         if (isResetForm) {
@@ -125,7 +52,6 @@ const VitalsData = ({
           <Grid container columns={12} spacing={2}>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="temperature"
                 label="°C درجة الحرارة"
                 value={values.temperature}
@@ -141,7 +67,6 @@ const VitalsData = ({
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="GCS"
                 label="درجة تحسس الوعي"
                 value={values.GCS}
@@ -158,7 +83,6 @@ const VitalsData = ({
 
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="systolicPressure"
                 label="mmHg ضغط الدم الانقباضي"
                 value={values.systolicPressure}
@@ -174,7 +98,6 @@ const VitalsData = ({
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="diastolicPressure"
                 label="mmHg ضغط الدم الانبساطي"
                 value={values.diastolicPressure}
@@ -193,7 +116,6 @@ const VitalsData = ({
           <Grid container columns={12} spacing={2}>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="CVP"
                 label="mmHg ضغط الوريد المركزي"
                 value={values.CVP}
@@ -209,7 +131,6 @@ const VitalsData = ({
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="respiratoryRate"
                 label="bpm معدل التنفس"
                 value={values.respiratoryRate}
@@ -226,7 +147,6 @@ const VitalsData = ({
 
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="pulseRate"
                 label="bpm معدل نبضات القلب"
                 value={values.pulseRate}
@@ -242,7 +162,6 @@ const VitalsData = ({
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="SPO2"
                 label="مستوى تشبع الأكسجين في الدم"
                 value={values.SPO2}
@@ -261,7 +180,6 @@ const VitalsData = ({
           <Grid container columns={12} spacing={2}>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomTextField
-                isRequired
                 name="painScore"
                 label="درجة الألم"
                 value={values.painScore}

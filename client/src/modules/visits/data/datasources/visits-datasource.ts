@@ -1,6 +1,6 @@
 import { ApiClient, Endpoints, FilterQueryParam } from "@/core/api";
-import VisitInterface from '../models/visit-model';
 import VisitModel from "../models/visit-model";
+import VisitInterface from "../../domain/interfaces/visit-interface";
 
 abstract class BaseVisitsDataSource {
     abstract createVisit(visit: VisitInterface): Promise<VisitInterface>;
@@ -14,13 +14,10 @@ class VisitsDataSource extends BaseVisitsDataSource {
         super();
     }
 
-    override async createVisit(visit: VisitInterface): Promise<VisitInterface> {
-        console.log("Create Data Visit");
-        console.log(visit);
-        console.log(VisitModel.toJson(visit));
+    override async createVisit(visit: VisitInterface): Promise<any> {
         const response = await this.apiClient.post(Endpoints.visit.create, VisitModel.toJson(visit));
         console.log(response.data);
-        return VisitInterface.fromJson(response.data);
+        return response.data;
     }
 
     override async updateVisit(visit: VisitInterface): Promise<boolean> {
@@ -32,14 +29,14 @@ class VisitsDataSource extends BaseVisitsDataSource {
         console.log("getAllAnonymousVisits DS");
         const response = await this.apiClient.get(Endpoints.visit.list, { filters: [FilterQueryParam.isNull('patientId')] });
         console.log(response.data.items);
-        return response.data.items.map((item: any) => VisitInterface.fromJson(item));
+        return response.data.items.map((item: any) => VisitModel.fromJson(item));
     }
 
     override async getVisitByCode(visitcode: string): Promise<VisitInterface> {
         const response = await this.apiClient.get(Endpoints.visit.details, {
             pathVariables: { visitcode: visitcode },
         });
-        return VisitInterface.fromJson(response.data);
+        return VisitModel.fromJson(response.data);
     }
 
 }

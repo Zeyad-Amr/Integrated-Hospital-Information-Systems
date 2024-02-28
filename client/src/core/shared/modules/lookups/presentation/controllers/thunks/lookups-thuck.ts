@@ -8,9 +8,9 @@ export const getLookups = createAsyncThunk(
     async (_data, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
-            console.log('Get Lookups Start');
+            // console.log('Get Lookups Start');
             const result = await sl.get<GetLookupsUseCase>(ServiceKeys.GetLookupsUseCase).call();
-            console.log('Result:', result);
+            // console.log('Result:', result);
             return result;
         } catch (error) {
             console.log('Error:', error);

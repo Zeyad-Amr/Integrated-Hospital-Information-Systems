@@ -50,16 +50,16 @@ export class CreatePersonDto {
   SSN: string;
 
   @ApiProperty({
-    type: String,
-    example: 'NATIONALIDCARD',
+    type: Number,
+    example: 1,
   })
   @IsOptional()
   @IsInt()
   verificationMethodId: number;
 
   @ApiProperty({
-    type: String,
-    example: 'MALE',
+    type: Number,
+    example: 1,
   })
   @IsNotEmpty()
   @IsInt()
@@ -82,12 +82,12 @@ export class CreatePersonDto {
   phone: string;
 
   @ApiProperty({
-    type: String,
-    example: 'Giza',
+    type: Number,
+    example: 1,
   })
   @IsOptional()
-  @IsString()
-  governate: string;
+  @IsInt()
+  governateId: number;
 
   @ApiProperty({
     type: String,

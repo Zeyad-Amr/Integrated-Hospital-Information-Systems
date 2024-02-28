@@ -15,8 +15,8 @@ import {
 } from "../../controllers/slices/employee-slice";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
 import EmployeeEntity from "@/modules/employees/domain/entities/employee-entity";
-import PersonInterface from "@/modules/auth/domain/interfaces/person-interface";
-import PersonEntity from "@/modules/auth/domain/entities/person-entity";
+import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
+import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
 import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
 import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";

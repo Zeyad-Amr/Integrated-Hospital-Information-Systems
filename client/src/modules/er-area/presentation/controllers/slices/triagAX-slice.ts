@@ -2,26 +2,14 @@ import { ErrorResponse } from "@/core/api";
 import { createTriagAX } from "../thunks/triagAX-thunk";
 import { createSlice } from "@reduxjs/toolkit";
 import { TriagAXState } from "../types";
+import VitalsEntity from "@/modules/er-area/domain/entities/vitals-entity";
+import TriageAXEntity from "@/modules/er-area/domain/entities/triageAX-without-vitals-entity";
 
 //* Initial State
 const initialState: TriagAXState = {
   triagData: {
-    comorbidityIds: [],
-    mainComplaint: "",
-    LOCId: 0,
-    transferTo: "",
-    triageTypeId: 0,
-    vitals: {
-      CVP: 0,
-      DBP: 0,
-      GCS: 0,
-      painScore: 0,
-      PR: 0,
-      RR: 0,
-      SBP: 0,
-      SpO2: 0,
-      temp: 0,
-    },
+    ...TriageAXEntity.defaultValue(),
+    vitals: VitalsEntity.defaultValue()
   },
   loading: false,
   error: "",
@@ -36,15 +24,15 @@ const triagAXSlice = createSlice({
     builder.addCase(createTriagAX.pending, (state, _action) => {
       state.loading = true;
       state.error = "";
-    });
-    builder.addCase(createTriagAX.fulfilled, (state, _action) => {
-      state.loading = false;
-      state.error = "";
-    });
-    builder.addCase(createTriagAX.rejected, (state, action) => {
-      state.loading = false;
-      state.error = (action.payload as ErrorResponse).message;
-    });
+    })
+      .addCase(createTriagAX.fulfilled, (state, _action) => {
+        state.loading = false;
+        state.error = "";
+      })
+      .addCase(createTriagAX.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as ErrorResponse).message;
+      });
   },
 });
 

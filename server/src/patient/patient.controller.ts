@@ -20,7 +20,9 @@ import {
   Filter,
   FilteringParams,
 } from 'src/shared/decorators/filters.decorator';
+import { Public } from 'src/shared/decorators/public.decorator';
 
+@Public()
 @ApiBearerAuth()
 @ApiTags('patient')
 @Controller('patient')
@@ -57,9 +59,10 @@ export class PatientController {
   @ApiOkResponse()
   @ApiNotFoundResponse()
   @Get(':ssn')
-  findOne(@Param('ssn') ssn: string) {
+  async findOne(@Param('ssn') ssn: string) {
     try {
-      return this.patientService.findOne(ssn);
+      const res = await this.patientService.findOne(ssn);
+      return res
     } catch (error) {
       throw handleError(error);
     }

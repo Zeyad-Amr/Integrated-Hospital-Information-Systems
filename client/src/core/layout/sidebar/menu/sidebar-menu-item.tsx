@@ -26,13 +26,9 @@ const SidebarMenuItem = ({
   const [expanded, setExpanded] = useState(isActive);
 
   const handleClick = () => {
-    console.log("clicked");
-
     if (children) {
-      console.log("has children");
       setExpanded(!expanded);
     } else {
-      console.log("no children");
       router.push(path);
     }
   };

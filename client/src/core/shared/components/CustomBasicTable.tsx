@@ -9,6 +9,7 @@ import {
     TableRow,
     TableCellProps,
     SxProps,
+    TableRowProps,
 } from "@mui/material";
 
 export interface HeaderItem {
@@ -24,6 +25,8 @@ export interface HeaderItem {
     sortable?: boolean;
     filterable?: boolean;
     searchable?: boolean;
+    cellSx?: SxProps
+    showBorder?: boolean
 }
 
 interface Props<T> {
@@ -36,6 +39,7 @@ interface Props<T> {
     sx?: SxProps;
     onRowClick?: (row: T) => void;
     hover?: boolean;
+    rowProps?: TableRowProps
 }
 
 const CustomBasicTable = <T,>({
@@ -47,6 +51,7 @@ const CustomBasicTable = <T,>({
     stickyHeader = false,
     sx,
     onRowClick,
+    rowProps,
     hover = true,
 }: Props<T>) => {
     return (
@@ -78,7 +83,9 @@ const CustomBasicTable = <T,>({
                         <TableRow
                             key={(item as any).id}
                             onClick={() => onRowClick && onRowClick(item)}
+                            data-row={JSON.stringify(item)}
                             hover={hover}
+                            {...rowProps}
                         >
                             {renderItem.map((headerItem) =>
                                 headerItem.isIcon ? (
@@ -93,7 +100,11 @@ const CustomBasicTable = <T,>({
                                     <TableCell
                                         key={headerItem.id}
                                         {...headerItem.tableCellProps}
-                                        sx={{ minWidth: headerItem.minWidth }}
+                                        sx={{
+                                            minWidth: headerItem.minWidth,
+                                            borderLeft: headerItem.showBorder ? `0.25rem solid ${(item as any).gender == 'ذكر' ? "aqua" : "pink"}` : "transparent",
+                                            ...headerItem.cellSx
+                                        }}
                                     >
                                         {(item as any)[headerItem.id]}
                                     </TableCell>

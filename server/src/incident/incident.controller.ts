@@ -29,17 +29,17 @@ export class IncidentController {
   constructor(private readonly incidentService: IncidentService) { }
   // TODO: Handle Incident with new database schema
 
-  // @ApiOperation({ description: 'create a new incident' })
-  // @ApiCreatedResponse()
-  // @ApiBadRequestResponse()
-  // @Post()
-  // create(@Body() createIncidentDto: CreateIncidentDto, @Req() req) {
-  //   try {
-  //     return this.incidentService.create(createIncidentDto, req.user.sub);
-  //   } catch (error) {
-  //     throw handleError(error);
-  //   }
-  // }
+  @ApiOperation({ description: 'create a new incident' })
+  @ApiCreatedResponse()
+  @ApiBadRequestResponse()
+  @Post()
+  create(@Body() createIncidentDto: CreateIncidentDto, @Req() req) {
+    try {
+      return this.incidentService.create(createIncidentDto, req.user.sub);
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
 
   @ApiOperation({ description: 'get all incidents' })
   @CustomGetAllParamDecorator()

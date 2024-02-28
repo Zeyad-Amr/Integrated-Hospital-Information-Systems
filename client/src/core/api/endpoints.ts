@@ -16,7 +16,7 @@ const Endpoints = {
         create: '/visit/',
         createAnonymously: '/visit/anonymous',
         update: '/patient',
-        triageAX: '/visit/triage',
+        triageAX: '/visit/triage/:visitCode',
     },
     lookups: {
         list: '/enums',
@@ -28,5 +28,8 @@ const Endpoints = {
         update: '/department/:id',
         delete: '/department/:id',
     },
+    person: {
+        details: '/person/:ssn'
+    }
 };
 export default Endpoints;

@@ -26,6 +26,7 @@ export class EnumsService {
       const triageType = await tx.triageType.findMany()
       const LOC = await tx.lOC.findMany()
       const comorbidities = await tx.comorbidity.findMany()
+      const governate = await tx.governate.findMany()
 
       return {
         identityType,
@@ -38,6 +39,7 @@ export class EnumsService {
         triageType,
         LOC,
         comorbidities,
+        governate,
       }
 
     })

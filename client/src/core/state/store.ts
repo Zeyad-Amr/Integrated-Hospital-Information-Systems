@@ -4,6 +4,7 @@ import employees from "@/modules/employees/presentation/controllers/slices/emplo
 import auth from "@/modules/auth/presentation/controllers/slices/auth-slice";
 import visits from "@/modules/visits/presentation/controllers/slices/visits-slice";
 import lookups from "@/core/shared/modules/lookups/presentation/controllers/slices/lookups-slice";
+import person from "../shared/modules/person/presentation/controllers/slices/person-slice";
 
 const store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
         auth: auth,
         visits: visits,
         lookups: lookups,
+        person
     },
 });
 

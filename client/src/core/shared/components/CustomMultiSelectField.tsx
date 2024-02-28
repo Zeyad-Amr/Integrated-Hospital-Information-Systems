@@ -37,7 +37,7 @@ export interface MultiSelectFieldProps<T> {
   hideLabel?: boolean;
 }
 
-const CustomMultiSelectField = <T extends { id: any; label: string }> ({
+const CustomMultiSelectField = <T extends { id: any; value: string }>({
   onChange,
   onBlur,
   name,
@@ -59,7 +59,7 @@ const CustomMultiSelectField = <T extends { id: any; label: string }> ({
   //   event.stopPropagation();
   //   const updatedValues = selectedValues.filter((val) => val !== chipId);
   //   console.log(updatedValues);
-    
+
   //   onChange(
   //     {
   //       target: {
@@ -73,11 +73,11 @@ const CustomMultiSelectField = <T extends { id: any; label: string }> ({
 
   return (
     <Box
-    sx={{
-      mb: 2,
-      width: width,
-      maxWidth: "100%"
-    }}
+      sx={{
+        mb: 2,
+        width: width,
+        maxWidth: "100%"
+      }}
     >
       {!hideLabel && (
         <Typography
@@ -114,20 +114,20 @@ const CustomMultiSelectField = <T extends { id: any; label: string }> ({
           name={name}
           error={error && touched ? true : false}
           renderValue={(selected) => (
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5, color : "primary.dark" }}>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5, color: "primary.dark" }}>
               {options
                 .filter((val) => selected.includes(val.id))
                 .map((item) => (
                   <Chip
                     key={item.id}
-                    label={item.label}
+                    label={item.value}
                     // onDelete={(event) => handleDelete(item.id, event)}
                     sx={{
                       "& .MuiChip-label": {
                         color: "#fff",
                       },
                       cursor: "pointer",
-                      backgroundColor : "primary.dark"
+                      backgroundColor: "primary.dark"
                     }}
                   />
                 ))}
@@ -161,7 +161,7 @@ const CustomMultiSelectField = <T extends { id: any; label: string }> ({
                 },
               }}
             >
-              {option.label}
+              {option.value}
             </MenuItem>
           ))}
         </Select>

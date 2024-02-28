@@ -39,7 +39,7 @@ export class CarNumber {
 
 export class Attendant {
   @ApiProperty({ type: String, example: 'Ahmed' })
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   name: string;
 
@@ -53,14 +53,14 @@ export class Attendant {
   @IsString()
   SSN;
 
-  @ApiProperty({ type: String, example: 'PARAMEDIC' })
-  @IsOptional()
+  @ApiProperty({ type: Number, example: '1' })
+  @IsNotEmpty()
   @IsInt()
   roleId: number;
 }
 
 export class AdditionalInformation {
-  @ApiProperty({ type: String, example: 'HOME', required: false })
+  @ApiProperty({ type: Number, example: '1', required: false })
   @IsOptional()
   @IsInt()
   cameFromId: number;

@@ -12,7 +12,7 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
 
   async createIfNotExist(person: CreatePersonDto, type: PersonType): Promise<Person> {
     try {
-      const { verificationMethodId, genderId, ...personData } = person
+      const { verificationMethodId, genderId, governateId, ...personData } = person
       return await this.prismaService.person.upsert({
         where: { SSN: person.SSN },
         update: {
@@ -21,6 +21,7 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
         create: {
           ...personData,
           verificationMethod: { connect: { id: verificationMethodId } },
+          governate: governateId ? { connect: { id: governateId } } : undefined,
           gender: { connect: { id: genderId } },
           type
         },
@@ -33,7 +34,7 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
 
   async findBySSN(ssn: string) {
     try {
-      return await this.prismaService.person.findFirst({
+      return await this.prismaService.person.findUnique({
         where: { SSN: ssn },
         include: this.personInclude
       });
@@ -44,7 +45,8 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
 
   personInclude: Prisma.PersonInclude = {
     verificationMethod: true,
-    gender: true
+    gender: true,
+    governate: true,
   }
 
 }

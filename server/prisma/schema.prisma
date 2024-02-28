@@ -5,9 +5,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator dbml {
-  provider = "prisma-dbml-generator"
-}
+// generator dbml {
+//   provider = "prisma-dbml-generator"
+// }
 
 datasource db {
   provider = "postgresql"
@@ -25,9 +25,10 @@ model Person {
   verificationMethodId Int?
   gender               GenderType?   @relation(fields: [genderId], references: [id])
   genderId             Int
+  governate            Governate?    @relation(fields: [governateId], references: [id])
+  governateId          Int?
   birthDate            DateTime?     @db.Date
   phone                String?       @unique
-  governate            String?
   address              String?
   type                 PersonType
 
@@ -430,4 +431,10 @@ model Comorbidity {
   id      Int       @id @default(autoincrement())
   value   String    @unique
   Patient Patient[]
+}
+
+model Governate {
+  id     Int      @id @default(autoincrement())
+  value  String   @unique
+  Person Person[]
 }
