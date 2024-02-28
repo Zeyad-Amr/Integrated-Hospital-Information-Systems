@@ -1,0 +1,5 @@
+
+export const PermissionsList = new Map<string, number>([
+    ["CreateRole", 1],
+    ["ReadRole", 2],
+]);

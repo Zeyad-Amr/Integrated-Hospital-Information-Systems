@@ -107,7 +107,54 @@ model Department {
   id   String @id @default(uuid())
   name String @unique
 
-  Employees Employee[]
+  Employees      Employee[]
+  SubDepartments SubDepartment[]
+}
+
+model SubDepartment {
+  id               Int            @id @default(autoincrement())
+  name             String
+  roomId           Int
+  room             Room           @relation(fields: [roomId], references: [id])
+  specializationId Int
+  specialization   Specialization @relation(fields: [specializationId], references: [id])
+  features         Feature[]
+
+  Department   Department?   @relation(fields: [departmentId], references: [id])
+  departmentId String?
+  Permissions  Permissions[]
+}
+
+model Specialization {
+  id            Int             @id @default(autoincrement())
+  name          String
+  description   String?
+  SubDepartment SubDepartment[]
+}
+
+model Room {
+  id            Int             @id @default(autoincrement())
+  name          String
+  location      String?
+  SubDepartment SubDepartment[]
+}
+
+model Feature {
+  id              Int            @id @default(autoincrement())
+  name            String
+  subDepartment   SubDepartment? @relation(fields: [subDepartmentId], references: [id])
+  subDepartmentId Int?
+  Permissions     Permissions[]
+}
+
+model Permissions {
+  id              Int           @id @default(autoincrement())
+  feature         Feature       @relation(fields: [featureId], references: [id])
+  featureId       Int
+  role            RoleType      @relation(fields: [roleTypeId], references: [id])
+  roleTypeId      Int
+  subDepartment   SubDepartment @relation(fields: [subDepartmentId], references: [id])
+  subDepartmentId Int
 }
 
 model Visit {
@@ -293,9 +340,10 @@ model KinshipType {
 //   NURSE
 // }
 model RoleType {
-  id       Int        @id @default(autoincrement())
-  value    String     @unique
-  Employee Employee[]
+  id          Int           @id @default(autoincrement())
+  value       String        @unique
+  Employee    Employee[]
+  Permissions Permissions[]
 }
 
 // enum ShiftEnum {
