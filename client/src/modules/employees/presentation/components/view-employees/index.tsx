@@ -1,4 +1,4 @@
-import CustomDataTable from "@/core/shared/components/CustomDataTable";
+import CustomDataTable from "@/core/shared/components/CustomDataTable/CustomDataTable";
 import { DataItem, header } from "./data";
 import { Box } from "@mui/system";
 import CompleteVisit from "../../../../visits/presentation/components/complete-visit-data/CompleteVisit";

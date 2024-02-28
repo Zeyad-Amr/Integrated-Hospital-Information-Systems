@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ArrowUpwardRoundedIcon from "@mui/icons-material/ArrowUpwardRounded";
 import { Box } from "@mui/system";
-import { FIlterTableProps } from "./FIlterTable";
 
 const ColumnsSort = ({
   columnHeader,

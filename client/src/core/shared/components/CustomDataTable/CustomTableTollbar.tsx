@@ -20,9 +20,8 @@ interface FIlterTableProps {
   setSearchValue: Function;
 }
 
-const TablesTollbar = ({
+const CustomTablesTollbar = ({
   columnHeader,
-  setFilterdData,
   setSearchValue,
 }: FIlterTableProps) => {
   const myDivRef: any = useRef(null);
@@ -34,31 +33,6 @@ const TablesTollbar = ({
   const handleClick = () => {
     setFilterMenuDisplay("block");
   };
-
-  // const handleColumnData = (data: []) => {
-  //   let rowData: {}[] = [];
-  //   let columnHeaders: string[] = [];
-  //   let finalArray: any[] = [];
-  //   columnHeaders = Object.keys(data[0]);
-  //   for (let i = 0; i < data.length; i++) {
-  //     rowData.push(Object.values(data[i]));
-  //   }
-  //   const columnsData = rowData.map((_, Idx: number) =>
-  //     rowData.map((row: any) => row[Idx])
-  //   );
-
-  //   columnHeaders.map((header: string, Idx: number) => {
-  //     finalArray.push({ header: header, columnData: columnsData[Idx] });
-  //   });
-  //   return [columnHeaders, columnsData];
-  // };
-
-  // const getUniqueColumnData = (ColumnData: []) => {
-  //   let uniqueArray = ColumnData.filter(function (item, pos) {
-  //     return ColumnData.indexOf(item) == pos;
-  //   });
-  //   return uniqueArray;
-  // };
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
@@ -77,14 +51,6 @@ const TablesTollbar = ({
       document.removeEventListener("click", handleClickOutside);
     };
   }, [myDivRef]);
-
-  // const handleSearch = (data: T[], search: string) => {
-  //   return data.filter((obj) =>
-  //     Object.values(obj).some(
-  //       (value) => typeof value === "string" && value.includes(search)
-  //     )
-  //   );
-  // };
 
   const [checked, setChecked] = React.useState([true, false, false]);
   const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -181,8 +147,6 @@ const TablesTollbar = ({
           placeholder="بحـــث"
           onChange={(e) => (
             setSearchValue(e.target.value), (search.current = e.target.value)
-            // ,
-            // setFilterdData([...handleSearch(data, search.current)])
           )}
         />{" "}
       </Box>
@@ -212,7 +176,6 @@ const TablesTollbar = ({
             flexDirection: "column",
           }}
         >
-          {/* <FormControlLabel control={<Checkbox />} label={"الوظيفــة"} onChange={(e) => console.log(e.target.checked)}/> */}
           <FormControlLabel
             label="الوظيفــة"
             value="الوظيفــة"
@@ -251,58 +214,10 @@ const TablesTollbar = ({
               }
             />
           </Box>
-          {/* <FormControlLabel
-            label="الوظيفــة"
-            control={
-              <Checkbox
-                checked={checked[0] && checked[1]}
-                indeterminate={checked[0] !== checked[1]}
-                onChange={handleChange1}
-              />
-            }
-          />
-          <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
-            <FormControlLabel
-              label="Child 1"
-              control={
-                <Checkbox checked={checked[0]} onChange={handleChange2} />
-              }
-            />
-            <FormControlLabel
-              label="Child 2"
-              control={
-                <Checkbox checked={checked[1]} onChange={handleChange3} />
-              }
-            />
-          </Box>
-          <FormControlLabel
-            label="الوظيفــة"
-            control={
-              <Checkbox
-                checked={checked[0] && checked[1]}
-                indeterminate={checked[0] !== checked[1]}
-                onChange={handleChange1}
-              />
-            }
-          />
-          <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
-            <FormControlLabel
-              label="Child 1"
-              control={
-                <Checkbox checked={checked[0]} onChange={handleChange2} />
-              }
-            />
-            <FormControlLabel
-              label="Child 2"
-              control={
-                <Checkbox checked={checked[1]} onChange={handleChange3} />
-              }
-            />
-          </Box> */}
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default TablesTollbar;
+export default CustomTablesTollbar;

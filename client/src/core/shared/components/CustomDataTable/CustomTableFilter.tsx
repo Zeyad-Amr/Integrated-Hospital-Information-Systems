@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import { Box } from "@mui/system";
 import { Input, InputAdornment, Typography } from "@mui/material";
@@ -11,24 +11,11 @@ import FilterListRoundedIcon from "@mui/icons-material/FilterListRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import DropDownMenu from "../DropDownMenu";
 
-export interface FIlterTableProps {
+export interface CustomTableFilterProps {
   columnHeader: string;
   data: [];
   setFilterdData: any;
 }
-
-const handleColumnData = (data: [], columnHeader: string) => {
-  let ColumnData: [] = [];
-  data.map((item) => ColumnData.push(item[columnHeader]));
-  return ColumnData;
-};
-
-const getUniqueColumnData = (ColumnData: []) => {
-  let uniqueArray = ColumnData.filter(function (item, pos) {
-    return ColumnData.indexOf(item) == pos;
-  });
-  return uniqueArray;
-};
 
 const sortData = (data: [], header: string, type: string) => {
   let sortedData: [] = data;
@@ -45,26 +32,19 @@ const sortData = (data: [], header: string, type: string) => {
   return sortedData;
 };
 
-const handleSearch = (data: [], header: string, search: string) => {
+const handleSearch = (data: [], _header: string, search: string) => {
   return data.filter((obj) =>
     Object.values(obj).some(
       (value) => typeof value === "string" && value.includes(search)
     )
   );
-
-  // let found = data.filter(function (el: any) {
-  //   return el[header].includes(search);
-  // });
-  // return found;
 };
 
-
-
-const FIlterTable = ({
+const CustomTableFilter = ({
   columnHeader,
   data,
   setFilterdData,
-}: FIlterTableProps) => {
+}: CustomTableFilterProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -76,10 +56,6 @@ const FIlterTable = ({
   };
 
   const search = useRef("");
-
-  // useEffect(() => {
-  //   console.log(search);
-  // }, [search]);
 
   return (
     <Box sx={{ height: "100%", position: "relative" }}>
@@ -96,10 +72,7 @@ const FIlterTable = ({
         open={open}
         onClose={handleClose}
       >
-        {/* <InputLabel htmlFor="input-with-icon-adornment">بحـــث</InputLabel> */}
         <Input
-          // sx={{padding:' 0 1rem', boxSizing: 'border-box'}}
-
           id="input-with-icon-adornment"
           startAdornment={
             <InputAdornment position="start">
@@ -154,4 +127,4 @@ const FIlterTable = ({
   );
 };
 
-export default FIlterTable;
+export default CustomTableFilter;

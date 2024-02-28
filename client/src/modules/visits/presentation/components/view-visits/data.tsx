@@ -1,6 +1,5 @@
 import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
-
 export interface DataItem {
   sequenceNumber: string;
   name: string;
@@ -93,7 +92,7 @@ export const data = [
     patientId: "2e32a83b-765f-4032-b381-520f659a354e",
     companionId: null,
     incidentId: null,
-    companion: null
+    companion: null,
   },
   {
     code: "202311244",
@@ -233,43 +232,88 @@ export const data = [
   },
 ];
 
+// {
+//   id: "id",
+//   label: "ID",
+//   minWidth: 50,
+//   maxWidth: 50,
+//   tableCellProps: { align: "center" },
+//   sortable: true,
+//   filterable: true,
+//   searchable: true,
+//   onClick: () => {},
+// },
+// {
+//   id: "name",
+//   label: "Name",
+//   minWidth: 100,
+//   maxWidth: 100,
+//   tableCellProps: { align: "center" },
+//   sortable: true,
+//   filterable: true,
+//   searchable: true,
+//   onClick: () => {},
+// },
 export const header: HeaderItem[] = [
   {
     id: "sequenceNumber",
     label: "رقم التردد",
     minWidth: 50,
     tableCellProps: { align: "center" },
+    maxWidth: 50,
+    sortable: true,
+    filterable: true,
+    searchable: true,
+    onClick: () => {},
   },
   {
     id: "code",
     label: "رقم المريض",
     minWidth: 50,
     tableCellProps: { align: "center" },
+    sortable: true,
+    filterable: true,
+    searchable: true,
+    onClick: () => {},
   },
   {
     id: "name",
     label: "اسم المرافق",
     minWidth: 100,
     tableCellProps: { align: "center" },
+    sortable: true,
+    filterable: true,
+    searchable: true,
+    onClick: () => {},
   },
   {
     id: "date",
     label: "تاريخ الحجز",
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
+    sortable: true,
+    filterable: true,
+    searchable: true,
+    onClick: () => {},
   },
   {
     id: "time",
     label: "وقت الحجز",
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
+    sortable: true,
+    filterable: true,
+    searchable: true,
+    onClick: () => {},
   },
   {
     id: "update",
     label: "",
     minWidth: 100,
     tableCellProps: { align: "center" },
+    sortable: true,
+    filterable: true,
+    searchable: true,
+    onClick: () => {},
   },
-
-
 ];

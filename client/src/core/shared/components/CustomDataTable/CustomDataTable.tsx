@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Paper,
   Table,
@@ -7,30 +7,15 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TableCellProps,
   SxProps,
   Box,
   Typography,
   Tooltip,
   TablePagination,
 } from "@mui/material";
-import TablesTollbar from "./tables/TablesTollbar";
-import ColumnsSort from "./tables/ColumnsSort";
-
-export interface HeaderItem {
-  id: string;
-  label: string;
-  minWidth?: number;
-  maxWidth?: number;
-  tableCellProps?: TableCellProps;
-  format?: (value: number) => string;
-  onClick?: () => void;
-  isIcon?: boolean;
-  component?: React.ReactNode;
-  sortable?: boolean;
-  filterable?: boolean;
-  searchable?: boolean;
-}
+import CustomTableTollbar from "./CustomTableTollbar";
+import ColumnsSort from "./ColumnsSort";
+import { HeaderItem } from "../CustomBasicTable";
 
 interface Props<T> {
   data: T[];
@@ -57,75 +42,7 @@ const CustomDataTable = <T,>({
   hover = true,
   variantBackground = true,
 }: Props<T>) => {
-  const [filterdData, setFilterddData] = useState<any>(data);
-
-  //////////////////////////// HANDLE SORTING ////////////////////////////
-  const [sortColumn, setSortColumn] = useState<string>("SSN");
-  const [click, setClick] = useState<boolean>(true);
-  const [sort, setSort] = useState<{ sortColumn: string; sortType: string }>({
-    sortColumn: "SSN",
-    sortType: "ascending",
-  });
-
-  const checkFirstRender = useRef(true);
-  const checkSecondRender = useRef(true);
-
-  useEffect(() => {
-    if (checkFirstRender.current) {
-      checkFirstRender.current = false;
-    } else {
-      if (checkSecondRender.current) {
-        checkSecondRender.current = false;
-      } else {
-        if (sortColumn === sort.sortColumn) {
-          if (sort.sortType === "ascending") {
-            setSort({
-              sortColumn: sortColumn,
-              sortType: "descending",
-            });
-          } else {
-            setSort({
-              sortColumn: sortColumn,
-              sortType: "ascending",
-            });
-          }
-        } else {
-          setSort({
-            sortColumn: sortColumn,
-            sortType: "ascending",
-          });
-        }
-      }
-    }
-  }, [click]);
-
-  useEffect(() => {
-    if (checkFirstRender.current) {
-      checkFirstRender.current = false;
-    } else {
-      if (checkSecondRender.current) {
-        checkSecondRender.current = false;
-      } else {
-        console.log(sort);
-      }
-    }
-  }, [sort]);
-
-  ////////////////////////////////////////////////////////////////////////
-  //////////////////////////// HANDLE Search ////////////////////////////
-  const [searchValue, setSearchValue] = useState<string>("");
-  useEffect(() => {
-    if (checkFirstRender.current) {
-      checkFirstRender.current = false;
-    } else {
-      if (checkSecondRender.current) {
-        checkSecondRender.current = false;
-      } else {
-        console.log(searchValue);
-      }
-    }
-  }, [searchValue]);
-
+  //* ----------------------- Handle Pagination
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -142,6 +59,47 @@ const CustomDataTable = <T,>({
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const [filterdData, setFilterddData] = useState<any>(data);
+
+  //* ----------------------- Handle Sorting
+  const [sortColumn, setSortColumn] = useState<string>("SSN");
+  const [click, setClick] = useState<boolean>(true);
+  const [sort, setSort] = useState<{ sortColumn: string; sortType: string }>({
+    sortColumn: "SSN",
+    sortType: "ascending",
+  });
+
+  useEffect(() => {
+    if (sortColumn === sort.sortColumn) {
+      if (sort.sortType === "ascending") {
+        setSort({
+          sortColumn: sortColumn,
+          sortType: "descending",
+        });
+      } else {
+        setSort({
+          sortColumn: sortColumn,
+          sortType: "ascending",
+        });
+      }
+    } else {
+      setSort({
+        sortColumn: sortColumn,
+        sortType: "ascending",
+      });
+    }
+  }, [click]);
+
+  useEffect(() => {
+    console.log(sort);
+  }, [sort]);
+
+  //* ----------------------- Handle Searching
+  const [searchValue, setSearchValue] = useState<string>("");
+  useEffect(() => {
+    console.log(searchValue);
+  }, [searchValue]);
 
   ////////////////////////////////////////////////////////////////////////
   return (
@@ -161,7 +119,7 @@ const CustomDataTable = <T,>({
           width: width,
         }}
       >
-        <TablesTollbar
+        <CustomTableTollbar
           columnHeader={renderItem}
           setFilterdData={setFilterddData}
           setSearchValue={setSearchValue}
@@ -290,7 +248,7 @@ const CustomDataTable = <T,>({
       >
         <TablePagination
           component="div"
-          count={100}
+          count={data.length}
           page={page}
           showFirstButton
           showLastButton
@@ -300,7 +258,7 @@ const CustomDataTable = <T,>({
           }}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[5, 10, 25, 100]}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Box>
