@@ -1,121 +1,126 @@
 import React from "react";
 import {
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    TableCellProps,
-    SxProps,
-    TableRowProps,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableCellProps,
+  SxProps,
+  TableRowProps,
 } from "@mui/material";
 
 export interface HeaderItem {
-    id: string;
-    label: string;
-    minWidth?: number;
-    tableCellProps?: TableCellProps;
-    format?: (value: number) => string;
-    onClick?: () => void;
-    isIcon?: boolean;
-    icon?: React.ReactNode;
-    component?: React.ReactNode;
-    sortable?: boolean;
-    filterable?: boolean;
-    searchable?: boolean;
-    cellSx?: SxProps
-    showBorder?: boolean
+  id: string;
+  label: string;
+  minWidth?: number;
+  maxWidth?: number;
+  tableCellProps?: TableCellProps;
+  format?: (value: number) => string;
+  onClick?: () => void;
+  isIcon?: boolean;
+  icon?: React.ReactNode;
+  component?: React.ReactNode;
+  sortable?: boolean;
+  filterable?: boolean;
+  searchable?: boolean;
+  cellSx?: SxProps;
+  showBorder?: boolean;
 }
 
 interface Props<T> {
-    data: T[];
-    renderItem: HeaderItem[];
-    width?: string;
-    height?: string;
-    boxShadow?: number;
-    stickyHeader?: boolean;
-    sx?: SxProps;
-    onRowClick?: (row: T) => void;
-    hover?: boolean;
-    rowProps?: TableRowProps
+  data: T[];
+  renderItem: HeaderItem[];
+  width?: string;
+  height?: string;
+  boxShadow?: number;
+  stickyHeader?: boolean;
+  sx?: SxProps;
+  onRowClick?: (row: T) => void;
+  hover?: boolean;
+  rowProps?: TableRowProps;
 }
 
 const CustomBasicTable = <T,>({
-    data,
-    renderItem,
-    width,
-    height,
-    boxShadow,
-    stickyHeader = false,
-    sx,
-    onRowClick,
-    rowProps,
-    hover = true,
+  data,
+  renderItem,
+  width,
+  height,
+  boxShadow,
+  stickyHeader = false,
+  sx,
+  onRowClick,
+  rowProps,
+  hover = true,
 }: Props<T>) => {
-    return (
-        <TableContainer
-            component={Paper}
-            sx={{
-                width: width,
-                height: height,
-                boxShadow: boxShadow,
-                ...sx,
-            }}
-        >
-            <Table stickyHeader={stickyHeader} aria-label="sticky table">
-                <TableHead>
-                    <TableRow>
-                        {renderItem.map((item) => (
-                            <TableCell
-                                key={item.id}
-                                {...item.tableCellProps}
-                                sx={{ minWidth: item.minWidth }}
-                            >
-                                {item.component ? item.component : item.label}
-                            </TableCell>
-                        ))}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {data.map((item) => (
-                        <TableRow
-                            key={(item as any).id}
-                            onClick={() => onRowClick && onRowClick(item)}
-                            data-row={JSON.stringify(item)}
-                            hover={hover}
-                            {...rowProps}
-                        >
-                            {renderItem.map((headerItem) =>
-                                headerItem.isIcon ? (
-                                    <TableCell
-                                        key={headerItem.id}
-                                        {...headerItem.tableCellProps}
-                                        sx={{ minWidth: headerItem.minWidth }}
-                                    >
-                                        {(item as any)["icon"]}
-                                    </TableCell>
-                                ) : (
-                                    <TableCell
-                                        key={headerItem.id}
-                                        {...headerItem.tableCellProps}
-                                        sx={{
-                                            minWidth: headerItem.minWidth,
-                                            borderLeft: headerItem.showBorder ? `0.25rem solid ${(item as any).gender == 'ذكر' ? "aqua" : "pink"}` : "transparent",
-                                            ...headerItem.cellSx
-                                        }}
-                                    >
-                                        {(item as any)[headerItem.id]}
-                                    </TableCell>
-                                )
-                            )}
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    );
+  return (
+    <TableContainer
+      component={Paper}
+      sx={{
+        width: width,
+        height: height,
+        boxShadow: boxShadow,
+        ...sx,
+      }}
+    >
+      <Table stickyHeader={stickyHeader} aria-label="sticky table">
+        <TableHead>
+          <TableRow>
+            {renderItem.map((item) => (
+              <TableCell
+                key={item.id}
+                {...item.tableCellProps}
+                sx={{ minWidth: item.minWidth }}
+              >
+                {item.component ? item.component : item.label}
+              </TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((item) => (
+            <TableRow
+              key={(item as any).id}
+              onClick={() => onRowClick && onRowClick(item)}
+              data-row={JSON.stringify(item)}
+              hover={hover}
+              {...rowProps}
+            >
+              {renderItem.map((headerItem) =>
+                headerItem.isIcon ? (
+                  <TableCell
+                    key={headerItem.id}
+                    {...headerItem.tableCellProps}
+                    sx={{ minWidth: headerItem.minWidth }}
+                  >
+                    {(item as any)["icon"]}
+                  </TableCell>
+                ) : (
+                  <TableCell
+                    key={headerItem.id}
+                    {...headerItem.tableCellProps}
+                    sx={{
+                      minWidth: headerItem.minWidth,
+                      borderLeft: headerItem.showBorder
+                        ? `0.25rem solid ${
+                            (item as any).gender == "ذكر" ? "aqua" : "pink"
+                          }`
+                        : "transparent",
+                      ...headerItem.cellSx,
+                    }}
+                  >
+                    {(item as any)[headerItem.id]}
+                  </TableCell>
+                )
+              )}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
 };
 
 export default CustomBasicTable;

@@ -16,6 +16,7 @@ import {
 import CustomTableTollbar from "./CustomTableTollbar";
 import ColumnsSort from "./ColumnsSort";
 import { HeaderItem } from "../CustomBasicTable";
+import utilsFunctions from "../../utils/functions";
 
 interface Props<T> {
   data: T[];
@@ -28,6 +29,7 @@ interface Props<T> {
   onRowClick?: (row: T) => void;
   hover?: boolean;
   variantBackground?: boolean;
+  rowHeight?: string;
 }
 
 const CustomDataTable = <T,>({
@@ -41,6 +43,7 @@ const CustomDataTable = <T,>({
   onRowClick,
   hover = true,
   variantBackground = true,
+  rowHeight = "1rem",
 }: Props<T>) => {
   //* ----------------------- Handle Pagination
   const [page, setPage] = React.useState(2);
@@ -60,7 +63,12 @@ const CustomDataTable = <T,>({
     setPage(0);
   };
 
-  const [filterdData, setFilterddData] = useState<any>(data);
+  const [filterdData, setFilterddData] = useState<any>([
+    ...data,
+    ...data,
+    ...data,
+    ...data,
+  ]);
 
   //* ----------------------- Handle Sorting
   const [sortColumn, setSortColumn] = useState<string>("SSN");
@@ -189,12 +197,12 @@ const CustomDataTable = <T,>({
                       sx={{
                         minWidth: headerItem.minWidth,
                         maxWidth: headerItem.maxWidth,
-                        height: "1rem",
+                        height: rowHeight,
                       }}
                     >
                       <Box
                         sx={{
-                          height: "1rem",
+                          height: rowHeight,
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
@@ -210,10 +218,10 @@ const CustomDataTable = <T,>({
                       sx={{
                         minWidth: headerItem.minWidth,
                         maxWidth: headerItem.maxWidth,
-                        height: "1rem",
+                        height: rowHeight,
+                        whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
                       }}
                     >
                       <Tooltip
@@ -223,11 +231,17 @@ const CustomDataTable = <T,>({
                         <Typography
                           sx={{
                             fontSize: "0.8rem",
-                            wordWrap: "break-word",
-                            height: "1rem",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
+                            textAlign: "center", // Center the text horizontally
+                            lineHeight: rowHeight, // Center the text vertically
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            direction: !utilsFunctions.startsWithArabic(
+                              (item as any)[headerItem.id]
+                            )
+                              ? "rtl"
+                              : "ltr",
+                            display: "inline-block", // Ensure ellipsis works properly
+                            maxWidth: "100%", // Ensure text doesn't overflow TableCell
                           }}
                         >
                           {(item as any)[headerItem.id]}
@@ -248,7 +262,7 @@ const CustomDataTable = <T,>({
       >
         <TablePagination
           component="div"
-          count={data.length}
+          count={filterdData.length}
           page={page}
           showFirstButton
           showLastButton
