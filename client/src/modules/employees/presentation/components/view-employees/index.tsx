@@ -61,7 +61,7 @@ const EmployeesTable = () => {
           boxShadow={10}
           sx={{ mb: 5 }}
           onRowClick={(item) => console.log(item)}
-          renderItem={header}
+          headerItems={header}
           stickyHeader={true}
         />
       )}

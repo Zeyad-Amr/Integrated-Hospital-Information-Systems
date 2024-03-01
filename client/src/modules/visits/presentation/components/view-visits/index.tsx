@@ -58,7 +58,7 @@ const VisitsTable = () => {
     >
       <CustomDataTable
         data={tableData}
-        renderItem={header}
+        headerItems={header}
         stickyHeader={true}
         boxShadow={5}
         width="100%"

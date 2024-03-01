@@ -45,7 +45,7 @@ const IncidentTable = () => {
     <Box p={3}>
       <CustomDataTable
         data={tableData}
-        renderItem={header}
+        headerItems={header}
         stickyHeader={true}
         boxShadow={5}
       />

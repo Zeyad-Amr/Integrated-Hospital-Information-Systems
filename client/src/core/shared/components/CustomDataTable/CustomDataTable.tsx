@@ -20,7 +20,7 @@ import utilsFunctions from "../../utils/functions";
 
 interface Props<T> {
   data: T[];
-  renderItem: HeaderItem[];
+  headerItems: HeaderItem[];
   width?: string;
   height?: string;
   boxShadow?: number;
@@ -34,7 +34,7 @@ interface Props<T> {
 }
 /**
  * @param {T[]} data - The array of data items to be rendered.
- * @param {HeaderItem[]} renderItem - The array of header items to define the table columns.
+ * @param {HeaderItem[]} headerItems - The array of header items to define the table columns.
  * @param {string} [width] - The width of the table (optional).
  * @param {string} [height] - The height of the table (optional).
  * @param {number} [boxShadow] - The level of shadow for the table (optional).
@@ -48,7 +48,7 @@ interface Props<T> {
  */
 const CustomDataTable = <T,>({
   data,
-  renderItem,
+  headerItems,
   width = "80vw",
   height = "70vh",
   boxShadow = 10,
@@ -58,7 +58,7 @@ const CustomDataTable = <T,>({
   hover = true,
   variantBackground = true,
   rowHeight = "1rem",
-  initSortedColumn = { id: renderItem[0].id, isAscending: true },
+  initSortedColumn = { id: headerItems[0].id, isAscending: true },
 }: Props<T>) => {
   //* ----------------------- Handle Pagination
   const [page, setPage] = React.useState(2);
@@ -118,7 +118,7 @@ const CustomDataTable = <T,>({
         }}
       >
         <CustomTableTollbar
-          columnHeader={renderItem}
+          columnHeader={headerItems}
           setFilterdData={setFilterddData}
           setSearchValue={setSearchValue}
         />
@@ -135,7 +135,7 @@ const CustomDataTable = <T,>({
         <Table stickyHeader={stickyHeader} aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {renderItem.map((item) => (
+              {headerItems.map((item) => (
                 <TableCell
                   key={item.id}
                   {...item.tableCellProps}
@@ -176,14 +176,14 @@ const CustomDataTable = <T,>({
                   },
                 }}
               >
-                {renderItem.map((headerItem) =>
-                  headerItem.isIcon ? (
+                {headerItems.map((headerItems) =>
+                  headerItems.isIcon ? (
                     <TableCell
-                      key={headerItem.id}
-                      {...headerItem.tableCellProps}
+                      key={headerItems.id}
+                      {...headerItems.tableCellProps}
                       sx={{
-                        minWidth: headerItem.minWidth,
-                        maxWidth: headerItem.maxWidth,
+                        minWidth: headerItems.minWidth,
+                        maxWidth: headerItems.maxWidth,
                         height: rowHeight,
                       }}
                     >
@@ -200,11 +200,11 @@ const CustomDataTable = <T,>({
                     </TableCell>
                   ) : (
                     <TableCell
-                      key={headerItem.id}
-                      {...headerItem.tableCellProps}
+                      key={headerItems.id}
+                      {...headerItems.tableCellProps}
                       sx={{
-                        minWidth: headerItem.minWidth,
-                        maxWidth: headerItem.maxWidth,
+                        minWidth: headerItems.minWidth,
+                        maxWidth: headerItems.maxWidth,
                         height: rowHeight,
                         whiteSpace: "nowrap",
                         overflow: "hidden",
@@ -213,7 +213,7 @@ const CustomDataTable = <T,>({
                     >
                       <Tooltip
                         enterDelay={1000}
-                        title={(item as any)[headerItem.id]}
+                        title={(item as any)[headerItems.id]}
                       >
                         <Typography
                           sx={{
@@ -223,7 +223,7 @@ const CustomDataTable = <T,>({
                             overflow: "hidden",
                             textOverflow: "ellipsis",
                             direction: !utilsFunctions.startsWithArabic(
-                              (item as any)[headerItem.id]
+                              (item as any)[headerItems.id]
                             )
                               ? "rtl"
                               : "ltr",
@@ -231,7 +231,7 @@ const CustomDataTable = <T,>({
                             maxWidth: "100%", // Ensure text doesn't overflow TableCell
                           }}
                         >
-                          {(item as any)[headerItem.id]}
+                          {(item as any)[headerItems.id]}
                         </Typography>
                       </Tooltip>
                     </TableCell>

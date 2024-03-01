@@ -32,7 +32,7 @@ export interface HeaderItem {
 
 interface Props<T> {
   data: T[];
-  renderItem: HeaderItem[];
+  headerItem: HeaderItem[];
   width?: string;
   height?: string;
   boxShadow?: number;
@@ -45,7 +45,7 @@ interface Props<T> {
 
 const CustomBasicTable = <T,>({
   data,
-  renderItem,
+  headerItem,
   width,
   height,
   boxShadow,
@@ -68,7 +68,7 @@ const CustomBasicTable = <T,>({
       <Table stickyHeader={stickyHeader} aria-label="sticky table">
         <TableHead>
           <TableRow>
-            {renderItem.map((item) => (
+            {headerItem.map((item) => (
               <TableCell
                 key={item.id}
                 {...item.tableCellProps}
@@ -88,7 +88,7 @@ const CustomBasicTable = <T,>({
               hover={hover}
               {...rowProps}
             >
-              {renderItem.map((headerItem) =>
+              {headerItem.map((headerItem) =>
                 headerItem.isIcon ? (
                   <TableCell
                     key={headerItem.id}

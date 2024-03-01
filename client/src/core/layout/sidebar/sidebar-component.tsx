@@ -31,7 +31,14 @@ const SidebarComponent = () => {
         onClick={onCollapse}
       >
         {!collapsed ? (
-          <CloseRoundedIcon sx={{ color: "white", fontSize: "1.5rem" }} />
+          <CloseRoundedIcon
+            sx={{
+              color: "white",
+              fontSize: "1.5rem",
+              marginY: "1vh",
+              marginX: "1vw",
+            }}
+          />
         ) : (
           <MenuRoundedIcon sx={{ color: "white", fontSize: "1.5rem" }} />
         )}

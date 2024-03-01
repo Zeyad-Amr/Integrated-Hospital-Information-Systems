@@ -18,7 +18,7 @@ const SidebarMenuItem = ({
   text,
   path,
 }: SidebarMenuItemProps & { children?: any }) => {
-  const { collapsed } = useContext(SidebarContext);
+  const { collapsed, onCollapse } = useContext(SidebarContext);
 
   const pathname = usePathname();
   const router = useRouter();
@@ -27,7 +27,12 @@ const SidebarMenuItem = ({
 
   const handleClick = () => {
     if (children) {
-      setExpanded(!expanded);
+      if (collapsed) {
+        onCollapse();
+        setExpanded(true);
+      } else {
+        setExpanded(!expanded);
+      }
     } else {
       router.push(path);
     }

@@ -18,7 +18,7 @@ const TablePageTest = () => {
       <Typography variant="h5">Example 1</Typography>
       <CustomDataTable
         data={data}
-        renderItem={header}
+        headerItems={header}
         width="80vw"
         height="70vh"
         boxShadow={10}
@@ -29,7 +29,7 @@ const TablePageTest = () => {
       <Typography variant="h4">Example 2</Typography>
       <CustomDataTable
         data={data}
-        renderItem={header}
+        headerItems={header}
         width="60vw"
         height="50vh"
         boxShadow={30}
@@ -41,7 +41,7 @@ const TablePageTest = () => {
       <Typography variant="h4">Example 3</Typography>
       <CustomDataTable
         data={data}
-        renderItem={header}
+        headerItems={header}
         width="90vw"
         height="100vh"
         boxShadow={10}
