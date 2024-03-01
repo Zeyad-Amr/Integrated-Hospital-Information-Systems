@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Checkbox, FormControlLabel, Box, Button } from "@mui/material";
+import { Checkbox, FormControlLabel, Box, Button, Grid } from "@mui/material";
 import Popper from "@mui/material/Popper";
 import FilterListRoundedIcon from "@mui/icons-material/FilterListRounded";
 
@@ -70,52 +70,248 @@ const CustomTableFilter = ({}: CustomTableFilterProps) => {
             zIndex: 2000,
           }}
         >
-          <Box
-            sx={{
-              padding: "0.5rem 0.5rem",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <FormControlLabel
-              label="الوظيفــة"
-              value="الوظيفــة"
-              control={
-                <Checkbox
-                  checked={checked[0] && checked[1] && checked[1]}
-                  indeterminate={
-                    checked[0] !== checked[1] ||
-                    checked[0] !== checked[2] ||
-                    checked[1] !== checked[2]
+          <Grid container>
+            <Grid item xs={4}>
+              <Box
+                sx={{
+                  padding: "0.5rem 0.5rem",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <FormControlLabel
+                  label="الوظيفــة"
+                  value="الوظيفــة"
+                  control={
+                    <Checkbox
+                      checked={checked[0] && checked[1] && checked[1]}
+                      indeterminate={
+                        checked[0] !== checked[1] ||
+                        checked[0] !== checked[2] ||
+                        checked[1] !== checked[2]
+                      }
+                      onChange={handleChange1}
+                    />
                   }
-                  onChange={handleChange1}
                 />
-              }
-            />
-            <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
-              <FormControlLabel
-                label="Child 1"
-                value="Child 1"
-                control={
-                  <Checkbox checked={checked[0]} onChange={handleChange2} />
-                }
-              />
-              <FormControlLabel
-                label="Child 2"
-                value="Child 2"
-                control={
-                  <Checkbox checked={checked[1]} onChange={handleChange3} />
-                }
-              />
-              <FormControlLabel
-                label="Child 3"
-                value="Child 3"
-                control={
-                  <Checkbox checked={checked[2]} onChange={handleChange4} />
-                }
-              />
-            </Box>
-          </Box>
+                <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
+                  <FormControlLabel
+                    label="Child 1"
+                    value="Child 1"
+                    control={
+                      <Checkbox checked={checked[0]} onChange={handleChange2} />
+                    }
+                  />
+                  <FormControlLabel
+                    label="Child 2"
+                    value="Child 2"
+                    control={
+                      <Checkbox checked={checked[1]} onChange={handleChange3} />
+                    }
+                  />
+                  <FormControlLabel
+                    label="Child 3"
+                    value="Child 3"
+                    control={
+                      <Checkbox checked={checked[2]} onChange={handleChange4} />
+                    }
+                  />
+                </Box>
+              </Box>
+            </Grid>
+            <Grid item xs={4}>
+              <Box
+                sx={{
+                  padding: "0.5rem 0.5rem",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <FormControlLabel
+                  label="الوظيفــة"
+                  value="الوظيفــة"
+                  control={
+                    <Checkbox
+                      checked={checked[0] && checked[1] && checked[1]}
+                      indeterminate={
+                        checked[0] !== checked[1] ||
+                        checked[0] !== checked[2] ||
+                        checked[1] !== checked[2]
+                      }
+                      onChange={handleChange1}
+                    />
+                  }
+                />
+                <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
+                  <FormControlLabel
+                    label="Child 1"
+                    value="Child 1"
+                    control={
+                      <Checkbox checked={checked[0]} onChange={handleChange2} />
+                    }
+                  />
+                  <FormControlLabel
+                    label="Child 2"
+                    value="Child 2"
+                    control={
+                      <Checkbox checked={checked[1]} onChange={handleChange3} />
+                    }
+                  />
+                  <FormControlLabel
+                    label="Child 3"
+                    value="Child 3"
+                    control={
+                      <Checkbox checked={checked[2]} onChange={handleChange4} />
+                    }
+                  />
+                </Box>
+              </Box>
+            </Grid>
+            <Grid item xs={4}>
+              <Box
+                sx={{
+                  padding: "0.5rem 0.5rem",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <FormControlLabel
+                  label="الوظيفــة"
+                  value="الوظيفــة"
+                  control={
+                    <Checkbox
+                      checked={checked[0] && checked[1] && checked[1]}
+                      indeterminate={
+                        checked[0] !== checked[1] ||
+                        checked[0] !== checked[2] ||
+                        checked[1] !== checked[2]
+                      }
+                      onChange={handleChange1}
+                    />
+                  }
+                />
+                <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
+                  <FormControlLabel
+                    label="Child 1"
+                    value="Child 1"
+                    control={
+                      <Checkbox checked={checked[0]} onChange={handleChange2} />
+                    }
+                  />
+                  <FormControlLabel
+                    label="Child 2"
+                    value="Child 2"
+                    control={
+                      <Checkbox checked={checked[1]} onChange={handleChange3} />
+                    }
+                  />
+                  <FormControlLabel
+                    label="Child 3"
+                    value="Child 3"
+                    control={
+                      <Checkbox checked={checked[2]} onChange={handleChange4} />
+                    }
+                  />
+                </Box>
+              </Box>
+            </Grid>{" "}
+            <Grid item xs={4}>
+              <Box
+                sx={{
+                  padding: "0.5rem 0.5rem",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <FormControlLabel
+                  label="الوظيفــة"
+                  value="الوظيفــة"
+                  control={
+                    <Checkbox
+                      checked={checked[0] && checked[1] && checked[1]}
+                      indeterminate={
+                        checked[0] !== checked[1] ||
+                        checked[0] !== checked[2] ||
+                        checked[1] !== checked[2]
+                      }
+                      onChange={handleChange1}
+                    />
+                  }
+                />
+                <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
+                  <FormControlLabel
+                    label="Child 1"
+                    value="Child 1"
+                    control={
+                      <Checkbox checked={checked[0]} onChange={handleChange2} />
+                    }
+                  />
+                  <FormControlLabel
+                    label="Child 2"
+                    value="Child 2"
+                    control={
+                      <Checkbox checked={checked[1]} onChange={handleChange3} />
+                    }
+                  />
+                  <FormControlLabel
+                    label="Child 3"
+                    value="Child 3"
+                    control={
+                      <Checkbox checked={checked[2]} onChange={handleChange4} />
+                    }
+                  />
+                </Box>
+              </Box>
+            </Grid>{" "}
+            <Grid item xs={4}>
+              <Box
+                sx={{
+                  padding: "0.5rem 0.5rem",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <FormControlLabel
+                  label="الوظيفــة"
+                  value="الوظيفــة"
+                  control={
+                    <Checkbox
+                      checked={checked[0] && checked[1] && checked[1]}
+                      indeterminate={
+                        checked[0] !== checked[1] ||
+                        checked[0] !== checked[2] ||
+                        checked[1] !== checked[2]
+                      }
+                      onChange={handleChange1}
+                    />
+                  }
+                />
+                <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
+                  <FormControlLabel
+                    label="Child 1"
+                    value="Child 1"
+                    control={
+                      <Checkbox checked={checked[0]} onChange={handleChange2} />
+                    }
+                  />
+                  <FormControlLabel
+                    label="Child 2"
+                    value="Child 2"
+                    control={
+                      <Checkbox checked={checked[1]} onChange={handleChange3} />
+                    }
+                  />
+                  <FormControlLabel
+                    label="Child 3"
+                    value="Child 3"
+                    control={
+                      <Checkbox checked={checked[2]} onChange={handleChange4} />
+                    }
+                  />
+                </Box>
+              </Box>
+            </Grid>{" "}
+          </Grid>
         </Box>
       </Popper>
     </>
