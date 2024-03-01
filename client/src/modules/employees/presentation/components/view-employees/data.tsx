@@ -117,6 +117,9 @@ export const header: HeaderItem[] = [
     minWidth: 50,
     maxWidth: 50,
     tableCellProps: { align: "center" },
+    sortable: true,
+    searchable: false,
+    filterable: false,
   },
   {
     id: "name",
@@ -124,6 +127,9 @@ export const header: HeaderItem[] = [
     minWidth: 100,
     maxWidth: 100,
     tableCellProps: { align: "center" },
+    sortable: true,
+    searchable: true,
+    filterable: false,
   },
   {
     id: "phone",
@@ -131,6 +137,9 @@ export const header: HeaderItem[] = [
     minWidth: 50,
     maxWidth: 50,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
+    sortable: true,
+    searchable: true,
+    filterable: false,
   },
   {
     id: "email",
@@ -138,6 +147,9 @@ export const header: HeaderItem[] = [
     minWidth: 50,
     maxWidth: 50,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
+    sortable: false,
+    searchable: true,
+    filterable: false,
   },
   {
     id: "role",
@@ -145,6 +157,9 @@ export const header: HeaderItem[] = [
     minWidth: 100,
     maxWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
+    sortable: true,
+    searchable: true,
+    filterable: true,
   },
   // {
   //   id: "time",

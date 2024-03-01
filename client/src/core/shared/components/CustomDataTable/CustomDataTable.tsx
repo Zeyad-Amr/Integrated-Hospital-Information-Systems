@@ -13,9 +13,9 @@ import {
   Tooltip,
   TablePagination,
 } from "@mui/material";
-import CustomTableTollbar from "./CustomTableTollbar";
-import ColumnsSort from "./ColumnsSort";
-import { HeaderItem } from "../CustomBasicTable";
+import CustomTableTollbar from "./CustomTableToolbar";
+import CustomColumnSort from "./CustomColumnSort";
+import { HeaderItem, SortedColumn } from "./types";
 import utilsFunctions from "../../utils/functions";
 
 interface Props<T> {
@@ -30,8 +30,22 @@ interface Props<T> {
   hover?: boolean;
   variantBackground?: boolean;
   rowHeight?: string;
+  initSortedColumn: SortedColumn;
 }
-
+/**
+ * @param {T[]} data - The array of data items to be rendered.
+ * @param {HeaderItem[]} renderItem - The array of header items to define the table columns.
+ * @param {string} [width] - The width of the table (optional).
+ * @param {string} [height] - The height of the table (optional).
+ * @param {number} [boxShadow] - The level of shadow for the table (optional).
+ * @param {boolean} [stickyHeader] - Whether the table header should stick to the top (optional).
+ * @param {SxProps} [sx] - The custom styling props for the table (optional).
+ * @param {(row: T) => void} [onRowClick] - The callback function triggered when a row is clicked (optional).
+ * @param {boolean} [hover] - Whether to enable hover effect on rows (optional).
+ * @param {boolean} [variantBackground] - Whether to apply a variant background color to rows (optional).
+ * @param {string} [rowHeight] - The height of each row (optional).
+ * @param {SortedColumn} initSortedColumn - The initial sorted column.
+ */
 const CustomDataTable = <T,>({
   data,
   renderItem,
@@ -44,6 +58,7 @@ const CustomDataTable = <T,>({
   hover = true,
   variantBackground = true,
   rowHeight = "1rem",
+  initSortedColumn = { id: renderItem[0].id, isAscending: true },
 }: Props<T>) => {
   //* ----------------------- Handle Pagination
   const [page, setPage] = React.useState(2);
@@ -71,37 +86,12 @@ const CustomDataTable = <T,>({
   ]);
 
   //* ----------------------- Handle Sorting
-  const [sortColumn, setSortColumn] = useState<string>("SSN");
-  const [click, setClick] = useState<boolean>(true);
-  const [sort, setSort] = useState<{ sortColumn: string; sortType: string }>({
-    sortColumn: "SSN",
-    sortType: "ascending",
-  });
+  const [sortedColumn, setSortedColumn] =
+    useState<SortedColumn>(initSortedColumn);
 
   useEffect(() => {
-    if (sortColumn === sort.sortColumn) {
-      if (sort.sortType === "ascending") {
-        setSort({
-          sortColumn: sortColumn,
-          sortType: "descending",
-        });
-      } else {
-        setSort({
-          sortColumn: sortColumn,
-          sortType: "ascending",
-        });
-      }
-    } else {
-      setSort({
-        sortColumn: sortColumn,
-        sortType: "ascending",
-      });
-    }
-  }, [click]);
-
-  useEffect(() => {
-    console.log(sort);
-  }, [sort]);
+    console.log(sortedColumn);
+  }, [sortedColumn]);
 
   //* ----------------------- Handle Searching
   const [searchValue, setSearchValue] = useState<string>("");
@@ -161,13 +151,10 @@ const CustomDataTable = <T,>({
                       {item.component ? item.component : item.label}
                     </Typography>
                     {item.sortable ? (
-                      <ColumnsSort
-                        columnHeader={item.id}
-                        setSortInfo={setSortColumn}
-                        setClick={setClick}
-                        click={click}
-                        type={sort.sortType}
-                        column={sort.sortColumn}
+                      <CustomColumnSort
+                        columnId={item.id}
+                        setSortedColumn={setSortedColumn}
+                        sortableColumn={sortedColumn}
                       />
                     ) : null}
                   </Box>

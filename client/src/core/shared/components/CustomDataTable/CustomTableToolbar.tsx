@@ -20,7 +20,7 @@ interface FIlterTableProps {
   setSearchValue: Function;
 }
 
-const CustomTablesTollbar = ({
+const CustomTablesToolbar = ({
   columnHeader,
   setSearchValue,
 }: FIlterTableProps) => {
@@ -77,7 +77,7 @@ const CustomTablesTollbar = ({
   const SearchOptions: string[] = [];
   const handleSearchOptions = () => {
     columnHeader.map((item: any) => {
-      SearchOptions.push(item.label);
+      item.searchable && SearchOptions.push(item.label);
     });
     return SearchOptions;
   };
@@ -220,4 +220,4 @@ const CustomTablesTollbar = ({
   );
 };
 
-export default CustomTablesTollbar;
+export default CustomTablesToolbar;
