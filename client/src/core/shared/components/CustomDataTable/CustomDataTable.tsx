@@ -30,7 +30,7 @@ interface Props<T> {
   hover?: boolean;
   variantBackground?: boolean;
   rowHeight?: string;
-  initSortedColumn: SortedColumn;
+  initSortedColumn?: SortedColumn;
 }
 /**
  * @param {T[]} data - The array of data items to be rendered.
@@ -139,7 +139,7 @@ const CustomDataTable = <T,>({
                 <TableCell
                   key={item.id}
                   {...item.tableCellProps}
-                  sx={{ minWidth: item.minWidth }}
+                  sx={{ minWidth: item.minWidth, zIndex: 0 }}
                 >
                   <Box sx={{ display: "flex", justifyContent: "center" }}>
                     <Typography
