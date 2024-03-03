@@ -1,168 +1,68 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import SecondaryButton from "@/core/shared/components/btns/SecondaryButton";
 
-import GetCompanions from "../GetCompanions";
 
 import { Formik } from "formik";
-import * as Yup from "yup";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import { Button } from "@mui/material";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
 import AlertDialog from "@/core/shared/components/AlertDialog";
-import { AdditionalDataInterface } from "@/modules/registration/domain/interfaces/additional-data-interface";
 import AdditionalData from "@/core/shared/components/AdditionalData";
-import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
-import PersonalDataComponent from "@/core/shared/components/PersonalDataComponent";
 import AdditionalDataEntity from "@/modules/registration/domain/entities/additional-data-entity";
-import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
+import IncidentEntity from "@/modules/registration/domain/entities/incident-entity";
+import CompanionList from "../CompanionList";
+import CompanionForm from "../../CompanionForm";
+import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
+import { useAppSelector } from "@/core/state/store";
+import VisitEntity from "@/modules/registration/domain/entities/visit-entity";
+import { CompanionInterface } from "@/modules/registration/domain/interfaces/visit-interface";
 
 const AddIncidentForm = () => {
-  const refSubmitButton: any = useRef(null);
-
-  const [submitFlag, setSubmitFlag] = useState<boolean>(false);
-  const [incidentFormSubmitted, setIncidentFormSubmitted] =
-    useState<boolean>(false);
-
-  const [addDatasubmitFlag, setAddDatasubmitFlag] = useState<boolean>(false);
-
-  const [clickedBtnId, setClickedBtnId] = useState("");
+  const lookupsState: LookupsState = useAppSelector(
+    (state: any) => state.lookups
+  );
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [AdditionalDataAccordion, setAdditionalDataAccordion] =
     useState<boolean>(true);
   const [userDataAccordion, setUserDataAccordion] = useState<boolean>(false);
-
+  // const [clickedBtnId, setClickedBtnId] = useState("");
   const [editing, setEditing] = useState<boolean>(false);
-  const [intialValues, setIntialValues] =
-    useState<PersonInterface>();
+  // const [idx, setIdx] = useState<number>(0);
 
-  const [idx, setIdx] = useState<number>(0);
+  const [companionsArray, setCompanionsArray] = useState<{}[]>([]);
+
+  const [companionFormValues, setCompanionFormValues] = useState<CompanionInterface>(
+    VisitEntity.companionDefaultValue()
+  );
 
 
-  const [companionsArray, setTestArray] = useState<{}[]>([]);
 
-  const handleCompanionSubmission = (values: PersonInterface) => {
-    let newCompanionsArray: {}[];
-    if (editing) {
-      response.current.companions[idx] = values;
-      setEditing(false);
-      setIntialValues(MainInitialVlaues);
-      newCompanionsArray = [...companionsArray];
-      newCompanionsArray[idx] = values;
-      setTestArray(newCompanionsArray);
-    } else {
-      response.current.companions.push(values);
-      newCompanionsArray = [...companionsArray, values];
-      setTestArray(newCompanionsArray);
-    }
+  //* buttons useRef
+  const refSubmitNumOfPatients: any = useRef(null);
+  const refSubmitAdditionalData: any = useRef(null);
+  const refSubmitCompanion: any = useRef(null);
+
+  //* Handle Companion Submit
+  const handleCompanionSubmit = (values: CompanionInterface) => {
+    setCompanionsArray((previous) => ([
+      ...previous,
+      values,
+    ]))
   };
 
-  const handleIncidentSubmission = (values: any) => {
-    response.current.description =
-      values.comeFromString === "1"
-        ? "home"
-        : values.comeFromString === "2"
-          ? "accedent"
-          : "prison";
-    (response.current.attendantName = values.attendantName),
-      (response.current.attendantSSN = values.attendantSSN),
-      (response.current.attendantSerialNumber = values.attendantSerialNumber),
-      (response.current.car.firstChar = values.firstChar),
-      (response.current.car.secondChar = values.secondChar),
-      (response.current.car.thirdChar = values.thirdChar),
-      (response.current.car.number = values.carNum);
-    (response.current.reason = values.reason),
-      (response.current.place = values.place),
-      (response.current.notes = values.notes);
-    setIncidentFormSubmitted(true);
-  };
-  //////////////////////////////// AlertDialog ////////////////////////////////
-  const [openAlert, setOpenAlert] = useState<boolean>(false);
-
-  /////////////////////////////////////////////////////////////////////////////
-  let response: React.MutableRefObject<{
-    numOfPatients: string;
-    description: string;
-    attendantName: string;
-    attendantSSN: string;
-    attendantSerialNumber: string;
-    car: {
-      firstChar: string;
-      secondChar: string;
-      thirdChar: string;
-      number: string;
-    };
-    companions: {}[];
-    reason: string;
-    place: string;
-    notes: string;
-  }> = useRef({
-    numOfPatients: "",
-    description: "",
-    attendantName: "",
-    attendantSSN: "",
-    attendantSerialNumber: "",
-    car: {
-      firstChar: "",
-      secondChar: "",
-      thirdChar: "",
-      number: "",
-    },
-    companions: [],
-    reason: "",
-    place: "",
-    notes: "",
-  });
-
-  const handleClickedButton = (e: any) => {
-    if (e.target.id === "confirm-btn") {
-      if (refSubmitButton.current) {
-        refSubmitButton.current.click();
-      }
-      submitButtonClick();
-      setClickedBtnId(e.target.id);
-    } else if (e.target.id === "add-comp-btn") {
-      setClickedBtnId(e.target.id);
-
-      setSubmitFlag(!submitFlag);
-    }
-  };
-
-  const submitButtonClick = () => {
-    setAddDatasubmitFlag(!addDatasubmitFlag);
-  };
-
-  useEffect(() => {
-    if (incidentFormSubmitted && clickedBtnId === "confirm-btn") {
-      if (true) {
-        setOpenAlert(true);
-      } else {
-        console.log(response.current);
-      }
-    }
-  }, [addDatasubmitFlag, incidentFormSubmitted]);
-
-  const handleFormSchema = Yup.object({
-    numOfPatients: Yup.number().required("يجب إدخال عدد المرضى"),
-  });
 
   return (
     <>
       <AlertDialog openAlert={openAlert} setOpenAlert={setOpenAlert} />
-      {/* <CustomAlert
-        msg="test"
-        onClose={() => console.log("ahhh")}
-        duration={5000}
-        openAlert
-      /> */}
+
       <Formik
         initialValues={{
           numOfPatients: "",
         }}
-        validationSchema={handleFormSchema}
-        onSubmit={(values) => {
-          response.current.numOfPatients = values.numOfPatients;
-        }}
+        validationSchema={IncidentEntity.getNumOfPatientsSchema()}
+        onSubmit={(values) => { }}
       >
         {({
           values,
@@ -196,12 +96,14 @@ const AddIncidentForm = () => {
               <Button
                 type="submit"
                 sx={{ display: "none" }}
-                ref={refSubmitButton}
+                ref={refSubmitNumOfPatients}
               ></Button>
             </Box>
           </Box>
         )}
       </Formik>
+
+      {/* //* Start Additional Data Accordion************************************************* */}
       <CustomAccordion
         isDisabled={false}
         isExpanded={AdditionalDataAccordion}
@@ -211,11 +113,13 @@ const AddIncidentForm = () => {
       >
         <AdditionalData
           initialValues={AdditionalDataEntity.defaultValue()}
-          onSubmit={handleIncidentSubmission}
-          isSubmitted={addDatasubmitFlag}
+          onSubmit={() => { }}
+          refSubmitButton={refSubmitAdditionalData}
         />
       </CustomAccordion>
 
+
+      {/* //* Start Companion Accordion************************************************* */}
       <CustomAccordion
         isDisabled={false}
         isExpanded={userDataAccordion}
@@ -224,22 +128,31 @@ const AddIncidentForm = () => {
         isClosable={false}
       >
         <Box sx={{ display: "flex" }}>
+
+          {/* //* Start Companion Form */}
           <Box sx={{ width: "75%" }}>
-            <PersonalDataComponent
+            <CompanionForm
               isResetForm
-              initialValues={PersonEntity.defaultValue()}
-              onSubmit={handleCompanionSubmission}
-              refSubmitButton={submitFlag}
+              initialValues={companionFormValues}
+              validationSchema={VisitEntity.getCompanionSchema(true)}
+              onSubmit={(values) => { return handleCompanionSubmit(values) }}
+              refSubmitButton={refSubmitCompanion}
+              lookups={lookupsState.lookups}
+            // newValues={companionFormValues}
             />
             <SecondaryButton
               id="add-comp-btn"
               title={editing ? "حفــــظ" : "اضــــافة"}
               type="button"
-              onClick={(e: any) => {
-                handleClickedButton(e);
+              onClick={() => {
+                if (refSubmitCompanion.current) {
+                  refSubmitCompanion.current.click()
+                }
               }}
             />
           </Box>
+
+          {/* //* Start Companion List */}
           <Box
             sx={{
               width: `25%`,
@@ -255,11 +168,12 @@ const AddIncidentForm = () => {
                 height: "100%",
               }}
             >
-              <GetCompanions
+              <CompanionList
                 companionsArray={companionsArray}
-                setIntialValues={setIntialValues}
-                setEditing={setEditing}
-                getIdx={setIdx}
+                setCompanionFormValues={setCompanionFormValues}
+              // setCompanionFormValues={setCompanionFormValues}
+              // setEditing={setEditing}
+              // getIdx={setIdx}
               />
             </Box>
           </Box>
@@ -270,9 +184,7 @@ const AddIncidentForm = () => {
         id="confirm-btn"
         title="حفـــظ"
         type="button"
-        onClick={(e: HTMLElement) => {
-          handleClickedButton(e);
-        }}
+        onClick={() => { }}
       />
     </>
   );

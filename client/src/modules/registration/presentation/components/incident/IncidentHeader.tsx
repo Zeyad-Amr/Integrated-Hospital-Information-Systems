@@ -1,7 +1,7 @@
 import { Box, Grid, Tooltip, Typography } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import React from "react";
-import GetCompanions from "./GetCompanions";
+import GetCompanions from "./CompanionList";
 // import {QRCodeCanvas} from 'qrcode.react';
 
 // const GetCompanions = (props: any) => {
@@ -100,8 +100,8 @@ const IncidentHeader = ({
             {data.description === "home"
               ? "منزل"
               : data.description === "accedent"
-              ? "حادث"
-              : "سجن"}
+                ? "حادث"
+                : "سجن"}
           </Typography>
         </Grid>
         <Grid item lg={1} md={1} sm={5} xs={5} sx={{ display: "flex" }}>
