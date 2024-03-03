@@ -9,7 +9,7 @@ export default class RegistrationModel {
     static toJson(entity: VisitInterface): any {
         return {
             patient: entity.patient ? PersonModel.toJson(entity.patient) : undefined,
-            companion: entity.companion && !allValuesUndefined(entity.companion) ? { ...PersonModel.toJson(entity.companion), kinshipId: entity.kinship } : undefined,
+            companion: entity.companion && !allValuesUndefined(entity.companion) ? { ...PersonModel.toJson(entity.companion), kinshipId: entity.companion.kinship } : undefined,
             visit: {
                 sequenceNumber: entity.sequenceNumber,
             },
@@ -30,11 +30,10 @@ export default class RegistrationModel {
         return {
             code: json.code,
             sequenceNumber: json.sequenceNumber,
-            kinship: json.kinship,
             createdAt: json.createdAt,
             updatedAt: json.updatedAt,
             patient: PersonModel.fromJson(json.patient),
-            companion: PersonModel.fromJson(json.companion),
+            companion: json.companion,
         };
     }
 }
