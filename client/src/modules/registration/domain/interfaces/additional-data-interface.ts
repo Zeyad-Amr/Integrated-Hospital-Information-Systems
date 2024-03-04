@@ -1,12 +1,11 @@
-import { AttendantRole, CameFromOptions, } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface"
 
 export interface AdditionalDataInterface {
-    comeFrom?: CameFromOptions
+    comeFrom?: number
     attendantName?: string;
     attendantSSN?: string;
     attendantSerialNumber?: string;
-    attendantRole?: AttendantRole
-    carNum?: number;
+    attendantRole?: number
+    carNum?: number | string;
     firstChar?: string;
     secondChar?: string;
     thirdChar?: string;
