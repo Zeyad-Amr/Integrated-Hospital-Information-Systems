@@ -1,26 +1,25 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
 
 interface CompanionListProps {
   companionsArray: PersonInterface[]
-  setCompanionFormValues: any
-  setEditing?: () => {}
-  // getIdx,
+  setEditing: React.Dispatch<React.SetStateAction<boolean>>
+  setSearchSSN: React.Dispatch<React.SetStateAction<boolean>>
+  companionFormRef: any;
+  setIndex: React.Dispatch<React.SetStateAction<number>>
   // submitted,
 }
 
 const CompanionList = ({
   companionsArray = [],
-  setCompanionFormValues,
-  // setEditing,
-  // getIdx,
+  setSearchSSN,
+  setEditing,
+  companionFormRef,
+  setIndex,
   // submitted,
 }: CompanionListProps) => {
-
-  const [select, setSelect] = useState<number>();
 
   return (
     <Box sx={{ padding: "1rem", height: "100%" }}>
@@ -34,24 +33,21 @@ const CompanionList = ({
           display: "flex",
           flexDirection: "column",
           textAlign: "center",
-          overflowY: "auto",
+          overflowY: "scroll",
           height: "90%",
+          maxHeight: "20rem",
         }}
       >
         {companionsArray.length === 0
           ? "لا يـــوجد مــرافقون"
-          : companionsArray.map((companion: any, idx: number) => (
+          : companionsArray.map((companion: any, index: number) => (
             <Box
-              key={idx}
+              key={index}
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
-                // marginBottom: "0.5rem",
-                backgroundColor:
-                  // idx === select && submitted !== false
-                  // ? 
-                  "white",
-                // : "transparent",
+                marginBottom: "0.5rem",
+                backgroundColor: "white",
                 padding: "0.4rem 1rem",
                 alignItems: "center",
                 borderRadius: "10px",
@@ -59,9 +55,12 @@ const CompanionList = ({
               }}
               onClick={() => {
                 console.log(companion)
-                setCompanionFormValues(companion)
-                // setEditing(true),
-                // getIdx(idx),
+                if (companionFormRef.current) {
+                  companionFormRef.current.setValues(companion)
+                }
+                setSearchSSN(false)
+                setEditing(true)
+                setIndex(index)
                 // setSelect(idx)
               }}
             >

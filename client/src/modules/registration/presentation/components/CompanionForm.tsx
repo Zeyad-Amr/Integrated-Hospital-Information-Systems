@@ -4,6 +4,8 @@ import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import { Box, Button } from "@mui/material";
 import { Yup } from "@/core/shared/utils/validation";
 import PersonalData from "@/core/shared/components/PersonalData";
+import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
+import { useAppSelector } from "@/core/state/store";
 
 interface CompanionFormProps {
     initialValues: CompanionInterface;
@@ -11,9 +13,8 @@ interface CompanionFormProps {
     refSubmitButton: React.MutableRefObject<null>;
     validationSchema: Yup.ObjectSchema<any>;
     isResetForm?: boolean;
-    isSetValues?: any;
-    newValues?: any;
-    lookups: any
+    searchSSN?: boolean;
+    innerFormRef?: React.MutableRefObject<null>;
 }
 
 export default function CompanionForm({
@@ -21,10 +22,13 @@ export default function CompanionForm({
     onSubmit,
     refSubmitButton,
     validationSchema,
-    lookups,
+    innerFormRef,
     isResetForm = false,
+    searchSSN = true,
 }: CompanionFormProps) {
-    console.log(initialValues);
+    const lookupsState: LookupsState = useAppSelector(
+        (state: any) => state.lookups
+    );
 
     return (
         <Formik
@@ -38,6 +42,7 @@ export default function CompanionForm({
             }}
             validationSchema={validationSchema}
             validateOnChange={true}
+            innerRef={innerFormRef}
         >
             {({
                 values,
@@ -60,9 +65,9 @@ export default function CompanionForm({
                             error={errors.kinship}
                             touched={touched.kinship}
                             width="100%"
-                            options={lookups.kinshipTypes}
+                            options={lookupsState.lookups.kinshipTypes}
                         />
-                        <PersonalData />
+                        <PersonalData searchSSN={searchSSN} />
                         <Button
                             type="submit"
                             sx={{ display: "none" }}

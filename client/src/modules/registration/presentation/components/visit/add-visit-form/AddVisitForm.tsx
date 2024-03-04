@@ -4,9 +4,8 @@ import { Formik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
-import AdditionalData from "@/core/shared/components/AdditionalData";
-import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
-import { useAppDispatch, useAppSelector } from "@/core/state/store";
+import AdditionalData from "@/modules/registration/presentation/components/AdditionalData";
+import { useAppDispatch } from "@/core/state/store";
 import { AdditionalDataInterface } from "@/modules/registration/domain/interfaces/additional-data-interface";
 import AdditionalDataEntity from "@/modules/registration/domain/entities/additional-data-entity";
 import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
@@ -19,10 +18,6 @@ import PersonalData from "@/core/shared/components/PersonalData";
 
 const AddVisitForm = () => {
   const dispatch = useAppDispatch();
-
-  const lookupsState: LookupsState = useAppSelector(
-    (state: any) => state.lookups
-  );
 
   // useState
   const [patientDataExpanded, setPatientDataExpanded] = useState<boolean>(true);
@@ -238,7 +233,6 @@ const AddVisitForm = () => {
               }}
               validationSchema={VisitEntity.getCompanionSchema(isChild)}
               refSubmitButton={refSubmitCompanion}
-              lookups={lookupsState.lookups}
             />
           </Box>
         </CustomAccordion>

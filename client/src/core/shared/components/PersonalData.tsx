@@ -22,14 +22,15 @@ import { green } from "@mui/material/colors";
 import Fab from "@mui/material/Fab";
 import CheckIcon from "@mui/icons-material/Check";
 import PrimaryButton from "./btns/PrimaryButton";
-// interface PersonalDataProps {
-//   initialValues?: PersonInterface;
-//   onSubmit?: (values: PersonInterface) => void;
-//   refSubmitButton?: React.MutableRefObject<null>;
-//   validationSchema?: Yup.ObjectSchema<any>;
-//   isResetForm?: boolean;
-//   validateOnMount?: boolean;
-// }
+interface PersonalDataProps {
+  //   initialValues?: PersonInterface;
+  //   onSubmit?: (values: PersonInterface) => void;
+  //   refSubmitButton?: React.MutableRefObject<null>;
+  //   validationSchema?: Yup.ObjectSchema<any>;
+  //   isResetForm?: boolean;
+  //   validateOnMount?: boolean;
+  searchSSN?: boolean
+}
 
 
 const extractSSNData = (
@@ -62,7 +63,9 @@ const extractSSNData = (
 };
 
 // how to use useFormikContext mentioned in the documentation https://formik.org/docs/api/useFormikContext
-const PersonalData = () => {
+const PersonalData = ({
+  searchSSN = true
+}: PersonalDataProps) => {
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
@@ -179,27 +182,29 @@ const PersonalData = () => {
 
   useEffect(() => {
     if ((values?.SSN as string).length === 14) {
-      sl.get<GetPersonUseCase>(ServiceKeys.GetPersonUseCase)
-        .call(values.SSN as string)
-        .then(
-          (res: any) => {
-            if (!allValuesUndefined(res)) {
-              setValues((prev) => ({ ...prev, ...PersonEntity.handleFormValues(res) }));
+      if (searchSSN) {
+        sl.get<GetPersonUseCase>(ServiceKeys.GetPersonUseCase)
+          .call(values.SSN as string)
+          .then(
+            (res: any) => {
+              if (!allValuesUndefined(res)) {
+                setValues((prev) => ({ ...prev, ...PersonEntity.handleFormValues(res) }));
+              }
+            },
+            (err: any) => {
+              console.log("not find user by SSN Error", err);
+              setFieldValue(
+                "gender",
+                extractSSNData(values.SSN as string)?.gender
+              );
+              setFieldValue(
+                "birthDate",
+                extractSSNData(values.SSN as string)?.birthdate
+              );
+              setFieldValue("verificationMethod", 1);
             }
-          },
-          (err: any) => {
-            console.log("not find user by SSN Error", err);
-            setFieldValue(
-              "gender",
-              extractSSNData(values.SSN as string)?.gender
-            );
-            setFieldValue(
-              "birthDate",
-              extractSSNData(values.SSN as string)?.birthdate
-            );
-            setFieldValue("verificationMethod", 1);
-          }
-        );
+          );
+      }
     }
   }, [values.SSN]);
 

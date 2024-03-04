@@ -9,36 +9,30 @@ import CustomTextField from "@/core/shared/components/CustomTextField";
 import { Button } from "@mui/material";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
 import AlertDialog from "@/core/shared/components/AlertDialog";
-import AdditionalData from "@/core/shared/components/AdditionalData";
+import AdditionalData from "@/modules/registration/presentation/components/AdditionalData";
 import AdditionalDataEntity from "@/modules/registration/domain/entities/additional-data-entity";
 import IncidentEntity from "@/modules/registration/domain/entities/incident-entity";
 import CompanionList from "../CompanionList";
 import CompanionForm from "../../CompanionForm";
-import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
-import { useAppSelector } from "@/core/state/store";
 import VisitEntity from "@/modules/registration/domain/entities/visit-entity";
 import { CompanionInterface } from "@/modules/registration/domain/interfaces/visit-interface";
 
 const AddIncidentForm = () => {
-  const lookupsState: LookupsState = useAppSelector(
-    (state: any) => state.lookups
-  );
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [AdditionalDataAccordion, setAdditionalDataAccordion] =
     useState<boolean>(true);
   const [userDataAccordion, setUserDataAccordion] = useState<boolean>(false);
   // const [clickedBtnId, setClickedBtnId] = useState("");
   const [editing, setEditing] = useState<boolean>(false);
-  // const [idx, setIdx] = useState<number>(0);
+  const [index, setIndex] = useState<number>(0);
 
   const [companionsArray, setCompanionsArray] = useState<{}[]>([]);
 
-  const [companionFormValues, setCompanionFormValues] = useState<CompanionInterface>(
-    VisitEntity.companionDefaultValue()
-  );
+
+  const [searchSSN, setSearchSSN] = useState<boolean>(true);
 
 
-
+  const formRef = useRef(null);
   //* buttons useRef
   const refSubmitNumOfPatients: any = useRef(null);
   const refSubmitAdditionalData: any = useRef(null);
@@ -46,12 +40,21 @@ const AddIncidentForm = () => {
 
   //* Handle Companion Submit
   const handleCompanionSubmit = (values: CompanionInterface) => {
-    setCompanionsArray((previous) => ([
-      ...previous,
-      values,
-    ]))
+    if (editing) {
+      setSearchSSN(true)
+      setCompanionsArray((previous) => {
+        previous[index] = values
+        return previous
+      })
+      setEditing(false)
+    } else {
+      setCompanionsArray((previous) => ([
+        ...previous,
+        values,
+      ]))
+      setEditing(false)
+    }
   };
-
 
   return (
     <>
@@ -62,7 +65,7 @@ const AddIncidentForm = () => {
           numOfPatients: "",
         }}
         validationSchema={IncidentEntity.getNumOfPatientsSchema()}
-        onSubmit={(values) => { }}
+        onSubmit={() => { }}
       >
         {({
           values,
@@ -133,11 +136,12 @@ const AddIncidentForm = () => {
           <Box sx={{ width: "75%" }}>
             <CompanionForm
               isResetForm
-              initialValues={companionFormValues}
+              initialValues={VisitEntity.companionDefaultValue()}
               validationSchema={VisitEntity.getCompanionSchema(true)}
               onSubmit={(values) => { return handleCompanionSubmit(values) }}
               refSubmitButton={refSubmitCompanion}
-              lookups={lookupsState.lookups}
+              searchSSN={searchSSN}
+              innerFormRef={formRef}
             // newValues={companionFormValues}
             />
             <SecondaryButton
@@ -170,10 +174,10 @@ const AddIncidentForm = () => {
             >
               <CompanionList
                 companionsArray={companionsArray}
-                setCompanionFormValues={setCompanionFormValues}
-              // setCompanionFormValues={setCompanionFormValues}
-              // setEditing={setEditing}
-              // getIdx={setIdx}
+                companionFormRef={formRef}
+                setSearchSSN={setSearchSSN}
+                setEditing={setEditing}
+                setIndex={setIndex}
               />
             </Box>
           </Box>
