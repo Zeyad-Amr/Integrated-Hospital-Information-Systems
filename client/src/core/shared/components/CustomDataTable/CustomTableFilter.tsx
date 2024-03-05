@@ -59,7 +59,13 @@ const CustomTableFilter = ({}: CustomTableFilterProps) => {
       <Button onClick={handleClick}>
         <FilterListRoundedIcon id="filter-icon" />
       </Button>
-      <Popper id={id} open={open} anchorEl={anchorEl}>
+      <Popper
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        placement="bottom-start"
+        sx={{ zIndex: 1000 }}
+      >
         <Box
           ref={popperRef}
           sx={{
@@ -67,7 +73,6 @@ const CustomTableFilter = ({}: CustomTableFilterProps) => {
             backgroundColor: "white",
             borderRadius: "10px",
             padding: "0 2rem",
-            zIndex: 2000,
           }}
         >
           <Grid container>

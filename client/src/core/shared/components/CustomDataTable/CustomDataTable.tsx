@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import CustomTableTollbar from "./CustomTableToolbar";
 import CustomColumnSort from "./CustomColumnSort";
-import { HeaderItem, SortedColumn } from "./types";
+import { HeaderItem, SearchQuery, SortedColumn } from "./types";
 import utilsFunctions from "../../utils/functions";
 
 interface Props<T> {
@@ -58,7 +58,7 @@ const CustomDataTable = <T,>({
   hover = true,
   variantBackground = true,
   rowHeight = "1rem",
-  initSortedColumn = { id: headerItems[0].id, isAscending: true },
+  initSortedColumn = { columnId: headerItems[0].id, isAscending: true },
 }: Props<T>) => {
   //* ----------------------- Handle Pagination
   const [page, setPage] = React.useState(2);
@@ -68,12 +68,14 @@ const CustomDataTable = <T,>({
     _event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
+    console.log(newPage);
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    console.log(event.target.value);
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -94,7 +96,10 @@ const CustomDataTable = <T,>({
   }, [sortedColumn]);
 
   //* ----------------------- Handle Searching
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<SearchQuery>({
+    value: "",
+  } as SearchQuery);
+
   useEffect(() => {
     console.log(searchValue);
   }, [searchValue]);
@@ -139,7 +144,7 @@ const CustomDataTable = <T,>({
                 <TableCell
                   key={item.id}
                   {...item.tableCellProps}
-                  sx={{ minWidth: item.minWidth, zIndex: 0 }}
+                  sx={{ minWidth: item.minWidth, zIndex: 1 }}
                 >
                   <Box sx={{ display: "flex", justifyContent: "center" }}>
                     <Typography

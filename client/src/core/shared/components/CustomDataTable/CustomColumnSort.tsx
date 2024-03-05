@@ -23,23 +23,25 @@ const CustomColumnSort = ({
         position: "relative",
         cursor: "pointer",
         marginX: "0.5rem",
-        opacity: `${sortableColumn.id === columnId ? "1" : "0.2"}`,
+        opacity: `${sortableColumn.columnId === columnId ? "1" : "0.2"}`,
         transition: "0.2s",
         transform: `rotate(${
-          sortableColumn.isAscending && sortableColumn.id === columnId
+          sortableColumn.isAscending && sortableColumn.columnId === columnId
             ? 0
             : -180
         }deg)`,
         transformOrigin: "50% 50%",
         "&:hover": {
-          opacity: `${sortableColumn.id === columnId ? "1" : "0.7"}`,
+          opacity: `${sortableColumn.columnId === columnId ? "1" : "0.7"}`,
         },
       }}
       onClick={() => {
         setSortedColumn({
-          id: columnId,
+          columnId: columnId,
           isAscending:
-            sortableColumn.id === columnId ? !sortableColumn.isAscending : true,
+            sortableColumn.columnId === columnId
+              ? !sortableColumn.isAscending
+              : true,
         });
       }}
     >

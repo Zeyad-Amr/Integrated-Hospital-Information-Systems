@@ -32,12 +32,27 @@ interface HeaderItem {
 
 /**
  * The interface for the sortable column.
- * @param {string} id - The id of the sortable column.
- * @param {boolean} isAscending - Whether the column is sorted in ascending order.
+ * @param {string} [columnId] - The id of the column to sort.
+ * @param {boolean} [isAscending] - Whether the column is sorted in ascending order.
  */
 interface SortedColumn {
-  id: string;
+  columnId: string;
   isAscending: boolean;
 }
 
-export type { HeaderItem, SortedColumn };
+/**
+ * The interface for the search query.
+ * @param {string} [columnId] - The id of the column to search (optional).
+ * @param {string} [value] - The value to search.
+ */
+interface SearchQuery {
+  columnId?: string;
+  value: string;
+}
+
+interface SearchColumn {
+  columnId: string;
+  label: string;
+}
+
+export type { HeaderItem, SortedColumn, SearchQuery, SearchColumn };

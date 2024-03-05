@@ -3,7 +3,7 @@ import React from "react";
 import { HeaderItem } from "../CustomBasicTable";
 import { CustomTableFilter, CustomTableSearch } from ".";
 
-interface FIlterTableProps {
+interface TablesToolbarProps {
   columnHeader: HeaderItem[];
   setFilterdData: Function;
   setSearchValue: Function;
@@ -12,7 +12,7 @@ interface FIlterTableProps {
 const CustomTablesToolbar = ({
   columnHeader,
   setSearchValue,
-}: FIlterTableProps) => {
+}: TablesToolbarProps) => {
   return (
     <Box
       sx={{

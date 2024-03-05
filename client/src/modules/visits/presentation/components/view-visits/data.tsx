@@ -308,7 +308,7 @@ export const header: HeaderItem[] = [
   },
   {
     id: "update",
-    label: "",
+    label: "تعديل",
     minWidth: 100,
     tableCellProps: { align: "center" },
     sortable: true,

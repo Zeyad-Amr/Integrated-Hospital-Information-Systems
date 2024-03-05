@@ -10,6 +10,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import { SearchColumn, SearchQuery } from ".";
 
 interface CustomTableSearchProps {
   columnHeader: any[];
@@ -21,19 +22,27 @@ const CustomTableSearch = ({
 }: CustomTableSearchProps) => {
   const search = useRef("");
 
-  const SearchOptions: string[] = [];
+  const searchOptions: SearchColumn[] = [];
   const handleSearchOptions = () => {
     columnHeader.map((item: any) => {
-      item.searchable && SearchOptions.push(item.label);
+      item.searchable &&
+        searchOptions.push({
+          columnId: item.id,
+          label: item.label,
+        });
     });
-    return SearchOptions;
+    return searchOptions;
   };
 
   console.log(handleSearchOptions());
-  const [searchOn, setSearchOn] = React.useState("");
+  const [searchOn, setSearchOn] = React.useState<SearchColumn>();
 
   const handleChange = (event: SelectChangeEvent) => {
-    setSearchOn(event.target.value as string);
+    setSearchOn(
+      searchOptions.filter(
+        (option) => option.columnId === event.target.value
+      )[0]
+    );
   };
 
   return (
@@ -45,18 +54,18 @@ const CustomTableSearch = ({
         />
       </InputAdornment>
       <FormControl sx={{ width: "12rem" }} size="small">
-        {/* <InputLabel id="demo-simple-select-label">بحـــث عن</InputLabel> */}
         <Select
           displayEmpty
-          value={searchOn}
+          value={searchOn?.columnId}
           onChange={handleChange}
-          // input={<OutlinedInput />}
           renderValue={(selected) => {
-            if (selected.length === 0) {
+            if (selected === undefined) {
               return <em>بحـــث عن</em>;
             }
 
-            return selected;
+            return searchOptions.filter(
+              (option) => option.columnId === selected
+            )[0].label;
           }}
           sx={{
             boxShadow: "none",
@@ -67,9 +76,9 @@ const CustomTableSearch = ({
             },
           }}
         >
-          {SearchOptions.map((option: string, idx: number) => (
-            <MenuItem value={option} key={idx}>
-              {option}
+          {searchOptions.map((option: SearchColumn, idx: number) => (
+            <MenuItem value={option.columnId} key={idx}>
+              {option.label}
             </MenuItem>
           ))}
         </Select>
@@ -78,9 +87,14 @@ const CustomTableSearch = ({
         id="table-search-field"
         sx={{ ml: 1, flex: 1 }}
         placeholder="بحـــث"
-        onChange={(e) => (
-          setSearchValue(e.target.value), (search.current = e.target.value)
-        )}
+        onChange={(e) => {
+          setSearchValue({
+            columnId: searchOn?.columnId,
+            value: e.target.value,
+          } as SearchQuery);
+
+          search.current = e.target.value;
+        }}
       />
     </Box>
   );
