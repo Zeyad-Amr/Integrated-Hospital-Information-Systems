@@ -11,15 +11,10 @@ import {
 } from "@mui/material";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { SearchColumn, SearchQuery } from ".";
+import { useTableContext } from "./context";
 
-interface CustomTableSearchProps {
-  columnHeader: any[];
-  setSearchValue: Function;
-}
-const CustomTableSearch = ({
-  columnHeader,
-  setSearchValue,
-}: CustomTableSearchProps) => {
+const CustomTableSearch = () => {
+  const { columnHeader, setSearchQuery } = useTableContext();
   const search = useRef("");
 
   const searchOptions: SearchColumn[] = [];
@@ -88,7 +83,7 @@ const CustomTableSearch = ({
         sx={{ ml: 1, flex: 1 }}
         placeholder="بحـــث"
         onChange={(e) => {
-          setSearchValue({
+          setSearchQuery({
             columnId: searchOn?.columnId,
             value: e.target.value,
           } as SearchQuery);

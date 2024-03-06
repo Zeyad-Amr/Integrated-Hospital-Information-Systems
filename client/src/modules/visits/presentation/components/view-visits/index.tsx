@@ -34,6 +34,7 @@ const VisitsTable = () => {
         minute: "2-digit",
         second: "2-digit",
       }),
+      kinship: item?.kinship,
       update: (
         <Button
           color="info"

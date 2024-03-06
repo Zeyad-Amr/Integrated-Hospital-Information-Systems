@@ -1,18 +1,13 @@
 import React from "react";
 import ArrowUpwardRoundedIcon from "@mui/icons-material/ArrowUpwardRounded";
-import { Box } from "@mui/system";
-import { SortedColumn } from ".";
+import { useTableContext } from "./context";
+import { Box } from "@mui/material";
 
 interface Props {
   columnId: string;
-  setSortedColumn: (sortableColumn: SortedColumn) => void;
-  sortableColumn: SortedColumn;
 }
-const CustomColumnSort = ({
-  columnId,
-  setSortedColumn,
-  sortableColumn,
-}: Props) => {
+const CustomColumnSort = ({ columnId }: Props) => {
+  const { sortedColumn, setSortedColumn } = useTableContext();
   return (
     <Box
       sx={{
@@ -23,24 +18,24 @@ const CustomColumnSort = ({
         position: "relative",
         cursor: "pointer",
         marginX: "0.5rem",
-        opacity: `${sortableColumn.columnId === columnId ? "1" : "0.2"}`,
+        opacity: `${sortedColumn.columnId === columnId ? "1" : "0.2"}`,
         transition: "0.2s",
         transform: `rotate(${
-          sortableColumn.isAscending && sortableColumn.columnId === columnId
+          sortedColumn.isAscending && sortedColumn.columnId === columnId
             ? 0
             : -180
         }deg)`,
         transformOrigin: "50% 50%",
         "&:hover": {
-          opacity: `${sortableColumn.columnId === columnId ? "1" : "0.7"}`,
+          opacity: `${sortedColumn.columnId === columnId ? "1" : "0.7"}`,
         },
       }}
       onClick={() => {
         setSortedColumn({
           columnId: columnId,
           isAscending:
-            sortableColumn.columnId === columnId
-              ? !sortableColumn.isAscending
+            sortedColumn.columnId === columnId
+              ? !sortedColumn.isAscending
               : true,
         });
       }}

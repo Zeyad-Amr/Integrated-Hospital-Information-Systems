@@ -50,9 +50,34 @@ interface SearchQuery {
   value: string;
 }
 
+/**
+ * The interface for the search column.
+ * @param {string} columnId - The id of the column to search.
+ * @param {string} label - The label of the column to search.
+ */
 interface SearchColumn {
   columnId: string;
   label: string;
 }
 
-export type { HeaderItem, SortedColumn, SearchQuery, SearchColumn };
+/**
+ * The interface for the filter column.
+ * @param {string} columnId - The id of the column to filter.
+ * @param {string} label - The label of the column to filter.
+ * @param {{ id: string; value: string }[]} values - The array of values for the column to filter.
+ * @param {string[]} selectedValuesIds - The array of selected values ids for the column to filter.
+ */
+interface FilterColumn {
+  columnId: string;
+  label: string;
+  values: { id: string; value: string }[];
+  selectedValuesIds: string[];
+}
+
+export type {
+  HeaderItem,
+  SortedColumn,
+  SearchQuery,
+  SearchColumn,
+  FilterColumn,
+};

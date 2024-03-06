@@ -1,18 +1,8 @@
 import { Box } from "@mui/system";
 import React from "react";
-import { HeaderItem } from "../CustomBasicTable";
 import { CustomTableFilter, CustomTableSearch } from ".";
 
-interface TablesToolbarProps {
-  columnHeader: HeaderItem[];
-  setFilterdData: Function;
-  setSearchValue: Function;
-}
-
-const CustomTablesToolbar = ({
-  columnHeader,
-  setSearchValue,
-}: TablesToolbarProps) => {
+const CustomTablesToolbar = () => {
   return (
     <Box
       sx={{
@@ -27,10 +17,7 @@ const CustomTablesToolbar = ({
         alignItems: "center",
       }}
     >
-      <CustomTableSearch
-        columnHeader={columnHeader}
-        setSearchValue={setSearchValue}
-      />
+      <CustomTableSearch />
       <CustomTableFilter />
     </Box>
   );

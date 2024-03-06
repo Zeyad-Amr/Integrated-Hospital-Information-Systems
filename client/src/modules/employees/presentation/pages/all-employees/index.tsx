@@ -21,10 +21,6 @@ const EmployeesTableComponent = () => {
         margin: "0 auto ",
       }}
     >
-      {/* <PageHeader title="الموظفون">
-        <AccountBoxIcon />
-      </PageHeader> */}
-
       <EmployeesTable />
     </Box>
   );

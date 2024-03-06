@@ -6,35 +6,15 @@ export interface DataItem {
   code: string;
   date: string;
   time: string;
+  kinship: { id: string; value: string };
   update?: any;
 }
 
 export const data = [
-  // {
-  //   sequenceNumber: "31",
-  //   code: "2023112418",
-  //   date: "2023-11-24",
-  //   name: "علي أحمد",
-  //   time: "08:00 AM"
-  // },
-  // {
-  //   sequenceNumber: "32",
-  //   code: "2023112419",
-  //   date: "2023-11-25",
-  //   name: "فاطمة محمد",
-  //   time: "10:30 AM"
-  // },
-  // {
-  //   sequenceNumber: "33",
-  //   code: "2023112420",
-  //   date: "2023-11-26",
-  //   name: "محمد علي",
-  //   time: "02:15 PM",
-  // }
   {
     code: "202311241",
     sequenceNumber: 1,
-    kinship: "BROTHER",
+    kinship: { id: "1", value: "Brother" },
     createdAt: "2023-11-24T18:24:16.011Z",
     updatedAt: "2023-11-24T18:24:16.011Z",
     creatorId: "c5db3bec-6a27-4714-89e1-7ef055593b49",
@@ -51,7 +31,7 @@ export const data = [
   {
     code: "202311241",
     sequenceNumber: 2,
-    kinship: "BROTHER",
+    kinship: { id: "2", value: "Sister" },
     createdAt: "2023-11-24T18:28:38.857Z",
     updatedAt: "2023-11-24T18:28:38.857Z",
     creatorId: "c5db3bec-6a27-4714-89e1-7ef055593b49",
@@ -68,7 +48,7 @@ export const data = [
   {
     code: "202311242",
     sequenceNumber: 3,
-    kinship: "BROTHER",
+    kinship: { id: "1", value: "Brother" },
     createdAt: "2023-11-24T18:24:50.364Z",
     updatedAt: "2023-11-24T18:24:50.364Z",
     creatorId: "c5db3bec-6a27-4714-89e1-7ef055593b49",
@@ -85,7 +65,7 @@ export const data = [
   {
     code: "202311243",
     sequenceNumber: 4,
-    kinship: "BROTHER",
+    kinship: { id: "3", value: "Father" },
     createdAt: "2023-11-24T18:25:07.541Z",
     updatedAt: "2023-11-24T18:25:07.541Z",
     creatorId: "c5db3bec-6a27-4714-89e1-7ef055593b49",
@@ -97,7 +77,7 @@ export const data = [
   {
     code: "202311244",
     sequenceNumber: 5,
-    kinship: "BROTHER",
+    kinship: { id: "4", value: "Mother" },
     createdAt: "2023-11-24T18:25:42.107Z",
     updatedAt: "2023-11-24T18:25:42.107Z",
     creatorId: "c5db3bec-6a27-4714-89e1-7ef055593b49",
@@ -114,7 +94,7 @@ export const data = [
   {
     code: "202311244",
     sequenceNumber: 6,
-    kinship: "BROTHER",
+    kinship: { id: "1", value: "Brother" },
     createdAt: "2023-11-24T18:25:42.107Z",
     updatedAt: "2023-11-24T18:25:42.107Z",
     creatorId: "c5db3bec-6a27-4714-89e1-7ef055593b49",
@@ -131,7 +111,7 @@ export const data = [
   {
     code: "202311244",
     sequenceNumber: 7,
-    kinship: "BROTHER",
+    kinship: { id: "1", value: "Brother" },
     createdAt: "2023-11-24T18:25:42.107Z",
     updatedAt: "2023-11-24T18:25:42.107Z",
     creatorId: "c5db3bec-6a27-4714-89e1-7ef055593b49",
@@ -148,7 +128,7 @@ export const data = [
   {
     code: "202311244",
     sequenceNumber: 8,
-    kinship: "BROTHER",
+    kinship: { id: "1", value: "Brother" },
     createdAt: "2023-11-24T18:25:42.107Z",
     updatedAt: "2023-11-24T18:25:42.107Z",
     creatorId: "c5db3bec-6a27-4714-89e1-7ef055593b49",
@@ -165,7 +145,7 @@ export const data = [
   {
     code: "202311244",
     sequenceNumber: 9,
-    kinship: "BROTHER",
+    kinship: { id: "1", value: "Brother" },
     createdAt: "2023-11-24T18:25:42.107Z",
     updatedAt: "2023-11-24T18:25:42.107Z",
     creatorId: "c5db3bec-6a27-4714-89e1-7ef055593b49",
@@ -182,7 +162,7 @@ export const data = [
   {
     code: "202311247",
     sequenceNumber: 10,
-    kinship: "BROTHER",
+    kinship: { id: "1", value: "Brother" },
     createdAt: "2023-11-24T18:25:42.107Z",
     updatedAt: "2023-11-24T18:25:42.107Z",
     creatorId: "c5db3bec-6a27-4714-89e1-7ef055593b49",
@@ -199,7 +179,7 @@ export const data = [
   {
     code: "202311244",
     sequenceNumber: 11,
-    kinship: "BROTHER",
+    kinship: { id: "1", value: "Brother" },
     createdAt: "2023-11-24T18:25:42.107Z",
     updatedAt: "2023-11-24T18:25:42.107Z",
     creatorId: "c5db3bec-6a27-4714-89e1-7ef055593b49",
@@ -216,7 +196,7 @@ export const data = [
   {
     code: "202311245",
     sequenceNumber: 12,
-    kinship: "BROTHER",
+    kinship: { id: "1", value: "Brother" },
     createdAt: "2023-11-24T18:27:10.716Z",
     updatedAt: "2023-11-24T18:27:10.716Z",
     creatorId: "c5db3bec-6a27-4714-89e1-7ef055593b49",
@@ -232,28 +212,6 @@ export const data = [
   },
 ];
 
-// {
-//   id: "id",
-//   label: "ID",
-//   minWidth: 50,
-//   maxWidth: 50,
-//   tableCellProps: { align: "center" },
-//   sortable: true,
-//   filterable: true,
-//   searchable: true,
-//   onClick: () => {},
-// },
-// {
-//   id: "name",
-//   label: "Name",
-//   minWidth: 100,
-//   maxWidth: 100,
-//   tableCellProps: { align: "center" },
-//   sortable: true,
-//   filterable: true,
-//   searchable: true,
-//   onClick: () => {},
-// },
 export const header: HeaderItem[] = [
   {
     id: "sequenceNumber",
@@ -262,7 +220,7 @@ export const header: HeaderItem[] = [
     tableCellProps: { align: "center" },
     maxWidth: 50,
     sortable: true,
-    filterable: true,
+    filterable: false,
     searchable: true,
     onClick: () => {},
   },
@@ -272,7 +230,7 @@ export const header: HeaderItem[] = [
     minWidth: 50,
     tableCellProps: { align: "center" },
     sortable: true,
-    filterable: true,
+    filterable: false,
     searchable: true,
     onClick: () => {},
   },
@@ -282,8 +240,18 @@ export const header: HeaderItem[] = [
     minWidth: 100,
     tableCellProps: { align: "center" },
     sortable: true,
-    filterable: true,
+    filterable: false,
     searchable: true,
+    onClick: () => {},
+  },
+  {
+    id: "kinship",
+    label: "صلة القرابة",
+    minWidth: 100,
+    tableCellProps: { align: "center" },
+    sortable: false,
+    filterable: true,
+    searchable: false,
     onClick: () => {},
   },
   {
@@ -291,9 +259,9 @@ export const header: HeaderItem[] = [
     label: "تاريخ الحجز",
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
-    sortable: true,
-    filterable: true,
-    searchable: true,
+    sortable: false,
+    filterable: false,
+    searchable: false,
     onClick: () => {},
   },
   {
@@ -301,9 +269,9 @@ export const header: HeaderItem[] = [
     label: "وقت الحجز",
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
-    sortable: true,
-    filterable: true,
-    searchable: true,
+    sortable: false,
+    filterable: false,
+    searchable: false,
     onClick: () => {},
   },
   {
@@ -311,9 +279,9 @@ export const header: HeaderItem[] = [
     label: "تعديل",
     minWidth: 100,
     tableCellProps: { align: "center" },
-    sortable: true,
-    filterable: true,
-    searchable: true,
+    sortable: false,
+    filterable: false,
+    searchable: false,
     onClick: () => {},
   },
 ];

@@ -2,16 +2,23 @@ import React, { useEffect, useRef } from "react";
 import { Checkbox, FormControlLabel, Box, Button, Grid } from "@mui/material";
 import Popper from "@mui/material/Popper";
 import FilterListRoundedIcon from "@mui/icons-material/FilterListRounded";
+import { FilterColumn, HeaderItem } from ".";
+import { useTableContext } from "./context";
 
-interface CustomTableFilterProps {}
+const CustomTableFilter = () => {
+  const { filterColumns, setFilterColumns, data, columnHeader } =
+    useTableContext();
 
-const CustomTableFilter = ({}: CustomTableFilterProps) => {
+  //* ---------------------------------------- Handle Filter Popper
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const popperRef = useRef<HTMLDivElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popper" : undefined;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -29,31 +36,113 @@ const CustomTableFilter = ({}: CustomTableFilterProps) => {
     };
   }, []);
 
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popper" : undefined;
+  //* ---------------------------------------- Get Filterable Columns
 
-  const [checked, setChecked] = React.useState([true, false, false]);
-
-  const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked([
-      event.target.checked,
-      event.target.checked,
-      event.target.checked,
-    ]);
+  // get filterable columns
+  const getFilterableColumns = (): HeaderItem[] => {
+    return columnHeader.filter((column) => column.filterable);
   };
 
-  const handleChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked([event.target.checked, checked[1], checked[2]]);
+  // get all unique values of the column in the data
+  const getUniqueValues = (columnId: string) => {
+    // get all values of data column by columnId
+    const columnValues = data.map((row: any) => row[columnId]);
+
+    // filter repeated values if same id
+    const uniqueValues: { id: string; value: string }[] = [];
+    columnValues.forEach((value) => {
+      if (!uniqueValues.find((uniqueValue) => uniqueValue.id === value.id)) {
+        uniqueValues.push(value);
+      }
+    });
+
+    return uniqueValues;
   };
 
-  const handleChange3 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked([checked[0], event.target.checked, checked[2]]);
+  // get FilterColumns
+  const getFilterColumns = (): FilterColumn[] => {
+    // get filterable columns
+    const filterColumns = getFilterableColumns();
+
+    // get filter columns
+    const filterColumnsData = filterColumns.map((column) => {
+      return {
+        columnId: column.id,
+        label: column.label,
+        values: getUniqueValues(column.id),
+        selectedValuesIds: getUniqueValues(column.id).map((value) => value.id),
+      };
+    });
+
+    return filterColumnsData;
   };
 
-  const handleChange4 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked([checked[0], checked[1], event.target.checked]);
+  useEffect(() => {
+    const result: FilterColumn[] = getFilterColumns();
+    // setFilterColumnsData(result);
+    setFilterColumns(result);
+  }, [data]);
+
+  //* ---------------------------------------- Handle Checking
+  const handleCheck = (columnId: string, valueId: string) => {
+    // find the column by columnId
+    const column: FilterColumn = filterColumns.filter(
+      (column) => column.columnId === columnId
+    )[0];
+
+    // Apply changes
+    if (column) {
+      // if the valueId is already in the selectedValuesIds, remove it
+      if (column.selectedValuesIds.includes(valueId)) {
+        column.selectedValuesIds = column.selectedValuesIds.filter(
+          (id) => id !== valueId
+        );
+      } else {
+        // if the valueId is not in the selectedValuesIds, add it
+        column.selectedValuesIds.push(valueId);
+      }
+    }
+
+    // Update column in filterColumns
+    const newFilterColumns = filterColumns.map((filterColumn) => {
+      if (filterColumn.columnId === columnId) {
+        return column;
+      }
+      return filterColumn;
+    });
+
+    setFilterColumns(newFilterColumns);
   };
 
+  const handleWholeColumnCheck = (columnId: string) => {
+    // find the column by columnId
+    const column: FilterColumn = filterColumns.filter(
+      (column) => column.columnId === columnId
+    )[0];
+
+    // Apply changes
+    if (column) {
+      // Check if all are checked, then uncheck all, else check all
+      if (column.selectedValuesIds.length === column.values.length) {
+        column.selectedValuesIds = [];
+      } else {
+        column.selectedValuesIds = column.values.map((value) => value.id);
+      }
+    }
+
+    // Update column in filterColumns
+    const newFilterColumns = filterColumns.map((filterColumn) => {
+      if (filterColumn.columnId === columnId) {
+        return column;
+      }
+      return filterColumn;
+    });
+
+    // setFilterColumnsData(newFilterColumns);
+    setFilterColumns(newFilterColumns);
+  };
+
+  //////////////////////////////////////////////////
   return (
     <>
       <Button onClick={handleClick}>
@@ -76,246 +165,59 @@ const CustomTableFilter = ({}: CustomTableFilterProps) => {
           }}
         >
           <Grid container>
-            <Grid item xs={4}>
-              <Box
-                sx={{
-                  padding: "0.5rem 0.5rem",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <FormControlLabel
-                  label="الوظيفــة"
-                  value="الوظيفــة"
-                  control={
-                    <Checkbox
-                      checked={checked[0] && checked[1] && checked[1]}
-                      indeterminate={
-                        checked[0] !== checked[1] ||
-                        checked[0] !== checked[2] ||
-                        checked[1] !== checked[2]
-                      }
-                      onChange={handleChange1}
-                    />
-                  }
-                />
-                <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
+            {filterColumns.map((column: FilterColumn, index: number) => (
+              <Grid item xs={4} key={index}>
+                <Box
+                  sx={{
+                    padding: "0.5rem 0.5rem",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
                   <FormControlLabel
-                    label="Child 1"
-                    value="Child 1"
+                    label={column.label}
+                    value={column.label}
                     control={
-                      <Checkbox checked={checked[0]} onChange={handleChange2} />
+                      <Checkbox
+                        checked={
+                          column.selectedValuesIds.length ===
+                          column.values.length
+                        }
+                        indeterminate={
+                          column.selectedValuesIds.length > 0 &&
+                          column.selectedValuesIds.length < column.values.length
+                        }
+                        onChange={(_event) => {
+                          handleWholeColumnCheck(column.columnId);
+                        }}
+                      />
                     }
                   />
-                  <FormControlLabel
-                    label="Child 2"
-                    value="Child 2"
-                    control={
-                      <Checkbox checked={checked[1]} onChange={handleChange3} />
-                    }
-                  />
-                  <FormControlLabel
-                    label="Child 3"
-                    value="Child 3"
-                    control={
-                      <Checkbox checked={checked[2]} onChange={handleChange4} />
-                    }
-                  />
+                  <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
+                    {column.values.map((value, index) => {
+                      return (
+                        <FormControlLabel
+                          key={index}
+                          label={value.value}
+                          value={value.id}
+                          control={
+                            <Checkbox
+                              checked={column.selectedValuesIds.includes(
+                                value.id
+                              )}
+                              onChange={(event) => {
+                                console.log(event.target.checked);
+                                handleCheck(column.columnId, value.id);
+                              }}
+                            />
+                          }
+                        />
+                      );
+                    })}
+                  </Box>
                 </Box>
-              </Box>
-            </Grid>
-            <Grid item xs={4}>
-              <Box
-                sx={{
-                  padding: "0.5rem 0.5rem",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <FormControlLabel
-                  label="الوظيفــة"
-                  value="الوظيفــة"
-                  control={
-                    <Checkbox
-                      checked={checked[0] && checked[1] && checked[1]}
-                      indeterminate={
-                        checked[0] !== checked[1] ||
-                        checked[0] !== checked[2] ||
-                        checked[1] !== checked[2]
-                      }
-                      onChange={handleChange1}
-                    />
-                  }
-                />
-                <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
-                  <FormControlLabel
-                    label="Child 1"
-                    value="Child 1"
-                    control={
-                      <Checkbox checked={checked[0]} onChange={handleChange2} />
-                    }
-                  />
-                  <FormControlLabel
-                    label="Child 2"
-                    value="Child 2"
-                    control={
-                      <Checkbox checked={checked[1]} onChange={handleChange3} />
-                    }
-                  />
-                  <FormControlLabel
-                    label="Child 3"
-                    value="Child 3"
-                    control={
-                      <Checkbox checked={checked[2]} onChange={handleChange4} />
-                    }
-                  />
-                </Box>
-              </Box>
-            </Grid>
-            <Grid item xs={4}>
-              <Box
-                sx={{
-                  padding: "0.5rem 0.5rem",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <FormControlLabel
-                  label="الوظيفــة"
-                  value="الوظيفــة"
-                  control={
-                    <Checkbox
-                      checked={checked[0] && checked[1] && checked[1]}
-                      indeterminate={
-                        checked[0] !== checked[1] ||
-                        checked[0] !== checked[2] ||
-                        checked[1] !== checked[2]
-                      }
-                      onChange={handleChange1}
-                    />
-                  }
-                />
-                <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
-                  <FormControlLabel
-                    label="Child 1"
-                    value="Child 1"
-                    control={
-                      <Checkbox checked={checked[0]} onChange={handleChange2} />
-                    }
-                  />
-                  <FormControlLabel
-                    label="Child 2"
-                    value="Child 2"
-                    control={
-                      <Checkbox checked={checked[1]} onChange={handleChange3} />
-                    }
-                  />
-                  <FormControlLabel
-                    label="Child 3"
-                    value="Child 3"
-                    control={
-                      <Checkbox checked={checked[2]} onChange={handleChange4} />
-                    }
-                  />
-                </Box>
-              </Box>
-            </Grid>{" "}
-            <Grid item xs={4}>
-              <Box
-                sx={{
-                  padding: "0.5rem 0.5rem",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <FormControlLabel
-                  label="الوظيفــة"
-                  value="الوظيفــة"
-                  control={
-                    <Checkbox
-                      checked={checked[0] && checked[1] && checked[1]}
-                      indeterminate={
-                        checked[0] !== checked[1] ||
-                        checked[0] !== checked[2] ||
-                        checked[1] !== checked[2]
-                      }
-                      onChange={handleChange1}
-                    />
-                  }
-                />
-                <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
-                  <FormControlLabel
-                    label="Child 1"
-                    value="Child 1"
-                    control={
-                      <Checkbox checked={checked[0]} onChange={handleChange2} />
-                    }
-                  />
-                  <FormControlLabel
-                    label="Child 2"
-                    value="Child 2"
-                    control={
-                      <Checkbox checked={checked[1]} onChange={handleChange3} />
-                    }
-                  />
-                  <FormControlLabel
-                    label="Child 3"
-                    value="Child 3"
-                    control={
-                      <Checkbox checked={checked[2]} onChange={handleChange4} />
-                    }
-                  />
-                </Box>
-              </Box>
-            </Grid>{" "}
-            <Grid item xs={4}>
-              <Box
-                sx={{
-                  padding: "0.5rem 0.5rem",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <FormControlLabel
-                  label="الوظيفــة"
-                  value="الوظيفــة"
-                  control={
-                    <Checkbox
-                      checked={checked[0] && checked[1] && checked[1]}
-                      indeterminate={
-                        checked[0] !== checked[1] ||
-                        checked[0] !== checked[2] ||
-                        checked[1] !== checked[2]
-                      }
-                      onChange={handleChange1}
-                    />
-                  }
-                />
-                <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
-                  <FormControlLabel
-                    label="Child 1"
-                    value="Child 1"
-                    control={
-                      <Checkbox checked={checked[0]} onChange={handleChange2} />
-                    }
-                  />
-                  <FormControlLabel
-                    label="Child 2"
-                    value="Child 2"
-                    control={
-                      <Checkbox checked={checked[1]} onChange={handleChange3} />
-                    }
-                  />
-                  <FormControlLabel
-                    label="Child 3"
-                    value="Child 3"
-                    control={
-                      <Checkbox checked={checked[2]} onChange={handleChange4} />
-                    }
-                  />
-                </Box>
-              </Box>
-            </Grid>{" "}
+              </Grid>
+            ))}
           </Grid>
         </Box>
       </Popper>
