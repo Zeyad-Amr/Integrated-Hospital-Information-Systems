@@ -51,7 +51,7 @@ const CustomTableFilter = () => {
     // filter repeated values if same id
     const uniqueValues: { id: string; value: string }[] = [];
     columnValues.forEach((value) => {
-      if (!uniqueValues.find((uniqueValue) => uniqueValue.id === value.id)) {
+      if (!uniqueValues.find((uniqueValue) => uniqueValue?.id === value?.id)) {
         uniqueValues.push(value);
       }
     });
@@ -64,13 +64,16 @@ const CustomTableFilter = () => {
     // get filterable columns
     const filterColumns = getFilterableColumns();
 
+    if (filterColumns.length === 0) {
+      return [];
+    }
     // get filter columns
     const filterColumnsData = filterColumns.map((column) => {
       return {
         columnId: column.id,
         label: column.label,
         values: getUniqueValues(column.id),
-        selectedValuesIds: getUniqueValues(column.id).map((value) => value.id),
+        selectedValuesIds: getUniqueValues(column.id).map((value) => value?.id),
       };
     });
 
@@ -198,16 +201,16 @@ const CustomTableFilter = () => {
                       return (
                         <FormControlLabel
                           key={index}
-                          label={value.value}
-                          value={value.id}
+                          label={value?.value}
+                          value={value?.id}
                           control={
                             <Checkbox
                               checked={column.selectedValuesIds.includes(
-                                value.id
+                                value?.id
                               )}
                               onChange={(event) => {
                                 console.log(event.target.checked);
-                                handleCheck(column.columnId, value.id);
+                                handleCheck(column.columnId, value?.id);
                               }}
                             />
                           }

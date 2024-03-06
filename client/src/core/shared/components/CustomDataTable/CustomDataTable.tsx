@@ -162,6 +162,34 @@ const CustomDataTable = <T,>({
                           {(item as any)["icon"]}
                         </Box>
                       </TableCell>
+                    ) : headerItems.isComponent ? (
+                      <TableCell
+                        key={headerItems.id}
+                        {...headerItems.tableCellProps}
+                        sx={{
+                          minWidth: headerItems.minWidth,
+                          maxWidth: headerItems.maxWidth,
+                          height: rowHeight,
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: "0.8rem",
+                            textAlign: "center", // Center the text horizontally
+                            lineHeight: rowHeight, // Center the text vertically
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+
+                            display: "inline-block", // Ensure ellipsis works properly
+                            maxWidth: "100%", // Ensure text doesn't overflow TableCell
+                          }}
+                        >
+                          {(item as any)[headerItems.id]}
+                        </Typography>
+                      </TableCell>
                     ) : (
                       <TableCell
                         key={headerItems.id}

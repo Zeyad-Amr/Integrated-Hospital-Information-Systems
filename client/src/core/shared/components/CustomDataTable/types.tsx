@@ -10,6 +10,7 @@ import { TableCellProps } from "@mui/material";
  * @param {(value: number) => string} [format] - The custom format function for the header item (optional).
  * @param {() => void} [onClick] - The callback function triggered when the header item is clicked (optional).
  * @param {boolean} [isIcon] - Whether the header item is an icon (optional).
+ * @param {boolean} [isComponent] - Whether the header item is a custom component (optional).
  * @param {React.ReactNode} [component] - The custom component for the header item (optional).
  * @param {boolean} [sortable] - Whether the header item is sortable (optional).
  * @param {boolean} [filterable] - Whether the header item is filterable (optional).
@@ -24,6 +25,7 @@ interface HeaderItem {
   format?: (value: number) => string;
   onClick?: () => void;
   isIcon?: boolean;
+  isComponent?: boolean;
   component?: React.ReactNode;
   sortable?: boolean;
   filterable?: boolean;
