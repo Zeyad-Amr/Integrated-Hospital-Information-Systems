@@ -7,13 +7,13 @@ import {
     UpdateVisitUseCase,
     GetAnonymousVisitUseCase,
     GetVisitByCodeUseCase
-} from "../../../domain/usecases";
+} from "../../../domain/usecases/visit";
 import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
 
 
 //* Create Visit
 export const createVisit = createAsyncThunk(
-    "registration/create",
+    "visit/create",
     async (data: VisitInterface, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
@@ -30,7 +30,7 @@ export const createVisit = createAsyncThunk(
 
 //* Update Visit
 export const updateVisit = createAsyncThunk(
-    "registration/update",
+    "visit/update",
     async (_data: VisitInterface, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
@@ -48,9 +48,9 @@ export const updateVisit = createAsyncThunk(
 );
 
 
-//* Get Anonymous Registration
+//* Get Anonymous visit
 export const getAnonymousVisits = createAsyncThunk(
-    "registration/getAnonymousVisits",
+    "visit/getAnonymousVisits",
     async (_data, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
@@ -66,7 +66,7 @@ export const getAnonymousVisits = createAsyncThunk(
 
 //* Get Visit By Code
 export const getVisitByCode = createAsyncThunk(
-    "registration/getVisitByCode",
+    "visit/getVisitByCode",
     async (_data: string, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {

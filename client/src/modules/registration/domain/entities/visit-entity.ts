@@ -29,8 +29,6 @@ export default class VisitEntity {
 
 
     static getCompanionSchema(allRequired: boolean = false): Yup.ObjectSchema<PersonInputInterface> {
-        console.log(allRequired);
-
         const state = store.getState();
         const coditionCallback = (values: any[], schema: any, msg?: string, oneOfArr?: number[]) => {
             if (!values.every((value) => value === undefined || value === "" || value === 0) || allRequired) {

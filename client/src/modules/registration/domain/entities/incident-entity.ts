@@ -1,23 +1,15 @@
 import { Yup } from "@/core/shared/utils/validation";
+import { IncidentInterface } from "../interfaces/incident-interface";
 
 export default class IncidentEntity {
 
-    // static defaultValue(): AdditionalDataInterface {
-    //     return {
-    //         comeFrom: undefined,
-    //         attendantName: undefined,
-    //         attendantSSN: undefined,
-    //         attendantSerialNumber: undefined,
-    //         attendantRole: undefined,
-    //         carNum: undefined,
-    //         firstChar: undefined,
-    //         secondChar: undefined,
-    //         thirdChar: undefined,
-    //         reason: undefined,
-    //         place: undefined,
-    //         notes: undefined,
-    //     }
-    // }
+    static defaultValue(): IncidentInterface {
+        return {
+            numOfPatients: "",
+            additionalInfo: undefined,
+            comoanions: undefined,
+        }
+    }
 
     static getNumOfPatientsSchema(): Yup.ObjectSchema<any> {
 

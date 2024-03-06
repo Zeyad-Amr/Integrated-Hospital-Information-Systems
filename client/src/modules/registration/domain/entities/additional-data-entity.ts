@@ -35,7 +35,8 @@ export default class AdditionalDataEntity {
 
         return Yup.object().shape({
             comeFrom: Yup.number()
-                .oneOf(state.lookups.lookups.cameFromOptions.map((e) => e.id), ""),
+                .min(0)
+                .max(state.lookups.lookups.cameFromOptions.length),
             attendantName: Yup.string()
                 .when(["attendantSSN", "attendantRole", "attendantSerialNumber"], (values, schema) =>
                     coditionCallback(values, schema, "يجب إدخال اسم المحضر"))

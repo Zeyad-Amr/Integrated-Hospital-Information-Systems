@@ -3,7 +3,7 @@ import PersonModel from '../../../../core/shared/modules/person/data/models/pers
 import VisitInterface from '../../domain/interfaces/visit-interface';
 import AdditionalDataModel from './additional-data-model';
 
-export default class RegistrationModel {
+export default class VisitModel {
 
     // //* --------------------- Serialization: Convert the model to JSON ---------------------
     static toJson(entity: VisitInterface): any {

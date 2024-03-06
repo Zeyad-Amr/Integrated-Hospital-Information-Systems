@@ -120,8 +120,12 @@ export class IncidentRepo extends PrismaGenericRepo<
         }
 
         // ======================================== Companions =========================================================
+
         await tx.person.createMany({
-          data: incidentDto.companions.map((companion) => ({ ...companion, type: PersonType.COMPANION })),
+          data: incidentDto.companions.map((companion) => {
+            let { kinshipId, ...personalData } = companion
+            return { ...personalData, type: PersonType.COMPANION }
+          }),
           skipDuplicates: true,
         });
         const companionsSSNs = incidentDto.companions.map((c) => c.SSN);
@@ -130,9 +134,12 @@ export class IncidentRepo extends PrismaGenericRepo<
           where: { SSN: { in: companionsSSNs } },
         });
 
-        const companionsPersonIds =
+        const companionsPersonIds: { personId: string, kinshipId: number }[] =
           companionsPersonal.map((c) => {
-            return { personId: c.id };
+            return {
+              personId: c.id, kinshipId:
+                incidentDto.companions.find((comp) => comp.SSN === c.SSN).kinshipId
+            };
           });
 
         await tx.companion.createMany({
@@ -152,7 +159,7 @@ export class IncidentRepo extends PrismaGenericRepo<
         // * Create Incident
         const incident = await tx.incident.create({
           data: {
-            numberOfPatients: incidentDto.numerOfPatients,
+            numberOfPatients: incidentDto.numberOfPatients,
             AdditionalInformation: connectAdditionalInfo,
             CompanionsOnIncidents: {
               createMany: {
@@ -167,7 +174,7 @@ export class IncidentRepo extends PrismaGenericRepo<
         let visitCode = await this.visitRepo.createVisitCode();
 
         const visitsData = [];
-        for (let i = 0; i < incidentDto.numerOfPatients; i++) {
+        for (let i = 0; i < incidentDto.numberOfPatients; i++) {
           visitsData.push({
             code: visitCode,
             incidentId: incident.id,

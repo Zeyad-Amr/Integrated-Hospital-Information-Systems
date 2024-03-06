@@ -12,6 +12,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { CreatePersonDto } from 'src/person/dto/create-person.dto';
+import { CompanionDto } from 'src/visit/dto/create-visit.dto';
 
 export class CarNumber {
   @ApiProperty({ type: String, example: 'و' })
@@ -27,7 +28,7 @@ export class CarNumber {
 
   @ApiProperty({ type: String, example: 'أ' })
   @IsString()
-  @Length(1)
+  @Length(0, 1)
   @IsOptional()
   thirdChar: string;
 
@@ -98,7 +99,7 @@ export class CreateIncidentDto {
   @ApiProperty({ type: Number, example: 10 })
   @IsInt()
   @IsNotEmpty()
-  numerOfPatients: number;
+  numberOfPatients: number;
 
   @ApiProperty({ type: AdditionalInformation })
   @IsNotEmpty()
@@ -106,10 +107,10 @@ export class CreateIncidentDto {
   @Type(() => AdditionalInformation)
   additionalInfo: AdditionalInformation;
 
-  @ApiProperty({ type: [CreatePersonDto] })
+  @ApiProperty({ type: [CompanionDto] })
   @IsArray()
   @IsNotEmpty()
   @ValidateNested()
-  @Type(() => CreatePersonDto)
-  companions: CreatePersonDto[];
+  @Type(() => CompanionDto)
+  companions: CompanionDto[];
 }

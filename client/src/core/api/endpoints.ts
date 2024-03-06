@@ -18,6 +18,11 @@ const Endpoints = {
         update: '/patient',
         triageAX: '/visit/triage/:visitCode',
     },
+    incident: {
+        create: '/incident',
+        list: '/incident',
+        details: '/incident/:id',
+    },
     lookups: {
         list: '/enums',
     },
