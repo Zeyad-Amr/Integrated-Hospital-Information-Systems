@@ -40,18 +40,11 @@ export class VisitService {
     sort?: Sorting,
   ): Promise<PaginatedResource<Visit>> {
     try {
-      const includeObj = {
-        companion: true,
-        creator: { include: { person: true } },
-        incident: true,
-        patient: true,
-      };
-
       return this.visitRepo.getAll({
         paginationParams,
         filters,
         sort,
-        include: includeObj,
+        include: this.visitRepo.visitIncludes,
       });
     } catch (error) {
       throw error;
