@@ -1,7 +1,7 @@
 "use client";
 
 import Sidebar from "@/core/layout/sidebar/index";
-import AddVisit from "@/modules/visits/presentation/pages/AddVisit";
+import AddVisit from "@/modules/registration/presentation/pages/visit/AddVisit";
 
 export default function CreateDepartment() {
   return (

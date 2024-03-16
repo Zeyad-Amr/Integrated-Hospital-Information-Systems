@@ -3,7 +3,7 @@ enum ServiceKeys {
     //* Data Sources ----------------------------------------------
     EmployeeDataSource = 'EmployeeDataSource',
     AuthDataSources = 'AuthDataSources',
-    VisitsDataSource = 'VisitsDataSource',
+    RegistrationDataSource = 'RegistrationDataSource',
     LookupsDataSource = 'LookupsDataSource',
     TriageAXDataSource = 'TriageAXDataSource',
     PersonDataSource = 'PersonDataSource',
@@ -11,7 +11,7 @@ enum ServiceKeys {
     //* Repositories ----------------------------------------------
     EmployeeRepository = 'EmployeeRepository',
     AuthRepository = 'AuthRepository',
-    VisitsRepository = 'VisitsRepository',
+    RegistrationRepository = 'RegistrationRepository',
     LookupsRepository = 'LookupsRepository',
     TriageAXRepository = 'TriageAXRepository',
     PersonRepository = 'PersonRepository',
@@ -32,7 +32,7 @@ enum ServiceKeys {
 
     CreateVisitUseCase = 'CreateVisitUseCase',
     UpdateVisitUseCase = 'UpdateVisitUseCase',
-    GetAnonymousVisitsUseCase = 'GetAnonymousVisitsUseCase',
+    GetAnonymousVisitUseCase = 'GetAnonymousVisitUseCase',
     GetVisitByCodeUseCase = 'GetVisitByCodeUseCase',
 
     CreateTriageAXUseCase = 'CreateTriageAXUseCase',

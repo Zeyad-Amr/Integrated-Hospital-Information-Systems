@@ -1,7 +1,7 @@
 "use client";
 
 import Sidebar from "@/core/layout/sidebar/index";
-import AddIncident from "@/modules/incidents/presentation/pages/AddIncident";
+import AddIncident from "@/modules/registration/presentation/pages/incident/AddIncident";
 
 export default function CreateDepartment() {
   return (

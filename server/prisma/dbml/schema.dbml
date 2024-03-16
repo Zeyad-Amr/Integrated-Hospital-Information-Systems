@@ -79,6 +79,52 @@ Table Department {
   id String [pk]
   name String [unique, not null]
   Employees Employee [not null]
+  SubDepartments SubDepartment [not null]
+}
+
+Table SubDepartment {
+  id Int [pk, increment]
+  name String [not null]
+  roomId Int [not null]
+  room Room [not null]
+  specializationId Int [not null]
+  specialization Specialization [not null]
+  features Feature [not null]
+  Department Department
+  departmentId String
+  Permissions Permissions [not null]
+}
+
+Table Specialization {
+  id Int [pk, increment]
+  name String [not null]
+  description String
+  SubDepartment SubDepartment [not null]
+}
+
+Table Room {
+  id Int [pk, increment]
+  name String [not null]
+  location String
+  SubDepartment SubDepartment [not null]
+}
+
+Table Feature {
+  id Int [pk, increment]
+  name String [not null]
+  subDepartment SubDepartment
+  subDepartmentId Int
+  Permissions Permissions [not null]
+}
+
+Table Permissions {
+  id Int [pk, increment]
+  feature Feature [not null]
+  featureId Int [not null]
+  role RoleType [not null]
+  roleTypeId Int [not null]
+  subDepartment SubDepartment [not null]
+  subDepartmentId Int [not null]
 }
 
 Table Visit {
@@ -226,6 +272,7 @@ Table RoleType {
   id Int [pk, increment]
   value String [unique, not null]
   Employee Employee [not null]
+  Permissions Permissions [not null]
 }
 
 Table ShiftType {
@@ -291,6 +338,20 @@ Ref: Employee.createdById - Employee.id
 Ref: Employee.departmentId > Department.id
 
 Ref: User.employeeId - Employee.id [delete: Cascade]
+
+Ref: SubDepartment.roomId > Room.id
+
+Ref: SubDepartment.specializationId > Specialization.id
+
+Ref: SubDepartment.departmentId > Department.id
+
+Ref: Feature.subDepartmentId > SubDepartment.id
+
+Ref: Permissions.featureId > Feature.id
+
+Ref: Permissions.roleTypeId > RoleType.id
+
+Ref: Permissions.subDepartmentId > SubDepartment.id
 
 Ref: Visit.additionalInfoId > VisitAdditionalInformation.id
 

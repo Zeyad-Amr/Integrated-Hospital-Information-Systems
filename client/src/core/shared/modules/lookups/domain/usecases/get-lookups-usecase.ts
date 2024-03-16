@@ -1,6 +1,6 @@
 import BaseUseCase from "@/core/base/base-usecase";
 import BaseLookupsRepository from "../repositories/base-lookups-repository";
-import { NoParams } from "@/modules/visits/domain/usecases";
+import { NoParams } from "@/modules/registration/domain/usecases";
 import { LookupsInterface } from "../interfaces/lookups-interface";
 
 class GetLookupsUseCase
