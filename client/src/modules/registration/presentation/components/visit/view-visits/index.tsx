@@ -8,17 +8,16 @@ import { VisitsState } from "../../../controllers/types";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
 import { getAnonymousVisits } from "../../../controllers/thunks/visits-thunks";
-import { FilterQueryParam } from "@/core/api";
+import { FilterQuery } from "@/core/api";
 
 const VisitsTable = () => {
   const state: VisitsState = useAppSelector((state: any) => state.visits);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log("getAnonymousVisits([])");
     dispatch(getAnonymousVisits([]));
   }, []);
-  console.log("VisitsTable ---------");
+
   // useRef
   const refIdValue = useRef("");
 
@@ -72,7 +71,7 @@ const VisitsTable = () => {
       }}
     >
       <CustomDataTable
-        applyFilters={(filters: FilterQueryParam[]) => {
+        applyFilters={(filters: FilterQuery[]) => {
           console.log(filters);
           dispatch(getAnonymousVisits(filters));
         }}

@@ -1,4 +1,4 @@
-import { ErrorResponse, ErrorMessage, FilterQueryParam } from "@/core/api";
+import { ErrorResponse, ErrorMessage, FilterQuery } from "@/core/api";
 import BaseVisitRepository from "../../domain/repositories/base-visit-repository";
 import { BaseVisitDataSource } from "../datasources/visit-datasource";
 import VisitInterface from "../../domain/interfaces/visit-interface";
@@ -30,7 +30,7 @@ class VisitRepository extends BaseVisitRepository {
         }
     }
 
-    override async getAllAnonymousVisits(filters: FilterQueryParam[]): Promise<VisitInterface[]> {
+    override async getAllAnonymousVisits(filters: FilterQuery[]): Promise<VisitInterface[]> {
         try {
             console.log("getAllAnonymousVisits");
             const result = await this.baseVisitDataSource.getAllAnonymousVisits(filters);

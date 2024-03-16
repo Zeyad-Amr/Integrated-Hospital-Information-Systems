@@ -1,8 +1,8 @@
-import { FilterQueryParam } from "@/core/api";
+import { FilterQuery } from "@/core/api";
 import { SxProps, TableCellProps } from "@mui/material";
 
 interface CustomDataTableProps<T> {
-  applyFilters?: (filters: FilterQueryParam[]) => void;
+  applyFilters?: (filters: FilterQuery[]) => void;
   data: T[];
   headerItems: HeaderItem[];
   width?: string;

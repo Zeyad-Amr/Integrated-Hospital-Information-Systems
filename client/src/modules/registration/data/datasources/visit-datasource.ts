@@ -1,12 +1,12 @@
-import { ApiClient, Endpoints, FilterQueryParam } from "@/core/api";
+import { ApiClient, Endpoints, FilterQuery } from "@/core/api";
 import VisitModel from "../models/visit-model";
 import VisitInterface from "../../domain/interfaces/visit-interface";
-import APIFilter from "@/core/api/filters";
+import Filter from "@/core/api/filters";
 
 abstract class BaseVisitDataSource {
     abstract createVisit(visit: VisitInterface): Promise<VisitInterface>;
     abstract updateVisit(visit: VisitInterface): Promise<boolean>;
-    abstract getAllAnonymousVisits(filters: FilterQueryParam[]): Promise<VisitInterface[]>;
+    abstract getAllAnonymousVisits(filters: FilterQuery[]): Promise<VisitInterface[]>;
     abstract getVisitByCode(visitcode: string): Promise<VisitInterface>;
 }
 
@@ -26,9 +26,9 @@ class VisitDataSource extends BaseVisitDataSource {
         return true;
     }
 
-    override async getAllAnonymousVisits(filters: FilterQueryParam[]): Promise<VisitInterface[]> {
+    override async getAllAnonymousVisits(filters: FilterQuery[]): Promise<VisitInterface[]> {
         console.log("getAllAnonymousVisits DS");
-        const response = await this.apiClient.get(Endpoints.visit.list, { filters: [APIFilter.isNotNull('patientId'), ...filters] });
+        const response = await this.apiClient.get(Endpoints.visit.list, { filters: [Filter.isNotNull('patientId'), ...filters] });
         console.log(response.data.items);
         return response.data.items.map((item: any) => VisitModel.fromJson(item));
     }

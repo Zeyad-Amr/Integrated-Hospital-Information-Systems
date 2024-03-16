@@ -1,57 +1,57 @@
-class APIFilter {
-    static equals(field: string, value: string): FilterQueryParam {
+class Filter {
+    static equals(field: string, value: string): FilterQuery {
         return { filter: `${field}:eq:${value}` };
     }
 
-    static notEquals(field: string, value: string): FilterQueryParam {
+    static notEquals(field: string, value: string): FilterQuery {
         return { filter: `${field}:neq:${value}` };
     }
 
-    static greaterThan(field: string, value: string): FilterQueryParam {
+    static greaterThan(field: string, value: string): FilterQuery {
         return { filter: `${field}:gt:${value}` };
     }
 
-    static greaterThanOrEquals(field: string, value: string): FilterQueryParam {
+    static greaterThanOrEquals(field: string, value: string): FilterQuery {
         return { filter: `${field}:gte:${value}` };
     }
 
-    static lessThan(field: string, value: string): FilterQueryParam {
+    static lessThan(field: string, value: string): FilterQuery {
         return { filter: `${field}:lt:${value}` };
     }
 
-    static lessThanOrEquals(field: string, value: string): FilterQueryParam {
+    static lessThanOrEquals(field: string, value: string): FilterQuery {
         return { filter: `${field}:lte:${value}` };
     }
 
-    static like(field: string, pattern: string): FilterQueryParam {
+    static like(field: string, pattern: string): FilterQuery {
         return { filter: `${field}:like:${pattern}` };
     }
 
-    static startsWith(field: string, value: string): FilterQueryParam {
+    static startsWith(field: string, value: string): FilterQuery {
         return { filter: `${field}:stw:${value}` };
     }
 
-    static isNull(field: string): FilterQueryParam {
+    static isNull(field: string): FilterQuery {
         return { filter: `${field}:isnull` };
     }
 
-    static isNotNull(field: string): FilterQueryParam {
+    static isNotNull(field: string): FilterQuery {
         return { filter: `${field}:isnotnull` };
     }
 
-    static sortAscending(field: string): FilterQueryParam {
+    static sortAscending(field: string): FilterQuery {
         return { filter: `${field}:asc` };
     }
 
-    static sortDescending(field: string): FilterQueryParam {
+    static sortDescending(field: string): FilterQuery {
         return { filter: `${field}:desc` };
     }
 }
 
-interface FilterQueryParam {
+interface FilterQuery {
     filter: string;
 }
 
-export default APIFilter;
-export type { FilterQueryParam };
+export default Filter;
+export type { FilterQuery };
 

@@ -43,14 +43,14 @@ export default class AdditionalDataModel {
             place: json.injuryLocation,
             reason: json.injuryCause,
             notes: json.notes,
-            firstChar: json.car.firstChar,
-            secondChar: json.car.secondChar,
-            thirdChar: json.car.thirdChar,
-            carNum: json.car.number,
-            attendantName: json.attendant.name,
-            attendantSerialNumber: json.attendant.id,
-            attendantSSN: json.attendant.SSN,
-            attendantRole: json.attendant.roleId
+            firstChar: json.Car.firstChar,
+            secondChar: json.Car.secondChar,
+            thirdChar: json.Car.thirdChar,
+            carNum: json.Car.number,
+            attendantName: json.Attendant.name,
+            attendantSerialNumber: json.Attendant.cardId,
+            attendantSSN: json.Attendant.SSN,
+            attendantRole: json.Attendant.attendantRoleId
         };
     }
 }

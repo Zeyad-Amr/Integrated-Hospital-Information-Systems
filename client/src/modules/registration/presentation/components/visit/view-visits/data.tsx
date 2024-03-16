@@ -1,6 +1,6 @@
 import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
-export interface DataItem {
+export interface AnonymizedVisit {
   sequenceNumber: string;
   name: string;
   code: string;

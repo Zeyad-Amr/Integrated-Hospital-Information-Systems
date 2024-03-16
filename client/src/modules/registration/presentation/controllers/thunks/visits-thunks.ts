@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { sl, ServiceKeys } from "@/core/service-locator";
 import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
-import { FilterQueryParam } from "@/core/api/filters";
+import { FilterQuery } from "@/core/api/filters";
 import {
     UpdateVisitUseCaseParameters,
     GetVisitByCodeUseCaseParameters,
@@ -49,7 +49,7 @@ export const updateVisit = createAsyncThunk(
 //* Get Anonymous Registration
 export const getAnonymousVisits = createAsyncThunk(
     "registration/getAnonymousVisits",
-    async (filters: FilterQueryParam[], thunkApi) => {
+    async (filters: FilterQuery[], thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
 

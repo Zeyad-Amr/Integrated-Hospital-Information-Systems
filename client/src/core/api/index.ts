@@ -5,5 +5,5 @@ export { default as ErrorMessage } from './error-message';
 export { default as ErrorsCodes } from './error-codes';
 export type { PaginatedApiResponse } from './pagination';
 export type { PaginatedApiRequestParams } from './pagination';
-export type { FilterQueryParam } from './filters';
-export { default as APIFilter } from './filters';
+export type { FilterQuery } from './filters';
+export { default as Filter } from './filters';

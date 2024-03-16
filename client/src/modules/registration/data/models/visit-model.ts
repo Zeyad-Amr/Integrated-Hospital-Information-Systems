@@ -32,8 +32,13 @@ export default class VisitModel {
             sequenceNumber: json.sequenceNumber,
             createdAt: json.createdAt,
             updatedAt: json.updatedAt,
-            patient: PersonModel.fromJson(json.patient),
-            companion: json.companion,
+            patient: PersonModel.fromJson(json.patient.person),
+            companion: {
+                ...PersonModel.fromJson(json.companion.person),
+                kinship: json.companion.kinshipId,
+            } as PersonModel,
+
+            additionalInfo: AdditionalDataModel.fromJson(json.AdditionalInformation)
         };
     }
 }
