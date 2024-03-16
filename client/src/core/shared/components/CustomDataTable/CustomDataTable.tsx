@@ -7,33 +7,19 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  SxProps,
   Box,
   Typography,
   Tooltip,
 } from "@mui/material";
 import CustomTableTollbar from "./CustomTableToolbar";
 import CustomColumnSort from "./CustomColumnSort";
-import { HeaderItem, SortedColumn } from "./types";
 import utilsFunctions from "../../utils/functions";
 import CustomTablePagination from "./CustomTablePagination";
 import { TableProvider } from "./context";
+import { CustomDataTableProps } from "./types";
 
-interface Props<T> {
-  data: T[];
-  headerItems: HeaderItem[];
-  width?: string;
-  height?: string;
-  boxShadow?: number;
-  stickyHeader?: boolean;
-  sx?: SxProps;
-  onRowClick?: (row: T) => void;
-  hover?: boolean;
-  variantBackground?: boolean;
-  rowHeight?: string;
-  initSortedColumn?: SortedColumn;
-}
 /**
+ * @param {applyQuery} - The function to apply the query to the data.
  * @param {T[]} data - The array of data items to be rendered.
  * @param {HeaderItem[]} headerItems - The array of header items to define the table columns.
  * @param {string} [width] - The width of the table (optional).
@@ -45,10 +31,12 @@ interface Props<T> {
  * @param {boolean} [hover] - Whether to enable hover effect on rows (optional).
  * @param {boolean} [variantBackground] - Whether to apply a variant background color to rows (optional).
  * @param {string} [rowHeight] - The height of each row (optional).
+ * @param {string} [rowPaddingY] - The padding of each row (optional).
  * @param {SortedColumn} initSortedColumn - The initial sorted column.
  */
 /** */
 const CustomDataTable = <T,>({
+  applyQuery,
   data,
   headerItems,
   width = "80vw",
@@ -60,14 +48,16 @@ const CustomDataTable = <T,>({
   hover = true,
   variantBackground = true,
   rowHeight = "1rem",
+  rowPaddingY = "0.1rem",
   initSortedColumn = { columnId: headerItems[0].id, isAscending: true },
-}: Props<T>) => {
-  const filterdData = [...data, ...data, ...data, ...data];
+}: CustomDataTableProps<T>) => {
+  const filterdData = [...data];
 
   ////////////////////////////////////////////////////////////////////////
   return (
     <TableProvider
       data={data}
+      applyQuery={applyQuery}
       columnHeader={headerItems}
       initSortedColumn={initSortedColumn}
     >
@@ -146,6 +136,7 @@ const CustomDataTable = <T,>({
                         key={headerItems.id}
                         {...headerItems.tableCellProps}
                         sx={{
+                          paddingY: rowPaddingY,
                           minWidth: headerItems.minWidth,
                           maxWidth: headerItems.maxWidth,
                           height: rowHeight,
@@ -167,6 +158,7 @@ const CustomDataTable = <T,>({
                         key={headerItems.id}
                         {...headerItems.tableCellProps}
                         sx={{
+                          paddingY: rowPaddingY,
                           minWidth: headerItems.minWidth,
                           maxWidth: headerItems.maxWidth,
                           height: rowHeight,
@@ -182,8 +174,6 @@ const CustomDataTable = <T,>({
                             lineHeight: rowHeight, // Center the text vertically
                             overflow: "hidden",
                             textOverflow: "ellipsis",
-
-                            display: "inline-block", // Ensure ellipsis works properly
                             maxWidth: "100%", // Ensure text doesn't overflow TableCell
                           }}
                         >
@@ -226,7 +216,6 @@ const CustomDataTable = <T,>({
                               )
                                 ? "rtl"
                                 : "ltr",
-                              display: "inline-block", // Ensure ellipsis works properly
                               maxWidth: "100%", // Ensure text doesn't overflow TableCell
                             }}
                           >

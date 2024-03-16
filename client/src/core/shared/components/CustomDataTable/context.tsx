@@ -33,13 +33,14 @@ export const useTableContext = <T,>() => {
 
 // TableProvider component to wrap your application and provide the context
 export const TableProvider = (props: any) => {
+  const { applyQuery, initSortedColumn, columnHeader, data } = props;
+
   const [filterColumns, setFilterColumns] = useState<FilterColumn[]>([]);
   const [searchQuery, setSearchQuery] = useState<SearchQuery>({
     value: "",
   } as SearchQuery);
-  const [sortedColumn, setSortedColumn] = useState<SortedColumn>(
-    props.initSortedColumn
-  );
+  const [sortedColumn, setSortedColumn] =
+    useState<SortedColumn>(initSortedColumn);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -47,21 +48,36 @@ export const TableProvider = (props: any) => {
   useEffect(() => {
     console.log(page);
     console.log(rowsPerPage);
+    applyQuery(`page=${page + 1}&limit=${rowsPerPage}`);
   }, [page, rowsPerPage]);
 
   //* ----------------------- Handle Sorting
   useEffect(() => {
     console.log(sortedColumn);
+    applyQuery(
+      `sort=${sortedColumn.columnId}&order=${
+        sortedColumn.isAscending ? "asc" : "desc"
+      }`
+    );
   }, [sortedColumn]);
 
   //* ----------------------- Handle Searching
   useEffect(() => {
     console.log(searchQuery);
+    applyQuery(`search=${searchQuery.value}`);
   }, [searchQuery]);
 
   //* ----------------------- Handle Filtering
   useEffect(() => {
     console.log(filterColumns);
+    const filterQuery = filterColumns
+      .map((filter) => {
+        return filter.selectedValuesIds
+          .map((valueId) => `${filter.columnId}=${valueId}`)
+          .join("&");
+      })
+      .join("&");
+    applyQuery(filterQuery);
   }, [filterColumns]);
 
   return (
@@ -77,8 +93,8 @@ export const TableProvider = (props: any) => {
         setPage,
         rowsPerPage,
         setRowsPerPage,
-        columnHeader: props.columnHeader,
-        data: props.data,
+        columnHeader,
+        data,
       }}
     >
       {props.children}

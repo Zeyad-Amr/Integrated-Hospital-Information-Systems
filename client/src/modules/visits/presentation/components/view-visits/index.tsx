@@ -58,6 +58,7 @@ const VisitsTable = () => {
       }}
     >
       <CustomDataTable
+        applyQuery={(query: string) => console.log(query)}
         data={tableData}
         headerItems={header}
         stickyHeader={true}
@@ -65,7 +66,7 @@ const VisitsTable = () => {
         width="100%"
         height="80vh"
         sx={{ mb: 5 }}
-        onRowClick={(item) => console.log(item)}
+        onRowClick={(item: any) => console.log(item)}
       />
       <CompleteVisit
         display={showDialog}

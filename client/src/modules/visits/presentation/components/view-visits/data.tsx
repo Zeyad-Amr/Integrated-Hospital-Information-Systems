@@ -216,9 +216,9 @@ export const header: HeaderItem[] = [
   {
     id: "sequenceNumber",
     label: "رقم التردد",
-    minWidth: 50,
-    tableCellProps: { align: "center" },
+    minWidth: 20,
     maxWidth: 50,
+    tableCellProps: { align: "center" },
     sortable: true,
     filterable: false,
     searchable: true,
@@ -237,7 +237,8 @@ export const header: HeaderItem[] = [
   {
     id: "name",
     label: "اسم المرافق",
-    minWidth: 100,
+    minWidth: 50,
+    maxWidth: 70,
     tableCellProps: { align: "center" },
     sortable: true,
     filterable: false,

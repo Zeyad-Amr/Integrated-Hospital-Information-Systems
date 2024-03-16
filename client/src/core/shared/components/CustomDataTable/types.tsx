@@ -1,4 +1,21 @@
-import { TableCellProps } from "@mui/material";
+import { SxProps, TableCellProps } from "@mui/material";
+
+interface CustomDataTableProps<T> {
+  applyQuery?: (query: string) => void;
+  data: T[];
+  headerItems: HeaderItem[];
+  width?: string;
+  height?: string;
+  boxShadow?: number;
+  stickyHeader?: boolean;
+  sx?: SxProps;
+  onRowClick?: (row: T) => void;
+  hover?: boolean;
+  variantBackground?: boolean;
+  rowHeight?: string;
+  rowPaddingY?: string;
+  initSortedColumn?: SortedColumn;
+}
 
 /**
  * The interface for the header item.
@@ -77,6 +94,7 @@ interface FilterColumn {
 }
 
 export type {
+  CustomDataTableProps,
   HeaderItem,
   SortedColumn,
   SearchQuery,
