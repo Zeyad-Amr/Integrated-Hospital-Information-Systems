@@ -1,5 +1,5 @@
 import { Yup } from "@/core/shared/utils/validation";
-import { IncidentInterface } from "../interfaces/incident-interface";
+import IncidentInterface from "../interfaces/incident-interface";
 
 export default class IncidentEntity {
 
@@ -7,7 +7,7 @@ export default class IncidentEntity {
         return {
             numOfPatients: "",
             additionalInfo: undefined,
-            comoanions: undefined,
+            companions: undefined,
         }
     }
 

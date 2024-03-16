@@ -1,5 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { sl, ServiceKeys } from "@/core/service-locator";
+import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
+import { FilterQueryParam } from "@/core/api/filters";
 import {
     UpdateVisitUseCaseParameters,
     GetVisitByCodeUseCaseParameters,
@@ -7,10 +9,7 @@ import {
     UpdateVisitUseCase,
     GetAnonymousVisitUseCase,
     GetVisitByCodeUseCase
-} from "../../../domain/usecases";
-import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
-import { FilterQueryParam } from "@/core/api/filters";
-
+} from "@/modules/registration/domain/usecases/visit";
 
 //* Create Visit
 export const createVisit = createAsyncThunk(
@@ -37,7 +36,6 @@ export const updateVisit = createAsyncThunk(
         try {
             const result = await sl.get<UpdateVisitUseCase>(ServiceKeys.UpdateVisitUseCase).call(
                 new UpdateVisitUseCaseParameters(_data)
-
             );
             console.log('Result:', result);
             return result;
@@ -47,7 +45,6 @@ export const updateVisit = createAsyncThunk(
         }
     }
 );
-
 
 //* Get Anonymous Registration
 export const getAnonymousVisits = createAsyncThunk(
