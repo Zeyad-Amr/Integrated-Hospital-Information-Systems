@@ -1,7 +1,7 @@
 import BaseUseCase from "@/core/base/base-usecase";
 import { GetVisitByCodeUseCaseParameters } from "./usecase-params";
-import BaseRegistrationRepository from "../repositories/base-registration-repository";
-import VisitInterface from "../interfaces/visit-interface";
+import BaseRegistrationRepository from "../../repositories/base-visit-repository";
+import VisitInterface from "../../interfaces/visit-interface";
 
 class GetVisitByCodeUseCase
     implements BaseUseCase<VisitInterface, GetVisitByCodeUseCaseParameters> {

@@ -18,23 +18,23 @@ const initialState: VisitsState = {
     error: "",
 };
 
-const authSlice = createSlice({
-    name: "registration",
+const visitSlice = createSlice({
+    name: "visit",
     initialState,
     reducers: {
         setLoading(state, action: { payload: boolean, type: string }) {
             state.loading = action.payload;
         },
-        clearAuthError(state) {
+        clearError(state) {
             state.error = initialState.error;
         },
-        clearRegistration(state) {
+        clearVisit(state) {
             state.visits = initialState.visits;
         },
         clearCurrentVisit(state) {
             state.currentVisit = initialState.currentVisit;
         },
-        setRegistration(state, action: { payload: VisitInterface[], type: string }) {
+        setVisit(state, action: { payload: VisitInterface[], type: string }) {
             state.visits = action.payload;
         },
         setCurrentVisit(state, action: { payload: VisitInterface, type: string }) {
@@ -73,7 +73,7 @@ const authSlice = createSlice({
             state.error = (action.payload as ErrorResponse).message;
         });
 
-        //* Get Anonymous Registration
+        //* Get Anonymous Visit
         builder.addCase(getAnonymousVisits.pending, (state, _action) => {
             state.loading = true;
             state.error = "";
@@ -106,12 +106,12 @@ const authSlice = createSlice({
 });
 
 export const {
-    clearAuthError,
+    clearError,
     setLoading,
-    clearRegistration,
-    setRegistration,
+    clearVisit,
+    setVisit,
     clearCurrentVisit,
     setCurrentVisit
 
-} = authSlice.actions;
-export default authSlice.reducer;
+} = visitSlice.actions;
+export default visitSlice.reducer;

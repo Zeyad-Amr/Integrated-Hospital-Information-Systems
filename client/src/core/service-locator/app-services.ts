@@ -17,10 +17,10 @@ import BaseAuthRepository from "@/modules/auth/domain/repositories/base-auth-rep
 import AuthRepository from "@/modules/auth/data/repositories/auth-repository";
 import { LoginUseCase } from "@/modules/auth/domain/usecases";
 import GetMeUseCase from "@/modules/auth/domain/usecases/get-me-usecase";
-import { BaseRegistrationDataSource, RegistrationDataSource } from "@/modules/registration/data/datasources/registration-datasource";
-import RegistrationRepository from "@/modules/registration/data/repositories/registration-repository";
-import BaseRegistrationRepository from "@/modules/registration/domain/repositories/base-registration-repository";
-import { CreateVisitUseCase, GetAnonymousVisitUseCase, GetVisitByCodeUseCase, UpdateVisitUseCase } from "@/modules/registration/domain/usecases";
+import { BaseVisitDataSource, VisitDataSource } from "@/modules/registration/data/datasources/visit-datasource";
+import VisitRepository from "@/modules/registration/data/repositories/visit-repository";
+import BaseVisitRepository from "@/modules/registration/domain/repositories/base-visit-repository";
+import { CreateVisitUseCase, GetAnonymousVisitUseCase, GetVisitByCodeUseCase, UpdateVisitUseCase } from "@/modules/registration/domain/usecases/visit";
 import { BaseLookupsDataSource, LookupsDataSource } from "../shared/modules/lookups/data/datasources/lookups-datasource";
 import BaseLookupsRepository from "../shared/modules/lookups/domain/repositories/base-lookups-repository";
 import LookupsRepository from "../shared/modules/lookups/data/repositories/lookups-repository";
@@ -33,6 +33,10 @@ import { BasePersonDataSource, PersonDataSource } from "../shared/modules/person
 import BasePersonRepository from "../shared/modules/person/domain/repositories/base-person-repository";
 import PersonRepository from "../shared/modules/person/data/repositories/person-repository";
 import { GetPersonUseCase } from "../shared/modules/person/domain/usecases";
+import { BaseIncidentDataSource, IncidentDataSource } from "@/modules/registration/data/datasources/incident-datasource";
+import BaseIncidentRepository from "@/modules/registration/domain/repositories/base-incident-repository";
+import IncidentRepository from "@/modules/registration/data/repositories/incident-repository";
+import CreateIncidentUseCase from "@/modules/registration/domain/usecases/incident/create-incident-usecase";
 
 
 class AppServicesLocator {
@@ -45,7 +49,10 @@ class AppServicesLocator {
         sl.registerFactory<BaseAuthDataSource>(ServiceKeys.AuthDataSources, () => new AuthDataSource(
             sl.get<ApiClient>(ServiceKeys.ApiClient)
         ));
-        sl.registerFactory<BaseRegistrationDataSource>(ServiceKeys.RegistrationDataSource, () => new RegistrationDataSource(
+        sl.registerFactory<BaseVisitDataSource>(ServiceKeys.VisitDataSource, () => new VisitDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
+        sl.registerFactory<BaseIncidentDataSource>(ServiceKeys.IncidentDataSource, () => new IncidentDataSource(
             sl.get<ApiClient>(ServiceKeys.ApiClient)
         ));
         sl.registerFactory<BaseLookupsDataSource>(ServiceKeys.LookupsDataSource, () => new LookupsDataSource(
@@ -66,8 +73,11 @@ class AppServicesLocator {
         sl.registerFactory<BaseAuthRepository>(ServiceKeys.AuthRepository, () => new AuthRepository(
             sl.get<BaseAuthDataSource>(ServiceKeys.AuthDataSources)
         ));
-        sl.registerFactory<BaseRegistrationRepository>(ServiceKeys.RegistrationRepository, () => new RegistrationRepository(
-            sl.get<BaseRegistrationDataSource>(ServiceKeys.RegistrationDataSource)
+        sl.registerFactory<BaseVisitRepository>(ServiceKeys.VisitRepository, () => new VisitRepository(
+            sl.get<BaseVisitDataSource>(ServiceKeys.VisitDataSource)
+        ));
+        sl.registerFactory<BaseIncidentRepository>(ServiceKeys.IncidentRepository, () => new IncidentRepository(
+            sl.get<BaseIncidentDataSource>(ServiceKeys.IncidentDataSource)
         ));
         sl.registerFactory<BaseLookupsRepository>(ServiceKeys.LookupsRepository, () => new LookupsRepository(
             sl.get<BaseLookupsDataSource>(ServiceKeys.LookupsDataSource)));
@@ -102,17 +112,21 @@ class AppServicesLocator {
             sl.get<BaseAuthRepository>(ServiceKeys.AuthRepository)
         ));
 
+        sl.registerFactory<CreateIncidentUseCase>(ServiceKeys.CreateIncidentUseCase, () => new CreateIncidentUseCase(
+            sl.get<BaseIncidentRepository>(ServiceKeys.IncidentRepository)
+        ));
+
         sl.registerFactory<CreateVisitUseCase>(ServiceKeys.CreateVisitUseCase, () => new CreateVisitUseCase(
-            sl.get<BaseRegistrationRepository>(ServiceKeys.RegistrationRepository)
+            sl.get<BaseVisitRepository>(ServiceKeys.VisitRepository)
         ));
         sl.registerFactory<UpdateVisitUseCase>(ServiceKeys.UpdateVisitUseCase, () => new UpdateVisitUseCase(
-            sl.get<BaseRegistrationRepository>(ServiceKeys.RegistrationRepository)
+            sl.get<BaseVisitRepository>(ServiceKeys.VisitRepository)
         ));
         sl.registerFactory<GetVisitByCodeUseCase>(ServiceKeys.GetVisitByCodeUseCase, () => new GetVisitByCodeUseCase(
-            sl.get<BaseRegistrationRepository>(ServiceKeys.RegistrationRepository)
+            sl.get<BaseVisitRepository>(ServiceKeys.VisitRepository)
         ));
         sl.registerFactory<GetAnonymousVisitUseCase>(ServiceKeys.GetAnonymousVisitUseCase, () => new GetAnonymousVisitUseCase(
-            sl.get<BaseRegistrationRepository>(ServiceKeys.RegistrationRepository)
+            sl.get<BaseVisitRepository>(ServiceKeys.VisitRepository)
         ));
         sl.registerFactory<GetLookupsUseCase>(ServiceKeys.GetLookupsUseCase, () => new GetLookupsUseCase(
             sl.get<BaseLookupsRepository>(ServiceKeys.LookupsRepository)

@@ -1,9 +1,9 @@
 import { Box, Grid, Button } from "@mui/material";
 import { Formik } from "formik";
 import React from "react";
-import CustomTextField from "./CustomTextField";
-import CustomSelectField from "./CustomSelectField";
-import { LookupsState } from "../modules/lookups/presentation/controllers/types";
+import CustomTextField from "@/core/shared/components/CustomTextField";
+import CustomSelectField from "@/core/shared/components/CustomSelectField";
+import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
 import { useAppSelector } from "@/core/state/store";
 import { AdditionalDataInterface } from "@/modules/registration/domain/interfaces/additional-data-interface";
 import AdditionalDataEntity from "@/modules/registration/domain/entities/additional-data-entity";
@@ -110,7 +110,7 @@ const AdditionalData = ({
                 sm={12}
                 xs={12}
               >
-                <CustomSelectField
+                <CustomSelectField<any>
                   isRequired
                   name="comeFrom"
                   label="قادم من"
@@ -138,7 +138,7 @@ const AdditionalData = ({
                 sm={12}
                 xs={12}
               >
-                <CustomSelectField
+                <CustomSelectField<any>
                   isRequired
                   name="attendantRole"
                   label="نوع المحضر"
@@ -454,7 +454,7 @@ const AdditionalData = ({
             </Grid>
             <Button
               type="submit"
-              // sx={{ display: "none" }}
+              sx={{ display: "none" }}
               ref={refSubmitButton}
             ></Button>
           </Box>

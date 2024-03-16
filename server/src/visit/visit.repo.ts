@@ -136,8 +136,10 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
           console.log(person);
           if (person?.type !== PersonType.PATIENT) {
             const { verificationMethodId, genderId, governateId, ...personalData } = createVisitDto.patient
-            patient = await tx.patient.create({
-              data: {
+
+            patient = await tx.patient.upsert({
+              where: { personId: person.id },
+              create: {
                 person: {
                   connectOrCreate: {
                     where: {
@@ -152,7 +154,8 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
                     }
                   }
                 }
-              }
+              },
+              update: {},
             })
             patientConnect = {
               id: patient.id,

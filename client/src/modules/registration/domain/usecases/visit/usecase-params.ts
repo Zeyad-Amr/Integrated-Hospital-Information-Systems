@@ -1,4 +1,4 @@
-import VisitInterface from "../interfaces/visit-interface";
+import VisitInterface from "../../interfaces/visit-interface";
 
 class NoParams { }
 
