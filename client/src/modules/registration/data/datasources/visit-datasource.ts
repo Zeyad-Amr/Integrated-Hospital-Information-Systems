@@ -1,28 +1,28 @@
 import { ApiClient, Endpoints, FilterQueryParam } from "@/core/api";
-import RegistrationModel from "../models/visit-model";
+import VisitModel from "../models/visit-model";
 import VisitInterface from "../../domain/interfaces/visit-interface";
 import APIFilter from "@/core/api/filters";
 
-abstract class BaseRegistrationDataSource {
+abstract class BaseVisitDataSource {
     abstract createVisit(visit: VisitInterface): Promise<VisitInterface>;
     abstract updateVisit(visit: VisitInterface): Promise<boolean>;
     abstract getAllAnonymousVisits(filters: FilterQueryParam[]): Promise<VisitInterface[]>;
     abstract getVisitByCode(visitcode: string): Promise<VisitInterface>;
 }
 
-class RegistrationDataSource extends BaseRegistrationDataSource {
+class VisitDataSource extends BaseVisitDataSource {
     constructor(private apiClient: ApiClient) {
         super();
     }
 
     override async createVisit(visit: VisitInterface): Promise<any> {
-        const response = await this.apiClient.post(Endpoints.visit.create, RegistrationModel.toJson(visit));
+        const response = await this.apiClient.post(Endpoints.visit.create, VisitModel.toJson(visit));
         console.log(response.data);
         return response.data;
     }
 
     override async updateVisit(visit: VisitInterface): Promise<boolean> {
-        await this.apiClient.patch(Endpoints.visit.update, RegistrationModel.toUpdateJson(visit));
+        await this.apiClient.patch(Endpoints.visit.update, VisitModel.toUpdateJson(visit));
         return true;
     }
 
@@ -30,16 +30,16 @@ class RegistrationDataSource extends BaseRegistrationDataSource {
         console.log("getAllAnonymousVisits DS");
         const response = await this.apiClient.get(Endpoints.visit.list, { filters: [APIFilter.isNotNull('patientId'), ...filters] });
         console.log(response.data.items);
-        return response.data.items.map((item: any) => RegistrationModel.fromJson(item));
+        return response.data.items.map((item: any) => VisitModel.fromJson(item));
     }
 
     override async getVisitByCode(visitcode: string): Promise<VisitInterface> {
         const response = await this.apiClient.get(Endpoints.visit.details, {
             pathVariables: { visitcode: visitcode },
         });
-        return RegistrationModel.fromJson(response.data);
+        return VisitModel.fromJson(response.data);
     }
 
 }
 
-export { RegistrationDataSource, BaseRegistrationDataSource };
+export { VisitDataSource, BaseVisitDataSource };

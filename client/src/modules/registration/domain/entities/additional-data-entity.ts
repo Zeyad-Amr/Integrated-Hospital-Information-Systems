@@ -6,25 +6,25 @@ export default class AdditionalDataEntity {
 
     static defaultValue(): AdditionalDataInterface {
         return {
-            comeFrom: undefined,
-            attendantName: undefined,
-            attendantSSN: undefined,
-            attendantSerialNumber: undefined,
-            attendantRole: undefined,
-            carNum: undefined,
-            firstChar: undefined,
-            secondChar: undefined,
-            thirdChar: undefined,
-            reason: undefined,
-            place: undefined,
-            notes: undefined,
+            comeFrom: 0,
+            attendantName: "",
+            attendantSSN: "",
+            attendantSerialNumber: "",
+            attendantRole: 0,
+            carNum: "",
+            firstChar: "",
+            secondChar: "",
+            thirdChar: "",
+            reason: "",
+            place: "",
+            notes: "",
         }
     }
 
     static getSchema(): Yup.ObjectSchema<any> {
         const state = store.getState();
         const coditionCallback = (values: any[], schema: any, msg?: string, oneOfArr?: number[]) => {
-            if (!values.every((value) => value === undefined || value === "" || value === 0)) {
+            if (!values.every((value) => value === "" || value === undefined || value === 0)) {
                 if (values[0] === 0 && oneOfArr) {
                     return schema.oneOf(oneOfArr, msg).required(msg)
                 }
@@ -32,10 +32,11 @@ export default class AdditionalDataEntity {
             }
             return schema
         }
+
         return Yup.object().shape({
-            isAllOptional: Yup.bool(),
             comeFrom: Yup.number()
-                .oneOf(state.lookups.lookups.cameFromOptions.map((e) => e.id)),
+                .min(0)
+                .max(state.lookups.lookups.cameFromOptions.length),
             attendantName: Yup.string()
                 .when(["attendantSSN", "attendantRole", "attendantSerialNumber"], (values, schema) =>
                     coditionCallback(values, schema, "يجب إدخال اسم المحضر"))

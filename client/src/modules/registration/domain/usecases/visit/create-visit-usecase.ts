@@ -1,6 +1,6 @@
 import BaseUseCase from "@/core/base/base-usecase";
-import BaseRegistrationRepository from "../repositories/base-registration-repository";
-import VisitInterface from "../interfaces/visit-interface";
+import BaseRegistrationRepository from "../../repositories/base-visit-repository";
+import VisitInterface from "../../interfaces/visit-interface";
 
 class CreateVisitUseCase
     implements BaseUseCase<VisitInterface, VisitInterface> {
