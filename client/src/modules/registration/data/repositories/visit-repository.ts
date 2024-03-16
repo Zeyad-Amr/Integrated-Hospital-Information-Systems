@@ -1,16 +1,16 @@
 import { ErrorResponse, ErrorMessage, FilterQueryParam } from "@/core/api";
-import BaseRegistrationRepository from "../../domain/repositories/base-registration-repository";
-import { BaseRegistrationDataSource } from "../datasources/registration-datasource";
+import BaseVisitRepository from "../../domain/repositories/base-visit-repository";
+import { BaseVisitDataSource } from "../datasources/visit-datasource";
 import VisitInterface from "../../domain/interfaces/visit-interface";
 
-class RegistrationRepository extends BaseRegistrationRepository {
-    constructor(private baseRegistrationDataSource: BaseRegistrationDataSource) {
+class VisitRepository extends BaseVisitRepository {
+    constructor(private baseVisitDataSource: BaseVisitDataSource) {
         super();
     }
 
     override async createVisit(visit: VisitInterface): Promise<VisitInterface> {
         try {
-            const result = await this.baseRegistrationDataSource.createVisit(visit);
+            const result = await this.baseVisitDataSource.createVisit(visit);
             return result;
         } catch (error) {
             console.log(error)
@@ -22,7 +22,7 @@ class RegistrationRepository extends BaseRegistrationRepository {
 
     override async updateVisit(visit: VisitInterface): Promise<boolean> {
         try {
-            await this.baseRegistrationDataSource.updateVisit(visit);
+            await this.baseVisitDataSource.updateVisit(visit);
             return true;
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;
@@ -33,7 +33,7 @@ class RegistrationRepository extends BaseRegistrationRepository {
     override async getAllAnonymousVisits(filters: FilterQueryParam[]): Promise<VisitInterface[]> {
         try {
             console.log("getAllAnonymousVisits");
-            const result = await this.baseRegistrationDataSource.getAllAnonymousVisits(filters);
+            const result = await this.baseVisitDataSource.getAllAnonymousVisits(filters);
             console.log(result);
             return result.map((item) => item);
         } catch (error) {
@@ -44,7 +44,7 @@ class RegistrationRepository extends BaseRegistrationRepository {
 
     override async getVisitByCode(visitcode: string): Promise<VisitInterface> {
         try {
-            const result = await this.baseRegistrationDataSource.getVisitByCode(visitcode);
+            const result = await this.baseVisitDataSource.getVisitByCode(visitcode);
             return result;
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;
@@ -53,4 +53,4 @@ class RegistrationRepository extends BaseRegistrationRepository {
     }
 }
 
-export default RegistrationRepository;
+export default VisitRepository;
