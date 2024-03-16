@@ -6,9 +6,85 @@ export interface DataItem {
   code: string;
   date: string;
   time: string;
-  kinship: { id: string; value: string };
+  // kinship: { id: string; value: string };
   update?: any;
 }
+
+export const header: HeaderItem[] = [
+  {
+    id: "sequenceNumber",
+    label: "رقم التردد",
+    minWidth: 20,
+    maxWidth: 50,
+    tableCellProps: { align: "center" },
+    sortable: true,
+    filterable: false,
+    searchable: true,
+    onClick: () => {},
+  },
+  {
+    id: "code",
+    label: "رقم المريض",
+    minWidth: 50,
+    tableCellProps: { align: "center" },
+    sortable: true,
+    filterable: false,
+    searchable: true,
+    onClick: () => {},
+  },
+  {
+    id: "name",
+    label: "اسم المرافق",
+    minWidth: 50,
+    maxWidth: 70,
+    tableCellProps: { align: "center" },
+    sortable: true,
+    filterable: false,
+    searchable: true,
+    onClick: () => {},
+  },
+  // {
+  //   id: "kinship",
+  //   label: "صلة القرابة",
+  //   minWidth: 100,
+  //   tableCellProps: { align: "center" },
+  //   sortable: false,
+  //   filterable: true,
+  //   searchable: false,
+  //   onClick: () => {},
+  // },
+  {
+    id: "date",
+    label: "تاريخ الحجز",
+    minWidth: 100,
+    tableCellProps: { align: "center", style: { direction: "ltr" } },
+    sortable: false,
+    filterable: false,
+    searchable: false,
+    onClick: () => {},
+  },
+  {
+    id: "time",
+    label: "وقت الحجز",
+    minWidth: 100,
+    tableCellProps: { align: "center", style: { direction: "ltr" } },
+    sortable: false,
+    filterable: false,
+    searchable: false,
+    onClick: () => {},
+  },
+  {
+    id: "update",
+    label: "تعديل",
+    isComponent: true,
+    minWidth: 100,
+    tableCellProps: { align: "center" },
+    sortable: false,
+    filterable: false,
+    searchable: false,
+    onClick: () => {},
+  },
+];
 
 export const data = [
   {
@@ -209,81 +285,5 @@ export const data = [
       thirdName: "حسين",
       fourthName: "امين",
     },
-  },
-];
-
-export const header: HeaderItem[] = [
-  {
-    id: "sequenceNumber",
-    label: "رقم التردد",
-    minWidth: 20,
-    maxWidth: 50,
-    tableCellProps: { align: "center" },
-    sortable: true,
-    filterable: false,
-    searchable: true,
-    onClick: () => {},
-  },
-  {
-    id: "code",
-    label: "رقم المريض",
-    minWidth: 50,
-    tableCellProps: { align: "center" },
-    sortable: true,
-    filterable: false,
-    searchable: true,
-    onClick: () => {},
-  },
-  {
-    id: "name",
-    label: "اسم المرافق",
-    minWidth: 50,
-    maxWidth: 70,
-    tableCellProps: { align: "center" },
-    sortable: true,
-    filterable: false,
-    searchable: true,
-    onClick: () => {},
-  },
-  {
-    id: "kinship",
-    label: "صلة القرابة",
-    minWidth: 100,
-    tableCellProps: { align: "center" },
-    sortable: false,
-    filterable: true,
-    searchable: false,
-    onClick: () => {},
-  },
-  {
-    id: "date",
-    label: "تاريخ الحجز",
-    minWidth: 100,
-    tableCellProps: { align: "center", style: { direction: "ltr" } },
-    sortable: false,
-    filterable: false,
-    searchable: false,
-    onClick: () => {},
-  },
-  {
-    id: "time",
-    label: "وقت الحجز",
-    minWidth: 100,
-    tableCellProps: { align: "center", style: { direction: "ltr" } },
-    sortable: false,
-    filterable: false,
-    searchable: false,
-    onClick: () => {},
-  },
-  {
-    id: "update",
-    label: "تعديل",
-    isComponent: true,
-    minWidth: 100,
-    tableCellProps: { align: "center" },
-    sortable: false,
-    filterable: false,
-    searchable: false,
-    onClick: () => {},
   },
 ];

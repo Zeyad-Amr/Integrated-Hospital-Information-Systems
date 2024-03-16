@@ -7,6 +7,7 @@ import { useAppSelector } from "@/core/state/store";
 import { EmployeeState } from "../../controllers/types";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
 import { Typography } from "@mui/material";
+import { FilterQueryParam } from "@/core/api";
 
 const EmployeesTable = () => {
   // const dispatch = useAppDispatch();
@@ -38,6 +39,9 @@ const EmployeesTable = () => {
         </Box>
       ) : (
         <CustomDataTable
+          applyFilters={(filters: FilterQueryParam[]) => {
+            console.log(filters);
+          }}
           data={employeeState.employeeList.map<DataItem>(
             (item: EmployeeInterface) => {
               return {

@@ -19,7 +19,7 @@ import { TableProvider } from "./context";
 import { CustomDataTableProps } from "./types";
 
 /**
- * @param {applyQuery} - The function to apply the query to the data.
+ * @param {applyFilters} - The function to apply the query to the data.
  * @param {T[]} data - The array of data items to be rendered.
  * @param {HeaderItem[]} headerItems - The array of header items to define the table columns.
  * @param {string} [width] - The width of the table (optional).
@@ -36,7 +36,7 @@ import { CustomDataTableProps } from "./types";
  */
 /** */
 const CustomDataTable = <T,>({
-  applyQuery,
+  applyFilters,
   data,
   headerItems,
   width = "80vw",
@@ -57,7 +57,7 @@ const CustomDataTable = <T,>({
   return (
     <TableProvider
       data={data}
-      applyQuery={applyQuery}
+      applyFilters={applyFilters}
       columnHeader={headerItems}
       initSortedColumn={initSortedColumn}
     >

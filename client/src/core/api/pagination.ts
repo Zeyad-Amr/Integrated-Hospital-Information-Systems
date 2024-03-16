@@ -5,7 +5,7 @@ export interface PaginatedApiResponse<T> {
     size: number;
 }
 
-export interface PaginatedApiResponseParams {
+export interface PaginatedApiRequestParams {
     page: number;
     size: number;
 }

@@ -3,6 +3,7 @@ import { Box, Button } from "@mui/material";
 import { DataItem, IncidentType, data, header } from "./data";
 import CompleteIncident from "../../../pages/incident/CompleteIncident";
 import { useRef, useState } from "react";
+import { FilterQueryParam } from "@/core/api";
 
 const IncidentTable = () => {
   // useRef
@@ -42,12 +43,19 @@ const IncidentTable = () => {
   });
 
   return (
-    <Box p={3}>
+    <Box pt={3}>
       <CustomDataTable
+        applyFilters={(filters: FilterQueryParam[]) => {
+          console.log(filters);
+        }}
         data={tableData}
         headerItems={header}
         stickyHeader={true}
         boxShadow={5}
+        width="100%"
+        height="80vh"
+        sx={{ mb: 5 }}
+        onRowClick={(item: any) => console.log(item)}
       />
 
       <CompleteIncident

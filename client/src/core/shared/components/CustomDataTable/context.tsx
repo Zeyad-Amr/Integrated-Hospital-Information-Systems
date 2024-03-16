@@ -1,5 +1,12 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { FilterColumn, HeaderItem, SearchQuery, SortedColumn } from ".";
+import { isEqual } from "lodash";
 
 // Define the type for TableContext
 interface TableContextType<T> {
@@ -33,7 +40,7 @@ export const useTableContext = <T,>() => {
 
 // TableProvider component to wrap your application and provide the context
 export const TableProvider = (props: any) => {
-  const { applyQuery, initSortedColumn, columnHeader, data } = props;
+  const { applyFilters, initSortedColumn, columnHeader, data } = props;
 
   const [filterColumns, setFilterColumns] = useState<FilterColumn[]>([]);
   const [searchQuery, setSearchQuery] = useState<SearchQuery>({
@@ -44,41 +51,69 @@ export const TableProvider = (props: any) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  //* ----------------------- Handle Pagination
-  useEffect(() => {
-    console.log(page);
-    console.log(rowsPerPage);
-    applyQuery(`page=${page + 1}&limit=${rowsPerPage}`);
-  }, [page, rowsPerPage]);
+  const prevPage = useRef(page);
+  const prevRowsPerPage = useRef(rowsPerPage);
+  const prevSortedColumn = useRef(sortedColumn);
+  const prevSearchQuery = useRef(searchQuery);
+  const prevFilterColumns = useRef(filterColumns);
 
-  //* ----------------------- Handle Sorting
+  const initialRender = useRef(true);
+
   useEffect(() => {
-    console.log(sortedColumn);
-    applyQuery(
-      `sort=${sortedColumn.columnId}&order=${
-        sortedColumn.isAscending ? "asc" : "desc"
-      }`
+    if (initialRender.current) {
+      // Skip the initial render
+      initialRender.current = false;
+      return;
+    }
+
+    // Check if any of the values have changed
+    const pageChanged = prevPage.current !== page;
+    const rowsPerPageChanged = prevRowsPerPage.current !== rowsPerPage;
+    const sortedColumnChanged = prevSortedColumn.current !== sortedColumn;
+    const searchQueryChanged = !isEqual(prevSearchQuery.current, searchQuery);
+    const filterColumnsChanged = !isEqual(
+      prevFilterColumns.current,
+      filterColumns
     );
-  }, [sortedColumn]);
 
-  //* ----------------------- Handle Searching
-  useEffect(() => {
-    console.log(searchQuery);
-    applyQuery(`search=${searchQuery.value}`);
-  }, [searchQuery]);
+    console.log("pageChanged", pageChanged);
+    console.log("rowsPerPageChanged", rowsPerPageChanged);
+    console.log("sortedColumnChanged", sortedColumnChanged);
+    console.log("searchQueryChanged", searchQueryChanged);
+    console.log("filterColumnsChanged", filterColumnsChanged);
 
-  //* ----------------------- Handle Filtering
-  useEffect(() => {
-    console.log(filterColumns);
-    const filterQuery = filterColumns
-      .map((filter) => {
-        return filter.selectedValuesIds
-          .map((valueId) => `${filter.columnId}=${valueId}`)
-          .join("&");
-      })
-      .join("&");
-    applyQuery(filterQuery);
-  }, [filterColumns]);
+    // Update the previous values
+    prevPage.current = page;
+    prevRowsPerPage.current = rowsPerPage;
+    prevSortedColumn.current = sortedColumn;
+    prevSearchQuery.current = searchQuery;
+    prevFilterColumns.current = filterColumns;
+
+    // If any value has changed, apply filters
+    if (
+      pageChanged ||
+      rowsPerPageChanged ||
+      sortedColumnChanged ||
+      searchQueryChanged ||
+      filterColumnsChanged
+    ) {
+      // Logic for handling Pagination
+      console.log(page);
+      console.log(rowsPerPage);
+
+      // Logic for handling Sorting
+      console.log(sortedColumn);
+
+      // Logic for handling Searching
+      console.log(searchQuery);
+
+      // Logic for handling Filtering
+      console.log(filterColumns);
+
+      // Apply filters
+      applyFilters([]);
+    }
+  }, [page, rowsPerPage, sortedColumn, searchQuery, filterColumns]);
 
   return (
     <TableContext.Provider

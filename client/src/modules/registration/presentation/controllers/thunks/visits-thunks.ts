@@ -9,6 +9,7 @@ import {
     GetVisitByCodeUseCase
 } from "../../../domain/usecases";
 import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
+import { FilterQueryParam } from "@/core/api/filters";
 
 
 //* Create Visit
@@ -51,10 +52,11 @@ export const updateVisit = createAsyncThunk(
 //* Get Anonymous Registration
 export const getAnonymousVisits = createAsyncThunk(
     "registration/getAnonymousVisits",
-    async (_data, thunkApi) => {
+    async (filters: FilterQueryParam[], thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
-            const result = await sl.get<GetAnonymousVisitUseCase>(ServiceKeys.GetAnonymousVisitUseCase).call();
+
+            const result = await sl.get<GetAnonymousVisitUseCase>(ServiceKeys.GetAnonymousVisitUseCase).call(filters);
             console.log('Result:', result);
             return result;
         } catch (error) {

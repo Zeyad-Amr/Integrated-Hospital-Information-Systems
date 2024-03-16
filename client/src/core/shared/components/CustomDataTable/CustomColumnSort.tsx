@@ -18,23 +18,23 @@ const CustomColumnSort = ({ columnId }: Props) => {
         position: "relative",
         cursor: "pointer",
         marginX: "0.5rem",
-        opacity: `${sortedColumn.columnId === columnId ? "1" : "0.2"}`,
+        opacity: `${sortedColumn?.columnId === columnId ? "1" : "0.2"}`,
         transition: "0.2s",
         transform: `rotate(${
-          sortedColumn.isAscending && sortedColumn.columnId === columnId
+          sortedColumn?.isAscending && sortedColumn.columnId === columnId
             ? 0
             : -180
         }deg)`,
         transformOrigin: "50% 50%",
         "&:hover": {
-          opacity: `${sortedColumn.columnId === columnId ? "1" : "0.7"}`,
+          opacity: `${sortedColumn?.columnId === columnId ? "1" : "0.7"}`,
         },
       }}
       onClick={() => {
         setSortedColumn({
           columnId: columnId,
           isAscending:
-            sortedColumn.columnId === columnId
+            sortedColumn?.columnId === columnId
               ? !sortedColumn.isAscending
               : true,
         });

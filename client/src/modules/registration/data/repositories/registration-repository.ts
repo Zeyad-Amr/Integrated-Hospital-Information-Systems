@@ -1,4 +1,4 @@
-import { ErrorResponse, ErrorMessage } from "@/core/api";
+import { ErrorResponse, ErrorMessage, FilterQueryParam } from "@/core/api";
 import BaseRegistrationRepository from "../../domain/repositories/base-registration-repository";
 import { BaseRegistrationDataSource } from "../datasources/registration-datasource";
 import VisitInterface from "../../domain/interfaces/visit-interface";
@@ -30,10 +30,10 @@ class RegistrationRepository extends BaseRegistrationRepository {
         }
     }
 
-    override async getAllAnonymousVisits(): Promise<VisitInterface[]> {
+    override async getAllAnonymousVisits(filters: FilterQueryParam[]): Promise<VisitInterface[]> {
         try {
             console.log("getAllAnonymousVisits");
-            const result = await this.baseRegistrationDataSource.getAllAnonymousVisits();
+            const result = await this.baseRegistrationDataSource.getAllAnonymousVisits(filters);
             console.log(result);
             return result.map((item) => item);
         } catch (error) {
