@@ -1,7 +1,9 @@
-import { TriageAXInterface } from "../../domain/interfaces/triageAX-interface";
+import RoomInterface from "../../domain/interfaces/room-interface";
 
-export interface TriagAXState {
-  triagData: TriageAXInterface;
-  loading: boolean;
-  error: string;
+// Define the initial state using that type
+export interface RoomState {
+    roomList: RoomInterface[];
+    currentRoom: RoomInterface;
+    loading: boolean;
+    error: string;
 }
