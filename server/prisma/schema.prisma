@@ -20,6 +20,7 @@ model Person {
   secondName           String
   thirdName            String
   fourthName           String
+  fullName             String
   SSN                  String?       @unique
   verificationMethod   IdentityType? @relation(fields: [verificationMethodId], references: [id])
   verificationMethodId Int?

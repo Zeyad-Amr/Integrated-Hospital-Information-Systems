@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Param, Req, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Req, Patch, Query } from '@nestjs/common';
 import { VisitService } from './visit.service';
-import { CreateVisitDto } from './dto/create-visit.dto';
+import { CreateVisitDto, CustomFilters } from './dto/create-visit.dto';
 
 import {
   ApiBadRequestResponse,
@@ -9,6 +9,7 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { handleError } from 'src/shared/http-error';
@@ -65,22 +66,25 @@ export class VisitController {
   })
   @CustomGetAllParamDecorator()
   @Get()
-  findAll(
+  async findAll(
     @PaginationParams() paginationParams: Pagination,
     @FilteringParams([
       'code',
       'createdAt',
       'creatorId',
+      "sequenceNumber",
       'companionId',
       'patientId',
-      'sequenceNumber',
       'incidentId',
     ])
+    @Query() customFilters?: CustomFilters,
     filters?: Array<Filter>,
     @SortingParams(['createdAt', 'sequenceNumber', 'code']) sort?: Sorting,
+
   ): Promise<PaginatedResource<Visit>> {
     try {
-      return this.visitService.findAll(paginationParams, filters, sort);
+      console.log('customFilters', customFilters);
+      return await this.visitService.findAll(paginationParams, filters, sort, customFilters);
     } catch (error) {
       throw handleError(error);
     }

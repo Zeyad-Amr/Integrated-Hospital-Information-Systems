@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateVisitDto } from './dto/create-visit.dto';
+import { CreateVisitDto, CustomFilters } from './dto/create-visit.dto';
 import { VisitRepo } from './visit.repo';
 import { Pagination } from 'src/shared/decorators/pagination.decorator';
 import { Visit } from '@prisma/client';
@@ -7,6 +7,7 @@ import { PaginatedResource } from 'src/shared/types/paginated.resource';
 import { Filter } from 'src/shared/decorators/filters.decorator';
 import { Sorting } from 'src/shared/decorators/order.decorator';
 import { TriageAXDto } from './dto/triage-assessment.dto';
+import { PrismaService } from 'src/shared/services/prisma-client/prisma.service';
 
 @Injectable()
 export class VisitService {
@@ -34,17 +35,20 @@ export class VisitService {
     }
   }
 
-  findAll(
+  async findAll(
     paginationParams: Pagination,
     filters?: Array<Filter>,
     sort?: Sorting,
+    customFilters?: CustomFilters
   ): Promise<PaginatedResource<Visit>> {
     try {
-      return this.visitRepo.getAll({
+      let additionalWhereConditions = getCustomFilters(customFilters);
+      return await this.visitRepo.getAll({
         paginationParams,
         filters,
         sort,
         include: this.visitRepo.visitIncludes,
+        additionalWhereConditions: additionalWhereConditions
       });
     } catch (error) {
       throw error;
@@ -100,4 +104,28 @@ export class VisitService {
       throw error
     }
   }
+}
+
+function getCustomFilters(customFilters: CustomFilters) {
+  if (!customFilters) return [];
+  let whereConditions = [];
+  if (customFilters?.companionName) {
+    whereConditions.push({
+      companion: {
+        person: {
+          fullName: { contains: customFilters.companionName, mode: 'insensitive' }
+        }
+      }
+    })
+  }
+  if (customFilters?.companionSSN) {
+    whereConditions.push({
+      companion: {
+        person: {
+          SSN: customFilters.companionSSN
+        }
+      }
+    })
+  }
+  return whereConditions;
 }

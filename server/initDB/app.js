@@ -33,6 +33,7 @@ async function insertAdmin() {
                 secondName: 'Mohamed',
                 thirdName: 'AbdELRaouf',
                 fourthName: 'Mohamed',
+                fullName: 'Ahmed Mohamed AbdELRaouf Mohamed',
                 SSN: '30002103105556',
                 verificationMethod: { connect: { value: 'بطاقة الهوية الوطنية' } },
                 gender: { connect: { value: "ذكر" } },
