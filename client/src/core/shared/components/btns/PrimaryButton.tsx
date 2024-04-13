@@ -1,24 +1,38 @@
 import { Button } from "@mui/material";
 import React from "react";
 
-const PrimaryButton = (props: any) => {
+interface PrimaryButtonTypes {
+  id?: string,
+  type?: 'button' | 'submit' | 'reset' | undefined,
+  title: string,
+  onClick?: () => void,
+  display?: string,
+  sx?: any
+
+}
+
+const PrimaryButton = ({ id, type, title, onClick, display, sx }: PrimaryButtonTypes) => {
+
   return (
     <Button
-      id={props.id}
-      type={props.type}
-      style={{
-        display: props.display,
+      id={id}
+      sx={{
+        display: display,
         color: "#fff",
         backgroundColor: "#0f70f2",
         fontSize: "0.9rem",
         height: "40px",
         padding: "0 3rem",
+        '&:hover': {
+          backgroundColor: "#0f70f2",
 
-        ...props.sx,
+        },
+        ...sx,
       }}
-      onClick={props.onClick}
+      onClick={onClick}
+      type={type}
     >
-      {props.title}
+      {title}
     </Button>
   );
 };
