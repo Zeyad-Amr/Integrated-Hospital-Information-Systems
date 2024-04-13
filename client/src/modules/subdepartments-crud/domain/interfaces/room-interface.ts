@@ -1,5 +1,5 @@
 export default interface RoomInterface {
-    id : string;
+    id? : string;
     name : string;
     location : string;
 }

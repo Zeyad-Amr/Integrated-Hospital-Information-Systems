@@ -37,6 +37,14 @@ import { BaseIncidentDataSource, IncidentDataSource } from "@/modules/registrati
 import BaseIncidentRepository from "@/modules/registration/domain/repositories/base-incident-repository";
 import IncidentRepository from "@/modules/registration/data/repositories/incident-repository";
 import CreateIncidentUseCase from "@/modules/registration/domain/usecases/incident/create-incident-usecase";
+import { BaseRoomDataSource, RoomDataSource } from "@/modules/subdepartments-crud/data/datasources/room-datasource";
+import BaseRoomRepository from "@/modules/subdepartments-crud/domain/repositories/base-room-repository";
+import RoomRepository from "@/modules/subdepartments-crud/data/repositories/room-repository";
+import CreateRoomUseCase from "@/modules/subdepartments-crud/domain/usecases/rooms/create-room-usecase";
+import DeleteRoomUseCase from "@/modules/subdepartments-crud/domain/usecases/rooms/delete-room-usecase";
+import UpdateRoomUseCase from "@/modules/subdepartments-crud/domain/usecases/rooms/update-room-usecase";
+import GetAllRoomsUseCase from "@/modules/subdepartments-crud/domain/usecases/rooms/get-all-rooms-usecase";
+import GetRoomByIdUseCase from "@/modules/subdepartments-crud/domain/usecases/rooms/get-room-by-Id-usecase";
 
 
 class AppServicesLocator {
@@ -64,6 +72,9 @@ class AppServicesLocator {
         sl.registerFactory<BasePersonDataSource>(ServiceKeys.PersonDataSource, () => new PersonDataSource(
             sl.get<ApiClient>(ServiceKeys.ApiClient)
         ));
+        sl.registerFactory<BaseRoomDataSource>(ServiceKeys.RoomDataSource, () => new RoomDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
 
 
         //* Repositories ----------------------------------------------
@@ -87,6 +98,9 @@ class AppServicesLocator {
         sl.registerFactory<BasePersonRepository>(ServiceKeys.PersonRepository, () => new PersonRepository(
             sl.get<BasePersonDataSource>(ServiceKeys.PersonDataSource)
         ));
+        sl.registerFactory<BaseRoomRepository>(ServiceKeys.RoomRepository, () => new RoomRepository(
+            sl.get<BaseRoomDataSource>(ServiceKeys.RoomDataSource)
+        ));
 
         //* Use Cases --------------------------------------------------
         sl.registerFactory<GetAllEmployeesUseCase>(ServiceKeys.GetAllEmployeesUseCase, () => new GetAllEmployeesUseCase(
@@ -103,6 +117,23 @@ class AppServicesLocator {
         ));
         sl.registerFactory<DeleteEmployeeUseCase>(ServiceKeys.DeleteEmployeeUseCase, () => new DeleteEmployeeUseCase(
             sl.get<BaseEmployeeRepository>(ServiceKeys.EmployeeRepository)
+        ));
+
+        // Rooms 
+        sl.registerFactory<CreateRoomUseCase>(ServiceKeys.CreateRoomUseCase, () => new CreateRoomUseCase(
+            sl.get<BaseRoomRepository>(ServiceKeys.RoomRepository)
+        ));
+        sl.registerFactory<DeleteRoomUseCase>(ServiceKeys.DeleteRoomUseCase, () => new DeleteRoomUseCase(
+            sl.get<BaseRoomRepository>(ServiceKeys.RoomRepository)
+        ));
+        sl.registerFactory<UpdateRoomUseCase>(ServiceKeys.UpdateRoomUseCase, () => new UpdateRoomUseCase(
+            sl.get<BaseRoomRepository>(ServiceKeys.RoomRepository)
+        ));
+        sl.registerFactory<GetAllRoomsUseCase>(ServiceKeys.GetAllRoomsUseCase, () => new GetAllRoomsUseCase(
+            sl.get<BaseRoomRepository>(ServiceKeys.RoomRepository)
+        ));
+        sl.registerFactory<GetRoomByIdUseCase>(ServiceKeys.GetRoomByIdUseCase, () => new GetRoomByIdUseCase(
+            sl.get<BaseRoomRepository>(ServiceKeys.RoomRepository)
         ));
 
         sl.registerFactory<LoginUseCase>(ServiceKeys.LoginUseCase, () => new LoginUseCase(

@@ -46,7 +46,7 @@ const roomSlice = createSlice({
             state.loading = false;
             state.roomList = action.payload;
             state.error = "";
-            console.log('Employees List', action.payload);
+            console.log('rooms List', action.payload);
         });
         builder.addCase(getRoomList.rejected, (state, action) => {
             state.loading = false;

@@ -5,6 +5,7 @@ import auth from "@/modules/auth/presentation/controllers/slices/auth-slice";
 import registration from "@/modules/registration/presentation/controllers/slices/visits-slice";
 import lookups from "@/core/shared/modules/lookups/presentation/controllers/slices/lookups-slice";
 import person from "../shared/modules/person/presentation/controllers/slices/person-slice";
+import rooms from "@/modules/subdepartments-crud/presentation/controllers/slices/room-slice";
 
 const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
         auth: auth,
         visits: registration,
         lookups: lookups,
+        rooms,
         person
     },
 });
