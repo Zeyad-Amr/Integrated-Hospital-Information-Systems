@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { CreateEmployeeDto, CustomFilters } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { EmployeeRepo } from './employee.repo';
 import { AuthService } from '../auth/auth.service';
@@ -12,7 +12,7 @@ export class EmployeeService {
   constructor(
     private employeeRepo: EmployeeRepo,
     private authService: AuthService,
-  ) {}
+  ) { }
   async create(createEmployeeDto: CreateEmployeeDto, creatorId: string) {
     try {
       const auth: { username?: string; password?: string; email?: string } = {};
@@ -37,9 +37,9 @@ export class EmployeeService {
     }
   }
 
-  async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>) {
+  async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>, customFilters: CustomFilters) {
     try {
-      return await this.employeeRepo.findAll(pagination, sort, filters);
+      return await this.employeeRepo.findAll(pagination, sort, filters, customFilters);
     } catch (error) {
       throw error;
     }
@@ -71,3 +71,5 @@ export class EmployeeService {
     }
   }
 }
+
+

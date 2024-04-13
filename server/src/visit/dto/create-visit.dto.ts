@@ -5,13 +5,14 @@ import {
   IsNotEmpty,
   IsObject,
   IsOptional,
+  IsString,
   ValidateNested,
 } from 'class-validator';
 import { AdditionalInformation } from 'src/incident/dto/create-incident.dto';
 import { CreatePersonDto } from 'src/person/dto/create-person.dto';
 
 export class CompanionDto extends CreatePersonDto {
-  @ApiProperty({ type: String, example: 'BROTHER', required: false })
+  @ApiProperty({ type: String, example: 1, required: false })
   @IsNotEmpty()
   @IsInt()
   kinshipId: number;
@@ -49,4 +50,16 @@ export class CreateVisitDto {
   @ValidateNested()
   @Type(() => AdditionalInformation)
   additionalInfo: AdditionalInformation;
+}
+
+export class CustomFilters {
+  @ApiProperty({ type: String, required: false })
+  @IsOptional()
+  @IsString()
+  companionName: string;
+
+  @ApiProperty({ type: String, required: false })
+  @IsOptional()
+  @IsString()
+  companionSSN: string;
 }

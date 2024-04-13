@@ -2,7 +2,7 @@ import { PrismaGenericRepo } from '../shared/services/prisma-client/prisma-gener
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../shared/services/prisma-client/prisma.service';
 import { Employee, PersonType, Prisma } from '@prisma/client';
-import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { CreateEmployeeDto, CustomFilters } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { Pagination } from 'src/shared/decorators/pagination.decorator';
 import { Sorting } from 'src/shared/decorators/order.decorator';
@@ -40,7 +40,8 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
                 verificationMethod: { connect: { id: verificationMethodId } },
                 governate: governateId ? { connect: { id: governateId } } : undefined,
                 gender: { connect: { id: genderId } },
-                type: PersonType.EMPLOYEE
+                type: PersonType.EMPLOYEE,
+                fullName: `${person.firstName} ${person.secondName} ${person.thirdName} ${person.fourthName}`
               },
             },
           },
@@ -109,13 +110,16 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
     pagination: Pagination,
     sort: Sorting,
     filters: Array<Filter>,
+    customFilters: CustomFilters,
   ): Promise<PaginatedResource<Employee>> {
     try {
+      let additionalWhereConditions = getCustomFilters(customFilters);
       return this.getAll({
         paginationParams: pagination,
         filters,
         sort,
         include: this.includeObj,
+        additionalWhereConditions: additionalWhereConditions,
       });
     } catch (error) {
       throw error;
@@ -135,3 +139,61 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
     shift: true,
   };
 }
+
+function getCustomFilters(customFilters: CustomFilters) {
+  let additionalWhereConditions = [];
+  if (!customFilters) {
+    return additionalWhereConditions;
+  }
+
+  if (customFilters?.SSN) {
+    additionalWhereConditions.push({
+      person: {
+        SSN: customFilters.SSN
+      }
+    })
+  }
+
+  if (customFilters?.name) {
+    additionalWhereConditions.push({
+      person: {
+        fullName: { contains: customFilters.name, mode: "insensitive" },
+      }
+    })
+  }
+
+  if (customFilters?.roleId) {
+    additionalWhereConditions.push({
+      role: {
+        id: +customFilters.roleId
+      }
+    })
+  }
+
+  if (customFilters?.departmentId) {
+    additionalWhereConditions.push({
+      department: {
+        id: customFilters.departmentId
+      }
+    })
+  }
+
+  if (customFilters?.email) {
+    additionalWhereConditions.push({
+      auth: {
+        email: customFilters.email
+      }
+    })
+  }
+
+  if (customFilters?.phone) {
+    additionalWhereConditions.push({
+      person: {
+        phone: customFilters.phone
+      }
+    })
+  }
+
+  return additionalWhereConditions;
+}
+
