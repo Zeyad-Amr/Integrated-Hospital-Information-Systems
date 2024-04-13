@@ -2,7 +2,7 @@ import BaseUseCase from "@/core/base/base-usecase";
 import { CreateSpecializationUseCaseParameters } from "./usecase-params";
 import BaseSpecializationRepository from "../../repositories/base-specialization-repository";
 
-class CreatespecializationUseCase
+class CreateSpecializationUseCase
     implements BaseUseCase<boolean, CreateSpecializationUseCaseParameters> {
     constructor(private baseSpecializationRepository: BaseSpecializationRepository) { }
 
@@ -11,6 +11,6 @@ class CreatespecializationUseCase
     }
 }
 
-export default CreatespecializationUseCase;
+export default CreateSpecializationUseCase;
 
 

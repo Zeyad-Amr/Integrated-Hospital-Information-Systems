@@ -41,7 +41,7 @@ class RoomDataSource extends BaseRoomDataSource {
     }
 
     override async deleteRoomById(id: string): Promise<boolean> {
-        await this.apiClient.get(Endpoints.room.delete, {
+        await this.apiClient.delete(Endpoints.room.delete, {
             pathVariables: { id: id },
         });
         return true;

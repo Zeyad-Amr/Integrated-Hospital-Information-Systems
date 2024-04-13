@@ -45,6 +45,14 @@ import DeleteRoomUseCase from "@/modules/subdepartments-crud/domain/usecases/roo
 import UpdateRoomUseCase from "@/modules/subdepartments-crud/domain/usecases/rooms/update-room-usecase";
 import GetAllRoomsUseCase from "@/modules/subdepartments-crud/domain/usecases/rooms/get-all-rooms-usecase";
 import GetRoomByIdUseCase from "@/modules/subdepartments-crud/domain/usecases/rooms/get-room-by-Id-usecase";
+import { BaseSpecializationDataSource, SpecializationDataSource } from "@/modules/subdepartments-crud/data/datasources/specialization-datasource";
+import BaseSpecializationRepository from "@/modules/subdepartments-crud/domain/repositories/base-specialization-repository";
+import SpecializationRepository from "@/modules/subdepartments-crud/data/repositories/specialization-repository";
+import UpdateSpecializationUseCase from '@/modules/subdepartments-crud/domain/usecases/specializations/update-specialization-usecase';
+import DeleteSpecializationUseCase from '@/modules/subdepartments-crud/domain/usecases/specializations/delete-specialization-usecase';
+import GetAllSpecializationsUseCase from '@/modules/subdepartments-crud/domain/usecases/specializations/get-all-specializations-usecase';
+import GetSpecializationByIdUseCase from '@/modules/subdepartments-crud/domain/usecases/specializations/get-specialization-by-Id-usecase';
+import CreateSpecializationUseCase from "@/modules/subdepartments-crud/domain/usecases/specializations/create-specialization-usecase";
 
 
 class AppServicesLocator {
@@ -75,6 +83,9 @@ class AppServicesLocator {
         sl.registerFactory<BaseRoomDataSource>(ServiceKeys.RoomDataSource, () => new RoomDataSource(
             sl.get<ApiClient>(ServiceKeys.ApiClient)
         ));
+        sl.registerFactory<BaseSpecializationDataSource>(ServiceKeys.SpecializationDataSource, () => new SpecializationDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
 
 
         //* Repositories ----------------------------------------------
@@ -100,6 +111,9 @@ class AppServicesLocator {
         ));
         sl.registerFactory<BaseRoomRepository>(ServiceKeys.RoomRepository, () => new RoomRepository(
             sl.get<BaseRoomDataSource>(ServiceKeys.RoomDataSource)
+        ));
+        sl.registerFactory<BaseSpecializationRepository>(ServiceKeys.SpecializationRepository, () => new SpecializationRepository(
+            sl.get<BaseSpecializationDataSource>(ServiceKeys.SpecializationDataSource)
         ));
 
         //* Use Cases --------------------------------------------------
@@ -134,6 +148,23 @@ class AppServicesLocator {
         ));
         sl.registerFactory<GetRoomByIdUseCase>(ServiceKeys.GetRoomByIdUseCase, () => new GetRoomByIdUseCase(
             sl.get<BaseRoomRepository>(ServiceKeys.RoomRepository)
+        ));
+        
+        // Specializations
+        sl.registerFactory<CreateSpecializationUseCase>(ServiceKeys.CreateSpecializationUseCase, () => new CreateSpecializationUseCase(
+            sl.get<BaseSpecializationRepository>(ServiceKeys.SpecializationRepository)
+        ));
+        sl.registerFactory<UpdateSpecializationUseCase>(ServiceKeys.UpdateSpecializationUseCase, () => new UpdateSpecializationUseCase(
+            sl.get<BaseSpecializationRepository>(ServiceKeys.SpecializationRepository)
+        ));
+        sl.registerFactory<DeleteSpecializationUseCase>(ServiceKeys.DeleteSpecializationUseCase, () => new DeleteSpecializationUseCase(
+            sl.get<BaseSpecializationRepository>(ServiceKeys.SpecializationRepository)
+        ));
+        sl.registerFactory<GetAllSpecializationsUseCase>(ServiceKeys.GetAllSpecializationsUseCase, () => new GetAllSpecializationsUseCase(
+            sl.get<BaseSpecializationRepository>(ServiceKeys.SpecializationRepository)
+        ));
+        sl.registerFactory<GetSpecializationByIdUseCase>(ServiceKeys.GetSpecializationByIdUseCase, () => new GetSpecializationByIdUseCase(
+            sl.get<BaseSpecializationRepository>(ServiceKeys.SpecializationRepository)
         ));
 
         sl.registerFactory<LoginUseCase>(ServiceKeys.LoginUseCase, () => new LoginUseCase(

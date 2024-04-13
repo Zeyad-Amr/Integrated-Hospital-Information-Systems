@@ -6,6 +6,7 @@ import registration from "@/modules/registration/presentation/controllers/slices
 import lookups from "@/core/shared/modules/lookups/presentation/controllers/slices/lookups-slice";
 import person from "../shared/modules/person/presentation/controllers/slices/person-slice";
 import rooms from "@/modules/subdepartments-crud/presentation/controllers/slices/room-slice";
+import specializations from "@/modules/subdepartments-crud/presentation/controllers/slices/specialization-slice";
 
 const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
         visits: registration,
         lookups: lookups,
         rooms,
+        specializations,
         person
     },
 });

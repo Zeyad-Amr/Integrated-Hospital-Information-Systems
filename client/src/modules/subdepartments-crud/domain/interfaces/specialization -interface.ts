@@ -1,5 +1,5 @@
 export default interface SpecializationInterface {
-    id : string;
+    id? : string;
     name : string;
     description : string;
 }
