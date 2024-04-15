@@ -15,6 +15,7 @@ export const SortingParams = createParamDecorator(
     try {
       const req: Request = ctx.switchToHttp().getRequest();
       const sort = req.query.sort as string;
+
       if (!sort) return null;
 
       const { property, direction } = getSortProperties(sort);
