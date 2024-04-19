@@ -1,4 +1,6 @@
 import RoomInterface from "../interfaces/room-interface";
+import { Yup } from '@/core/shared/utils/validation';
+
 
 export default class RoomEntity {
 
@@ -9,5 +11,16 @@ export default class RoomEntity {
             name : '',
             location : '',
         };
+    }
+
+    static roomsFormValidations(): Yup.ObjectSchema<any> {
+        return Yup.object({
+            name: Yup.string()
+                .required("Name is required")
+                .min(3, "Name must be at least 3 characters")
+                .max(45, "Name must be at most 45 characters"),
+            location: Yup.string()
+                .required("description is required")
+        });
     }
 }
