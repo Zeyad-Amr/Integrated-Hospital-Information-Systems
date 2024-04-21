@@ -69,27 +69,10 @@ export class VisitService {
       const yesterday = new Date(now.getTime());
       yesterday.setDate(now.getDate() - 1);
       yesterday.setHours(0, 0, 0, 0);
-      // console.log("5555");
+      // console.log("5555")
 
 
-      return await this.visitRepo.getAll({
-        additionalWhereConditions: [
-          {
-            transfers: {
-              none: {}
-            },
-          },
-          {
-            createdAt: {
-              gte: yesterday,
-              lte: now
-            }
-          }
-        ],
-        include: { patient: { include: { person: { include: { verificationMethod: true, gender: true } } } }, transfers: true },
-        sort: { direction: 'desc', property: 'createdAt' }
-
-      });
+      return await this.visitRepo.findAll();
     } catch (error) {
       throw error
     }

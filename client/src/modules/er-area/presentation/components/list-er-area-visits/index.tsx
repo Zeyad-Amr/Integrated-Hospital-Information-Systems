@@ -19,8 +19,10 @@ const ERVisitsTable = () => {
     useEffect(() => {
         let eventSource = new EventSource(HOST_API + 'streaming/event')
         eventSource.onmessage = (ev) => {
-            let data_json = JSON.parse(ev.data).items
+            let data_json = JSON.parse(ev.data)
+            console.log(ev.data)
             setStreamedData(data_json);
+            console.log(data_json)
         }
     }, [])
 
@@ -85,7 +87,7 @@ const ERVisitsTable = () => {
 
     // Update tableData when streamedData changes
     useEffect(() => {
-        let apiData: any[] = streamedData
+        let apiData: any[] = streamedData ?? []
         let newTableData: DataItem[] = [];
         apiData.forEach((item) => {
 
@@ -121,7 +123,7 @@ const ERVisitsTable = () => {
         >
             <CustomBasicTable
                 data={tableData}
-                renderItem={header}
+                headerItem={header}
                 stickyHeader={true}
                 boxShadow={5}
                 rowProps={{
