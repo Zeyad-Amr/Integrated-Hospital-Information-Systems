@@ -11,11 +11,11 @@ import { useAppDispatch } from '@/core/state/store';
 
 interface RoomsFormProps {
     edit?: boolean;
-    setShawDialog : any
+    setShowDialog : any
     propsIntialValues?: RoomInterface
 }
 
-const RoomsForm = ({ edit, propsIntialValues , setShawDialog }: RoomsFormProps) => {
+const RoomsForm = ({ edit, propsIntialValues , setShowDialog }: RoomsFormProps) => {
     
     const dispatch = useAppDispatch();
     useEffect(() => {
@@ -28,16 +28,23 @@ const RoomsForm = ({ edit, propsIntialValues , setShawDialog }: RoomsFormProps) 
     
     return (
         <Formik
-            initialValues={edit && propsIntialValues ? propsIntialValues : RoomEntity.defaultValue()}
+            initialValues={edit && propsIntialValues ? { name : propsIntialValues.name, location : propsIntialValues.location } : RoomEntity.defaultValue()}
             onSubmit={ async (values) => { 
                 console.log(values) ; 
-                edit && propsIntialValues ? dispatch(updateRoom({
+                edit && propsIntialValues ? 
+                // in case edit mode
+                dispatch(updateRoom({
                     id : String(propsIntialValues.id),
                     name : values.name,
                     location : values.location,
-                })) : dispatch(createRoom(values))
-                dispatch(getRoomList())
-                setShawDialog('none')
+                })).then(() => {
+                    // setShowDialog('none')
+                })
+                : 
+                // in case not edit mode
+                dispatch(createRoom(values)).then(() => {
+                    // setShowDialog('none')
+                })
             }}
             validationSchema={RoomEntity.roomsFormValidations()}
         >

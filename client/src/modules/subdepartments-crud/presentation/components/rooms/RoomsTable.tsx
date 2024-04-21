@@ -44,6 +44,17 @@ const roomsTableHeader: HeaderItem[] = [
         searchable: false,
         onClick: () => { },
     },
+    {
+        id: "delete",
+        label: "حذف",
+        isComponent: true,
+        minWidth: 100,
+        tableCellProps: { align: "right" },
+        sortable: false,
+        filterable: false,
+        searchable: false,
+        onClick: () => { },
+    },
 ]
 
 const RoomsTable = () => {
@@ -56,6 +67,7 @@ const RoomsTable = () => {
     }, [])
 
    const handleShowDialog = (showDialog : 'none' | 'display') => {
+    console.log(showDialog,'showDialog');
     setShawDialog(showDialog)
    }
     
@@ -63,9 +75,8 @@ const RoomsTable = () => {
 
     return (
         <>
-            <PopUp DialogStateController={setShawDialog} display={showDialog} title="اضــافة غــرقة"
-            >
-                <RoomsForm edit setShawDialog={handleShowDialog} propsIntialValues={roomData} />
+            <PopUp DialogStateController={setShawDialog} display={showDialog} title="اضــافة غــرقة">
+             <RoomsForm edit setShowDialog={handleShowDialog} propsIntialValues={roomData} />
             </PopUp>
             <CustomDataTable
                 applyFilters={(filters: FilterQueryParam[]) => {
@@ -77,7 +88,6 @@ const RoomsTable = () => {
                             name: item.name ?? "",
                             location: item.location ?? "",
                             update: (
-                                <>
                                 <Button
                                     color="info"
                                     variant="outlined"
@@ -93,31 +103,19 @@ const RoomsTable = () => {
                                 >
                                     تعديل بيانات
                                 </Button>
+                            ),
+                            delete: (
                                 <Button
                                 color="info"
                                 variant="outlined"
 
                                 onClick={async () => {
                                     dispatch(deleteRoom(String(item.id)));
-                                    dispatch(getRoomList())
                                 }}
                             >
                                  حذف
                             </Button>
-                            </>
                             ),
-                            // delete: (
-                            //     <Button
-                            //         color="info"
-                            //         variant="outlined"
-
-                            //         onClick={async () => {
-                            //             dispatch(deleteRoom(String(item.id)));
-                            //         }}
-                            //     >
-                            //          حذف
-                            //     </Button>
-                            // ),
                         };
                     }
                 )}
