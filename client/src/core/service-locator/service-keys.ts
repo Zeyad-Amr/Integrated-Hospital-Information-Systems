@@ -10,6 +10,7 @@ enum ServiceKeys {
     PersonDataSource = 'PersonDataSource',
     RoomDataSource = 'RoomDataSource',
     SpecializationDataSource = 'SpecializationDataSource',
+    DepartmentsDataSource = 'DepartmentsDataSource',
 
     //* Repositories ----------------------------------------------
     EmployeeRepository = 'EmployeeRepository',
@@ -21,6 +22,7 @@ enum ServiceKeys {
     PersonRepository = 'PersonRepository',
     RoomRepository = 'RoomRepository',
     SpecializationRepository = 'SpecializationRepository',
+    DepartmentsRepository = 'DepartmentsRepository',
 
 
 
@@ -56,6 +58,8 @@ enum ServiceKeys {
     CreateTriageAXUseCase = 'CreateTriageAXUseCase',
 
     CreateIncidentUseCase = 'CreateIncidentUseCase',
+
+    GetAllDepartmentsUseCase = 'GetAllDepartmentsUseCase',
 
     GetPersonUseCase = 'GetPersonUseCase',
 

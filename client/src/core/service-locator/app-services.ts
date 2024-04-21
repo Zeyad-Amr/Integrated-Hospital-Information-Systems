@@ -53,6 +53,10 @@ import DeleteSpecializationUseCase from '@/modules/subdepartments-crud/domain/us
 import GetAllSpecializationsUseCase from '@/modules/subdepartments-crud/domain/usecases/specializations/get-all-specializations-usecase';
 import GetSpecializationByIdUseCase from '@/modules/subdepartments-crud/domain/usecases/specializations/get-specialization-by-Id-usecase';
 import CreateSpecializationUseCase from "@/modules/subdepartments-crud/domain/usecases/specializations/create-specialization-usecase";
+import { BaseDepartmentsDataSource, DepartmentsDataSource } from "@/modules/subdepartments-crud/data/datasources/departments-datasource";
+import BaseDepartmentsRepository from "@/modules/subdepartments-crud/domain/repositories/base-departments-repository";
+import DepartmentsRepository from "@/modules/subdepartments-crud/data/repositories/departments-repository";
+import GetAllDepartmentsUseCase from "@/modules/subdepartments-crud/domain/usecases/departments/get-all-departments-usecase";
 
 
 class AppServicesLocator {
@@ -86,6 +90,9 @@ class AppServicesLocator {
         sl.registerFactory<BaseSpecializationDataSource>(ServiceKeys.SpecializationDataSource, () => new SpecializationDataSource(
             sl.get<ApiClient>(ServiceKeys.ApiClient)
         ));
+        sl.registerFactory<BaseDepartmentsDataSource>(ServiceKeys.DepartmentsDataSource, () => new DepartmentsDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
 
 
         //* Repositories ----------------------------------------------
@@ -114,6 +121,9 @@ class AppServicesLocator {
         ));
         sl.registerFactory<BaseSpecializationRepository>(ServiceKeys.SpecializationRepository, () => new SpecializationRepository(
             sl.get<BaseSpecializationDataSource>(ServiceKeys.SpecializationDataSource)
+        ));
+        sl.registerFactory<BaseDepartmentsRepository>(ServiceKeys.DepartmentsRepository, () => new DepartmentsRepository(
+            sl.get<BaseDepartmentsDataSource>(ServiceKeys.DepartmentsDataSource)
         ));
 
         //* Use Cases --------------------------------------------------
@@ -165,6 +175,11 @@ class AppServicesLocator {
         ));
         sl.registerFactory<GetSpecializationByIdUseCase>(ServiceKeys.GetSpecializationByIdUseCase, () => new GetSpecializationByIdUseCase(
             sl.get<BaseSpecializationRepository>(ServiceKeys.SpecializationRepository)
+        ));
+
+        // Departments
+        sl.registerFactory<GetAllDepartmentsUseCase>(ServiceKeys.GetAllDepartmentsUseCase, () => new GetAllDepartmentsUseCase(
+            sl.get<BaseDepartmentsRepository>(ServiceKeys.DepartmentsRepository)
         ));
 
         sl.registerFactory<LoginUseCase>(ServiceKeys.LoginUseCase, () => new LoginUseCase(

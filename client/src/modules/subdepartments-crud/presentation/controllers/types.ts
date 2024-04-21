@@ -1,3 +1,4 @@
+import DepartmentsInterface from "../../domain/interfaces/departments-interface";
 import RoomInterface from "../../domain/interfaces/room-interface";
 import SpecializationInterface from "../../domain/interfaces/specialization -interface";
 
@@ -12,6 +13,11 @@ export interface RoomState {
 export interface SpecializationState {
     specializationList: SpecializationInterface[];
     currentSpecialization: SpecializationInterface;
+    loading: boolean;
+    error: string;
+}
+export interface DepartmentsState {
+    departmentsList: DepartmentsInterface[];
     loading: boolean;
     error: string;
 }
