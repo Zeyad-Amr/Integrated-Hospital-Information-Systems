@@ -48,6 +48,7 @@ interface HeaderItem {
   sortable?: boolean;
   filterable?: boolean;
   searchable?: boolean;
+  display?: boolean;
 }
 
 /**

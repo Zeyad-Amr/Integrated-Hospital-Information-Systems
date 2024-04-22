@@ -1,6 +1,6 @@
 import CustomDataTable from "@/core/shared/components/CustomDataTable/CustomDataTable";
 import { Button } from "@mui/material";
-import { DataItem, header } from "./data";
+import { AnonymizedVisit, header } from "./data";
 import { Box } from "@mui/system";
 import CompleteVisit from "../complete-visit-data/CompleteVisit";
 import { useEffect, useRef, useState } from "react";
@@ -27,12 +27,12 @@ const VisitsTable = () => {
   //* data that in the state
   const apiData: VisitInterface[] = state.visits;
 
-  let tableData: DataItem[] = [];
+  let tableData: AnonymizedVisit[] = [];
   apiData.forEach((item) => {
     tableData.push({
       sequenceNumber: item?.sequenceNumber ?? "",
       code: item?.code ?? "",
-      name: item?.companion
+      companionName: item?.companion
         ? item.companion?.firstName +
           " " +
           item.companion?.secondName +
@@ -41,13 +41,13 @@ const VisitsTable = () => {
           " " +
           item.companion?.fourthName
         : "لا يوجد",
+      companionSSN: item?.companion?.SSN ?? "لا يوجد",
       date: item?.createdAt
         ? new Date(item?.createdAt).toLocaleDateString()
         : "",
       time: item?.createdAt
         ? new Date(item?.createdAt).toLocaleTimeString()
         : "",
-      // kinship: item?.kinship ?? { id: "", value: "" },
       update: (
         <Button
           color="info"

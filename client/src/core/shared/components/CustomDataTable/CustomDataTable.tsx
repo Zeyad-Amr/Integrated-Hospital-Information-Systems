@@ -91,27 +91,32 @@ const CustomDataTable = <T,>({
           <Table stickyHeader={stickyHeader} aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {headerItems.map((item) => (
-                  <TableCell
-                    key={item.id}
-                    {...item.tableCellProps}
-                    sx={{ minWidth: item.minWidth, zIndex: 1 }}
-                  >
-                    <Box sx={{ display: "flex", justifyContent: "center" }}>
-                      <Typography
-                        sx={{
-                          fontSize: "0.8rem",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {item.component ? item.component : item.label}
-                      </Typography>
-                      {item.sortable ? (
-                        <CustomColumnSort columnId={item.id} />
-                      ) : null}
-                    </Box>
-                  </TableCell>
-                ))}
+                {headerItems
+                  .filter(
+                    (item) =>
+                      item.display === undefined || item.display === true
+                  )
+                  .map((item) => (
+                    <TableCell
+                      key={item.id}
+                      {...item.tableCellProps}
+                      sx={{ minWidth: item.minWidth, zIndex: 1 }}
+                    >
+                      <Box sx={{ display: "flex", justifyContent: "center" }}>
+                        <Typography
+                          sx={{
+                            fontSize: "0.8rem",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {item.component ? item.component : item.label}
+                        </Typography>
+                        {item.sortable ? (
+                          <CustomColumnSort columnId={item.id} />
+                        ) : null}
+                      </Box>
+                    </TableCell>
+                  ))}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -130,76 +135,47 @@ const CustomDataTable = <T,>({
                     },
                   }}
                 >
-                  {headerItems.map((headerItems) =>
-                    headerItems.isIcon ? (
-                      <TableCell
-                        key={headerItems.id}
-                        {...headerItems.tableCellProps}
-                        sx={{
-                          paddingY: rowPaddingY,
-                          minWidth: headerItems.minWidth,
-                          maxWidth: headerItems.maxWidth,
-                          height: rowHeight,
-                        }}
-                      >
-                        <Box
+                  {headerItems
+                    .filter(
+                      (item) =>
+                        item.display === undefined || item.display === true
+                    )
+                    .map((headerItems) =>
+                      headerItems.isIcon ? (
+                        <TableCell
+                          key={headerItems.id}
+                          {...headerItems.tableCellProps}
                           sx={{
+                            paddingY: rowPaddingY,
+                            minWidth: headerItems.minWidth,
+                            maxWidth: headerItems.maxWidth,
                             height: rowHeight,
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
                           }}
                         >
-                          {(item as any)["icon"]}
-                        </Box>
-                      </TableCell>
-                    ) : headerItems.isComponent ? (
-                      <TableCell
-                        key={headerItems.id}
-                        {...headerItems.tableCellProps}
-                        sx={{
-                          paddingY: rowPaddingY,
-                          minWidth: headerItems.minWidth,
-                          maxWidth: headerItems.maxWidth,
-                          height: rowHeight,
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                        }}
-                      >
-                        <Typography
+                          <Box
+                            sx={{
+                              height: rowHeight,
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            {(item as any)["icon"]}
+                          </Box>
+                        </TableCell>
+                      ) : headerItems.isComponent ? (
+                        <TableCell
+                          key={headerItems.id}
+                          {...headerItems.tableCellProps}
                           sx={{
-                            fontSize: "0.8rem",
-                            textAlign: "center", // Center the text horizontally
-                            lineHeight: rowHeight, // Center the text vertically
+                            paddingY: rowPaddingY,
+                            minWidth: headerItems.minWidth,
+                            maxWidth: headerItems.maxWidth,
+                            height: rowHeight,
+                            whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
-                            maxWidth: "100%", // Ensure text doesn't overflow TableCell
                           }}
-                        >
-                          {(item as any)[headerItems.id]}
-                        </Typography>
-                      </TableCell>
-                    ) : (
-                      <TableCell
-                        key={headerItems.id}
-                        {...headerItems.tableCellProps}
-                        sx={{
-                          minWidth: headerItems.minWidth,
-                          maxWidth: headerItems.maxWidth,
-                          height: rowHeight,
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                        }}
-                      >
-                        <Tooltip
-                          enterDelay={1000}
-                          title={
-                            typeof (item as any)[headerItems.id] === "object"
-                              ? (item as any)[headerItems.id].value
-                              : (item as any)[headerItems.id]
-                          }
                         >
                           <Typography
                             sx={{
@@ -208,25 +184,59 @@ const CustomDataTable = <T,>({
                               lineHeight: rowHeight, // Center the text vertically
                               overflow: "hidden",
                               textOverflow: "ellipsis",
-                              direction: !utilsFunctions.startsWithArabic(
-                                typeof (item as any)[headerItems.id] ===
-                                  "object"
-                                  ? (item as any)[headerItems.id].value
-                                  : (item as any)[headerItems.id]
-                              )
-                                ? "rtl"
-                                : "ltr",
                               maxWidth: "100%", // Ensure text doesn't overflow TableCell
                             }}
                           >
-                            {typeof (item as any)[headerItems.id] === "object"
-                              ? (item as any)[headerItems.id].value
-                              : (item as any)[headerItems.id]}
+                            {(item as any)[headerItems.id]}
                           </Typography>
-                        </Tooltip>
-                      </TableCell>
-                    )
-                  )}
+                        </TableCell>
+                      ) : (
+                        <TableCell
+                          key={headerItems.id}
+                          {...headerItems.tableCellProps}
+                          sx={{
+                            minWidth: headerItems.minWidth,
+                            maxWidth: headerItems.maxWidth,
+                            height: rowHeight,
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          <Tooltip
+                            enterDelay={1000}
+                            title={
+                              typeof (item as any)[headerItems.id] === "object"
+                                ? (item as any)[headerItems.id].value
+                                : (item as any)[headerItems.id]
+                            }
+                          >
+                            <Typography
+                              sx={{
+                                fontSize: "0.8rem",
+                                textAlign: "center", // Center the text horizontally
+                                lineHeight: rowHeight, // Center the text vertically
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                direction: !utilsFunctions.startsWithArabic(
+                                  typeof (item as any)[headerItems.id] ===
+                                    "object"
+                                    ? (item as any)[headerItems.id].value
+                                    : (item as any)[headerItems.id]
+                                )
+                                  ? "rtl"
+                                  : "ltr",
+                                maxWidth: "100%", // Ensure text doesn't overflow TableCell
+                              }}
+                            >
+                              {typeof (item as any)[headerItems.id] === "object"
+                                ? (item as any)[headerItems.id].value
+                                : (item as any)[headerItems.id]}
+                            </Typography>
+                          </Tooltip>
+                        </TableCell>
+                      )
+                    )}
                 </TableRow>
               ))}
             </TableBody>

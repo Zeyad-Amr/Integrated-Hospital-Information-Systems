@@ -2,11 +2,11 @@ import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
 export interface AnonymizedVisit {
   sequenceNumber: string;
-  name: string;
+  companionName: string;
+  companionSSN: string;
   code: string;
   date: string;
   time: string;
-  // kinship: { id: string; value: string };
   update?: any;
 }
 
@@ -33,7 +33,7 @@ export const header: HeaderItem[] = [
     onClick: () => {},
   },
   {
-    id: "name",
+    id: "companionName",
     label: "اسم المرافق",
     minWidth: 50,
     maxWidth: 70,
@@ -41,6 +41,18 @@ export const header: HeaderItem[] = [
     sortable: true,
     filterable: false,
     searchable: true,
+    onClick: () => {},
+  },
+  {
+    id: "companionSSN",
+    label: "رقم هوية المرافق",
+    minWidth: 50,
+    maxWidth: 70,
+    tableCellProps: { align: "center" },
+    sortable: true,
+    filterable: false,
+    searchable: true,
+    display: false,
     onClick: () => {},
   },
   // {
