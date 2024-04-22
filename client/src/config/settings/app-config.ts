@@ -6,8 +6,8 @@ import { paths } from '@/core/routes/paths';
 // ----------------------------------------------------------------------
 
 // export const HOST_API = process.env.NEXT_PUBLIC_HOST_API;
-export const HOST_API = 'http://localhost:4000/api/';
-// export const HOST_API = 'https://qasr-server-lqj1.onrender.com/api/';
+// export const HOST_API = 'http://localhost:4000/api/';
+export const HOST_API = 'https://qasr-server-lqj1.onrender.com/api/';
 export const ASSETS_API = process.env.NEXT_PUBLIC_ASSETS_API;
 
 export const AUTH0_API = {
