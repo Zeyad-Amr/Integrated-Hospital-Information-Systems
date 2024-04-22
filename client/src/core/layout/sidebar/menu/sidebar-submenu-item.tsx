@@ -13,8 +13,6 @@ const SidebarSubmenuItem = ({ text, path }: SidebarSubmenuItemProps) => {
   const pathname = usePathname();
   const router = useRouter();
   const isActive = pathname === path;
-  console.log(pathname);
-  console.log(isActive);
 
   const handleClick = () => {
     console.log("clicked");
