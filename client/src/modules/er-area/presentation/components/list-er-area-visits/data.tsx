@@ -83,12 +83,12 @@ export const header: HeaderItem[] = [
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
   },
-  {
-    id: "watingTime",
-    label: `وقت الانتظار (hh:mm)`,
-    minWidth: 100,
-    tableCellProps: { align: "center" },
-  },
+  // {
+  //   id: "watingTime",
+  //   label: `وقت الانتظار (hh:mm)`,
+  //   minWidth: 100,
+  //   tableCellProps: { align: "center" },
+  // },
 
 
 
