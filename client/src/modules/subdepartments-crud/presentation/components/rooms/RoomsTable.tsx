@@ -66,7 +66,7 @@ const RoomsTable = () => {
         dispatch(getRoomList())
     }, [])
 
-   const handleShowDialog = (showDialog : 'none' | 'display') => {
+   const handleShowDialog = (showDialog : 'none' | 'block') => {
     console.log(showDialog,'showDialog');
     setShawDialog(showDialog)
    }

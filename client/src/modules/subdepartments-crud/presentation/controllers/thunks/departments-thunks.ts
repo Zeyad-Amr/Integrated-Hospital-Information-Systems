@@ -4,7 +4,7 @@ import GetAllDepartmentsUseCase from "@/modules/subdepartments-crud/domain/useca
 
 //* Get All Departments
 export const getDepartmentsList = createAsyncThunk(
-  "rooms/get",
+  "departments/get",
   async (_data, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {

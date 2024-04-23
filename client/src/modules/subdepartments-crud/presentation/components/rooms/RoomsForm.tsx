@@ -11,7 +11,7 @@ import { useAppDispatch } from '@/core/state/store';
 
 interface RoomsFormProps {
     edit?: boolean;
-    setShowDialog : any
+    setShowDialog : (isShowDialog : 'none' | 'block') => void;
     propsIntialValues?: RoomInterface
 }
 
@@ -22,13 +22,19 @@ const RoomsForm = ({ edit, propsIntialValues , setShowDialog }: RoomsFormProps) 
     //   debugger  
       console.log(propsIntialValues,'propsIntialValues');
       const data = edit && propsIntialValues ? propsIntialValues: RoomEntity.defaultValue()
-      console.log(String(data.id),'data');
+      console.log(data,'data');
       
     }, [propsIntialValues])
+
+    const handleInitialValues = () => {
+        // debugger
+     const initialValues =  edit && propsIntialValues ? { id : propsIntialValues.id, name : propsIntialValues.name, location : propsIntialValues.location } : RoomEntity.defaultValue()
+     return initialValues;
+    }
     
     return (
         <Formik
-            initialValues={edit && propsIntialValues ? { name : propsIntialValues.name, location : propsIntialValues.location } : RoomEntity.defaultValue()}
+            initialValues={edit && propsIntialValues ? { id : propsIntialValues.id, name : propsIntialValues.name, location : propsIntialValues.location } : RoomEntity.defaultValue()}
             onSubmit={ async (values) => { 
                 console.log(values) ; 
                 edit && propsIntialValues ? 

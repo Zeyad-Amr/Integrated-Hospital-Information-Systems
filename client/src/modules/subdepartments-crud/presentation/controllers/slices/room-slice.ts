@@ -38,17 +38,17 @@ const roomSlice = createSlice({
     },
     extraReducers(builder) {
         //* get all rooms from api
-        builder.addCase(getRoomList.pending, (state, _action) => {
+        builder.addCase(getRoomList?.pending, (state, _action) => {
             state.loading = true;
             state.error = "";
         });
-        builder.addCase(getRoomList.fulfilled, (state, action) => {
+        builder.addCase(getRoomList?.fulfilled, (state, action) => {
             state.loading = false;
             state.roomList = action.payload;
             state.error = "";
             console.log('rooms List', action.payload);
         });
-        builder.addCase(getRoomList.rejected, (state, action) => {
+        builder.addCase(getRoomList?.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
             state.roomList = [];
