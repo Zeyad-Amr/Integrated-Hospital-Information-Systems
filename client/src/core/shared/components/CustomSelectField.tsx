@@ -21,6 +21,7 @@ export interface SelectFieldProps<T> {
   isRequired?: boolean;
   width?: number | string;
   hideLabel?: boolean;
+  sx?: any;
 }
 
 const CustomSelectField = <T extends { id: any; value: string }>({
@@ -35,6 +36,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   defaultValue = { id: 0, value: "" },
   isRequired = false,
   width,
+  sx,
   hideLabel = true,
 }: SelectFieldProps<T>) => {
   // Create a new array with the default value added to the beginning
@@ -56,6 +58,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
             flexGrow: 1,
             fontSize: "0.9rem !important",
             margin: "0rem 0.5rem",
+
           }}
         >
           {label} {isRequired && <span style={{ color: "#FF5630" }}>*</span>}
@@ -64,7 +67,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
 
       <FormControl
         required={isRequired}
-        sx={{ marginTop: 1.1, width: { width }, maxWidth: "100%" }}
+        sx={{ marginTop: 1.1, width: { width }, maxWidth: "100%", ...sx }}
       >
         <InputLabel>{label}</InputLabel>
 
@@ -101,6 +104,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
                 color: "#232836",
                 transitionDuration: "0.5s ease",
                 margin: 1,
+                ...sx,
                 // selected background color
                 "&.Mui-selected": {
                   // backgroundColor: "#232836",

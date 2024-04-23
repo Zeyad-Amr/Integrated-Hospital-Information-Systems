@@ -16,6 +16,7 @@ export interface CustomTextFieldProps {
   width?: number | string;
   hideLabel?: boolean;
   props?: TextFieldProps;
+  sx?:any
 }
 
 const CustomTextField = ({
@@ -33,6 +34,7 @@ const CustomTextField = ({
   width,
   multiline,
   rows,
+  sx
 }: CustomTextFieldProps) => {
   const textfieldProps = {
     FormHelperTextProps: { sx: { color: "red" } },
@@ -48,6 +50,7 @@ const CustomTextField = ({
         width: width,
         margin: "0.7rem 0rem",
         maxWidth: "100%",
+        ...sx
       }}
     >
       {/* {!hideLabel && (
