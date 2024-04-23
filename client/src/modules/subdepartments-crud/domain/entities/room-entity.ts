@@ -20,7 +20,7 @@ export default class RoomEntity {
                 .min(3, "Name must be at least 3 characters")
                 .max(45, "Name must be at most 45 characters"),
             location: Yup.string()
-                .required("description is required")
+                .required("location is required")
         });
     }
 }

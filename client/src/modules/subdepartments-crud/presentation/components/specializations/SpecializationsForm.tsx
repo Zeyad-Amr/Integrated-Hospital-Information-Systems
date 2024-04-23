@@ -1,41 +1,43 @@
 import CustomTextField from '@/core/shared/components/CustomTextField';
 import PrimaryButton from '@/core/shared/components/btns/PrimaryButton';
+import { useAppDispatch } from '@/core/state/store';
+import SpecializationEntity from '@/modules/subdepartments-crud/domain/entities/specialization-entity';
 import { Box } from '@mui/system';
 import { Formik } from 'formik';
 import React from 'react'
-import * as Yup from "yup";
-
-interface SpecializationInitalValues {
-    name: string;
-    description: string;
-}
+import { createSpecialization , updateSpecializations } from "@/modules/subdepartments-crud/presentation/controllers/thunks/specialization-thunks";
+import SpecializationInterface from '@/modules/subdepartments-crud/domain/interfaces/specialization -interface';
 
 interface SpecializationsFormProps {
     edit?: boolean;
-    propsIntialValues?: SpecializationInitalValues
+    propsIntialValues?: SpecializationInterface
 }
 
 const SpecializationsForm = ({ edit, propsIntialValues }: SpecializationsFormProps) => {
 
-    const intialValues: SpecializationInitalValues = {
-        name: '',
-        description: '',
-    }
-
-    const handleFormSchema = Yup.object({
-        name: Yup.string()
-            .required("Name is required")
-            .min(3, "Name must be at least 3 characters")
-            .max(45, "Name must be at most 45 characters"),
-        description: Yup.string()
-            .required("description is required")
-    });
+    const dispatch = useAppDispatch();
 
     return (
         <Formik
-            initialValues={edit && propsIntialValues ? propsIntialValues : intialValues}
-            onSubmit={(values) => { console.log(values) }}
-            validationSchema={handleFormSchema}
+            initialValues={edit && propsIntialValues ? { name : propsIntialValues.name , description : propsIntialValues.description } : SpecializationEntity.defaultValue()}
+            onSubmit={async (values) => { 
+                console.log(values) ; 
+                edit && propsIntialValues ? 
+                // in case edit mode
+                dispatch(updateSpecializations({
+                    id : String(propsIntialValues.id),
+                    name : values.name,
+                    description : values.description,
+                })).then(() => {
+                    // setShowDialog('none')
+                })
+                : 
+                // in case not edit mode
+                dispatch(createSpecialization(values)).then(() => {
+                    // setShowDialog('none')
+                })
+             }}
+            validationSchema={SpecializationEntity.specializationsFormValidations()}
         >
             {({
                 values,
@@ -57,7 +59,7 @@ const SpecializationsForm = ({ edit, propsIntialValues }: SpecializationsFormPro
                         touched={touched.name}
                         width="100%"
                         props={{
-                            type: "number",
+                            type: "text",
                         }}
                     />
                     <CustomTextField
@@ -71,7 +73,7 @@ const SpecializationsForm = ({ edit, propsIntialValues }: SpecializationsFormPro
                         touched={touched.description}
                         width="100%"
                         props={{
-                            type: "number",
+                            type: "text",
                         }}
                     />
 

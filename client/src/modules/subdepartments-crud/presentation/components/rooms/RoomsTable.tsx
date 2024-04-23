@@ -5,7 +5,7 @@ import { Button } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import RoomsForm from './RoomsForm';
 import RoomInterface from '@/modules/subdepartments-crud/domain/interfaces/room-interface';
-import { createRoom ,deleteRoom ,getRoomDetails ,getRoomList ,updateRoom } from "@/modules/subdepartments-crud/presentation/controllers/thunks/room-thunks";
+import { deleteRoom ,getRoomList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/room-thunks";
 import { useAppDispatch, useAppSelector } from '@/core/state/store';
 import { RoomState } from '../../controllers/types';
 

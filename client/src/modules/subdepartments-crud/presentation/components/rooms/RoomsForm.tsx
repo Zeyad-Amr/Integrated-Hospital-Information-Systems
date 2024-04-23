@@ -5,13 +5,13 @@ import RoomInterface from '@/modules/subdepartments-crud/domain/interfaces/room-
 import { Box } from '@mui/system';
 import { Formik } from 'formik';
 import React, { useEffect } from 'react'
-import { createRoom ,deleteRoom ,getRoomDetails ,getRoomList ,updateRoom } from "@/modules/subdepartments-crud/presentation/controllers/thunks/room-thunks";
+import { createRoom ,updateRoom } from "@/modules/subdepartments-crud/presentation/controllers/thunks/room-thunks";
 import { useAppDispatch } from '@/core/state/store';
 
 
 interface RoomsFormProps {
     edit?: boolean;
-    setShowDialog : (isShowDialog : 'none' | 'block') => void;
+    setShowDialog? : (isShowDialog : 'none' | 'block') => void;
     propsIntialValues?: RoomInterface
 }
 
@@ -44,12 +44,16 @@ const RoomsForm = ({ edit, propsIntialValues , setShowDialog }: RoomsFormProps) 
                     name : values.name,
                     location : values.location,
                 })).then(() => {
-                    // setShowDialog('none')
+                    if (setShowDialog) {
+                        setShowDialog('none')
+                    }
                 })
                 : 
                 // in case not edit mode
                 dispatch(createRoom(values)).then(() => {
-                    // setShowDialog('none')
+                    if (setShowDialog) {
+                        setShowDialog('none')
+                    }
                 })
             }}
             validationSchema={RoomEntity.roomsFormValidations()}

@@ -37,14 +37,16 @@ export const getSpecializationList = createAsyncThunk(
 export const createSpecialization = createAsyncThunk(
   "specializations/create",
   async (data: SpecializationInterface, thunkApi) => {
-    const { rejectWithValue } = thunkApi;
+    const { rejectWithValue , dispatch } = thunkApi;
     try {
       console.log("Thunk", data);
       const result = await sl
         .get<CreatespecializationUseCase>(
           ServiceKeys.CreateSpecializationUseCase
         )
-        .call(new CreateSpecializationUseCaseParameters(data));
+        .call(new CreateSpecializationUseCaseParameters(data)).then(() => {
+          dispatch(getSpecializationList())
+        })
       console.log("Result:", result);
       return result;
     } catch (error) {
@@ -58,13 +60,15 @@ export const createSpecialization = createAsyncThunk(
 export const updateSpecializations = createAsyncThunk(
   "specializations/update",
   async (data: SpecializationInterface, thunkApi) => {
-    const { rejectWithValue } = thunkApi;
+    const { rejectWithValue , dispatch } = thunkApi;
     try {
       const result = await sl
         .get<UpdateSpecializationUseCase>(
           ServiceKeys.UpdateSpecializationUseCase
         )
-        .call(new UpdateSpecializationUseCaseParameters(data));
+        .call(new UpdateSpecializationUseCaseParameters(data)).then(() => {
+          dispatch(getSpecializationList())
+        })
       console.log("Result:", result);
       return result;
     } catch (error) {
@@ -78,13 +82,15 @@ export const updateSpecializations = createAsyncThunk(
 export const deleteSpecialization = createAsyncThunk(
   "specializations/delete",
   async (id: string, thunkApi) => {
-    const { rejectWithValue } = thunkApi;
+    const { rejectWithValue , dispatch } = thunkApi;
     try {
       const result = await sl
         .get<DeleteSpecializationUseCase>(
           ServiceKeys.DeleteSpecializationUseCase
         )
-        .call(new DeleteSpecializationUseCaseParameters(id));
+        .call(new DeleteSpecializationUseCaseParameters(id)).then(() => {
+          dispatch(getSpecializationList())
+        })
       console.log("Result:", result);
       return id;
     } catch (error) {
