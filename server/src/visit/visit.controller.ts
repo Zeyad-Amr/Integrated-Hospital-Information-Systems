@@ -26,8 +26,10 @@ import {
 import { SortingParams, Sorting } from 'src/shared/decorators/order.decorator';
 import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
 import { TriageAXDto } from './dto/triage-assessment.dto';
+import { Public } from 'src/shared/decorators/public.decorator';
 
-@ApiBearerAuth()
+// @ApiBearerAuth()
+@Public()
 @ApiTags('visit')
 @Controller('visit')
 export class VisitController {
@@ -76,10 +78,9 @@ export class VisitController {
       'companionId',
       'patientId',
       'incidentId',
-    ])
-    @Query() customFilters?: CustomFilters,
-    filters?: Array<Filter>,
+    ]) filters?: Array<Filter>,
     @SortingParams(['createdAt', 'sequenceNumber', 'code']) sort?: Sorting,
+    @Query() customFilters?: CustomFilters,
 
   ): Promise<PaginatedResource<Visit>> {
     try {

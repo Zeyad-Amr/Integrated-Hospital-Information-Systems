@@ -55,11 +55,9 @@ export class CreateVisitDto {
 export class CustomFilters {
   @ApiProperty({ type: String, required: false })
   @IsOptional()
-  @IsString()
   companionName: string;
 
   @ApiProperty({ type: String, required: false })
   @IsOptional()
-  @IsString()
   companionSSN: string;
 }
