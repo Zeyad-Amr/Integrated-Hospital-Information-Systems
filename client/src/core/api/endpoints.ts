@@ -35,6 +35,20 @@ const Endpoints = {
     },
     person: {
         details: '/person/:ssn'
+    },
+    room :{
+        list: '/room',
+        details: '/room/:id',
+        create: '/room',
+        update: '/room/:id',
+        delete: '/room/:id',
+    },
+    specialization :{
+        list: '/specialization',
+        details: '/specialization/:id',
+        create: '/specialization',
+        update: '/specialization/:id',
+        delete: '/specialization/:id',
     }
 };
 export default Endpoints;

@@ -1,41 +1,62 @@
 import CustomTextField from '@/core/shared/components/CustomTextField';
 import PrimaryButton from '@/core/shared/components/btns/PrimaryButton';
+import RoomEntity from '@/modules/subdepartments-crud/domain/entities/room-entity';
+import RoomInterface from '@/modules/subdepartments-crud/domain/interfaces/room-interface';
 import { Box } from '@mui/system';
 import { Formik } from 'formik';
-import React from 'react'
-import * as Yup from "yup";
+import React, { useEffect } from 'react'
+import { createRoom ,updateRoom } from "@/modules/subdepartments-crud/presentation/controllers/thunks/room-thunks";
+import { useAppDispatch } from '@/core/state/store';
 
-interface RoomInitalValues {
-    name: string;
-    description: string;
-}
 
 interface RoomsFormProps {
     edit?: boolean;
-    propsIntialValues?: RoomInitalValues
+    setShowDialog? : (isShowDialog : 'none' | 'block') => void;
+    propsIntialValues?: RoomInterface
 }
 
-const RoomsForm = ({ edit, propsIntialValues }: RoomsFormProps) => {
+const RoomsForm = ({ edit, propsIntialValues , setShowDialog }: RoomsFormProps) => {
+    
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+    //   debugger  
+      console.log(propsIntialValues,'propsIntialValues');
+      const data = edit && propsIntialValues ? propsIntialValues: RoomEntity.defaultValue()
+      console.log(data,'data');
+      
+    }, [propsIntialValues])
 
-    const intialValues: RoomInitalValues = {
-        name: '',
-        description: '',
+    const handleInitialValues = () => {
+        // debugger
+     const initialValues =  edit && propsIntialValues ? { id : propsIntialValues.id, name : propsIntialValues.name, location : propsIntialValues.location } : RoomEntity.defaultValue()
+     return initialValues;
     }
-
-    const handleFormSchema = Yup.object({
-        name: Yup.string()
-            .required("Name is required")
-            .min(3, "Name must be at least 3 characters")
-            .max(45, "Name must be at most 45 characters"),
-        description: Yup.string()
-            .required("description is required")
-    });
-
+    
     return (
         <Formik
-            initialValues={edit && propsIntialValues ? propsIntialValues : intialValues}
-            onSubmit={(values) => { console.log(values) }}
-            validationSchema={handleFormSchema}
+            initialValues={edit && propsIntialValues ? { id : propsIntialValues.id, name : propsIntialValues.name, location : propsIntialValues.location } : RoomEntity.defaultValue()}
+            onSubmit={ async (values) => { 
+                console.log(values) ; 
+                edit && propsIntialValues ? 
+                // in case edit mode
+                dispatch(updateRoom({
+                    id : String(propsIntialValues.id),
+                    name : values.name,
+                    location : values.location,
+                })).then(() => {
+                    if (setShowDialog) {
+                        setShowDialog('none')
+                    }
+                })
+                : 
+                // in case not edit mode
+                dispatch(createRoom(values)).then(() => {
+                    if (setShowDialog) {
+                        setShowDialog('none')
+                    }
+                })
+            }}
+            validationSchema={RoomEntity.roomsFormValidations()}
         >
             {({
                 values,
@@ -57,21 +78,21 @@ const RoomsForm = ({ edit, propsIntialValues }: RoomsFormProps) => {
                         touched={touched.name}
                         width="100%"
                         props={{
-                            type: "number",
+                            type: "text",
                         }}
                     />
                     <CustomTextField
                         isRequired
-                        name="description"
-                        label="الـــوصف"
-                        value={values.description}
+                        name="location"
+                        label="الموقع"
+                        value={values.location}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        error={errors.description}
-                        touched={touched.description}
+                        error={errors.location}
+                        touched={touched.location}
                         width="100%"
                         props={{
-                            type: "number",
+                            type: "text",
                         }}
                     />
 

@@ -1,27 +1,14 @@
-import { DataItem, header } from '@/app/test/components/table/data';
 import { FilterQueryParam } from '@/core/api';
 import { CustomDataTable, HeaderItem } from '@/core/shared/components/CustomDataTable';
 import PopUp from '@/core/shared/components/PopUp';
-import EmployeeInterface from '@/modules/employees/domain/interfaces/employee-interface';
 import { Button } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import RoomsForm from './RoomsForm';
+import RoomInterface from '@/modules/subdepartments-crud/domain/interfaces/room-interface';
+import { deleteRoom ,getRoomList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/room-thunks";
+import { useAppDispatch, useAppSelector } from '@/core/state/store';
+import { RoomState } from '../../controllers/types';
 
-const dummyRooms = [
-    {
-        name: "غرفة 1 ",
-        description: "تجربة تجربة تجربة",
-    },
-    {
-        name: "غرفة 2 ",
-        description: "تجربة ",
-    },
-]
-
-interface dummyRooms {
-    name: string;
-    description: string;
-}
 
 const roomsTableHeader: HeaderItem[] = [
     {
@@ -36,8 +23,8 @@ const roomsTableHeader: HeaderItem[] = [
         onClick: () => { },
     },
     {
-        id: "description",
-        label: "الــوصف",
+        id: "location",
+        label: "الموقع",
         minWidth: 50,
         maxWidth: 50,
         tableCellProps: { align: "right" },
@@ -57,28 +44,49 @@ const roomsTableHeader: HeaderItem[] = [
         searchable: false,
         onClick: () => { },
     },
+    {
+        id: "delete",
+        label: "حذف",
+        isComponent: true,
+        minWidth: 100,
+        tableCellProps: { align: "right" },
+        sortable: false,
+        filterable: false,
+        searchable: false,
+        onClick: () => { },
+    },
 ]
 
 const RoomsTable = () => {
+    const dispatch = useAppDispatch();
     const [showDialog, setShawDialog] = useState("none");
+    const [roomData, setRoomData] = useState<RoomInterface>();
+    
+    useEffect(() => {
+        dispatch(getRoomList())
+    }, [])
+
+   const handleShowDialog = (showDialog : 'none' | 'block') => {
+    console.log(showDialog,'showDialog');
+    setShawDialog(showDialog)
+   }
+    
+    const roomState : RoomState = useAppSelector((state: any) => state.rooms);
+
     return (
         <>
-            <PopUp DialogStateController={setShawDialog} display={showDialog} title="اضــافة غــرقة"
-            >
-                <RoomsForm edit propsIntialValues={{
-                    name: "غرفة 2 ",
-                    description: "تجربة ",
-                }} />
+            <PopUp DialogStateController={setShawDialog} display={showDialog} title="اضــافة غــرقة">
+             <RoomsForm edit setShowDialog={handleShowDialog} propsIntialValues={roomData} />
             </PopUp>
             <CustomDataTable
                 applyFilters={(filters: FilterQueryParam[]) => {
                     console.log(filters);
                 }}
-                data={dummyRooms.map(
-                    (item: dummyRooms) => {
+                data={roomState?.roomList?.map(
+                    (item: RoomInterface) => {
                         return {
                             name: item.name ?? "",
-                            description: item.description ?? "",
+                            location: item.location ?? "",
                             update: (
                                 <Button
                                     color="info"
@@ -86,10 +94,27 @@ const RoomsTable = () => {
 
                                     onClick={() => {
                                         setShawDialog("block");
+                                        setRoomData({
+                                            id : item.id,
+                                            name : item.name,
+                                            location : item.location,
+                                        })
                                     }}
                                 >
                                     تعديل بيانات
                                 </Button>
+                            ),
+                            delete: (
+                                <Button
+                                color="info"
+                                variant="outlined"
+
+                                onClick={async () => {
+                                    dispatch(deleteRoom(String(item.id)));
+                                }}
+                            >
+                                 حذف
+                            </Button>
                             ),
                         };
                     }

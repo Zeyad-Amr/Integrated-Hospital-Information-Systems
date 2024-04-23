@@ -8,6 +8,9 @@ enum ServiceKeys {
     LookupsDataSource = 'LookupsDataSource',
     TriageAXDataSource = 'TriageAXDataSource',
     PersonDataSource = 'PersonDataSource',
+    RoomDataSource = 'RoomDataSource',
+    SpecializationDataSource = 'SpecializationDataSource',
+    DepartmentsDataSource = 'DepartmentsDataSource',
 
     //* Repositories ----------------------------------------------
     EmployeeRepository = 'EmployeeRepository',
@@ -17,6 +20,9 @@ enum ServiceKeys {
     LookupsRepository = 'LookupsRepository',
     TriageAXRepository = 'TriageAXRepository',
     PersonRepository = 'PersonRepository',
+    RoomRepository = 'RoomRepository',
+    SpecializationRepository = 'SpecializationRepository',
+    DepartmentsRepository = 'DepartmentsRepository',
 
 
 
@@ -26,6 +32,18 @@ enum ServiceKeys {
     CreateEmployeeUseCase = 'CreateEmployeeUseCase',
     UpdateEmployeeUseCase = 'UpdateEmployeeUseCase',
     DeleteEmployeeUseCase = 'DeleteEmployeeUseCase',
+
+    GetAllRoomsUseCase = 'GetAllRoomsUseCase',
+    GetRoomByIdUseCase = 'GetRoomByIdUseCase',
+    CreateRoomUseCase = 'CreateRoomUseCase',
+    UpdateRoomUseCase = 'UpdateRoomUseCase',
+    DeleteRoomUseCase = 'DeleteRoomUseCase',
+
+    GetAllSpecializationsUseCase = 'GetAllSpecializationsUseCase',
+    GetSpecializationByIdUseCase = 'GetSpecializationByIdUseCase',
+    CreateSpecializationUseCase = 'CreateSpecializationUseCase',
+    UpdateSpecializationUseCase = 'UpdateSpecializationUseCase',
+    DeleteSpecializationUseCase = 'DeleteSpecializationUseCase',
 
     GetLookupsUseCase = 'GetLookupsUseCase',
 
@@ -40,6 +58,8 @@ enum ServiceKeys {
     CreateTriageAXUseCase = 'CreateTriageAXUseCase',
 
     CreateIncidentUseCase = 'CreateIncidentUseCase',
+
+    GetAllDepartmentsUseCase = 'GetAllDepartmentsUseCase',
 
     GetPersonUseCase = 'GetPersonUseCase',
 

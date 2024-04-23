@@ -1,27 +1,14 @@
-import { DataItem, header } from '@/app/test/components/table/data';
 import { FilterQueryParam } from '@/core/api';
 import { CustomDataTable, HeaderItem } from '@/core/shared/components/CustomDataTable';
 import PopUp from '@/core/shared/components/PopUp';
-import EmployeeInterface from '@/modules/employees/domain/interfaces/employee-interface';
 import { Button } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SpecializationsForm from './SpecializationsForm';
+import SpecializationInterface from '@/modules/subdepartments-crud/domain/interfaces/specialization -interface';
+import { useAppDispatch, useAppSelector } from '@/core/state/store';
+import { getSpecializationList , deleteSpecialization } from "@/modules/subdepartments-crud/presentation/controllers/thunks/specialization-thunks";
+import { SpecializationState } from '../../controllers/types';
 
-const dummySpecializations = [
-    {
-        name: "غرفة 1 ",
-        description: "تجربة تجربة تجربة",
-    },
-    {
-        name: "غرفة 2 ",
-        description: "تجربة ",
-    },
-]
-
-interface dummySpecializations {
-    name: string;
-    description: string;
-}
 
 const SpecializationsTableHeader: HeaderItem[] = [
     {
@@ -57,25 +44,42 @@ const SpecializationsTableHeader: HeaderItem[] = [
         searchable: false,
         onClick: () => { },
     },
+    {
+        id: "delete",
+        label: "حذف",
+        isComponent: true,
+        minWidth: 100,
+        tableCellProps: { align: "right" },
+        sortable: false,
+        filterable: false,
+        searchable: false,
+        onClick: () => { },
+    },
 ]
 
 const SpecializationsTable = () => {
+    const dispatch = useAppDispatch();
     const [showDialog, setShawDialog] = useState("none");
+    const [specializationData, setSpecializationData] = useState<SpecializationInterface>();
+    const specializationState : SpecializationState = useAppSelector((state: any) => state.specializations);
+
+    useEffect(() => {
+        dispatch(getSpecializationList())
+    }, [])
+
     return (
         <>
-            <PopUp DialogStateController={setShawDialog} display={showDialog} title="اضــافة غــرقة"
+            <PopUp DialogStateController={setShawDialog} display={showDialog} title="اضــافة تخصص"
             >
-                <SpecializationsForm edit propsIntialValues={{
-                    name: "غرفة 2 ",
-                    description: "تجربة ",
-                }} />
+                <SpecializationsForm edit propsIntialValues={specializationData}/>
             </PopUp>
+
             <CustomDataTable
                 applyFilters={(filters: FilterQueryParam[]) => {
                     console.log(filters);
                 }}
-                data={dummySpecializations.map(
-                    (item: dummySpecializations) => {
+                data={specializationState?.specializationList?.map(
+                    (item: SpecializationInterface) => {
                         return {
                             name: item.name ?? "",
                             description: item.description ?? "",
@@ -86,9 +90,26 @@ const SpecializationsTable = () => {
 
                                     onClick={() => {
                                         setShawDialog("block");
+                                        setSpecializationData({
+                                            id : item.id,
+                                            name : item.name,
+                                            description : item.description
+                                        })
                                     }}
                                 >
                                     تعديل بيانات
+                                </Button>
+                            ),
+                            delete: (
+                                <Button
+                                    color="info"
+                                    variant="outlined"
+
+                                    onClick={async () => {
+                                        dispatch(deleteSpecialization(String(item.id)))
+                                    }}
+                                >
+                                 حذف
                                 </Button>
                             ),
                         };
