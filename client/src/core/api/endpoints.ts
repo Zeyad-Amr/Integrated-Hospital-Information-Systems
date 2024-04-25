@@ -49,6 +49,13 @@ const Endpoints = {
         create: '/specialization',
         update: '/specialization/:id',
         delete: '/specialization/:id',
+    },
+    subdepartment :{
+        list: '/subdepartment',
+        details: '/subdepartment/:id',
+        create: '/subdepartment',
+        update: '/subdepartment/:id',
+        delete: '/subdepartment/:id',
     }
 };
 export default Endpoints;
