@@ -1,6 +1,7 @@
 import DepartmentsInterface from "../../domain/interfaces/departments-interface";
 import RoomInterface from "../../domain/interfaces/room-interface";
 import SpecializationInterface from "../../domain/interfaces/specialization -interface";
+import SubDepartmentsInterface from "../../domain/interfaces/sub-departments-interface";
 
 // Define the initial state using that type
 export interface RoomState {
@@ -13,6 +14,12 @@ export interface RoomState {
 export interface SpecializationState {
     specializationList: SpecializationInterface[];
     currentSpecialization: SpecializationInterface;
+    loading: boolean;
+    error: string;
+}
+export interface SubDepartmentsState {
+    subDepartmentsList: SubDepartmentsInterface[];
+    currentSubDepartment: SubDepartmentsInterface;
     loading: boolean;
     error: string;
 }

@@ -11,6 +11,7 @@ enum ServiceKeys {
     RoomDataSource = 'RoomDataSource',
     SpecializationDataSource = 'SpecializationDataSource',
     DepartmentsDataSource = 'DepartmentsDataSource',
+    SubDepartmentsDataSource = 'SubDepartmentsDataSource',
 
     //* Repositories ----------------------------------------------
     EmployeeRepository = 'EmployeeRepository',
@@ -23,6 +24,7 @@ enum ServiceKeys {
     RoomRepository = 'RoomRepository',
     SpecializationRepository = 'SpecializationRepository',
     DepartmentsRepository = 'DepartmentsRepository',
+    SubDepartmentsRepository = 'SubDepartmentsRepository',
 
 
 
@@ -44,6 +46,12 @@ enum ServiceKeys {
     CreateSpecializationUseCase = 'CreateSpecializationUseCase',
     UpdateSpecializationUseCase = 'UpdateSpecializationUseCase',
     DeleteSpecializationUseCase = 'DeleteSpecializationUseCase',
+
+    GetAllSubDepartmentsUseCase = 'GetAllSubDepartmentsUseCase',
+    GetSubDepartmentByIdUseCase = 'GetSubDepartmentByIdUseCase',
+    CreateSubDepartmentUseCase = 'CreateSubDepartmentUseCase',
+    UpdateSubDepartmentUseCase = 'UpdateSubDepartmentUseCase',
+    DeleteSubDepartmentUseCase = 'DeleteSubDepartmentUseCase',
 
     GetLookupsUseCase = 'GetLookupsUseCase',
 
