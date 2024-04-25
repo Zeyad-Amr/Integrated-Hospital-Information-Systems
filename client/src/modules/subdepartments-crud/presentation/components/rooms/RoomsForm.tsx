@@ -26,15 +26,16 @@ const RoomsForm = ({ edit, propsIntialValues , setShowDialog }: RoomsFormProps) 
       
     }, [propsIntialValues])
 
-    const handleInitialValues = () => {
-        // debugger
-     const initialValues =  edit && propsIntialValues ? { id : propsIntialValues.id, name : propsIntialValues.name, location : propsIntialValues.location } : RoomEntity.defaultValue()
-     return initialValues;
-    }
+    // const handleInitialValues = () => {
+    //     // debugger
+    //  const initialValues =  edit && propsIntialValues ? { id : propsIntialValues.id, name : propsIntialValues.name, location : propsIntialValues.location } : RoomEntity.defaultValue()
+    //  return initialValues;
+    // }
+    console.log(propsIntialValues);
     
     return (
         <Formik
-            initialValues={edit && propsIntialValues ? { id : propsIntialValues.id, name : propsIntialValues.name, location : propsIntialValues.location } : RoomEntity.defaultValue()}
+            initialValues={propsIntialValues ?? RoomEntity.defaultValue()}
             onSubmit={ async (values) => { 
                 console.log(values) ; 
                 edit && propsIntialValues ? 
