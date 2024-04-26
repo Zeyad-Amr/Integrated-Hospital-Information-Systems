@@ -56,6 +56,13 @@ const Endpoints = {
         create: '/subdepartment',
         update: '/subdepartment/:id',
         delete: '/subdepartment/:id',
+    },
+    feature :{
+        list: '/feature',
+        details: '/feature/:id',
+        create: '/feature',
+        update: '/feature/:id',
+        delete: '/feature/:id',
     }
 };
 export default Endpoints;
