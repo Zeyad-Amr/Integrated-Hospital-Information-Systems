@@ -63,6 +63,13 @@ const Endpoints = {
         create: '/feature',
         update: '/feature/:id',
         delete: '/feature/:id',
+    },
+    permission :{
+        list: '/permission',
+        details: '/permission/:id',
+        create: '/permission',
+        update: '/permission/:id',
+        delete: '/permission/:id',
     }
 };
 export default Endpoints;
