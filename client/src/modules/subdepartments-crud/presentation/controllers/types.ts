@@ -1,5 +1,6 @@
 import DepartmentsInterface from "../../domain/interfaces/departments-interface";
 import FeatureInterface from "../../domain/interfaces/feature-interface";
+import PermissionInterface from "../../domain/interfaces/permission-interface";
 import RoomInterface from "../../domain/interfaces/room-interface";
 import SpecializationInterface from "../../domain/interfaces/specialization -interface";
 import SubDepartmentsInterface from "../../domain/interfaces/sub-departments-interface";
@@ -27,6 +28,12 @@ export interface SubDepartmentsState {
 export interface FeaturesState {
     featuresList: FeatureInterface[];
     currentFeature: FeatureInterface;
+    loading: boolean;
+    error: string;
+}
+export interface PermissionsState {
+    permissionsList: PermissionInterface[];
+    currentPermission: PermissionInterface;
     loading: boolean;
     error: string;
 }

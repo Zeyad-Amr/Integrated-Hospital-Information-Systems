@@ -9,7 +9,7 @@ export default class PermissionEntity {
         return {
             id: '',
             featureId : '',
-            subDepartmentId : '',
+            subdepartmentId : '',
             roleId : '',
         };
     }
