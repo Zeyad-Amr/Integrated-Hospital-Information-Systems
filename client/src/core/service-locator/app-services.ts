@@ -65,6 +65,14 @@ import DeleteSubDepartmentUseCase from "@/modules/subdepartments-crud/domain/use
 import UpdateSubDepartmentUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/update-sub-department-usecase";
 import GetAllSubDepartmentsUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/get-all-sub-departments-usecase";
 import GetSubDepartmentUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/get-sub-departments-by-Id-usecase";
+import { BaseFeaturesDataSource, FeaturesDataSource } from "@/modules/subdepartments-crud/data/datasources/features-datasource";
+import BaseFeaturesRepository from "@/modules/subdepartments-crud/domain/repositories/base-features-repository";
+import FeaturesRepository from "@/modules/subdepartments-crud/data/repositories/features-repository";
+import CreateFeatureUseCase from "@/modules/subdepartments-crud/domain/usecases/features/create-feature-usecase";
+import DeleteFeatureUseCase from "@/modules/subdepartments-crud/domain/usecases/features/delete-feature-usecase";
+import UpdateFeatureUseCase from "@/modules/subdepartments-crud/domain/usecases/features/update-feature-usecase";
+import GetAllFeaturesUseCase from "@/modules/subdepartments-crud/domain/usecases/features/get-all-features-usecase";
+import GetFeatureUseCase from "@/modules/subdepartments-crud/domain/usecases/features/get-feature-by-Id-usecase";
 
 
 class AppServicesLocator {
@@ -104,6 +112,9 @@ class AppServicesLocator {
         sl.registerFactory<BaseSubDepartmentsDataSource>(ServiceKeys.SubDepartmentsDataSource, () => new SubDepartmentsDataSource(
             sl.get<ApiClient>(ServiceKeys.ApiClient)
         ));
+        sl.registerFactory<BaseFeaturesDataSource>(ServiceKeys.FeaturesDataSource, () => new FeaturesDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
 
 
         //* Repositories ----------------------------------------------
@@ -139,6 +150,9 @@ class AppServicesLocator {
         sl.registerFactory<BaseSubDepartmentsRepository>(ServiceKeys.SubDepartmentsRepository, () => new SubDepartmentsRepository(
             sl.get<BaseSubDepartmentsDataSource>(ServiceKeys.SubDepartmentsDataSource)
         ));
+        sl.registerFactory<BaseFeaturesRepository>(ServiceKeys.FeaturesRepository, () => new FeaturesRepository(
+            sl.get<BaseFeaturesDataSource>(ServiceKeys.FeaturesDataSource)
+        ));
 
         //* Use Cases --------------------------------------------------
         sl.registerFactory<GetAllEmployeesUseCase>(ServiceKeys.GetAllEmployeesUseCase, () => new GetAllEmployeesUseCase(
@@ -172,6 +186,23 @@ class AppServicesLocator {
         ));
         sl.registerFactory<GetRoomByIdUseCase>(ServiceKeys.GetRoomByIdUseCase, () => new GetRoomByIdUseCase(
             sl.get<BaseRoomRepository>(ServiceKeys.RoomRepository)
+        ));
+
+        // Features 
+        sl.registerFactory<CreateFeatureUseCase>(ServiceKeys.CreateFeatureUseCase, () => new CreateFeatureUseCase(
+            sl.get<BaseFeaturesRepository>(ServiceKeys.FeaturesRepository)
+        ));
+        sl.registerFactory<DeleteFeatureUseCase>(ServiceKeys.DeleteFeatureUseCase, () => new DeleteFeatureUseCase(
+            sl.get<BaseFeaturesRepository>(ServiceKeys.FeaturesRepository)
+        ));
+        sl.registerFactory<UpdateFeatureUseCase>(ServiceKeys.UpdateFeatureUseCase, () => new UpdateFeatureUseCase(
+            sl.get<BaseFeaturesRepository>(ServiceKeys.FeaturesRepository)
+        ));
+        sl.registerFactory<GetAllFeaturesUseCase>(ServiceKeys.GetAllFeaturesUseCase, () => new GetAllFeaturesUseCase(
+            sl.get<BaseFeaturesRepository>(ServiceKeys.FeaturesRepository)
+        ));
+        sl.registerFactory<GetFeatureUseCase>(ServiceKeys.GetFeatureByIdUseCase, () => new GetFeatureUseCase(
+            sl.get<BaseFeaturesRepository>(ServiceKeys.FeaturesRepository)
         ));
 
         // Sub departments 
