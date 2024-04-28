@@ -12,7 +12,7 @@ interface SubDepartmentInitalValues {
     department: string;
     room: string;
     specialization: string;
-    features: string;
+    features: string[];
 }
 
 interface SubDepartmentsFormProps {
@@ -27,7 +27,7 @@ const SubDepartmentsForm = ({ edit, propsIntialValues }: SubDepartmentsFormProps
         department: '',
         room: '',
         specialization: '',
-        features: '',
+        features: ['1', '2'],
     }
 
     const handleFormSchema = Yup.object({
@@ -80,7 +80,7 @@ const SubDepartmentsForm = ({ edit, propsIntialValues }: SubDepartmentsFormProps
                         </Grid>
                         <Grid item lg={6} md={6} sm={6} xs={12}>
                             <CustomSelectField
-                                value={{ id: 1, value: '1' }}
+                                value={values.department}
                                 options={[{ id: 1, value: '1' }]}
                                 isRequired
                                 name="department"
@@ -98,7 +98,7 @@ const SubDepartmentsForm = ({ edit, propsIntialValues }: SubDepartmentsFormProps
                         </Grid>
                         <Grid item lg={6} md={6} sm={6} xs={12}>
                             <CustomSelectField
-                                value={{ id: 1, value: '1' }}
+                                value={values.room}
                                 options={[{ id: 1, value: '1' }]}
                                 isRequired
                                 name="room"
@@ -116,7 +116,7 @@ const SubDepartmentsForm = ({ edit, propsIntialValues }: SubDepartmentsFormProps
                         </Grid>
                         <Grid item lg={6} md={6} sm={6} xs={12}>
                             <CustomSelectField
-                                value={{ id: 1, value: '1' }}
+                                value={values.specialization}
                                 options={[{ id: 1, value: '1' }]}
                                 isRequired
                                 name="specialization"
@@ -134,16 +134,17 @@ const SubDepartmentsForm = ({ edit, propsIntialValues }: SubDepartmentsFormProps
                         </Grid>
                         <Grid item lg={6} md={6} sm={6} xs={12}>
                             <CustomSelectField
-                                value={{ id: 1, value: '1' }}
-                                options={[{ id: 1, value: '1' }]}
+                                multiple
+                                value={values.features}
+                                options={[{ id: '1', value: 'one' }, { id: '2', value: 'two' }, { id: '3', value: 'three' }]}
                                 isRequired
                                 name="features"
                                 label="الميــزات"
                                 // value={values.features}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={errors.features}
-                                touched={touched.features}
+                                // error={errors.features}
+                                // touched={touched.features}
                                 width="100%"
                                 sx={{ margin: '0' }}
 
