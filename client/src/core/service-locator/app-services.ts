@@ -57,6 +57,38 @@ import { BaseDepartmentsDataSource, DepartmentsDataSource } from "@/modules/subd
 import BaseDepartmentsRepository from "@/modules/subdepartments-crud/domain/repositories/base-departments-repository";
 import DepartmentsRepository from "@/modules/subdepartments-crud/data/repositories/departments-repository";
 import GetAllDepartmentsUseCase from "@/modules/subdepartments-crud/domain/usecases/departments/get-all-departments-usecase";
+import { BaseSubDepartmentsDataSource, SubDepartmentsDataSource } from "@/modules/subdepartments-crud/data/datasources/sub-departments-datasource";
+import BaseSubDepartmentsRepository from "@/modules/subdepartments-crud/domain/repositories/base-sub-departments-repository";
+import SubDepartmentsRepository from "@/modules/subdepartments-crud/data/repositories/sub-departments-repository";
+import CreateSubDepartmentUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/create-sub-department-usecase";
+import DeleteSubDepartmentUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/delete-sub-department-usecase";
+import UpdateSubDepartmentUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/update-sub-department-usecase";
+import GetAllSubDepartmentsUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/get-all-sub-departments-usecase";
+import GetSubDepartmentUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/get-sub-departments-by-Id-usecase";
+import { BaseFeaturesDataSource, FeaturesDataSource } from "@/modules/subdepartments-crud/data/datasources/features-datasource";
+import BaseFeaturesRepository from "@/modules/subdepartments-crud/domain/repositories/base-features-repository";
+import FeaturesRepository from "@/modules/subdepartments-crud/data/repositories/features-repository";
+import CreateFeatureUseCase from "@/modules/subdepartments-crud/domain/usecases/features/create-feature-usecase";
+import DeleteFeatureUseCase from "@/modules/subdepartments-crud/domain/usecases/features/delete-feature-usecase";
+import UpdateFeatureUseCase from "@/modules/subdepartments-crud/domain/usecases/features/update-feature-usecase";
+import GetAllFeaturesUseCase from "@/modules/subdepartments-crud/domain/usecases/features/get-all-features-usecase";
+import GetFeatureUseCase from "@/modules/subdepartments-crud/domain/usecases/features/get-feature-by-Id-usecase";
+import { BasePermissionsDataSource, PermissionsDataSource } from "@/modules/subdepartments-crud/data/datasources/permissions-datasource";
+import BasePermissionsRepository from "@/modules/subdepartments-crud/domain/repositories/base-permissions-repository";
+import PermissionsRepository from "@/modules/subdepartments-crud/data/repositories/permissions-repository";
+import CreatePermissionUseCase from "@/modules/subdepartments-crud/domain/usecases/permissions/create-permission-usecase";
+import DeletePermissionUseCase from "@/modules/subdepartments-crud/domain/usecases/permissions/delete-permission-usecase";
+import UpdatePermissionUseCase from "@/modules/subdepartments-crud/domain/usecases/permissions/update-permission-usecase";
+import GetAllPermissionsUseCase from "@/modules/subdepartments-crud/domain/usecases/permissions/get-all-permissions-usecase";
+import GetPermissionUseCase from "@/modules/subdepartments-crud/domain/usecases/permissions/get-permission-by-Id-usecase";
+import { BaseRolesDataSource, RolesDataSource } from "@/modules/subdepartments-crud/data/datasources/roles-datasource";
+import BaseRolesRepository from "@/modules/subdepartments-crud/domain/repositories/base-roles-repository";
+import RolesRepository from "@/modules/subdepartments-crud/data/repositories/roles-repository";
+import CreateRoleUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/create-role-usecase";
+import DeleteRoleUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/delete-role-usecase";
+import UpdateRoleUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/update-role-usecase";
+import GetAllRolesUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/get-all-roles-usecase";
+import GetRoleUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/get-role-by-Id-usecase";
 
 
 class AppServicesLocator {
@@ -93,6 +125,18 @@ class AppServicesLocator {
         sl.registerFactory<BaseDepartmentsDataSource>(ServiceKeys.DepartmentsDataSource, () => new DepartmentsDataSource(
             sl.get<ApiClient>(ServiceKeys.ApiClient)
         ));
+        sl.registerFactory<BaseSubDepartmentsDataSource>(ServiceKeys.SubDepartmentsDataSource, () => new SubDepartmentsDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
+        sl.registerFactory<BaseFeaturesDataSource>(ServiceKeys.FeaturesDataSource, () => new FeaturesDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
+        sl.registerFactory<BasePermissionsDataSource>(ServiceKeys.PermissionsDataSource, () => new PermissionsDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
+        sl.registerFactory<BaseRolesDataSource>(ServiceKeys.RolesDataSource, () => new RolesDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
 
 
         //* Repositories ----------------------------------------------
@@ -124,6 +168,18 @@ class AppServicesLocator {
         ));
         sl.registerFactory<BaseDepartmentsRepository>(ServiceKeys.DepartmentsRepository, () => new DepartmentsRepository(
             sl.get<BaseDepartmentsDataSource>(ServiceKeys.DepartmentsDataSource)
+        ));
+        sl.registerFactory<BaseSubDepartmentsRepository>(ServiceKeys.SubDepartmentsRepository, () => new SubDepartmentsRepository(
+            sl.get<BaseSubDepartmentsDataSource>(ServiceKeys.SubDepartmentsDataSource)
+        ));
+        sl.registerFactory<BaseFeaturesRepository>(ServiceKeys.FeaturesRepository, () => new FeaturesRepository(
+            sl.get<BaseFeaturesDataSource>(ServiceKeys.FeaturesDataSource)
+        ));
+        sl.registerFactory<BasePermissionsRepository>(ServiceKeys.PermissionsRepository, () => new PermissionsRepository(
+            sl.get<BasePermissionsDataSource>(ServiceKeys.PermissionsDataSource)
+        ));
+        sl.registerFactory<BaseRolesRepository>(ServiceKeys.RolesRepository, () => new RolesRepository(
+            sl.get<BaseRolesDataSource>(ServiceKeys.RolesDataSource)
         ));
 
         //* Use Cases --------------------------------------------------
@@ -158,6 +214,74 @@ class AppServicesLocator {
         ));
         sl.registerFactory<GetRoomByIdUseCase>(ServiceKeys.GetRoomByIdUseCase, () => new GetRoomByIdUseCase(
             sl.get<BaseRoomRepository>(ServiceKeys.RoomRepository)
+        ));
+
+        // Roles 
+        sl.registerFactory<CreateRoleUseCase>(ServiceKeys.CreateRoleUseCase, () => new CreateRoleUseCase(
+            sl.get<BaseRolesRepository>(ServiceKeys.RolesRepository)
+        ));
+        sl.registerFactory<DeleteRoleUseCase>(ServiceKeys.DeleteRoleUseCase, () => new DeleteRoleUseCase(
+            sl.get<BaseRolesRepository>(ServiceKeys.RolesRepository)
+        ));
+        sl.registerFactory<UpdateRoleUseCase>(ServiceKeys.UpdateRoleUseCase, () => new UpdateRoleUseCase(
+            sl.get<BaseRolesRepository>(ServiceKeys.RolesRepository)
+        ));
+        sl.registerFactory<GetAllRolesUseCase>(ServiceKeys.GetAllRolesUseCase, () => new GetAllRolesUseCase(
+            sl.get<BaseRolesRepository>(ServiceKeys.RolesRepository)
+        ));
+        sl.registerFactory<GetRoleUseCase>(ServiceKeys.GetRoleByIdUseCase, () => new GetRoleUseCase(
+            sl.get<BaseRolesRepository>(ServiceKeys.RolesRepository)
+        ));
+
+        // Permissions 
+        sl.registerFactory<CreatePermissionUseCase>(ServiceKeys.CreatePermissionUseCase, () => new CreatePermissionUseCase(
+            sl.get<BasePermissionsRepository>(ServiceKeys.PermissionsRepository)
+        ));
+        sl.registerFactory<DeletePermissionUseCase>(ServiceKeys.DeletePermissionUseCase, () => new DeletePermissionUseCase(
+            sl.get<BasePermissionsRepository>(ServiceKeys.PermissionsRepository)
+        ));
+        sl.registerFactory<UpdatePermissionUseCase>(ServiceKeys.UpdatePermissionUseCase, () => new UpdatePermissionUseCase(
+            sl.get<BasePermissionsRepository>(ServiceKeys.PermissionsRepository)
+        ));
+        sl.registerFactory<GetAllPermissionsUseCase>(ServiceKeys.GetAllPermissionsUseCase, () => new GetAllPermissionsUseCase(
+            sl.get<BasePermissionsRepository>(ServiceKeys.PermissionsRepository)
+        ));
+        sl.registerFactory<GetPermissionUseCase>(ServiceKeys.GetPermissionByIdUseCase, () => new GetPermissionUseCase(
+            sl.get<BasePermissionsRepository>(ServiceKeys.PermissionsRepository)
+        ));
+
+        // Features 
+        sl.registerFactory<CreateFeatureUseCase>(ServiceKeys.CreateFeatureUseCase, () => new CreateFeatureUseCase(
+            sl.get<BaseFeaturesRepository>(ServiceKeys.FeaturesRepository)
+        ));
+        sl.registerFactory<DeleteFeatureUseCase>(ServiceKeys.DeleteFeatureUseCase, () => new DeleteFeatureUseCase(
+            sl.get<BaseFeaturesRepository>(ServiceKeys.FeaturesRepository)
+        ));
+        sl.registerFactory<UpdateFeatureUseCase>(ServiceKeys.UpdateFeatureUseCase, () => new UpdateFeatureUseCase(
+            sl.get<BaseFeaturesRepository>(ServiceKeys.FeaturesRepository)
+        ));
+        sl.registerFactory<GetAllFeaturesUseCase>(ServiceKeys.GetAllFeaturesUseCase, () => new GetAllFeaturesUseCase(
+            sl.get<BaseFeaturesRepository>(ServiceKeys.FeaturesRepository)
+        ));
+        sl.registerFactory<GetFeatureUseCase>(ServiceKeys.GetFeatureByIdUseCase, () => new GetFeatureUseCase(
+            sl.get<BaseFeaturesRepository>(ServiceKeys.FeaturesRepository)
+        ));
+
+        // Sub departments 
+        sl.registerFactory<CreateSubDepartmentUseCase>(ServiceKeys.CreateSubDepartmentUseCase, () => new CreateSubDepartmentUseCase(
+            sl.get<BaseSubDepartmentsRepository>(ServiceKeys.SubDepartmentsRepository)
+        ));
+        sl.registerFactory<DeleteSubDepartmentUseCase>(ServiceKeys.DeleteSubDepartmentUseCase, () => new DeleteSubDepartmentUseCase(
+            sl.get<BaseSubDepartmentsRepository>(ServiceKeys.SubDepartmentsRepository)
+        ));
+        sl.registerFactory<UpdateSubDepartmentUseCase>(ServiceKeys.UpdateSubDepartmentUseCase, () => new UpdateSubDepartmentUseCase(
+            sl.get<BaseSubDepartmentsRepository>(ServiceKeys.SubDepartmentsRepository)
+        ));
+        sl.registerFactory<GetAllSubDepartmentsUseCase>(ServiceKeys.GetAllSubDepartmentsUseCase, () => new GetAllSubDepartmentsUseCase(
+            sl.get<BaseSubDepartmentsRepository>(ServiceKeys.SubDepartmentsRepository)
+        ));
+        sl.registerFactory<GetSubDepartmentUseCase>(ServiceKeys.GetSubDepartmentByIdUseCase, () => new GetSubDepartmentUseCase(
+            sl.get<BaseSubDepartmentsRepository>(ServiceKeys.SubDepartmentsRepository)
         ));
         
         // Specializations

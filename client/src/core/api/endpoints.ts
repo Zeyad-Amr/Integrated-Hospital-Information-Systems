@@ -49,6 +49,34 @@ const Endpoints = {
         create: '/specialization',
         update: '/specialization/:id',
         delete: '/specialization/:id',
+    },
+    subdepartment :{
+        list: '/subdepartment',
+        details: '/subdepartment/:id',
+        create: '/subdepartment',
+        update: '/subdepartment/:id',
+        delete: '/subdepartment/:id',
+    },
+    feature :{
+        list: '/feature',
+        details: '/feature/:id',
+        create: '/feature',
+        update: '/feature/:id',
+        delete: '/feature/:id',
+    },
+    permission :{
+        list: '/permission',
+        details: '/permission/:id',
+        create: '/permission',
+        update: '/permission/:id',
+        delete: '/permission/:id',
+    },
+    role :{
+        list: '/role',
+        details: '/role/:id',
+        create: '/role',
+        update: '/role/:id',
+        delete: '/role/:id',
     }
 };
 export default Endpoints;

@@ -65,22 +65,19 @@ const RoomsTable = () => {
     useEffect(() => {
         dispatch(getRoomList())
     }, [])
-
-   const handleShowDialog = (showDialog : 'none' | 'block') => {
-    console.log(showDialog,'showDialog');
-    setShawDialog(showDialog)
-   }
     
     const roomState : RoomState = useAppSelector((state: any) => state.rooms);
+    console.log(roomData);
+    
 
     return (
         <>
             <PopUp DialogStateController={setShawDialog} display={showDialog} title="اضــافة غــرقة">
-             <RoomsForm edit setShowDialog={handleShowDialog} propsIntialValues={roomData} />
+             { roomData && <RoomsForm edit setShowDialog={setShawDialog} propsIntialValues={roomData} /> }
             </PopUp>
             <CustomDataTable
                 applyFilters={(filters: FilterQueryParam[]) => {
-                    console.log(filters);
+                    // console.log(filters);
                 }}
                 data={roomState?.roomList?.map(
                     (item: RoomInterface) => {
@@ -123,7 +120,7 @@ const RoomsTable = () => {
                 height="100%"
                 boxShadow={10}
                 sx={{ mb: 5 }}
-                onRowClick={(item) => console.log(item)}
+                // onRowClick={(item) => console.log(item)}
                 headerItems={roomsTableHeader}
                 stickyHeader={true} />
         </>

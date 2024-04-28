@@ -1,8 +1,8 @@
 export default interface SubDepartmentsInterface {
-    id? : string;
+    id? : string | number;
     name : string;
-    roomId : string;
-    specializationId : string;
-    departmentId : string;
+    roomId : string | number;
+    specializationId : string | number;
+    departmentId : string | number;
 }
 

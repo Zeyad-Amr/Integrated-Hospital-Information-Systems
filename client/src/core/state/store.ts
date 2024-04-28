@@ -8,6 +8,10 @@ import person from "../shared/modules/person/presentation/controllers/slices/per
 import rooms from "@/modules/subdepartments-crud/presentation/controllers/slices/room-slice";
 import specializations from "@/modules/subdepartments-crud/presentation/controllers/slices/specialization-slice";
 import departments from "@/modules/subdepartments-crud/presentation/controllers/slices/departments-slice";
+import features from "@/modules/subdepartments-crud/presentation/controllers/slices/features-slice";
+import permissions from "@/modules/subdepartments-crud/presentation/controllers/slices/permissions-slice";
+import roles from "@/modules/subdepartments-crud/presentation/controllers/slices/roles-slice";
+import subDepartments from "@/modules/subdepartments-crud/presentation/controllers/slices/sub-departments-slice";
 
 const store = configureStore({
     reducer: {
@@ -18,6 +22,10 @@ const store = configureStore({
         rooms,
         specializations,
         departments,
+        features,
+        permissions,
+        roles,
+        subDepartments,
         person
     },
 });
