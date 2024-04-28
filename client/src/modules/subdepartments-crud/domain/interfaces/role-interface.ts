@@ -1,5 +1,5 @@
 export default interface RoleInterface {
-    id? : string;
+    id? : string | number;
     value : string;
 }
 

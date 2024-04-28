@@ -81,6 +81,14 @@ import DeletePermissionUseCase from "@/modules/subdepartments-crud/domain/usecas
 import UpdatePermissionUseCase from "@/modules/subdepartments-crud/domain/usecases/permissions/update-permission-usecase";
 import GetAllPermissionsUseCase from "@/modules/subdepartments-crud/domain/usecases/permissions/get-all-permissions-usecase";
 import GetPermissionUseCase from "@/modules/subdepartments-crud/domain/usecases/permissions/get-permission-by-Id-usecase";
+import { BaseRolesDataSource, RolesDataSource } from "@/modules/subdepartments-crud/data/datasources/roles-datasource";
+import BaseRolesRepository from "@/modules/subdepartments-crud/domain/repositories/base-roles-repository";
+import RolesRepository from "@/modules/subdepartments-crud/data/repositories/roles-repository";
+import CreateRoleUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/create-role-usecase";
+import DeleteRoleUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/delete-role-usecase";
+import UpdateRoleUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/update-role-usecase";
+import GetAllRolesUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/get-all-roles-usecase";
+import GetRoleUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/get-role-by-Id-usecase";
 
 
 class AppServicesLocator {
@@ -126,6 +134,9 @@ class AppServicesLocator {
         sl.registerFactory<BasePermissionsDataSource>(ServiceKeys.PermissionsDataSource, () => new PermissionsDataSource(
             sl.get<ApiClient>(ServiceKeys.ApiClient)
         ));
+        sl.registerFactory<BaseRolesDataSource>(ServiceKeys.RolesDataSource, () => new RolesDataSource(
+            sl.get<ApiClient>(ServiceKeys.ApiClient)
+        ));
 
 
         //* Repositories ----------------------------------------------
@@ -167,6 +178,9 @@ class AppServicesLocator {
         sl.registerFactory<BasePermissionsRepository>(ServiceKeys.PermissionsRepository, () => new PermissionsRepository(
             sl.get<BasePermissionsDataSource>(ServiceKeys.PermissionsDataSource)
         ));
+        sl.registerFactory<BaseRolesRepository>(ServiceKeys.RolesRepository, () => new RolesRepository(
+            sl.get<BaseRolesDataSource>(ServiceKeys.RolesDataSource)
+        ));
 
         //* Use Cases --------------------------------------------------
         sl.registerFactory<GetAllEmployeesUseCase>(ServiceKeys.GetAllEmployeesUseCase, () => new GetAllEmployeesUseCase(
@@ -200,6 +214,23 @@ class AppServicesLocator {
         ));
         sl.registerFactory<GetRoomByIdUseCase>(ServiceKeys.GetRoomByIdUseCase, () => new GetRoomByIdUseCase(
             sl.get<BaseRoomRepository>(ServiceKeys.RoomRepository)
+        ));
+
+        // Roles 
+        sl.registerFactory<CreateRoleUseCase>(ServiceKeys.CreateRoleUseCase, () => new CreateRoleUseCase(
+            sl.get<BaseRolesRepository>(ServiceKeys.RolesRepository)
+        ));
+        sl.registerFactory<DeleteRoleUseCase>(ServiceKeys.DeleteRoleUseCase, () => new DeleteRoleUseCase(
+            sl.get<BaseRolesRepository>(ServiceKeys.RolesRepository)
+        ));
+        sl.registerFactory<UpdateRoleUseCase>(ServiceKeys.UpdateRoleUseCase, () => new UpdateRoleUseCase(
+            sl.get<BaseRolesRepository>(ServiceKeys.RolesRepository)
+        ));
+        sl.registerFactory<GetAllRolesUseCase>(ServiceKeys.GetAllRolesUseCase, () => new GetAllRolesUseCase(
+            sl.get<BaseRolesRepository>(ServiceKeys.RolesRepository)
+        ));
+        sl.registerFactory<GetRoleUseCase>(ServiceKeys.GetRoleByIdUseCase, () => new GetRoleUseCase(
+            sl.get<BaseRolesRepository>(ServiceKeys.RolesRepository)
         ));
 
         // Permissions 

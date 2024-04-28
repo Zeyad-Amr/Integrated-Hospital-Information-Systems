@@ -14,6 +14,7 @@ enum ServiceKeys {
     SubDepartmentsDataSource = 'SubDepartmentsDataSource',
     FeaturesDataSource = 'FeaturesDataSource',
     PermissionsDataSource = 'PermissionsDataSource',
+    RolesDataSource = 'RolesDataSource',
 
     //* Repositories ----------------------------------------------
     EmployeeRepository = 'EmployeeRepository',
@@ -29,7 +30,7 @@ enum ServiceKeys {
     SubDepartmentsRepository = 'SubDepartmentsRepository',
     FeaturesRepository = 'FeaturesRepository',
     PermissionsRepository = 'PermissionsRepository',
-
+    RolesRepository = 'RolesRepository',
 
 
     //* Use Cases --------------------------------------------------
@@ -44,6 +45,12 @@ enum ServiceKeys {
     CreateRoomUseCase = 'CreateRoomUseCase',
     UpdateRoomUseCase = 'UpdateRoomUseCase',
     DeleteRoomUseCase = 'DeleteRoomUseCase',
+
+    GetAllRolesUseCase = 'GetAllRolesUseCase',
+    GetRoleByIdUseCase = 'GetRoleByIdUseCase',
+    CreateRoleUseCase = 'CreateRoleUseCase',
+    UpdateRoleUseCase = 'UpdateRoleUseCase',
+    DeleteRoleUseCase = 'DeleteRoleUseCase',
 
     GetAllFeaturesUseCase = 'GetAllFeaturesUseCase',
     GetFeatureByIdUseCase = 'GetFeatureByIdUseCase',
