@@ -13,16 +13,18 @@ export interface SelectFieldProps<T> {
   onBlur: (event: React.FocusEvent<{ value: unknown }>) => void;
   name: string;
   label: string;
-  error: string | undefined | FormikErrors<T>;
-  touched: boolean | undefined | FormikTouched<T>;
-  value: T | undefined;
+  error?: string | undefined | FormikErrors<T>;
+  touched?: boolean | undefined | FormikTouched<T>;
+  value: T | any;
   options: T[];
   defaultValue?: { id: any; value: string };
   isRequired?: boolean;
   width?: number | string;
   hideLabel?: boolean;
+  multiple?: boolean;
   sx?: any;
 }
+
 
 const CustomSelectField = <T extends { id: any; value: string }>({
   onChange,
@@ -37,10 +39,12 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   isRequired = false,
   width,
   sx,
+  multiple,
   hideLabel = true,
 }: SelectFieldProps<T>) => {
   // Create a new array with the default value added to the beginning
   const updatedOptions = [defaultValue, ...options];
+  console.log(name, value)
 
   return (
     <Box
@@ -72,6 +76,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
         <InputLabel>{label}</InputLabel>
 
         <Select
+          multiple={multiple ?? false}
           label={label}
           onChange={(event: SelectChangeEvent<T>, child: ReactNode) => {
             onChange(event, child);
