@@ -87,7 +87,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
             backgroundColor: "#fff ",
             height: "3.5rem",
           }}
-          value={value}
+          value={multiple ? (Array.isArray(value) ? value : [defaultValue.id]) : value}
           name={name}
           error={error && touched ? true : false}
           hidden={hideLabel}
