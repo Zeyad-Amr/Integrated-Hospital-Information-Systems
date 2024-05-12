@@ -12,3 +12,7 @@ export class AuthDataDto extends LoginDto {
   @IsEmail()
   email: string;
 }
+
+export class LoginResponseDto {
+
+}

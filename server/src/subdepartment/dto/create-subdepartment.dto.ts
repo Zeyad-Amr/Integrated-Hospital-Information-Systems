@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, ValidateNested } from "class-validator";
 
 export class CreateSubdepartmentDto {
     @ApiProperty({ required: true, example: 'Cardiologist' })
@@ -19,4 +19,30 @@ export class CreateSubdepartmentDto {
     @IsString()
     @IsOptional()
     departmentId: string
+}
+
+
+class RoleFeature {
+
+    @ApiProperty({ required: true, example: 1 })
+    @IsNumber()
+    roleId: number
+
+    //array
+    @ApiProperty({ required: true, example: [1, 2] })
+    @IsArray()
+    features: number[]
+}
+export class AssignFeatures {
+
+    @ApiProperty({ required: true, type: [RoleFeature] })
+    @IsArray()
+    // @ValidateNested()
+    AddedFeatures: RoleFeature[]
+
+    @ApiProperty({ required: true, type: [RoleFeature] })
+    @IsArray()
+    // @ValidateNested()
+    RemovedFeatures: RoleFeature[]
+
 }

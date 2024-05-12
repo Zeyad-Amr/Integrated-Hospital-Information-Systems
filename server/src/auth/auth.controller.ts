@@ -51,7 +51,7 @@ export class AuthController {
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
     try {
-      return { access_token: await this.authService.login(loginDto) };
+      return await this.authService.login(loginDto);
     } catch (error) {
       throw handleError(error);
     }
