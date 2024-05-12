@@ -6,9 +6,6 @@ export default class EmployeeModel {
     //* --------------------- Serialization: Convert the model to JSON ---------------------
     static toJson(entity: EmployeeInterface): any {
         const baseJson = UserModel.toJson(entity); // Convert the base model to JSON
-        console.log('Model', baseJson)
-        console.log('entity', entity)
-
         return {
             ...baseJson,
         };

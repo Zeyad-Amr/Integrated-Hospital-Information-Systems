@@ -23,13 +23,11 @@ class EmployeeDataSource extends BaseEmployeeDataSource {
     }
 
     override async getAllEmployees(): Promise<EmployeeInterface[]> {
-        console.log('DS Get');
         const response = await this.apiClient.get(Endpoints.employee.list);
         return response.data.items.map((item: any) => EmployeeModel.fromJson(item));
     }
 
     override async createEmployee(employee: EmployeeInterface): Promise<boolean> {
-        console.log('DS', EmployeeModel.toJson(employee));
         await this.apiClient.post(Endpoints.employee.create, EmployeeModel.toJson(employee));
         return true;
     }

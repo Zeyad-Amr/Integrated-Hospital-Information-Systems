@@ -19,9 +19,7 @@ class EmployeeRepository extends BaseEmployeeRepository {
     }
     override async getAllEmployees(): Promise<EmployeeInterface[]> {
         try {
-            console.log('Repo');
             const result = await this.baseEmployeeDataSource.getAllEmployees();
-            console.log('Repo:', result);
             return result;
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;
@@ -30,8 +28,6 @@ class EmployeeRepository extends BaseEmployeeRepository {
     }
     override async createEmployee(employee: EmployeeInterface): Promise<boolean> {
         try {
-            console.log('Repo', employee);
-
             const result = await this.baseEmployeeDataSource.createEmployee(employee);
             return result;
         } catch (error) {
