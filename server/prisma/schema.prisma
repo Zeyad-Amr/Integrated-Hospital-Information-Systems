@@ -156,6 +156,8 @@ model Permissions {
   roleTypeId      Int
   subDepartment   SubDepartment @relation(fields: [subDepartmentId], references: [id])
   subDepartmentId Int
+
+  @@unique([featureId, roleTypeId, subDepartmentId], map: "FeatureRoleSubDepartment")
 }
 
 model Visit {

@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/shared/services/prisma-client/prisma.service";
-import { CreateSubdepartmentDto } from "./dto/create-subdepartment.dto";
+import { AssignFeatures, CreateSubdepartmentDto } from "./dto/create-subdepartment.dto";
 import { UpdateSubdepartmentDto } from "./dto/update-subdepartment.dto";
 import { RoomRepo } from "src/room/room.repo";
 import { SpecializationRepo } from "src/specialization/specialization.repo";
+import { Prisma } from "@prisma/client";
 
 @Injectable()
 export class SubDepartmentRepo {
@@ -119,6 +120,56 @@ export class SubDepartmentRepo {
                 }
             });
         } catch (error) {
+            throw error;
+        }
+    }
+
+    async assignFeatures(id: number, body: AssignFeatures) {
+        try {
+
+            if (body.AddedFeatures.length != 0) {
+
+                const featuresToAdd: Array<any> = [];
+                for (let i = 0; i < body.AddedFeatures.length; i++) {
+                    body.AddedFeatures[i].features.forEach((feature) => {
+                        featuresToAdd.push({
+                            featureId: feature,
+                            subDepartmentId: id,
+                            roleTypeId: body.AddedFeatures[i].roleId
+                        });
+                    });
+                }
+
+                await this.prisma.permissions.createMany({
+                    data: featuresToAdd, skipDuplicates: true
+                });
+            }
+
+
+
+            if (body.RemovedFeatures.length != 0) {
+
+                const featuresToRemove: Array<any> = [];
+                for (let i = 0; i < body.RemovedFeatures.length; i++) {
+                    body.RemovedFeatures[i].features.forEach((feature) => {
+                        featuresToRemove.push({
+                            featureId: feature,
+                            subDepartmentId: id,
+                            roleTypeId: body.RemovedFeatures[i].roleId
+                        });
+                    });
+                }
+
+                await this.prisma.permissions.deleteMany({
+                    where: {
+                        OR: featuresToRemove
+                    }
+                });
+            }
+
+            return { message: "Features assigned successfully" };
+        }
+        catch (error) {
             throw error;
         }
     }
