@@ -14,4 +14,22 @@ export default class SubDepartmentsEntity {
             specializationId : '',
         };
     }
+
+    static subDepartmentsFormValidations(): Yup.ObjectSchema<any> {
+        return Yup.object({
+            name: Yup.string()
+                .required("Name is required")
+                .min(3, "Name must be at least 3 characters")
+                .max(45, "Name must be at most 45 characters"),
+            department: Yup.string()
+                .required("department is required"),
+            room: Yup.string()
+                .required("room is required"),
+            specialization: Yup.string()
+                .required("specialization is required"),
+            features: Yup.string()
+                .required("at least one feature is required")
+        });
+    }
 }
+

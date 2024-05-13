@@ -1,38 +1,18 @@
-import { DataItem, header } from '@/app/test/components/table/data';
 import { FilterQueryParam } from '@/core/api';
 import { CustomDataTable, HeaderItem } from '@/core/shared/components/CustomDataTable';
 import PopUp from '@/core/shared/components/PopUp';
-import EmployeeInterface from '@/modules/employees/domain/interfaces/employee-interface';
-import { Box, Button } from '@mui/material';
-import React, { useState } from 'react'
+import { Box } from '@mui/material';
+import React, { useEffect, useState } from 'react'
 import SubDepartmentsForm from './SubDepartmentsForm';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-
-const dummySubDepartments = [
-    {
-        name: 'بولي تروما',
-        department: 'طوارئ',
-        room: '2',
-        specialization: 'تشخيص',
-        features: '000'
-    },
-    {
-        name: 'Triage A',
-        department: 'طوارئ',
-        room: '3',
-        specialization: 'باطنة',
-        features: '000'
-    },
-]
+import { getSubDepartmentsList , deleteSubDepartment } from "@/modules/subdepartments-crud/presentation/controllers/thunks/sub-departments-thunks ";
+import { getRoomList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/room-thunks";
+import { getSpecializationList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/specialization-thunks";
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-interface dummySubDepartments {
-    name: string;
-    department: string;
-    room: string;
-    specialization: string;
-    features: string;
-}
+import { useAppDispatch, useAppSelector } from '@/core/state/store';
+import { SubDepartmentsState } from '../../controllers/types';
+import SubDepartmentsInterface from '@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface';
 
 const SubDepartmentsTableHeader: HeaderItem[] = [
     {
@@ -94,38 +74,43 @@ const SubDepartmentsTableHeader: HeaderItem[] = [
 
 const SubDepartmentsTable = () => {
     const [showDialog, setShawDialog] = useState("none");
+    const [subDepartmentData, setSubDepartmentData] = useState<SubDepartmentsInterface>();
+    const subDepartmentsState : SubDepartmentsState = useAppSelector((state: any) => state.subDepartments);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+      dispatch(getSubDepartmentsList())
+      dispatch(getRoomList())
+      dispatch(getSpecializationList())
+    }, [])
+    
     return (
         <>
             <PopUp DialogStateController={setShawDialog} display={showDialog} title="اضــافة قســم فــرعي"
             >
-                <SubDepartmentsForm edit propsIntialValues={{
-                    name: 'Triage A',
-                    department: 'طوارئ',
-                    room: '3',
-                    specialization: 'باطنة',
-                    features: '000'
-                }} />
+                <SubDepartmentsForm edit propsIntialValues={subDepartmentData} />
             </PopUp>
             <CustomDataTable
                 applyFilters={(filters: FilterQueryParam[]) => {
                     console.log(filters);
                 }}
-                data={dummySubDepartments.map(
-                    (item: dummySubDepartments) => {
+                data={subDepartmentsState?.subDepartmentsList?.map(
+                    (item: SubDepartmentsInterface) => {
                         return {
                             name: item.name ?? "",
-                            department: item.department ?? "",
-                            room: item.room ?? "",
-                            specialization: item.specialization ?? "",
+                            department: item.departmentId ?? "",
+                            room: item.roomId ?? "",
+                            specialization: item.specializationId ?? "",
                             update: (
                                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, color: "primary.dark" }}>
                                     <PersonRoundedIcon sx={{ cursor: 'pointer' }} />
                                     <EditRoundedIcon sx={{ cursor: 'pointer' }}
                                         onClick={() => {
                                             setShawDialog("block");
+                                            setSubDepartmentData(item)
                                         }}
                                     />
-                                    <DeleteRoundedIcon sx={{ cursor: 'pointer', color: 'red' }} />
+                                    <DeleteRoundedIcon click={async () => {dispatch(deleteSubDepartment(String(item.id)))}} sx={{ cursor: 'pointer', color: 'red' }} />
                                 </Box>
                             ),
                         };
