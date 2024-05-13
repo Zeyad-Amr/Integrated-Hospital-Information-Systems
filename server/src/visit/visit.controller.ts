@@ -28,8 +28,7 @@ import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.d
 import { TriageAXDto } from './dto/triage-assessment.dto';
 import { Public } from 'src/shared/decorators/public.decorator';
 
-// @ApiBearerAuth()
-@Public()
+@ApiBearerAuth()
 @ApiTags('visit')
 @Controller('visit')
 export class VisitController {
