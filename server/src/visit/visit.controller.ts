@@ -26,9 +26,8 @@ import {
 import { SortingParams, Sorting } from 'src/shared/decorators/order.decorator';
 import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
 import { TriageAXDto } from './dto/triage-assessment.dto';
-import { Public } from 'src/shared/decorators/public.decorator';
 
-// @ApiBearerAuth()
+@ApiBearerAuth()
 @ApiTags('visit')
 @Controller('visit')
 export class VisitController {

@@ -113,7 +113,7 @@ function getCustomFilters(customFilters: VisitCustomFilters) {
     whereConditions.push({
       companion: {
         person: {
-          SSN: customFilters.companionSSN
+          SSN: {contains: customFilters.companionSSN}
         }
       }
     })
