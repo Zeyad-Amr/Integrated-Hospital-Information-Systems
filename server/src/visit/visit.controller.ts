@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Param, Req, Patch, Query } from '@nestjs/common';
 import { VisitService } from './visit.service';
-import { CreateVisitDto, CustomFilters } from './dto/create-visit.dto';
+import { CreateVisitDto } from './dto/create-visit.dto';
 
 import {
   ApiBadRequestResponse,
@@ -80,11 +80,10 @@ export class VisitController {
       'incidentId',
     ]) filters?: Array<Filter>,
     @SortingParams(['createdAt', 'sequenceNumber', 'code']) sort?: Sorting,
-    @Query() customFilters?: CustomFilters,
+    @Query() customFilters?: { companionName: string ,companionSSN: string},
 
   ): Promise<PaginatedResource<Visit>> {
     try {
-      console.log('customFilters', customFilters);
       return await this.visitService.findAll(paginationParams, filters, sort, customFilters);
     } catch (error) {
       throw handleError(error);

@@ -9,8 +9,8 @@ import {
   Req,
   Query,
 } from '@nestjs/common';
-import { EmployeeService } from './employee.service';
-import { CreateEmployeeDto, CustomFilters } from './dto/create-employee.dto';
+import { CustomFilters, EmployeeService } from './employee.service';
+import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import {
   ApiBadRequestResponse,
@@ -63,7 +63,6 @@ export class EmployeeController {
 
   @Get()
   @ApiOperation({ summary: 'get all employees' })
-  @ApiProperty({ type: CustomFilters, required: false })
   @ApiOkResponse({ description: 'get all employees' })
   @CustomGetAllParamDecorator()
   async findAll(
@@ -73,7 +72,7 @@ export class EmployeeController {
     @FilteringParams() filters?: Array<Filter>,
   ) {
     try {
-      return await this.employeeService.findAll(pagination, sort, filters, customFilters);
+      return await this.employeeService.findAll(pagination, sort, filters,customFilters);
     } catch (error) {
       throw handleError(error);
     }

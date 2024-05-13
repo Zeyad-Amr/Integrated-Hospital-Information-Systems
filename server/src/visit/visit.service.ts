@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateVisitDto, CustomFilters } from './dto/create-visit.dto';
+import { CreateVisitDto } from './dto/create-visit.dto';
 import { VisitRepo } from './visit.repo';
 import { Pagination } from 'src/shared/decorators/pagination.decorator';
 import { Visit } from '@prisma/client';
@@ -8,6 +8,14 @@ import { Filter } from 'src/shared/decorators/filters.decorator';
 import { Sorting } from 'src/shared/decorators/order.decorator';
 import { TriageAXDto } from './dto/triage-assessment.dto';
 import { PrismaService } from 'src/shared/services/prisma-client/prisma.service';
+
+
+
+export interface VisitCustomFilters {
+  companionName: string;
+
+  companionSSN: string;
+}
 
 @Injectable()
 export class VisitService {
@@ -39,7 +47,7 @@ export class VisitService {
     paginationParams: Pagination,
     filters?: Array<Filter>,
     sort?: Sorting,
-    customFilters?: CustomFilters
+    customFilters?: VisitCustomFilters
   ): Promise<PaginatedResource<Visit>> {
     try {
       let additionalWhereConditions = getCustomFilters(customFilters);
@@ -89,7 +97,7 @@ export class VisitService {
   }
 }
 
-function getCustomFilters(customFilters: CustomFilters) {
+function getCustomFilters(customFilters: VisitCustomFilters) {
   if (!customFilters) return [];
   let whereConditions = [];
   if (customFilters?.companionName) {
