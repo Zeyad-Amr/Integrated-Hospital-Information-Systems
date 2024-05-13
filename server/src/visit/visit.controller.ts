@@ -67,6 +67,8 @@ export class VisitController {
     description: 'this for visits with filters (not finished yet)',
   })
   @CustomGetAllParamDecorator()
+  @ApiQuery({ name: 'companionName', required: false })
+  @ApiQuery({ name: 'companionSSN', required: false })
   @Get()
   async findAll(
     @PaginationParams() paginationParams: Pagination,

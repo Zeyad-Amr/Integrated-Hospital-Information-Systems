@@ -21,6 +21,7 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiProperty,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -65,6 +66,12 @@ export class EmployeeController {
   @ApiOperation({ summary: 'get all employees' })
   @ApiOkResponse({ description: 'get all employees' })
   @CustomGetAllParamDecorator()
+  @ApiQuery({ name: 'departmentId', required: false })
+  @ApiQuery({ name: 'roleId', required: false })
+  @ApiQuery({ name: 'SSN', required: false })
+  @ApiQuery({ name: 'name', required: false })
+  @ApiQuery({ name: 'email', required: false })
+  @ApiQuery({ name: 'phone', required: false })
   async findAll(
     @Query() customFilters?: CustomFilters,
     @PaginationParams() pagination?: Pagination,
