@@ -139,7 +139,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
             const { verificationMethodId, genderId, governateId, ...personalData } = createVisitDto.patient
 
             patient = await tx.patient.upsert({
-              where: { personId: person.id },
+              where: { personId: person?.id ?? "" },
               create: {
                 person: {
                   connectOrCreate: {
