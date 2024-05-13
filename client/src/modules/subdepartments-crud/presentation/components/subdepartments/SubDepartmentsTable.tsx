@@ -9,10 +9,13 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { getSubDepartmentsList , deleteSubDepartment } from "@/modules/subdepartments-crud/presentation/controllers/thunks/sub-departments-thunks ";
 import { getRoomList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/room-thunks";
 import { getSpecializationList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/specialization-thunks";
+import { getRolesList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/roles-thunks";
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import { useAppDispatch, useAppSelector } from '@/core/state/store';
 import { DepartmentsState, RoomState, SpecializationState, SubDepartmentsState } from '../../controllers/types';
 import SubDepartmentsInterface from '@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface';
+import PermissionsForm from './PermissionsForm';
+import CustomizedDialog from '@/core/shared/components/CustomizeDialog';
 
 const SubDepartmentsTableHeader: HeaderItem[] = [
     {
@@ -74,6 +77,7 @@ const SubDepartmentsTableHeader: HeaderItem[] = [
 
 const SubDepartmentsTable = () => {
     const [showDialog, setShawDialog] = useState("none");
+    const [showPermissionsForm, setShowPermissionsForm] = useState(false);
     const [subDepartmentData, setSubDepartmentData] = useState<SubDepartmentsInterface>();
     const subDepartmentsState : SubDepartmentsState = useAppSelector((state: any) => state.subDepartments);
     const roomsState : RoomState = useAppSelector((state: any) => state.rooms);
@@ -85,6 +89,7 @@ const SubDepartmentsTable = () => {
       dispatch(getSubDepartmentsList())
       dispatch(getRoomList())
       dispatch(getSpecializationList())
+      dispatch(getRolesList())
     }, [])
 
     const getNameOfItemWithItsId = (id : string | number , listOfSearch : any) => {
@@ -94,10 +99,12 @@ const SubDepartmentsTable = () => {
     
     return (
         <>
-            <PopUp DialogStateController={setShawDialog} display={showDialog} title="اضــافة قســم فــرعي"
-            >
+            <PopUp DialogStateController={setShawDialog} display={showDialog} title="اضــافة قســم فــرعي">
                 <SubDepartmentsForm edit propsIntialValues={subDepartmentData} />
             </PopUp>
+            <CustomizedDialog open={showPermissionsForm} setOpen={setShowPermissionsForm} title="تحديد الصلاحيات">
+                <PermissionsForm/>
+            </CustomizedDialog>
             <CustomDataTable
                 applyFilters={(filters: FilterQueryParam[]) => {
                     console.log(filters);
@@ -111,7 +118,7 @@ const SubDepartmentsTable = () => {
                             specialization: getNameOfItemWithItsId(item.specializationId,specializationsState?.specializationList),
                             update: (
                                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, color: "primary.dark" }}>
-                                    <PersonRoundedIcon sx={{ cursor: 'pointer' }} />
+                                    <PersonRoundedIcon onClick={() => setShowPermissionsForm(true)} sx={{ cursor: 'pointer' }} />
                                     <EditRoundedIcon sx={{ cursor: 'pointer' }}
                                         onClick={() => {
                                             setShawDialog("block");
