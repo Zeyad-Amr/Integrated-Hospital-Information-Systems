@@ -76,7 +76,14 @@ export class EmployeeController {
     @Query() customFilters?: CustomFilters,
     @PaginationParams() pagination?: Pagination,
     @SortingParams() sort?: Sorting,
-    @FilteringParams() filters?: Array<Filter>,
+    @FilteringParams([
+      'shiftId',
+      'roleId',
+      'departmentId',
+      'createdAt',
+      'updatedAt',
+      'departmentId'
+    ]) filters?: Array<Filter>,
   ) {
     try {
       return await this.employeeService.findAll(pagination, sort, filters,customFilters);

@@ -21,12 +21,15 @@ export enum FilterRule {
   STARTS_WITH = 'stw',
   IS_NULL = 'isnull',
   IS_NOT_NULL = 'isnotnull',
+  ANY = 'any'
 }
 
 export const FilteringParams = createParamDecorator(
   (data, ctx: ExecutionContext): Array<Filter> => {
     const req: Request = ctx.switchToHttp().getRequest();
     let filters = req.query.filters;
+    console.log(filters);
+    
     if (!filters) {
       return null;
     }

@@ -19,8 +19,12 @@ export const getWhere = (
   if (!additionalWhereConditions) {
     whereCondition.AND = [];
   }
-
+  whereCondition.OR = [];
+  
   filters.forEach((filter) => {
+    if (filter.rule === FilterRule.ANY) {
+      whereCondition.OR.push({ [filter.property]: isNaN(filter.value as any) ? filter.value:+filter.value });
+    }
     if (filter.rule === FilterRule.IS_NULL) {
       whereCondition.AND.push({ [filter.property]: null });
     }
