@@ -2,6 +2,7 @@ import { allValuesUndefined } from '@/core/shared/utils/object-operations';
 import PersonModel from '../../../../core/shared/modules/person/data/models/person-model';
 import VisitInterface from '../../domain/interfaces/visit-interface';
 import AdditionalDataModel from './additional-data-model';
+import CompanionModel from './companion-model';
 
 export default class VisitModel {
 
@@ -33,7 +34,7 @@ export default class VisitModel {
             createdAt: json.createdAt,
             updatedAt: json.updatedAt,
             patient: PersonModel.fromJson(json.patient),
-            companion: json.companion,
+            companion: CompanionModel.fromJson(json.companion),
         };
     }
 }
