@@ -2,12 +2,13 @@ import { PrismaGenericRepo } from '../shared/services/prisma-client/prisma-gener
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../shared/services/prisma-client/prisma.service';
 import { Employee, PersonType, Prisma } from '@prisma/client';
-import { CreateEmployeeDto, CustomFilters } from './dto/create-employee.dto';
+import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { Pagination } from 'src/shared/decorators/pagination.decorator';
 import { Sorting } from 'src/shared/decorators/order.decorator';
 import { Filter } from 'src/shared/decorators/filters.decorator';
 import { PaginatedResource } from 'src/shared/types/paginated.resource';
+import { CustomFilters } from './employee.service';
 
 @Injectable()
 export class EmployeeRepo extends PrismaGenericRepo<any> {

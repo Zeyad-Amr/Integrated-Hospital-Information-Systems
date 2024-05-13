@@ -51,13 +51,3 @@ export class CreateVisitDto {
   @Type(() => AdditionalInformation)
   additionalInfo: AdditionalInformation;
 }
-
-export class CustomFilters {
-  @ApiProperty({ type: String, required: false })
-  @IsOptional()
-  companionName: string;
-
-  @ApiProperty({ type: String, required: false })
-  @IsOptional()
-  companionSSN: string;
-}

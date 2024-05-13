@@ -50,28 +50,3 @@ export class CreateEmployeeDto {
 }
 
 
-export class CustomFilters {
-  @ApiProperty({ type: String, required: false })
-  @IsOptional()
-  departmentId: string;
-
-  @ApiProperty({ type: Number, required: false })
-  @IsOptional()
-  roleId: number;
-
-  @ApiProperty({ type: String, required: false })
-  @IsOptional()
-  SSN: string;
-
-  @ApiProperty({ type: String, required: false })
-  @IsOptional()
-  name: string;
-
-  @ApiProperty({ type: String, required: false })
-  @IsOptional()
-  email: string;
-
-  @ApiProperty({ type: String, required: false })
-  @IsOptional()
-  phone: string;
-}
