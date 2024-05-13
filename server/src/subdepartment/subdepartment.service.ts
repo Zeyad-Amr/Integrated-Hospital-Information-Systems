@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSubdepartmentDto } from './dto/create-subdepartment.dto';
+import { AssignFeatures, CreateSubdepartmentDto } from './dto/create-subdepartment.dto';
 import { UpdateSubdepartmentDto } from './dto/update-subdepartment.dto';
 import { SubDepartmentRepo } from './subdepartment.repo';
 
@@ -41,6 +41,14 @@ export class SubdepartmentService {
   remove(id: string) {
     try {
       return this.subdepartmentRepo.remove(+id);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async assignFeatures(id: string, body: AssignFeatures) {
+    try {
+      return await this.subdepartmentRepo.assignFeatures(+id, body);
     } catch (error) {
       throw error;
     }

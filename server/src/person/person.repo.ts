@@ -23,7 +23,8 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
           verificationMethod: { connect: { id: verificationMethodId } },
           governate: governateId ? { connect: { id: governateId } } : undefined,
           gender: { connect: { id: genderId } },
-          type
+          type,
+          fullName: `${person.firstName} ${person.secondName} ${person.thirdName} ${person.fourthName}`
         },
         include: this.personInclude
       });
@@ -38,8 +39,8 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
         where: { SSN: ssn },
         include: this.personInclude
       });
-      if (!res)
-        throw new NotFoundException()
+      // if (!res)
+      //   throw new NotFoundException()
       return res
     } catch (error) {
       throw error;

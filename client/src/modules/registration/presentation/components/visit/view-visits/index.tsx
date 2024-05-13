@@ -26,6 +26,7 @@ const VisitsTable = () => {
 
   //* data that in the state
   const apiData: VisitInterface[] = state.visits;
+  console.log("apiDataaaa", apiData);
 
   let tableData: AnonymizedVisit[] = [];
   apiData.forEach((item) => {

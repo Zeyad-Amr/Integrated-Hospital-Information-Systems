@@ -25,6 +25,33 @@ export class AuthRepo extends PrismaGenericRepo<User> {
     }
   }
 
+  async getUserPermissions(username: string) {
+    try {
+      return await this.prismaService.user.findUnique(
+        {
+          where: { username: username }, include: {
+            employee: {
+              include: {
+                role: {
+                  include: {
+                    Permissions: {
+                      include: {
+                        feature: true,
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+      )
+
+    } catch (error) {
+
+    }
+  }
+
   async update(
     username: string,
     item: Prisma.UserUpdateInput,

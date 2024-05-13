@@ -13,15 +13,18 @@ export interface SelectFieldProps<T> {
   onBlur: (event: React.FocusEvent<{ value: unknown }>) => void;
   name: string;
   label: string;
-  error: string | undefined | FormikErrors<T>;
-  touched: boolean | undefined | FormikTouched<T>;
-  value: T | undefined;
+  error?: string | undefined | FormikErrors<T>;
+  touched?: boolean | undefined | FormikTouched<T>;
+  value: T | any;
   options: T[];
   defaultValue?: { id: any; value: string };
   isRequired?: boolean;
   width?: number | string;
   hideLabel?: boolean;
+  multiple?: boolean;
+  sx?: any;
 }
+
 
 const CustomSelectField = <T extends { id: any; value: string }>({
   onChange,
@@ -35,10 +38,13 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   defaultValue = { id: 0, value: "" },
   isRequired = false,
   width,
+  sx,
+  multiple,
   hideLabel = true,
 }: SelectFieldProps<T>) => {
   // Create a new array with the default value added to the beginning
   const updatedOptions = [defaultValue, ...options];
+  console.log(name, value)
 
   return (
     <Box
@@ -56,6 +62,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
             flexGrow: 1,
             fontSize: "0.9rem !important",
             margin: "0rem 0.5rem",
+
           }}
         >
           {label} {isRequired && <span style={{ color: "#FF5630" }}>*</span>}
@@ -64,11 +71,12 @@ const CustomSelectField = <T extends { id: any; value: string }>({
 
       <FormControl
         required={isRequired}
-        sx={{ marginTop: 1.1, width: { width }, maxWidth: "100%" }}
+        sx={{ marginTop: 1.1, width: { width }, maxWidth: "100%", ...sx }}
       >
         <InputLabel>{label}</InputLabel>
 
         <Select
+          multiple={multiple ?? false}
           label={label}
           onChange={(event: SelectChangeEvent<T>, child: ReactNode) => {
             onChange(event, child);
@@ -79,7 +87,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
             backgroundColor: "#fff ",
             height: "3.5rem",
           }}
-          value={value}
+          value={multiple ? (Array.isArray(value) ? value : [defaultValue.id]) : value}
           name={name}
           error={error && touched ? true : false}
           hidden={hideLabel}
@@ -101,6 +109,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
                 color: "#232836",
                 transitionDuration: "0.5s ease",
                 margin: 1,
+                ...sx,
                 // selected background color
                 "&.Mui-selected": {
                   // backgroundColor: "#232836",

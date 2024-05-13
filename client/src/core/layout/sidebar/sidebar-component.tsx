@@ -104,6 +104,28 @@ const SidebarComponent = () => {
         text="ER Area"
         path="/dashboard/er-area"
       ></SidebarMenuItem>
+      {/*  */}
+      <SidebarMenuItem
+        icon={
+          <ApartmentIcon sx={{ color: "primary.main", textAlign: "center" }} />
+        }
+        activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
+        text="الأقسام الفرعية"
+        path="/dashboard/subdepartments/"
+      >
+        <SidebarSubmenuItem
+          text="الغرف"
+          path="/dashboard/subdepartments/rooms"
+        />
+        <SidebarSubmenuItem
+          text="التخصصات"
+          path="/dashboard/subdepartments/specializations"
+        />
+        <SidebarSubmenuItem
+          text="اضافة قسم فرعي"
+          path="/dashboard/subdepartments/details"
+        />
+      </SidebarMenuItem>
     </Box>
   );
 };

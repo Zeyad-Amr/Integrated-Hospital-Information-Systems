@@ -7,12 +7,26 @@ import { Pagination } from 'src/shared/decorators/pagination.decorator';
 import { Sorting } from 'src/shared/decorators/order.decorator';
 import { Filter } from 'src/shared/decorators/filters.decorator';
 
+
+export interface CustomFilters {
+  departmentId: string;
+ 
+  roleId: number;
+ 
+  SSN: string;
+
+  name: string;
+ 
+  email: string;
+ 
+  phone: string;
+}
 @Injectable()
 export class EmployeeService {
   constructor(
     private employeeRepo: EmployeeRepo,
     private authService: AuthService,
-  ) {}
+  ) { }
   async create(createEmployeeDto: CreateEmployeeDto, creatorId: string) {
     try {
       const auth: { username?: string; password?: string; email?: string } = {};
@@ -37,9 +51,9 @@ export class EmployeeService {
     }
   }
 
-  async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>) {
+  async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>, customFilters?: CustomFilters) {
     try {
-      return await this.employeeRepo.findAll(pagination, sort, filters);
+      return await this.employeeRepo.findAll(pagination, sort, filters, customFilters);
     } catch (error) {
       throw error;
     }
@@ -71,3 +85,5 @@ export class EmployeeService {
     }
   }
 }
+
+

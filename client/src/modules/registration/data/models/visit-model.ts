@@ -2,6 +2,7 @@ import { allValuesUndefined } from '@/core/shared/utils/object-operations';
 import PersonModel from '../../../../core/shared/modules/person/data/models/person-model';
 import VisitInterface from '../../domain/interfaces/visit-interface';
 import AdditionalDataModel from './additional-data-model';
+import CompanionModel from './companion-model';
 
 export default class VisitModel {
 
@@ -32,13 +33,8 @@ export default class VisitModel {
             sequenceNumber: json.sequenceNumber,
             createdAt: json.createdAt,
             updatedAt: json.updatedAt,
-            patient: PersonModel.fromJson(json.patient.person),
-            companion: {
-                ...PersonModel.fromJson(json.companion.person),
-                kinship: json.companion.kinshipId,
-            } as PersonModel,
-
-            additionalInfo: AdditionalDataModel.fromJson(json.AdditionalInformation)
+            patient: PersonModel.fromJson(json.patient),
+            companion: CompanionModel.fromJson(json.companion),
         };
     }
 }

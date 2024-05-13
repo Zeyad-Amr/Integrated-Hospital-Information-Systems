@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { SubdepartmentService } from './subdepartment.service';
-import { CreateSubdepartmentDto } from './dto/create-subdepartment.dto';
+import { AssignFeatures, CreateSubdepartmentDto } from './dto/create-subdepartment.dto';
 import { UpdateSubdepartmentDto } from './dto/update-subdepartment.dto';
 import { handleError } from 'src/shared/http-error';
 import { ApiTags } from '@nestjs/swagger';
@@ -50,6 +50,15 @@ export class SubdepartmentController {
   remove(@Param('id') id: string) {
     try {
       return this.subdepartmentService.remove(id);
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  @Patch(':id/assignfeatures')
+  async assignPermissions(@Param('id') id: string, @Body() body: AssignFeatures) {
+    try {
+      return await this.subdepartmentService.assignFeatures(id, body);
     } catch (error) {
       throw handleError(error);
     }

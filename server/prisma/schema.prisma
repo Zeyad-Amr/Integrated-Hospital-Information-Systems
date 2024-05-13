@@ -20,6 +20,7 @@ model Person {
   secondName           String
   thirdName            String
   fourthName           String
+  fullName             String
   SSN                  String?       @unique
   verificationMethod   IdentityType? @relation(fields: [verificationMethodId], references: [id])
   verificationMethodId Int?
@@ -155,6 +156,8 @@ model Permissions {
   roleTypeId      Int
   subDepartment   SubDepartment @relation(fields: [subDepartmentId], references: [id])
   subDepartmentId Int
+
+  @@unique([featureId, roleTypeId, subDepartmentId], map: "FeatureRoleSubDepartment")
 }
 
 model Visit {

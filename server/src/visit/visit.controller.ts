@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Req, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Req, Patch, Query } from '@nestjs/common';
 import { VisitService } from './visit.service';
 import { CreateVisitDto } from './dto/create-visit.dto';
 
@@ -9,6 +9,7 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { handleError } from 'src/shared/http-error';
@@ -64,23 +65,26 @@ export class VisitController {
     description: 'this for visits with filters (not finished yet)',
   })
   @CustomGetAllParamDecorator()
+  @ApiQuery({ name: 'companionName', required: false })
+  @ApiQuery({ name: 'companionSSN', required: false })
   @Get()
-  findAll(
+  async findAll(
     @PaginationParams() paginationParams: Pagination,
     @FilteringParams([
       'code',
       'createdAt',
       'creatorId',
+      "sequenceNumber",
       'companionId',
       'patientId',
-      'sequenceNumber',
       'incidentId',
-    ])
-    filters?: Array<Filter>,
+    ]) filters?: Array<Filter>,
     @SortingParams(['createdAt', 'sequenceNumber', 'code']) sort?: Sorting,
+    @Query() customFilters?: { companionName: string ,companionSSN: string},
+
   ): Promise<PaginatedResource<Visit>> {
     try {
-      return this.visitService.findAll(paginationParams, filters, sort);
+      return await this.visitService.findAll(paginationParams, filters, sort, customFilters);
     } catch (error) {
       throw handleError(error);
     }

@@ -1,13 +1,13 @@
 import BaseUseCase from "@/core/base/base-usecase";
-import { LoginUseCaseParameters } from "./usecase-params";
 import BaseAuthRepository from "../repositories/base-auth-repository";
+import AuthInterface from "../interfaces/auth-interface";
 
 class LoginUseCase
-    implements BaseUseCase<boolean, LoginUseCaseParameters> {
+    implements BaseUseCase<boolean, AuthInterface> {
     constructor(private baseAuthRepository: BaseAuthRepository) { }
 
-    async call(param: LoginUseCaseParameters): Promise<boolean> {
-        return await this.baseAuthRepository.login(param.authData);
+    async call(param: AuthInterface): Promise<boolean> {
+        return await this.baseAuthRepository.login(param);
     }
 }
 

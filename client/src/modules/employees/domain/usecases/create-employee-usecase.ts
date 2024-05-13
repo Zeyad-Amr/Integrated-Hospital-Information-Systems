@@ -7,7 +7,6 @@ class CreateEmployeeUseCase
     constructor(private baseEmployeeRepository: BaseEmployeeRepository) { }
 
     async call(param: CreateEmployeeUseCaseParameters): Promise<boolean> {
-        console.log('UseCase', param.employee);
         return await this.baseEmployeeRepository.createEmployee(param.employee);
     }
 }

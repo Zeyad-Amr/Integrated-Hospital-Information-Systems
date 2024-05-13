@@ -52,6 +52,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
     creatorId: string,
   ): Promise<any> {
     try {
+
       let car = undefined;
       if (createVisitDto?.additionalInfo?.car) {
         car = {
@@ -138,7 +139,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
             const { verificationMethodId, genderId, governateId, ...personalData } = createVisitDto.patient
 
             patient = await tx.patient.upsert({
-              where: { personId: person.id },
+              where: { personId: person?.id ?? "" },
               create: {
                 person: {
                   connectOrCreate: {
@@ -150,7 +151,8 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
                       verificationMethod: verificationMethodId ? { connect: { id: verificationMethodId } } : undefined,
                       governate: governateId ? { connect: { id: governateId } } : undefined,
                       gender: { connect: { id: genderId } },
-                      type: PersonType.PATIENT
+                      type: PersonType.PATIENT,
+                      fullName: `${personalData.firstName} ${personalData.secondName} ${personalData.thirdName} ${personalData.fourthName}`
                     }
                   }
                 }
@@ -165,12 +167,14 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
               personId: person.id
             }
           }
+
           // ======================================== Companion =========================================================
           let companion: Companion;
           let companionConnect: Prisma.CompanionWhereUniqueInput;
           if (createVisitDto.companion) {
             const { verificationMethodId, genderId, kinshipId, governateId, ...personalData } = createVisitDto.companion
-            const person = await this.personRepo.findBySSN(createVisitDto.companion.SSN)
+            const person = await tx.person.findUnique({ where: { SSN: createVisitDto.companion.SSN } })
+
             if (person?.type !== PersonType.COMPANION) {
               companion = await tx.companion.create({
                 data: {
@@ -183,7 +187,8 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
                         verificationMethod: verificationMethodId ? { connect: { id: verificationMethodId } } : undefined,
                         governate: governateId ? { connect: { id: governateId } } : undefined,
                         gender: { connect: { id: genderId } },
-                        type: PersonType.COMPANION
+                        type: PersonType.COMPANION,
+                        fullName: `${personalData.firstName} ${personalData.secondName} ${personalData.thirdName} ${personalData.fourthName}`
                       }
                     }
                   }
@@ -198,6 +203,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
               }
             }
           }
+
           // ======================================== Create Visit  =========================================================
           const visitCode = await this.createVisitCode();
           const visit = await tx.visit.create({

@@ -5,6 +5,13 @@ import auth from "@/modules/auth/presentation/controllers/slices/auth-slice";
 import registration from "@/modules/registration/presentation/controllers/slices/visits-slice";
 import lookups from "@/core/shared/modules/lookups/presentation/controllers/slices/lookups-slice";
 import person from "../shared/modules/person/presentation/controllers/slices/person-slice";
+import rooms from "@/modules/subdepartments-crud/presentation/controllers/slices/room-slice";
+import specializations from "@/modules/subdepartments-crud/presentation/controllers/slices/specialization-slice";
+import departments from "@/modules/subdepartments-crud/presentation/controllers/slices/departments-slice";
+import features from "@/modules/subdepartments-crud/presentation/controllers/slices/features-slice";
+import permissions from "@/modules/subdepartments-crud/presentation/controllers/slices/permissions-slice";
+import roles from "@/modules/subdepartments-crud/presentation/controllers/slices/roles-slice";
+import subDepartments from "@/modules/subdepartments-crud/presentation/controllers/slices/sub-departments-slice";
 
 const store = configureStore({
     reducer: {
@@ -12,6 +19,13 @@ const store = configureStore({
         auth: auth,
         visits: registration,
         lookups: lookups,
+        rooms,
+        specializations,
+        departments,
+        features,
+        permissions,
+        roles,
+        subDepartments,
         person
     },
 });

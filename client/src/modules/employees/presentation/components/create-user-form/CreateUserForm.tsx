@@ -20,7 +20,6 @@ import PersonEntity from "@/core/shared/modules/person/domain/entities/person-en
 import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
 import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
-import PersonalDataComponent from "@/core/shared/components/PersonalDataComponent";
 import { EmployeeState } from "../../controllers/types";
 import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
 import {
@@ -28,6 +27,7 @@ import {
   RoleType,
   ShiftType,
 } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
+import PersonalData from "@/core/shared/components/PersonalData";
 
 const CreateUserForm = () => {
   const dispatch = useAppDispatch();
@@ -129,11 +129,24 @@ const CreateUserForm = () => {
         title="البيانات الشخصية"
         isClosable={false}
       >
-        <PersonalDataComponent
+        <Formik
           initialValues={PersonEntity.defaultValue()}
-          refSubmitButton={refSubmitPerson}
           onSubmit={onSubmitPerson}
-        />
+          validationSchema={PersonEntity.getSchema()}
+        >
+          {({
+            handleSubmit,
+          }) => (
+            <Box component="form" onSubmit={handleSubmit} noValidate>
+              <PersonalData />
+              <Button
+                type="submit"
+                sx={{ display: "none" }}
+                ref={refSubmitPerson}
+              ></Button>
+            </Box>
+          )}
+        </Formik>
       </CustomAccordion>
 
       {/* --------------- Auth Data Section --------------- */}
@@ -148,7 +161,6 @@ const CreateUserForm = () => {
           initialValues={AuthDataEntity.defaultValue()}
           validationSchema={AuthDataEntity.getSchema()}
           onSubmit={(values) => {
-            console.log("onSubmit Auth:", values);
             onSubmitAuth(values);
           }}
         >
@@ -233,7 +245,6 @@ const CreateUserForm = () => {
           initialValues={EmployeeEntity.defaultValue()}
           validationSchema={EmployeeEntity.getSchema()}
           onSubmit={(values) => {
-            console.log("onSubmit Emmployee:", values);
             onSubmitEmployee(values);
           }}
         >

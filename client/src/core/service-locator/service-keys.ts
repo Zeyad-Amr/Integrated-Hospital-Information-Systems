@@ -8,6 +8,13 @@ enum ServiceKeys {
     LookupsDataSource = 'LookupsDataSource',
     TriageAXDataSource = 'TriageAXDataSource',
     PersonDataSource = 'PersonDataSource',
+    RoomDataSource = 'RoomDataSource',
+    SpecializationDataSource = 'SpecializationDataSource',
+    DepartmentsDataSource = 'DepartmentsDataSource',
+    SubDepartmentsDataSource = 'SubDepartmentsDataSource',
+    FeaturesDataSource = 'FeaturesDataSource',
+    PermissionsDataSource = 'PermissionsDataSource',
+    RolesDataSource = 'RolesDataSource',
 
     //* Repositories ----------------------------------------------
     EmployeeRepository = 'EmployeeRepository',
@@ -17,7 +24,13 @@ enum ServiceKeys {
     LookupsRepository = 'LookupsRepository',
     TriageAXRepository = 'TriageAXRepository',
     PersonRepository = 'PersonRepository',
-
+    RoomRepository = 'RoomRepository',
+    SpecializationRepository = 'SpecializationRepository',
+    DepartmentsRepository = 'DepartmentsRepository',
+    SubDepartmentsRepository = 'SubDepartmentsRepository',
+    FeaturesRepository = 'FeaturesRepository',
+    PermissionsRepository = 'PermissionsRepository',
+    RolesRepository = 'RolesRepository',
 
 
     //* Use Cases --------------------------------------------------
@@ -26,6 +39,42 @@ enum ServiceKeys {
     CreateEmployeeUseCase = 'CreateEmployeeUseCase',
     UpdateEmployeeUseCase = 'UpdateEmployeeUseCase',
     DeleteEmployeeUseCase = 'DeleteEmployeeUseCase',
+
+    GetAllRoomsUseCase = 'GetAllRoomsUseCase',
+    GetRoomByIdUseCase = 'GetRoomByIdUseCase',
+    CreateRoomUseCase = 'CreateRoomUseCase',
+    UpdateRoomUseCase = 'UpdateRoomUseCase',
+    DeleteRoomUseCase = 'DeleteRoomUseCase',
+
+    GetAllRolesUseCase = 'GetAllRolesUseCase',
+    GetRoleByIdUseCase = 'GetRoleByIdUseCase',
+    CreateRoleUseCase = 'CreateRoleUseCase',
+    UpdateRoleUseCase = 'UpdateRoleUseCase',
+    DeleteRoleUseCase = 'DeleteRoleUseCase',
+
+    GetAllFeaturesUseCase = 'GetAllFeaturesUseCase',
+    GetFeatureByIdUseCase = 'GetFeatureByIdUseCase',
+    CreateFeatureUseCase = 'CreateFeatureUseCase',
+    UpdateFeatureUseCase = 'UpdateFeatureUseCase',
+    DeleteFeatureUseCase = 'DeleteFeatureUseCase',
+
+    GetAllPermissionsUseCase = 'GetAllPermissionsUseCase',
+    GetPermissionByIdUseCase = 'GetPermissionByIdUseCase',
+    CreatePermissionUseCase = 'CreatePermissionUseCase',
+    UpdatePermissionUseCase = 'UpdatePermissionUseCase',
+    DeletePermissionUseCase = 'DeletePermissionUseCase',
+
+    GetAllSpecializationsUseCase = 'GetAllSpecializationsUseCase',
+    GetSpecializationByIdUseCase = 'GetSpecializationByIdUseCase',
+    CreateSpecializationUseCase = 'CreateSpecializationUseCase',
+    UpdateSpecializationUseCase = 'UpdateSpecializationUseCase',
+    DeleteSpecializationUseCase = 'DeleteSpecializationUseCase',
+
+    GetAllSubDepartmentsUseCase = 'GetAllSubDepartmentsUseCase',
+    GetSubDepartmentByIdUseCase = 'GetSubDepartmentByIdUseCase',
+    CreateSubDepartmentUseCase = 'CreateSubDepartmentUseCase',
+    UpdateSubDepartmentUseCase = 'UpdateSubDepartmentUseCase',
+    DeleteSubDepartmentUseCase = 'DeleteSubDepartmentUseCase',
 
     GetLookupsUseCase = 'GetLookupsUseCase',
 
@@ -40,6 +89,8 @@ enum ServiceKeys {
     CreateTriageAXUseCase = 'CreateTriageAXUseCase',
 
     CreateIncidentUseCase = 'CreateIncidentUseCase',
+
+    GetAllDepartmentsUseCase = 'GetAllDepartmentsUseCase',
 
     GetPersonUseCase = 'GetPersonUseCase',
 

@@ -37,7 +37,10 @@ export class AuthService {
         username: user.username,
         role: user.employee.role.value,
       });
-      return token;
+
+      const perm = await this.authRepo.getUserPermissions(user.username);
+      delete perm.password
+      return { access_token: token, user: perm };
     } catch (error) {
       throw error;
     }

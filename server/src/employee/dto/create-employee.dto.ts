@@ -3,6 +3,7 @@ import {
   IsInt,
   IsNotEmpty,
   IsObject,
+  IsOptional,
   IsUUID,
   ValidateNested,
 } from 'class-validator';
@@ -47,3 +48,5 @@ export class CreateEmployeeDto {
   @IsUUID()
   departmentId: string;
 }
+
+

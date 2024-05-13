@@ -7,6 +7,15 @@ import { PaginatedResource } from 'src/shared/types/paginated.resource';
 import { Filter } from 'src/shared/decorators/filters.decorator';
 import { Sorting } from 'src/shared/decorators/order.decorator';
 import { TriageAXDto } from './dto/triage-assessment.dto';
+import { PrismaService } from 'src/shared/services/prisma-client/prisma.service';
+
+
+
+export interface VisitCustomFilters {
+  companionName: string;
+
+  companionSSN: string;
+}
 
 @Injectable()
 export class VisitService {
@@ -34,17 +43,20 @@ export class VisitService {
     }
   }
 
-  findAll(
+  async findAll(
     paginationParams: Pagination,
     filters?: Array<Filter>,
     sort?: Sorting,
+    customFilters?: VisitCustomFilters
   ): Promise<PaginatedResource<Visit>> {
     try {
-      return this.visitRepo.getAll({
+      let additionalWhereConditions = getCustomFilters(customFilters);
+      return await this.visitRepo.getAll({
         paginationParams,
         filters,
         sort,
         include: this.visitRepo.visitIncludes,
+        additionalWhereConditions: additionalWhereConditions
       });
     } catch (error) {
       throw error;
@@ -65,27 +77,10 @@ export class VisitService {
       const yesterday = new Date(now.getTime());
       yesterday.setDate(now.getDate() - 1);
       yesterday.setHours(0, 0, 0, 0);
-      // console.log("5555");
+      // console.log("5555")
 
 
-      return await this.visitRepo.getAll({
-        additionalWhereConditions: [
-          {
-            transfers: {
-              none: {}
-            },
-          },
-          {
-            createdAt: {
-              gte: yesterday,
-              lte: now
-            }
-          }
-        ],
-        include: { patient: { include: { person: { include: { verificationMethod: true, gender: true } } } }, transfers: true },
-        sort: { direction: 'desc', property: 'createdAt' }
-
-      });
+      return await this.visitRepo.findAll();
     } catch (error) {
       throw error
     }
@@ -100,4 +95,28 @@ export class VisitService {
       throw error
     }
   }
+}
+
+function getCustomFilters(customFilters: VisitCustomFilters) {
+  if (!customFilters) return [];
+  let whereConditions = [];
+  if (customFilters?.companionName) {
+    whereConditions.push({
+      companion: {
+        person: {
+          fullName: { contains: customFilters.companionName, mode: 'insensitive' }
+        }
+      }
+    })
+  }
+  if (customFilters?.companionSSN) {
+    whereConditions.push({
+      companion: {
+        person: {
+          SSN: {contains: customFilters.companionSSN}
+        }
+      }
+    })
+  }
+  return whereConditions;
 }

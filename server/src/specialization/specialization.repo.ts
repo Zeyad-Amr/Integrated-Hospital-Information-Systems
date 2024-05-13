@@ -36,7 +36,7 @@ export class SpecializationRepo {
         try {
             const res = await this.primsa.specialization.findUnique({
                 where: {
-                    id
+                    id: id
                 },
                 include: {
                     SubDepartment: true

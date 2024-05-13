@@ -3,10 +3,10 @@ import { ApiQuery } from '@nestjs/swagger';
 
 export function CustomGetAllParamDecorator() {
   return applyDecorators(
-    ApiQuery({ name: 'page', required: true, description: 'page number' }),
+    ApiQuery({ name: 'page', required: false, description: 'page number' }),
     ApiQuery({
       name: 'size',
-      required: true,
+      required: false,
       description: 'size for one page',
     }),
     ApiQuery({
