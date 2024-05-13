@@ -11,11 +11,11 @@ import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
 //* Login
 export const login = createAsyncThunk(
     "auth/login",
-    async (_data: AuthInterface, thunkApi) => {
+    async (data: AuthInterface, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
             const result = await sl.get<LoginUseCase>(ServiceKeys.LoginUseCase).call(
-                new LoginUseCaseParameters(_data)
+        data
             );
             console.log('Result:', result);
             return result;
