@@ -11,11 +11,13 @@ import styles from "./loginPage.module.css";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import { AuthState } from "../../controllers/types";
 import { login } from "../../controllers/thunks/auth-thunks";
-import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const authState: AuthState = useAppSelector((state: any) => state.auth);
+
+  const router  = useRouter()
 
   const handleFormSchema = Yup.object({
     userName: Yup.string()
@@ -27,16 +29,21 @@ const LoginPage = () => {
       .min(6, "Password must be at least 6 characters long"),
   });
 
+
   const onsubmit = (values: { userName: string; password: string }) => {
     console.log(values);
     dispatch(
-      login(
-        new AuthDataEntity({
-          username: values.userName,
-          password: values.password,
-        })
-      )
-    );
+      login({
+        username: values.userName,
+        password: values.password,
+      })
+    )
+    .then((res) => {
+      console.log(res);
+      if(!(res as any)?.error){
+        router.push("dashboard/home")
+      }
+    })
   };
 
   return (
