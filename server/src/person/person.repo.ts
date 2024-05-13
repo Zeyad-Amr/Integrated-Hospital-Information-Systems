@@ -39,8 +39,8 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
         where: { SSN: ssn },
         include: this.personInclude
       });
-      if (!res)
-        throw new NotFoundException()
+      // if (!res)
+      //   throw new NotFoundException()
       return res
     } catch (error) {
       throw error;

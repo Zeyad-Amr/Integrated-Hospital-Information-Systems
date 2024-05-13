@@ -27,14 +27,7 @@ const Test = () => {
         color="primary"
         onClick={async () => {
           console.log("Login");
-          dispatch(
-            login(
-              new AuthDataEntity({
-                username: "Admin123",
-                password: "Admin1234",
-              })
-            )
-          );
+          dispatch(login({ username: "Admin123", password: "Admin1234" }));
         }}
       >
         Login
