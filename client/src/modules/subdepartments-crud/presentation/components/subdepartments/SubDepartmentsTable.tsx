@@ -16,6 +16,8 @@ import { DepartmentsState, RoomState, SpecializationState, SubDepartmentsState }
 import SubDepartmentsInterface from '@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface';
 import PermissionsForm from './PermissionsForm';
 import CustomizedDialog from '@/core/shared/components/CustomizeDialog';
+import { getPermissionsList } from '../../controllers/thunks/permissions-thunks';
+import { getFeaturesList } from '../../controllers/thunks/features-thunks';
 
 const SubDepartmentsTableHeader: HeaderItem[] = [
     {
@@ -90,6 +92,8 @@ const SubDepartmentsTable = () => {
       dispatch(getRoomList())
       dispatch(getSpecializationList())
       dispatch(getRolesList())
+      dispatch(getPermissionsList())
+      dispatch(getFeaturesList())
     }, [])
 
     const getNameOfItemWithItsId = (id : string | number , listOfSearch : any) => {

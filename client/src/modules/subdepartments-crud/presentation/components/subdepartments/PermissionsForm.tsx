@@ -22,27 +22,6 @@ const PermissionsForm = () => {
     return targetEl?.value ?? "";
   };
   const dispatch = useAppDispatch()
-  const [rolesWithFeaturesList, setRolesWithFeaturesList] = useState<{ id: string; features: any[] }[]>([])
-
-//   const getListOfFeaturesWithItsRole = () => {
-//     let featuresOfSpecificRole : any = []
-//     rolesState?.rolesList?.forEach((role : RoleInterface) => {
-//         permissionsState?.permissionsList.forEach((permission : PermissionInterface) => {
-//             if (role.id == permission.roleId) {
-//                 featuresOfSpecificRole.push(permission.featureId)
-//             } 
-//         }) 
-//         setRolesWithFeaturesList((prevState : any) =>  { 
-//             return [
-//                 ...prevState,
-//                 { 
-//                     id: role.id,
-//                     features : featuresOfSpecificRole
-//                  }
-//               ];
-//         })
-//     })
-// }
 
 const getListOfFeaturesWithItsRole = () => {
     const newRolesWithFeaturesList: { id: any; features: any[] }[] = [];
@@ -61,30 +40,11 @@ const getListOfFeaturesWithItsRole = () => {
             features: featuresOfSpecificRole
         });
     });
-
-    console.log(newRolesWithFeaturesList,'newRolesWithFeaturesList');
     return newRolesWithFeaturesList
 };
 
   useEffect(() => {
-    dispatch(getFeaturesList())
-    dispatch(getRolesList())
-    dispatch(getPermissionsList())
     getListOfFeaturesWithItsRole()
-    
-    // console.log(permissionsState?.permissionsList,'permissionsState?.permissionsList');    
-    // console.log(rolesWithFeaturesList,'rolesWithFeaturesList');
-    
-    console.log(
-      {
-        roles:
-          rolesState?.rolesList?.map((role: RoleInterface) => ({
-            id: role.id,
-            features: [],
-          })) || [],
-      },
-      "testtttttttttttttt"
-    );
   }, []);
 
   return (
@@ -94,7 +54,22 @@ const getListOfFeaturesWithItsRole = () => {
         getListOfFeaturesWithItsRole() || [],
       }}
       onSubmit={async (values: any) => {
-        console.log(values);
+        let removedFeatures : any = []
+        let removedFeaturesWithItsRole : any = []
+        values.roles.forEach((newRole: any) => {
+            getListOfFeaturesWithItsRole().forEach((oldRole : any) => {
+                if (newRole.id == oldRole.id) {
+                    removedFeatures = oldRole?.features?.filter((feature: string) => !newRole?.features?.includes(feature)); 
+                }
+            })
+            removedFeaturesWithItsRole.push({
+                roleId : newRole.id,
+                features : removedFeatures
+            })
+            console.log(removedFeaturesWithItsRole,'removedFeaturesForItsRole');
+            console.log(values.roles,'values');
+            console.log(getListOfFeaturesWithItsRole(),'getListOfFeaturesWithItsRole');
+          });
       }}
       // validationSchema={SubDepartmentsEntity.subDepartmentsFormValidations()}
     >
