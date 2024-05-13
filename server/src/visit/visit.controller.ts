@@ -29,7 +29,6 @@ import { TriageAXDto } from './dto/triage-assessment.dto';
 import { Public } from 'src/shared/decorators/public.decorator';
 
 // @ApiBearerAuth()
-@Public()
 @ApiTags('visit')
 @Controller('visit')
 export class VisitController {
