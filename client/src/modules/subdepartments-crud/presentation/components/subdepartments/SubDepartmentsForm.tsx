@@ -29,7 +29,7 @@ const SubDepartmentsForm = ({ edit, propsIntialValues }: SubDepartmentsFormProps
     const departmentsState : DepartmentsState = useAppSelector((state: any) => state.departments);
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
+    useEffect(() => {        
       dispatch(getDepartmentsList())
     }, [])
     

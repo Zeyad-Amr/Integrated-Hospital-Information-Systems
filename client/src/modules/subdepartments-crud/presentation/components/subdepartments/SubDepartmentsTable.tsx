@@ -11,7 +11,7 @@ import { getRoomList } from "@/modules/subdepartments-crud/presentation/controll
 import { getSpecializationList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/specialization-thunks";
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import { useAppDispatch, useAppSelector } from '@/core/state/store';
-import { SubDepartmentsState } from '../../controllers/types';
+import { DepartmentsState, RoomState, SpecializationState, SubDepartmentsState } from '../../controllers/types';
 import SubDepartmentsInterface from '@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface';
 
 const SubDepartmentsTableHeader: HeaderItem[] = [
@@ -76,6 +76,9 @@ const SubDepartmentsTable = () => {
     const [showDialog, setShawDialog] = useState("none");
     const [subDepartmentData, setSubDepartmentData] = useState<SubDepartmentsInterface>();
     const subDepartmentsState : SubDepartmentsState = useAppSelector((state: any) => state.subDepartments);
+    const roomsState : RoomState = useAppSelector((state: any) => state.rooms);
+    const specializationsState : SpecializationState = useAppSelector((state: any) => state.specializations);
+    const departmentsState : DepartmentsState = useAppSelector((state: any) => state.departments);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -83,6 +86,11 @@ const SubDepartmentsTable = () => {
       dispatch(getRoomList())
       dispatch(getSpecializationList())
     }, [])
+
+    const getNameOfItemWithItsId = (id : string | number , listOfSearch : any) => {
+     const targetEl = listOfSearch?.find((el : any ) => el.id == id)
+     return targetEl?.name ?? ""
+    }
     
     return (
         <>
@@ -98,19 +106,25 @@ const SubDepartmentsTable = () => {
                     (item: SubDepartmentsInterface) => {
                         return {
                             name: item.name ?? "",
-                            department: item.departmentId ?? "",
-                            room: item.roomId ?? "",
-                            specialization: item.specializationId ?? "",
+                            department: getNameOfItemWithItsId(item.departmentId,departmentsState?.departmentsList),
+                            room: getNameOfItemWithItsId(item.roomId,roomsState?.roomList),
+                            specialization: getNameOfItemWithItsId(item.specializationId,specializationsState?.specializationList),
                             update: (
                                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, color: "primary.dark" }}>
                                     <PersonRoundedIcon sx={{ cursor: 'pointer' }} />
                                     <EditRoundedIcon sx={{ cursor: 'pointer' }}
                                         onClick={() => {
                                             setShawDialog("block");
-                                            setSubDepartmentData(item)
+                                            setSubDepartmentData({
+                                                departmentId : item.departmentId,
+                                                name : item.name,
+                                                roomId : item.roomId,
+                                                specializationId : item.specializationId,
+                                                id : item.id
+                                            })
                                         }}
                                     />
-                                    <DeleteRoundedIcon click={async () => {dispatch(deleteSubDepartment(String(item.id)))}} sx={{ cursor: 'pointer', color: 'red' }} />
+                                    <DeleteRoundedIcon onClick={async () => {dispatch(deleteSubDepartment(String(item.id)))}} sx={{ cursor: 'pointer', color: 'red' }} />
                                 </Box>
                             ),
                         };
