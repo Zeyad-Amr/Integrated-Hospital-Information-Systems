@@ -3,7 +3,7 @@ import CustomTextField from '@/core/shared/components/CustomTextField';
 import PrimaryButton from '@/core/shared/components/btns/PrimaryButton';
 import { useAppDispatch, useAppSelector } from '@/core/state/store';
 import SubDepartmentsEntity from '@/modules/subdepartments-crud/domain/entities/sub-departments-entity';
-import SubDepartmentsInterface from '@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface';
+import {SubDepartmentsInterface} from '@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface';
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import { Formik } from 'formik';

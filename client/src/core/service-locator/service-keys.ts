@@ -74,6 +74,7 @@ enum ServiceKeys {
     GetSubDepartmentByIdUseCase = 'GetSubDepartmentByIdUseCase',
     CreateSubDepartmentUseCase = 'CreateSubDepartmentUseCase',
     UpdateSubDepartmentUseCase = 'UpdateSubDepartmentUseCase',
+    UpdateSubDepartmentAssignFeaturesUseCase = 'UpdateSubDepartmentAssignFeaturesUseCase',
     DeleteSubDepartmentUseCase = 'DeleteSubDepartmentUseCase',
 
     GetLookupsUseCase = 'GetLookupsUseCase',

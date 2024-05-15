@@ -1,5 +1,5 @@
 import { Yup } from "@/core/shared/utils/validation";
-import SubDepartmentsInterface from "../interfaces/sub-departments-interface";
+import {SubDepartmentsInterface} from "../interfaces/sub-departments-interface";
 
 export default class SubDepartmentsEntity {
   //* --------------------- Methods ---------------------

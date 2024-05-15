@@ -9,11 +9,16 @@ import RoleInterface from "@/modules/subdepartments-crud/domain/interfaces/role-
 import FeatureInterface from "@/modules/subdepartments-crud/domain/interfaces/feature-interface";
 import { getFeaturesList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/features-thunks";
 import { getRolesList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/roles-thunks";
-import { getPermissionsList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/permissions-thunks";
+import { updateSubDepartmentAssignFeatures } from "@/modules/subdepartments-crud/presentation/controllers/thunks/sub-departments-thunks ";
 import PermissionInterface from "@/modules/subdepartments-crud/domain/interfaces/permission-interface";
+import { SubDepartmentsInterface } from "@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface";
+
+interface PermissionsFormProps {
+    subDepartmentData? : SubDepartmentsInterface
+}
 
 
-const PermissionsForm = () => {
+const PermissionsForm = ({ subDepartmentData } :  PermissionsFormProps) => {
   const rolesState: RolesState = useAppSelector((state: any) => state.roles);
   const featuresState: FeaturesState = useAppSelector((state: any) => state.features);
   const permissionsState: PermissionsState = useAppSelector((state: any) => state.permissions);
@@ -24,7 +29,7 @@ const PermissionsForm = () => {
   const dispatch = useAppDispatch()
 
 const getListOfFeaturesWithItsRole = () => {
-    const newRolesWithFeaturesList: { id: any; features: any[] }[] = [];
+    const newRolesWithFeaturesList: { roleId: any; features: any[] }[] = [];
 
     rolesState?.rolesList?.forEach((role: RoleInterface) => {
         const featuresOfSpecificRole: any[] = [];
@@ -36,7 +41,7 @@ const getListOfFeaturesWithItsRole = () => {
         });
 
         newRolesWithFeaturesList.push({
-            id: role.id,
+            roleId: role.id,
             features: featuresOfSpecificRole
         });
     });
@@ -55,20 +60,25 @@ const getListOfFeaturesWithItsRole = () => {
       }}
       onSubmit={async (values: any) => {
         let removedFeatures : any = []
-        let removedFeaturesWithItsRole : any = []
+        let removedFeaturesWithItsRoleId : any = []
         values.roles.forEach((newRole: any) => {
             getListOfFeaturesWithItsRole().forEach((oldRole : any) => {
-                if (newRole.id == oldRole.id) {
+                if (newRole.roleId == oldRole.roleId) {
                     removedFeatures = oldRole?.features?.filter((feature: string) => !newRole?.features?.includes(feature)); 
                 }
             })
-            removedFeaturesWithItsRole.push({
-                roleId : newRole.id,
+            removedFeaturesWithItsRoleId.push({
+                roleId : newRole.roleId,
                 features : removedFeatures
             })
-            console.log(removedFeaturesWithItsRole,'removedFeaturesForItsRole');
+            console.log(removedFeaturesWithItsRoleId,'removedFeaturesForItsRole');
             console.log(values.roles,'values');
             console.log(getListOfFeaturesWithItsRole(),'getListOfFeaturesWithItsRole');
+            dispatch(updateSubDepartmentAssignFeatures({
+                id : subDepartmentData?.id,
+                AddedFeatures : values.roles,
+                RemovedFeatures : removedFeaturesWithItsRoleId
+            }))
           });
       }}
       // validationSchema={SubDepartmentsEntity.subDepartmentsFormValidations()}
@@ -84,7 +94,7 @@ const getListOfFeaturesWithItsRole = () => {
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container spacing={2}>
             <Grid item lg={12} md={12} sm={12} xs={12}>
-              {values.roles?.map((el: any, index: number) => (
+              {values.roles?.map((roleEl: any, index: number) => (
                 <Box key={index}>
                   <CustomSelectField
                     multiple
@@ -100,7 +110,7 @@ const getListOfFeaturesWithItsRole = () => {
                     isRequired
                     name={`roles[${index}].features`}
                     label={`الميــزات ل ${getNameOfItemWithItsId(
-                      el.id,
+                      roleEl.roleId,
                       rolesState?.rolesList
                     )}`}
                     onChange={handleChange}

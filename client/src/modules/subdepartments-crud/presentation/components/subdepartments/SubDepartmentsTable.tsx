@@ -13,7 +13,7 @@ import { getRolesList } from "@/modules/subdepartments-crud/presentation/control
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import { useAppDispatch, useAppSelector } from '@/core/state/store';
 import { DepartmentsState, RoomState, SpecializationState, SubDepartmentsState } from '../../controllers/types';
-import SubDepartmentsInterface from '@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface';
+import {SubDepartmentsInterface} from '@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface';
 import PermissionsForm from './PermissionsForm';
 import CustomizedDialog from '@/core/shared/components/CustomizeDialog';
 import { getPermissionsList } from '../../controllers/thunks/permissions-thunks';
@@ -107,7 +107,7 @@ const SubDepartmentsTable = () => {
                 <SubDepartmentsForm edit propsIntialValues={subDepartmentData} />
             </PopUp>
             <CustomizedDialog open={showPermissionsForm} setOpen={setShowPermissionsForm} title="تحديد الصلاحيات">
-                <PermissionsForm/>
+                <PermissionsForm subDepartmentData={subDepartmentData}/>
             </CustomizedDialog>
             <CustomDataTable
                 applyFilters={(filters: FilterQueryParam[]) => {
@@ -122,7 +122,16 @@ const SubDepartmentsTable = () => {
                             specialization: getNameOfItemWithItsId(item.specializationId,specializationsState?.specializationList),
                             update: (
                                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, color: "primary.dark" }}>
-                                    <PersonRoundedIcon onClick={() => setShowPermissionsForm(true)} sx={{ cursor: 'pointer' }} />
+                                    <PersonRoundedIcon onClick={() => {
+                                        setShowPermissionsForm(true)
+                                        setSubDepartmentData({
+                                            departmentId : item.departmentId,
+                                            name : item.name,
+                                            roomId : item.roomId,
+                                            specializationId : item.specializationId,
+                                            id : item.id
+                                        })
+                                        }} sx={{ cursor: 'pointer' }} />
                                     <EditRoundedIcon sx={{ cursor: 'pointer' }}
                                         onClick={() => {
                                             setShawDialog("block");

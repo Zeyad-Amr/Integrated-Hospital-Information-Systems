@@ -55,6 +55,7 @@ const Endpoints = {
         details: '/subdepartment/:id',
         create: '/subdepartment',
         update: '/subdepartment/:id',
+        updateAssignFeatures: '/subdepartment/:id/assignfeatures',
         delete: '/subdepartment/:id',
     },
     feature :{

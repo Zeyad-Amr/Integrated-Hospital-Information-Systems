@@ -4,7 +4,7 @@ import PermissionInterface from "../../domain/interfaces/permission-interface";
 import RoleInterface from "../../domain/interfaces/role-interface";
 import RoomInterface from "../../domain/interfaces/room-interface";
 import SpecializationInterface from "../../domain/interfaces/specialization -interface";
-import SubDepartmentsInterface from "../../domain/interfaces/sub-departments-interface";
+import {SubDepartmentsInterface} from "../../domain/interfaces/sub-departments-interface";
 
 // Define the initial state using that type
 export interface RoomState {
