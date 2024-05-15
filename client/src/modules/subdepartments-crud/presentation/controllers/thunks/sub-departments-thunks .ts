@@ -7,6 +7,8 @@ import UpdateSubDepartmentUseCase from "@/modules/subdepartments-crud/domain/use
 import DeleteSubDepartmentUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/delete-sub-department-usecase";
 import GetSubDepartmentUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/get-sub-departments-by-Id-usecase";
 import UpdateSubDepartmentAssignFeaturesUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/update-sub-department-assign-features-usecase";
+import { getPermissionsList } from './permissions-thunks'
+import { getRolesList } from './roles-thunks'
 
 //* Get All SubDepartments
 export const getSubDepartmentsList = createAsyncThunk(
@@ -85,6 +87,8 @@ export const updateSubDepartmentAssignFeatures = createAsyncThunk(
         )
         .call(data).then(() => {
           dispatch(getSubDepartmentsList())
+          dispatch(getRolesList())
+          dispatch(getPermissionsList())
         })
       console.log("Result:", result);
       return result;
