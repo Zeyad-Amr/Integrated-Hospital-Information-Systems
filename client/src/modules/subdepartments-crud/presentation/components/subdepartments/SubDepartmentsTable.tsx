@@ -13,6 +13,7 @@ import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import { useAppDispatch, useAppSelector } from '@/core/state/store';
 import { DepartmentsState, RoomState, SpecializationState, SubDepartmentsState } from '../../controllers/types';
 import {SubDepartmentsInterface} from '@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface';
+import { getDepartmentsList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/departments-thunks";
 import PermissionsForm from './PermissionsForm';
 import CustomizedDialog from '@/core/shared/components/CustomizeDialog';
 import { getPermissionsList } from '../../controllers/thunks/permissions-thunks';
@@ -91,7 +92,7 @@ const SubDepartmentsTable = () => {
     const departmentsState : DepartmentsState = useAppSelector((state: any) => state.departments);
     const dispatch = useAppDispatch();
 
-    // get all lookups for subdepartments, rooms, roles, specializations, permissions and features
+    // get all lookups for subdepartments, departments, rooms, roles, specializations, permissions and features
     useEffect(() => {
       dispatch(getSubDepartmentsList())
       dispatch(getRoomList())
@@ -99,6 +100,7 @@ const SubDepartmentsTable = () => {
       dispatch(getRolesList())
       dispatch(getPermissionsList())
       dispatch(getFeaturesList())
+      dispatch(getDepartmentsList())
     }, [])
 
     // function to get name value of item using its id

@@ -7,12 +7,11 @@ import {SubDepartmentsInterface} from '@/modules/subdepartments-crud/domain/inte
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import { Formik } from 'formik';
-import React, { useEffect } from 'react'
+import React from 'react'
 import { RoomState, SpecializationState, DepartmentsState } from '../../controllers/types';
 import RoomInterface from '@/modules/subdepartments-crud/domain/interfaces/room-interface';
 import SpecializationInterface from '@/modules/subdepartments-crud/domain/interfaces/specialization -interface';
 import DepartmentsInterface from '@/modules/subdepartments-crud/domain/interfaces/departments-interface';
-import { getDepartmentsList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/departments-thunks";
 import { createSubDepartment , updateSubDepartment } from "@/modules/subdepartments-crud/presentation/controllers/thunks/sub-departments-thunks ";
 
 
@@ -24,23 +23,16 @@ interface SubDepartmentsFormProps {
 
 const SubDepartmentsForm = ({ propsIntialValues , setshowSubDepartmentForm , isEdit }: SubDepartmentsFormProps) => {
 
-    
+    // get data from store
     const roomsState : RoomState = useAppSelector((state: any) => state.rooms);
     const specializationsState : SpecializationState = useAppSelector((state: any) => state.specializations);
     const departmentsState : DepartmentsState = useAppSelector((state: any) => state.departments);
     const dispatch = useAppDispatch();
 
-    useEffect(() => {        
-      dispatch(getDepartmentsList())
-    }, [])
-    
-    
-
     return (
         <Formik
             initialValues={isEdit && propsIntialValues ? propsIntialValues : SubDepartmentsEntity.defaultValue()}
             onSubmit={async (values) => { 
-                console.log(values) ; 
                 isEdit && propsIntialValues ? 
                 // in case edit mode
                 dispatch(updateSubDepartment({
