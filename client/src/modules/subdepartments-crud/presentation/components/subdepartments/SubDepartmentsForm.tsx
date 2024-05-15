@@ -17,11 +17,12 @@ import { createSubDepartment , updateSubDepartment } from "@/modules/subdepartme
 
 
 interface SubDepartmentsFormProps {
-    edit?: boolean;
-    propsIntialValues?: SubDepartmentsInterface
+    isEdit : boolean
+    propsIntialValues?: SubDepartmentsInterface,
+    setshowSubDepartmentForm : (isShown : boolean) => void
 }
 
-const SubDepartmentsForm = ({ edit, propsIntialValues }: SubDepartmentsFormProps) => {
+const SubDepartmentsForm = ({ propsIntialValues , setshowSubDepartmentForm , isEdit }: SubDepartmentsFormProps) => {
 
     
     const roomsState : RoomState = useAppSelector((state: any) => state.rooms);
@@ -37,10 +38,10 @@ const SubDepartmentsForm = ({ edit, propsIntialValues }: SubDepartmentsFormProps
 
     return (
         <Formik
-            initialValues={edit && propsIntialValues ? propsIntialValues : SubDepartmentsEntity.defaultValue()}
+            initialValues={isEdit && propsIntialValues ? propsIntialValues : SubDepartmentsEntity.defaultValue()}
             onSubmit={async (values) => { 
                 console.log(values) ; 
-                edit && propsIntialValues ? 
+                isEdit && propsIntialValues ? 
                 // in case edit mode
                 dispatch(updateSubDepartment({
                     id : String(propsIntialValues.id),
@@ -49,12 +50,12 @@ const SubDepartmentsForm = ({ edit, propsIntialValues }: SubDepartmentsFormProps
                     roomId : values.roomId,
                     specializationId : values.specializationId
                 })).then(() => {
-                    // setShowDialog('none')
+                    setshowSubDepartmentForm(false)
                 })
                 : 
                 // in case not edit mode
                 dispatch(createSubDepartment(values)).then(() => {
-                    // setShowDialog('none')
+                    setshowSubDepartmentForm(false)
                 })
              }}
             validationSchema={SubDepartmentsEntity.subDepartmentsFormValidations()}
@@ -152,28 +153,9 @@ const SubDepartmentsForm = ({ edit, propsIntialValues }: SubDepartmentsFormProps
 
                             />
                         </Grid>
-                        {/* <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <CustomSelectField
-                                multiple
-                                value={values.features}
-                                options={[{ id: '1', value: 'one' }, { id: '2', value: 'two' }, { id: '3', value: 'three' }]}
-                                isRequired
-                                name="features"
-                                label="الميــزات"
-                                // value={values.features}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                // error={errors.features}
-                                // touched={touched.features}
-                                width="100%"
-                                sx={{ margin: '0' }}
-
-
-                            />
-                        </Grid> */}
                     </Grid>
                     <PrimaryButton
-                        title={edit ? "حفــــظ" : "اضـــافة"}
+                        title={isEdit ? "حفــــظ" : "اضـــافة"}
                         type="submit"
                     />
                 </Box>

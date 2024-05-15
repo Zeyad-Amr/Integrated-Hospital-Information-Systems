@@ -1,6 +1,5 @@
 import { FilterQueryParam } from '@/core/api';
 import { CustomDataTable, HeaderItem } from '@/core/shared/components/CustomDataTable';
-import PopUp from '@/core/shared/components/PopUp';
 import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import SubDepartmentsForm from './SubDepartmentsForm';
@@ -18,6 +17,7 @@ import PermissionsForm from './PermissionsForm';
 import CustomizedDialog from '@/core/shared/components/CustomizeDialog';
 import { getPermissionsList } from '../../controllers/thunks/permissions-thunks';
 import { getFeaturesList } from '../../controllers/thunks/features-thunks';
+import PrimaryButton from '@/core/shared/components/btns/PrimaryButton';
 
 const SubDepartmentsTableHeader: HeaderItem[] = [
     {
@@ -78,15 +78,20 @@ const SubDepartmentsTableHeader: HeaderItem[] = [
 ]
 
 const SubDepartmentsTable = () => {
-    const [showDialog, setShawDialog] = useState("none");
+    // use state
+    const [showSubDepartmentForm, setshowSubDepartmentForm] = useState<boolean>(false);
+    const [isEditSubDepartmentForm, setIsEditSubDepartmentForm] = useState<boolean>(false);
     const [showPermissionsForm, setShowPermissionsForm] = useState(false);
     const [subDepartmentData, setSubDepartmentData] = useState<SubDepartmentsInterface>();
+
+    // get data from store
     const subDepartmentsState : SubDepartmentsState = useAppSelector((state: any) => state.subDepartments);
     const roomsState : RoomState = useAppSelector((state: any) => state.rooms);
     const specializationsState : SpecializationState = useAppSelector((state: any) => state.specializations);
     const departmentsState : DepartmentsState = useAppSelector((state: any) => state.departments);
     const dispatch = useAppDispatch();
 
+    // get all lookups for subdepartments, rooms, roles, specializations, permissions and features
     useEffect(() => {
       dispatch(getSubDepartmentsList())
       dispatch(getRoomList())
@@ -96,6 +101,7 @@ const SubDepartmentsTable = () => {
       dispatch(getFeaturesList())
     }, [])
 
+    // function to get name value of item using its id
     const getNameOfItemWithItsId = (id : string | number , listOfSearch : any) => {
      const targetEl = listOfSearch?.find((el : any ) => el.id == id)
      return targetEl?.name ?? ""
@@ -103,11 +109,15 @@ const SubDepartmentsTable = () => {
     
     return (
         <>
-            <PopUp DialogStateController={setShawDialog} display={showDialog} title="اضــافة قســم فــرعي">
-                <SubDepartmentsForm edit propsIntialValues={subDepartmentData} />
-            </PopUp>
+        <PrimaryButton type='button' title='اضــافة قســم فــرعي' sx={{ marginBottom: "1rem" }} onClick={() => {
+            setshowSubDepartmentForm(true)
+            setIsEditSubDepartmentForm(false)
+            }}/>
+            <CustomizedDialog title='اضــافة قســم فــرعي' open={showSubDepartmentForm} setOpen={setshowSubDepartmentForm}>
+                <SubDepartmentsForm isEdit={isEditSubDepartmentForm} setshowSubDepartmentForm={setshowSubDepartmentForm} propsIntialValues={subDepartmentData} />
+            </CustomizedDialog>
             <CustomizedDialog open={showPermissionsForm} setOpen={setShowPermissionsForm} title="تحديد الصلاحيات">
-                <PermissionsForm subDepartmentData={subDepartmentData}/>
+                <PermissionsForm setShowPermissionsForm={setShowPermissionsForm} subDepartmentData={subDepartmentData}/>
             </CustomizedDialog>
             <CustomDataTable
                 applyFilters={(filters: FilterQueryParam[]) => {
@@ -134,7 +144,8 @@ const SubDepartmentsTable = () => {
                                         }} sx={{ cursor: 'pointer' }} />
                                     <EditRoundedIcon sx={{ cursor: 'pointer' }}
                                         onClick={() => {
-                                            setShawDialog("block");
+                                            setshowSubDepartmentForm(true);
+                                            setIsEditSubDepartmentForm(true)
                                             setSubDepartmentData({
                                                 departmentId : item.departmentId,
                                                 name : item.name,

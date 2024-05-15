@@ -17,11 +17,9 @@ const SubDepartments = () => {
                 margin: "0 auto 0",
             }}
         >
-            <PopUp DialogStateController={setShawDialog} display={showDialog} title="اضــافة قســم فــرعي"
-            >
+            {/* <PopUp DialogStateController={setShawDialog} display={showDialog} title="اضــافة قســم فــرعي">
                 <SubDepartmentsForm />
-            </PopUp>
-            <PrimaryButton type='button' title='اضــافة قســم فــرعي' sx={{ marginBottom: "1rem" }} onClick={() => setShawDialog("block")}/>
+            </PopUp> */}
             <SubDepartmentsTable />
         </Box>
     )
