@@ -46,25 +46,41 @@ export default function CustomizedDialog(props: {
         fullWidth
         maxWidth={props.maxWidth ?? "sm"}
       >
-        {props.title ? (
-          <DialogTitle sx={{ m: 0, p: 2 }} id="dialog-title">
-            {props.title}
-          </DialogTitle>
-        ) : null}
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
+        <Box
           sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            // color: (theme) => theme.palette.grey[500],
+            backgroundColor: "primary.dark",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "0.1rem 0.3rem",
           }}
         >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent dividers>
-          <Box>{props.children}</Box>
+          {props.title ? (
+            <DialogTitle
+              sx={{ m: 0, p: 2, color: "white", fontWeight: "600" }}
+              id="dialog-title"
+            >
+              {props.title}
+            </DialogTitle>
+          ) : null}
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: "white",
+              margin: "0.5rem 0",
+              fontSize: "2rem",
+              cursor: "pointer",
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Box>
+        <DialogContent  dividers>
+          <Box sx={{ padding : "0.3rem 0rem" }}>{props.children}</Box>
         </DialogContent>
         {/* <DialogActions>
                     <Button autoFocus onClick={handleClose}>
