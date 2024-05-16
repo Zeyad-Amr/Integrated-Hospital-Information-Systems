@@ -52,7 +52,7 @@ export default function CustomizedDialog(props: {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            padding: "0.1rem 0.3rem",
+            padding: "0.2rem 0.5rem",
           }}
         >
           {props.title ? (
@@ -80,7 +80,7 @@ export default function CustomizedDialog(props: {
           </IconButton>
         </Box>
         <DialogContent  dividers>
-          <Box sx={{ padding : "0.3rem 0rem" }}>{props.children}</Box>
+          <Box>{props.children}</Box>
         </DialogContent>
         {/* <DialogActions>
                     <Button autoFocus onClick={handleClose}>

@@ -1,13 +1,16 @@
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { Formik } from "formik";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import {
+  DepartmentsState,
   FeaturesState,
   PermissionsState,
   RolesState,
+  RoomState,
+  SpecializationState,
 } from "../../controllers/types";
 import RoleInterface from "@/modules/subdepartments-crud/domain/interfaces/role-interface";
 import FeatureInterface from "@/modules/subdepartments-crud/domain/interfaces/feature-interface";
@@ -33,11 +36,20 @@ const PermissionsForm = ({
   const permissionsState: PermissionsState = useAppSelector(
     (state: any) => state.permissions
   );
+  const roomsState: RoomState = useAppSelector((state: any) => state.rooms);
+  const specializationsState: SpecializationState = useAppSelector(
+    (state: any) => state.specializations
+  );
+  const departmentsState: DepartmentsState = useAppSelector(
+    (state: any) => state.departments
+  );
 
   //   function to get name of item using its id by searching it on its list
-  const getNameOfItemWithItsId = (id: string | number, listOfSearch: any) => {
-    const targetEl = listOfSearch?.find((el: any) => el.id == id);
-    return targetEl?.value ?? "";
+  const getNameOfItemWithItsId = (id: any, listOfSearch: any) => {
+    if (id && listOfSearch) {
+      const targetEl = listOfSearch?.find((el: any) => el.id == id);
+      return targetEl?.value ?? targetEl?.name ?? "";
+    }
   };
 
   //  initialize features to each role by combining data between roles list and permissions list
@@ -86,7 +98,7 @@ const PermissionsForm = ({
     return removedFeaturesWithItsRoleId;
   };
 
-//   initialize form 
+  //   initialize form
   useEffect(() => {
     getListOfFeaturesWithItsRole();
   }, []);
@@ -114,6 +126,58 @@ const PermissionsForm = ({
     >
       {({ values, handleChange, handleBlur, handleSubmit }) => (
         <Box component="form" onSubmit={handleSubmit} noValidate>
+          <Box
+            sx={{
+              margin: "0rem 0rem 1rem 0rem",
+              padding: "0.4rem 1rem",
+              justifyContent: "space-between",
+              display: "flex",
+              backgroundColor: "#0f70f2",
+              borderRadius: "6px",
+              color: "#fff",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: "column",
+              }}
+            >
+              <Typography sx={{ marginBottom: "0.5rem" }}>
+                قسم فرعي : {subDepartmentData?.name}
+              </Typography>
+              <Typography>
+                قسم :{" "}
+                {getNameOfItemWithItsId(
+                  subDepartmentData?.departmentId,
+                  departmentsState?.departmentsList
+                )}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: "column",
+              }}
+            >
+              <Typography sx={{ marginBottom: "0.5rem" }}>
+                غرفة :{" "}
+                {getNameOfItemWithItsId(
+                  subDepartmentData?.roomId,
+                  roomsState?.roomList
+                )}
+              </Typography>
+              <Typography>
+                تخصص :
+                {getNameOfItemWithItsId(
+                  subDepartmentData?.specializationId,
+                  specializationsState?.specializationList
+                )}
+              </Typography>
+            </Box>
+          </Box>
           <Grid container spacing={2}>
             <Grid item lg={12} md={12} sm={12} xs={12}>
               {values.roles?.map((roleEl: any, index: number) => (
