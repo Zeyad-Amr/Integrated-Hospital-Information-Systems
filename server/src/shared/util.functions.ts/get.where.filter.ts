@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { Filter } from '../decorators/filters.decorator';
 import { FilterRule } from '../decorators/filters.decorator';
 
@@ -19,11 +20,16 @@ export const getWhere = (
   if (!additionalWhereConditions) {
     whereCondition.AND = [];
   }
-  whereCondition.OR = [];
-  
   filters.forEach((filter) => {
     if (filter.rule === FilterRule.ANY) {
-      whereCondition.OR.push({ [filter.property]: isNaN(filter.value as any) ? filter.value:+filter.value });
+      if (filter.property == 'createdAt' || filter.property == 'updatedAt' || filter.property == 'code') {
+        throw new BadRequestException(`Invalid filter property for "any" role : ${filter.property}`);
+      }
+      whereCondition.OR = []
+      filter.value.split(",").map((v)=>{
+        let q = { [filter.property]: isNaN(v as any) ? v : +v }
+        whereCondition.OR.push(q);
+      })
     }
     if (filter.rule === FilterRule.IS_NULL) {
       whereCondition.AND.push({ [filter.property]: null });
