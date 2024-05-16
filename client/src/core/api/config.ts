@@ -38,8 +38,6 @@ axiosInstance.interceptors.response.use(
     (response) => {
         LoadingService.hideLoading();
         // Modify the response or perform other tasks
-        // debugger
-        // AlertService.showAlert( `تيستتتت` , 'success');
         return response;
     },
     (error) => {
@@ -57,7 +55,6 @@ axiosInstance.interceptors.response.use(
         */
         // debugger
         const errorResponse: ErrorResponse = error.response.data;
-        // AlertService.showAlert( `${errorResponse?.message}` , 'error');
         return Promise.reject(errorResponse);
     }
 );
