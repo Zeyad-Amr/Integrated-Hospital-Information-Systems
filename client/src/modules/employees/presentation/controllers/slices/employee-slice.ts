@@ -8,6 +8,7 @@ import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
 import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
 import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
 import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
+import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
 const initialState: EmployeeState = {
@@ -63,6 +64,7 @@ const employeeSlice = createSlice({
         builder.addCase(getEmployeeList.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
             state.employeeList = [];
         });
 
@@ -74,11 +76,13 @@ const employeeSlice = createSlice({
         builder.addCase(createEmployee.fulfilled, (state, _action) => {
             state.loading = false;
             state.currentEmployee = initialState.currentEmployee;
+            AlertService.showAlert( 'تم اضافة موظف بنجاح' , 'success');
             state.error = "";
         });
         builder.addCase(createEmployee.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* update employee member
@@ -89,11 +93,13 @@ const employeeSlice = createSlice({
         builder.addCase(updateEmployee.fulfilled, (state, _action) => {
             state.loading = false;
             state.currentEmployee = initialState.currentEmployee;
+            AlertService.showAlert( 'تم تحديث موظف بنجاح' , 'success');
             state.error = "";
         });
         builder.addCase(updateEmployee.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* delete employee member
@@ -105,11 +111,12 @@ const employeeSlice = createSlice({
             state.loading = false;
             state.error = "";
             state.employeeList = state.employeeList.filter((employee) => employee.id !== _action.payload);
-
+            AlertService.showAlert( 'تم حذف موظف بنجاح' , 'success');
         });
         builder.addCase(deleteEmployee.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* get employee details
@@ -125,6 +132,7 @@ const employeeSlice = createSlice({
         builder.addCase(getEmployeeDetails.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
             state.currentEmployee = initialState.currentEmployee;
         });
 

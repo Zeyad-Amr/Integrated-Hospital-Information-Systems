@@ -4,6 +4,7 @@ import { FeaturesState } from "../types";
 import { ErrorResponse } from "@/core/api";
 import FeatureEntity from "@/modules/subdepartments-crud/domain/entities/feature-entity";
 import FeatureInterface from "@/modules/subdepartments-crud/domain/interfaces/feature-interface";
+import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
 const initialState: FeaturesState = {
@@ -52,6 +53,7 @@ const featuresSlice = createSlice({
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
             state.featuresList = [];
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* create subdepartment 
@@ -63,10 +65,12 @@ const featuresSlice = createSlice({
             state.loading = false;
             state.currentFeature = initialState.currentFeature;
             state.error = "";
+            AlertService.showAlert( 'تم اضافة ميزة بنجاح' , 'success')
         });
         builder.addCase(createFeature.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* update subdepartment 
@@ -78,10 +82,12 @@ const featuresSlice = createSlice({
             state.loading = false;
             state.currentFeature = initialState.currentFeature;
             state.error = "";
+            AlertService.showAlert( 'تم تحديث ميزة بنجاح' , 'success')
         });
         builder.addCase(updateFeature.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* delete subdepartment 
@@ -93,11 +99,12 @@ const featuresSlice = createSlice({
             state.loading = false;
             state.error = "";
             state.featuresList = state.featuresList.filter((feature : FeatureInterface) => feature.id !== _action.payload);
-
+            AlertService.showAlert( 'تم حذف ميزة بنجاح' , 'success')
         });
         builder.addCase(deleteFeature.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* get single subdepartment details
@@ -114,6 +121,7 @@ const featuresSlice = createSlice({
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
             state.currentFeature = initialState.currentFeature;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
     },

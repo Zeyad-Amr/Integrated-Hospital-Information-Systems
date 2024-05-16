@@ -17,6 +17,7 @@ import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import ConfirmationDialog from "@/core/shared/components/ConfirmationDialog";
 
 const roomsTableHeader: HeaderItem[] = [
   {
@@ -57,6 +58,8 @@ const roomsTableHeader: HeaderItem[] = [
 const RoomsTable = () => {
   // use state
   const [showRoomForm, setshowRoomForm] = useState<boolean>(false);
+  const [showConfirmationDialog, setShowConfirmationDialog] =
+    useState<boolean>(false);
   const [isEditRoomForm, setIsEditRoomForm] = useState<boolean>(false);
   const [roomData, setRoomData] = useState<RoomInterface>();
 
@@ -71,6 +74,17 @@ const RoomsTable = () => {
 
   return (
     <>
+      <ConfirmationDialog
+        confirmFunction={async () =>
+          dispatch(deleteRoom(String(roomData?.id))).then(() => {
+            setShowConfirmationDialog(false);
+          })
+        }
+        contentMessage="في حالة حذف الغرفة لن تستطيع العودة اليها مجددا, هل انت متأكد من حذف هذه الغرفة؟ "
+        open={showConfirmationDialog}
+        setOpen={setShowConfirmationDialog}
+        title="حذف غرفة"
+      />
       <PrimaryButton
         type="button"
         title="اضــافة غــرفة"
@@ -123,8 +137,13 @@ const RoomsTable = () => {
                 />
                 <DeleteRoundedIcon
                   sx={{ cursor: "pointer", color: "red" }}
-                  onClick={async () => {
-                    dispatch(deleteRoom(String(item.id)));
+                  onClick={() => {
+                    setRoomData({
+                      id: item.id,
+                      name: item.name,
+                      location: item.location,
+                    });
+                    setShowConfirmationDialog(true);
                   }}
                 />
               </Box>
