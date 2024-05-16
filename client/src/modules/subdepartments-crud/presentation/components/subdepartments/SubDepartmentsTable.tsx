@@ -9,7 +9,6 @@ import { getSubDepartmentsList , deleteSubDepartment } from "@/modules/subdepart
 import { getRoomList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/room-thunks";
 import { getSpecializationList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/specialization-thunks";
 import { getRolesList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/roles-thunks";
-import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import { useAppDispatch, useAppSelector } from '@/core/state/store';
 import { DepartmentsState, RoomState, SpecializationState, SubDepartmentsState } from '../../controllers/types';
 import {SubDepartmentsInterface} from '@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface';
@@ -19,6 +18,7 @@ import CustomizedDialog from '@/core/shared/components/CustomizeDialog';
 import { getPermissionsList } from '../../controllers/thunks/permissions-thunks';
 import { getFeaturesList } from '../../controllers/thunks/features-thunks';
 import PrimaryButton from '@/core/shared/components/btns/PrimaryButton';
+import AddModeratorIcon from '@mui/icons-material/AddModerator';
 
 const SubDepartmentsTableHeader: HeaderItem[] = [
     {
@@ -134,7 +134,7 @@ const SubDepartmentsTable = () => {
                             specialization: getNameOfItemWithItsId(item.specializationId,specializationsState?.specializationList),
                             update: (
                                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, color: "primary.dark" }}>
-                                    <PersonRoundedIcon onClick={() => {
+                                    <AddModeratorIcon onClick={() => {
                                         setShowPermissionsForm(true)
                                         setSubDepartmentData({
                                             departmentId : item.departmentId,

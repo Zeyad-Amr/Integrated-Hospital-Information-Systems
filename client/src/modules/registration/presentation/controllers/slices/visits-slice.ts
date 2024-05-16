@@ -69,7 +69,7 @@ const visitSlice = createSlice({
         });
         builder.addCase(updateVisit.fulfilled, (state, _action) => {
             state.loading = false;
-            AlertService.showAlert( 'تم تحديث زيارة مريض بنجاح' , 'success');
+            AlertService.showAlert( 'تم تحديث بيانات زيارة مريض بنجاح' , 'success');
             state.error = "";
         });
         builder.addCase(updateVisit.rejected, (state, action) => {

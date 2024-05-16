@@ -48,7 +48,7 @@ class AlertService {
           alignItems: "center",
           position: "fixed",
           top: 16 + verticalOffset,
-          left: 16,
+          right: 16,
           zIndex: 9999,
           padding: "0.2rem",
         }}
