@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { SyncLoader } from "react-spinners";
 
 class LoadingService {
   static activeLoaders = 0;
@@ -26,7 +27,30 @@ class LoadingService {
             alignItems: "center",
           }}
         >
-          <CircularProgress color="primary" />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "3rem",
+            }}
+          >
+            <Box sx={{ display: "flex" }}>
+              <Typography
+                sx={{
+                  color: "#061540",
+                  fontSize: "3rem",
+                  fontWeight : "500",
+                  letterSpacing: "1rem",
+                  margin: "2rem 1rem",
+                }}
+              >
+                Loading
+              </Typography>
+            </Box>
+            <SyncLoader color={"#fff"} loading={true} />
+          </Box>
         </Box>
       );
     }
