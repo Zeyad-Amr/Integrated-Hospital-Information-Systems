@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { TriagAXState } from "../types";
 import VitalsEntity from "@/modules/er-area/domain/entities/vitals-entity";
 import TriageAXEntity from "@/modules/er-area/domain/entities/triageAX-without-vitals-entity";
+import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
 const initialState: TriagAXState = {
@@ -28,10 +29,12 @@ const triagAXSlice = createSlice({
       .addCase(createTriagAX.fulfilled, (state, _action) => {
         state.loading = false;
         state.error = "";
+        AlertService.showAlert( 'تم اضافة نموذج فحص الفرز الأولي للمريض بنجاح' , 'success');
       })
       .addCase(createTriagAX.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as ErrorResponse).message;
+        AlertService.showAlert( `${state.error}` , 'error');
       });
   },
 });
