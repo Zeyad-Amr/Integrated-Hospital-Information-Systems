@@ -10,7 +10,7 @@ import { useAppDispatch } from '@/core/state/store';
 
 
 interface RoomsFormProps {
-    isEdit?: boolean;
+    isEdit: boolean;
     setshowRoomForm : (isShown : boolean) => void;
     propsIntialValues?: RoomInterface
 }

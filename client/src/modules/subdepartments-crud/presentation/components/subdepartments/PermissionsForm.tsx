@@ -2,7 +2,7 @@ import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { Box, Grid } from "@mui/material";
 import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import {
   FeaturesState,
@@ -11,8 +11,6 @@ import {
 } from "../../controllers/types";
 import RoleInterface from "@/modules/subdepartments-crud/domain/interfaces/role-interface";
 import FeatureInterface from "@/modules/subdepartments-crud/domain/interfaces/feature-interface";
-import { getPermissionsList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/permissions-thunks";
-import { getRolesList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/roles-thunks";
 import { updateSubDepartmentAssignFeatures } from "@/modules/subdepartments-crud/presentation/controllers/thunks/sub-departments-thunks ";
 import PermissionInterface from "@/modules/subdepartments-crud/domain/interfaces/permission-interface";
 import { SubDepartmentsInterface } from "@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface";
