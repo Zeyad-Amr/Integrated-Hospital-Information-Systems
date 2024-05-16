@@ -1,55 +1,56 @@
 import CustomSelectField from '@/core/shared/components/CustomSelectField';
 import CustomTextField from '@/core/shared/components/CustomTextField';
 import PrimaryButton from '@/core/shared/components/btns/PrimaryButton';
+import { useAppDispatch, useAppSelector } from '@/core/state/store';
+import SubDepartmentsEntity from '@/modules/subdepartments-crud/domain/entities/sub-departments-entity';
+import {SubDepartmentsInterface} from '@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface';
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import { Formik } from 'formik';
 import React from 'react'
-import * as Yup from "yup";
+import { RoomState, SpecializationState, DepartmentsState } from '../../controllers/types';
+import RoomInterface from '@/modules/subdepartments-crud/domain/interfaces/room-interface';
+import SpecializationInterface from '@/modules/subdepartments-crud/domain/interfaces/specialization -interface';
+import DepartmentsInterface from '@/modules/subdepartments-crud/domain/interfaces/departments-interface';
+import { createSubDepartment , updateSubDepartment } from "@/modules/subdepartments-crud/presentation/controllers/thunks/sub-departments-thunks ";
 
-interface SubDepartmentInitalValues {
-    name: string;
-    department: string;
-    room: string;
-    specialization: string;
-    features: string[];
-}
 
 interface SubDepartmentsFormProps {
-    edit?: boolean;
-    propsIntialValues?: SubDepartmentInitalValues
+    isEdit : boolean
+    propsIntialValues?: SubDepartmentsInterface,
+    setshowSubDepartmentForm : (isShown : boolean) => void
 }
 
-const SubDepartmentsForm = ({ edit, propsIntialValues }: SubDepartmentsFormProps) => {
+const SubDepartmentsForm = ({ propsIntialValues , setshowSubDepartmentForm , isEdit }: SubDepartmentsFormProps) => {
 
-    const intialValues: SubDepartmentInitalValues = {
-        name: '',
-        department: '',
-        room: '',
-        specialization: '',
-        features: ['1', '2'],
-    }
-
-    const handleFormSchema = Yup.object({
-        name: Yup.string()
-            .required("Name is required")
-            .min(3, "Name must be at least 3 characters")
-            .max(45, "Name must be at most 45 characters"),
-        department: Yup.string()
-            .required("department is required"),
-        room: Yup.string()
-            .required("room is required"),
-        specialization: Yup.string()
-            .required("specialization is required"),
-        features: Yup.string()
-            .required("at least one feature is required")
-    });
+    // get data from store
+    const roomsState : RoomState = useAppSelector((state: any) => state.rooms);
+    const specializationsState : SpecializationState = useAppSelector((state: any) => state.specializations);
+    const departmentsState : DepartmentsState = useAppSelector((state: any) => state.departments);
+    const dispatch = useAppDispatch();
 
     return (
         <Formik
-            initialValues={edit && propsIntialValues ? propsIntialValues : intialValues}
-            onSubmit={(values) => { console.log(values) }}
-            validationSchema={handleFormSchema}
+            initialValues={isEdit && propsIntialValues ? propsIntialValues : SubDepartmentsEntity.defaultValue()}
+            onSubmit={async (values) => { 
+                isEdit && propsIntialValues ? 
+                // in case edit mode
+                dispatch(updateSubDepartment({
+                    id : String(propsIntialValues.id),
+                    name : values.name,
+                    departmentId : values.departmentId,
+                    roomId : values.roomId,
+                    specializationId : values.specializationId
+                })).then(() => {
+                    setshowSubDepartmentForm(false)
+                })
+                : 
+                // in case not edit mode
+                dispatch(createSubDepartment(values)).then(() => {
+                    setshowSubDepartmentForm(false)
+                })
+             }}
+            validationSchema={SubDepartmentsEntity.subDepartmentsFormValidations()}
         >
             {({
                 values,
@@ -80,16 +81,20 @@ const SubDepartmentsForm = ({ edit, propsIntialValues }: SubDepartmentsFormProps
                         </Grid>
                         <Grid item lg={6} md={6} sm={6} xs={12}>
                             <CustomSelectField
-                                value={values.department}
-                                options={[{ id: 1, value: '1' }]}
+                                value={values.departmentId}
+                                options={departmentsState?.departmentsList?.map((department: DepartmentsInterface) => {
+                                    return {
+                                      id: department.id,
+                                      value: department.name,
+                                    };
+                                  })}
                                 isRequired
-                                name="department"
+                                name="departmentId"
                                 label="القســــم"
-                                // value={values.department}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={errors.department}
-                                touched={touched.department}
+                                error={errors.departmentId}
+                                touched={touched.departmentId}
                                 width="100%"
                                 sx={{ margin: '0' }}
 
@@ -98,53 +103,42 @@ const SubDepartmentsForm = ({ edit, propsIntialValues }: SubDepartmentsFormProps
                         </Grid>
                         <Grid item lg={6} md={6} sm={6} xs={12}>
                             <CustomSelectField
-                                value={values.room}
-                                options={[{ id: 1, value: '1' }]}
+                                options={roomsState?.roomList.map((room : RoomInterface) => {
+                                    return {
+                                    id : room.id, 
+                                    value : room.name 
+                                    }
+                                } )}
                                 isRequired
-                                name="room"
+                                name="roomId"
                                 label="الغـــرفة"
-                                // value={values.room}
+                                value={values.roomId}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={errors.room}
-                                touched={touched.room}
+                                error={errors.roomId}
+                                touched={touched.roomId}
                                 width="100%"
                                 sx={{ margin: '0' }}
 
 
                             />
                         </Grid>
-                        <Grid item lg={6} md={6} sm={6} xs={12}>
+                        <Grid item lg={12} md={12} sm={12} xs={12}>
                             <CustomSelectField
-                                value={values.specialization}
-                                options={[{ id: 1, value: '1' }]}
+                                options={specializationsState?.specializationList.map((specialization: SpecializationInterface) => {
+                                    return {
+                                      id: specialization.id,
+                                      value: specialization.name,
+                                    };
+                                  })}
                                 isRequired
-                                name="specialization"
+                                name="specializationId"
                                 label="التخصص"
-                                // value={values.specialization"}
+                                value={values.specializationId}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={errors.specialization}
-                                touched={touched.specialization}
-                                width="100%"
-                                sx={{ margin: '0' }}
-
-
-                            />
-                        </Grid>
-                        <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <CustomSelectField
-                                multiple
-                                value={values.features}
-                                options={[{ id: '1', value: 'one' }, { id: '2', value: 'two' }, { id: '3', value: 'three' }]}
-                                isRequired
-                                name="features"
-                                label="الميــزات"
-                                // value={values.features}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                // error={errors.features}
-                                // touched={touched.features}
+                                error={errors.specializationId}
+                                touched={touched.specializationId}
                                 width="100%"
                                 sx={{ margin: '0' }}
 
@@ -153,7 +147,7 @@ const SubDepartmentsForm = ({ edit, propsIntialValues }: SubDepartmentsFormProps
                         </Grid>
                     </Grid>
                     <PrimaryButton
-                        title={edit ? "حفــــظ" : "اضـــافة"}
+                        title={isEdit ? "حفــــظ" : "اضـــافة"}
                         type="submit"
                     />
                 </Box>

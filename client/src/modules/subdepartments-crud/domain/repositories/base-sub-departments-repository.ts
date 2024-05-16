@@ -1,11 +1,12 @@
-import SubDepartmentsInterface from "../interfaces/sub-departments-interface";
+import { SubDepartmentsInterface , SubDepartmentsAssignFeaturesInterface } from "../interfaces/sub-departments-interface";
 
 abstract class BaseSubDepartmentsRepository {
-    abstract createSubDepartment(specialization: SubDepartmentsInterface): Promise<boolean>;
-    abstract updateSubDepartment(specialization: SubDepartmentsInterface): Promise<boolean>;
+    abstract createSubDepartment(subDepartment: SubDepartmentsInterface): Promise<boolean>;
+    abstract updateSubDepartment(subDepartment: SubDepartmentsInterface): Promise<boolean>;
+    abstract updateSubDepartmentAssignFeature(assignFeatures: SubDepartmentsAssignFeaturesInterface): Promise<boolean>;
     abstract getAllSubDepartments(): Promise<SubDepartmentsInterface[]>;
-    abstract getSubDepartmentById(specializationId: string): Promise<SubDepartmentsInterface>;
-    abstract deleteSubDepartmentById(specializationId: string): Promise<boolean>;
+    abstract getSubDepartmentById(subDepartmentId: string): Promise<SubDepartmentsInterface>;
+    abstract deleteSubDepartmentById(subDepartmentId: string): Promise<boolean>;
 }
 
 export default BaseSubDepartmentsRepository;

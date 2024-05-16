@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createSubDepartment , deleteSubDepartment ,getSubDepartmentDetails ,getSubDepartmentsList , updateSubDepartment } from "../thunks/sub-departments-thunks ";
+import { updateSubDepartmentAssignFeatures ,  createSubDepartment , deleteSubDepartment ,getSubDepartmentDetails ,getSubDepartmentsList , updateSubDepartment } from "../thunks/sub-departments-thunks ";
 import { SubDepartmentsState } from "../types";
 import { ErrorResponse } from "@/core/api";
 import SubDepartmentsEntity from "@/modules/subdepartments-crud/domain/entities/sub-departments-entity";
-import SubDepartmentsInterface from "@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface";
+import {SubDepartmentsInterface} from "@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface";
 
 //* Initial State
 const initialState: SubDepartmentsState = {
@@ -80,6 +80,20 @@ const subDepartmentsSlice = createSlice({
             state.error = "";
         });
         builder.addCase(updateSubDepartment.rejected, (state, action) => {
+            state.loading = false;
+            state.error = (action.payload as ErrorResponse).message;
+        });
+
+        //* update subdepartment assignfeatures
+        builder.addCase(updateSubDepartmentAssignFeatures.pending, (state, _action) => {
+            state.loading = true;
+            state.error = "";
+        });
+        builder.addCase(updateSubDepartmentAssignFeatures.fulfilled, (state, _action) => {
+            state.loading = false;
+            state.error = "";
+        });
+        builder.addCase(updateSubDepartmentAssignFeatures.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
         });

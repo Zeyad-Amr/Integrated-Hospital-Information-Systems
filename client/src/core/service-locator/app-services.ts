@@ -89,6 +89,7 @@ import DeleteRoleUseCase from "@/modules/subdepartments-crud/domain/usecases/rol
 import UpdateRoleUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/update-role-usecase";
 import GetAllRolesUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/get-all-roles-usecase";
 import GetRoleUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/get-role-by-Id-usecase";
+import UpdateSubDepartmentAssignFeaturesUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/update-sub-department-assign-features-usecase";
 
 
 class AppServicesLocator {
@@ -275,6 +276,9 @@ class AppServicesLocator {
             sl.get<BaseSubDepartmentsRepository>(ServiceKeys.SubDepartmentsRepository)
         ));
         sl.registerFactory<UpdateSubDepartmentUseCase>(ServiceKeys.UpdateSubDepartmentUseCase, () => new UpdateSubDepartmentUseCase(
+            sl.get<BaseSubDepartmentsRepository>(ServiceKeys.SubDepartmentsRepository)
+        ));
+        sl.registerFactory<UpdateSubDepartmentAssignFeaturesUseCase>(ServiceKeys.UpdateSubDepartmentAssignFeaturesUseCase, () => new UpdateSubDepartmentAssignFeaturesUseCase(
             sl.get<BaseSubDepartmentsRepository>(ServiceKeys.SubDepartmentsRepository)
         ));
         sl.registerFactory<GetAllSubDepartmentsUseCase>(ServiceKeys.GetAllSubDepartmentsUseCase, () => new GetAllSubDepartmentsUseCase(
