@@ -9,6 +9,7 @@ import { VisitsState } from "../types";
 import VisitEntity from "@/modules/registration/domain/entities/visit-entity";
 import { ErrorResponse } from "@/core/api";
 import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
+import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
 const initialState: VisitsState = {
@@ -52,11 +53,13 @@ const visitSlice = createSlice({
             state.loading = false;
             state.error = "";
             state.visits = [action.payload]
+            AlertService.showAlert( 'تم اضافة زيارة مريض بنجاح' , 'success');
             console.log('state.visits', state.visits);
         });
         builder.addCase(createVisit.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* Update Visit
@@ -66,11 +69,13 @@ const visitSlice = createSlice({
         });
         builder.addCase(updateVisit.fulfilled, (state, _action) => {
             state.loading = false;
+            AlertService.showAlert( 'تم تحديث زيارة مريض بنجاح' , 'success');
             state.error = "";
         });
         builder.addCase(updateVisit.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* Get Anonymous Visit
@@ -86,6 +91,7 @@ const visitSlice = createSlice({
         builder.addCase(getAnonymousVisits.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* Get Visit By Code
@@ -101,6 +107,7 @@ const visitSlice = createSlice({
         builder.addCase(getVisitByCode.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
     },
 });
