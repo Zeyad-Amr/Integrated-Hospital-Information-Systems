@@ -4,6 +4,7 @@ import { RolesState } from "../types";
 import { ErrorResponse } from "@/core/api";
 import RoleEntity from "@/modules/subdepartments-crud/domain/entities/role-entity";
 import RoleInterface from "@/modules/subdepartments-crud/domain/interfaces/role-interface";
+import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
 const initialState: RolesState = {
@@ -52,6 +53,7 @@ const rolesSlice = createSlice({
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
             state.rolesList = [];
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* create role 
@@ -63,10 +65,12 @@ const rolesSlice = createSlice({
             state.loading = false;
             state.currentRole = initialState.currentRole;
             state.error = "";
+            AlertService.showAlert( 'تم اضافة وظيفة بنجاح' , 'success')
         });
         builder.addCase(createRole.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* update role 
@@ -78,10 +82,12 @@ const rolesSlice = createSlice({
             state.loading = false;
             state.currentRole = initialState.currentRole;
             state.error = "";
+            AlertService.showAlert( 'تم تحديث وظيفة بنجاح' , 'success')
         });
         builder.addCase(updateRole.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* delete role 
@@ -93,11 +99,12 @@ const rolesSlice = createSlice({
             state.loading = false;
             state.error = "";
             state.rolesList = state.rolesList.filter((role : RoleInterface) => role.id !== _action.payload);
-
+            AlertService.showAlert( 'تم حذف وظيفة بنجاح' , 'success')
         });
         builder.addCase(deleteRole.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* get single role details
@@ -114,6 +121,7 @@ const rolesSlice = createSlice({
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
             state.currentRole = initialState.currentRole;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
     },

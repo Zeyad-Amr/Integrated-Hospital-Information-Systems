@@ -3,6 +3,7 @@ import { getDepartmentsList } from "../thunks/departments-thunks";
 import { DepartmentsState } from "../types";
 import { ErrorResponse } from "@/core/api";
 import DepartmentsInterface from "@/modules/subdepartments-crud/domain/interfaces/departments-interface";
+import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
 const initialState: DepartmentsState = {
@@ -44,6 +45,7 @@ const departmentsSlice = createSlice({
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
             state.departmentsList = [];
+            AlertService.showAlert( `${state.error}` , 'error');
         });
     },
 });

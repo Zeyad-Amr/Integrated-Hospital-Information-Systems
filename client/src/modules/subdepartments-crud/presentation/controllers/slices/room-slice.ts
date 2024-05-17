@@ -4,6 +4,7 @@ import { RoomState } from "../types";
 import { ErrorResponse } from "@/core/api";
 import RoomEntity from "@/modules/subdepartments-crud/domain/entities/room-entity";
 import RoomInterface from "@/modules/subdepartments-crud/domain/interfaces/room-interface";
+import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
 const initialState: RoomState = {
@@ -51,6 +52,7 @@ const roomSlice = createSlice({
         builder.addCase(getRoomList?.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
             state.roomList = [];
         });
 
@@ -63,10 +65,12 @@ const roomSlice = createSlice({
             state.loading = false;
             state.currentRoom = initialState.currentRoom;
             state.error = "";
+            AlertService.showAlert( 'تم اضافة غرفة بنجاح' , 'success');
         });
         builder.addCase(createRoom.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* update room 
@@ -78,10 +82,12 @@ const roomSlice = createSlice({
             state.loading = false;
             state.currentRoom = initialState.currentRoom;
             state.error = "";
+            AlertService.showAlert( 'تم تحديث غرفة بنجاح' , 'success')
         });
         builder.addCase(updateRoom.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* delete room 
@@ -93,11 +99,13 @@ const roomSlice = createSlice({
             state.loading = false;
             state.error = "";
             state.roomList = state.roomList.filter((room : RoomInterface) => room.id !== _action.payload);
+            AlertService.showAlert( 'تم حذف غرفة بنجاح' , 'success')
 
         });
         builder.addCase(deleteRoom.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* get single room details
@@ -114,6 +122,7 @@ const roomSlice = createSlice({
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
             state.currentRoom = initialState.currentRoom;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
     },

@@ -4,6 +4,7 @@ import { SubDepartmentsState } from "../types";
 import { ErrorResponse } from "@/core/api";
 import SubDepartmentsEntity from "@/modules/subdepartments-crud/domain/entities/sub-departments-entity";
 import {SubDepartmentsInterface} from "@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface";
+import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
 const initialState: SubDepartmentsState = {
@@ -52,6 +53,7 @@ const subDepartmentsSlice = createSlice({
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
             state.subDepartmentsList = [];
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* create subdepartment 
@@ -63,10 +65,12 @@ const subDepartmentsSlice = createSlice({
             state.loading = false;
             state.currentSubDepartment = initialState.currentSubDepartment;
             state.error = "";
+            AlertService.showAlert( 'تم اضافة قسم فرعي بنجاح' , 'success')
         });
         builder.addCase(createSubDepartment.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* update subdepartment 
@@ -78,10 +82,12 @@ const subDepartmentsSlice = createSlice({
             state.loading = false;
             state.currentSubDepartment = initialState.currentSubDepartment;
             state.error = "";
+            AlertService.showAlert( 'تم تحديث قسم فرعي بنجاح' , 'success')
         });
         builder.addCase(updateSubDepartment.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* update subdepartment assignfeatures
@@ -92,10 +98,12 @@ const subDepartmentsSlice = createSlice({
         builder.addCase(updateSubDepartmentAssignFeatures.fulfilled, (state, _action) => {
             state.loading = false;
             state.error = "";
+            AlertService.showAlert( 'تم اضافة صلاحيات لوظائف القسم الفرعي بنجاح' , 'success')
         });
         builder.addCase(updateSubDepartmentAssignFeatures.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* delete subdepartment 
@@ -107,11 +115,12 @@ const subDepartmentsSlice = createSlice({
             state.loading = false;
             state.error = "";
             state.subDepartmentsList = state.subDepartmentsList.filter((subDEpartment : SubDepartmentsInterface) => subDEpartment.id !== _action.payload);
-
+            AlertService.showAlert( 'تم حذف قسم فرعي بنجاح' , 'success')
         });
         builder.addCase(deleteSubDepartment.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* get single subdepartment details
@@ -128,6 +137,7 @@ const subDepartmentsSlice = createSlice({
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
             state.currentSubDepartment = initialState.currentSubDepartment;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
     },

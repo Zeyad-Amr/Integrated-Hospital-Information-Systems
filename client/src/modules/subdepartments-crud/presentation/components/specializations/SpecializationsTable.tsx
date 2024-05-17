@@ -17,7 +17,7 @@ import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-
+import ConfirmationDialog from "@/core/shared/components/ConfirmationDialog";
 
 const SpecializationsTableHeader: HeaderItem[] = [
   {
@@ -63,6 +63,8 @@ const SpecializationsTable = () => {
     useState<boolean>(false);
   const [specializationData, setSpecializationData] =
     useState<SpecializationInterface>();
+  const [showConfirmationDialog, setShowConfirmationDialog] =
+    useState<boolean>(false);
   const specializationState: SpecializationState = useAppSelector(
     (state: any) => state.specializations
   );
@@ -73,6 +75,19 @@ const SpecializationsTable = () => {
 
   return (
     <>
+      <ConfirmationDialog
+        confirmFunction={async () =>
+          dispatch(deleteSpecialization(String(specializationData?.id))).then(
+            () => {
+              setShowConfirmationDialog(false);
+            }
+          )
+        }
+        contentMessage="في حالة حذف التخصص لن تستطيع العودة اليه مجددا, هل انت متأكد من حذف هذا التخصص ؟"
+        open={showConfirmationDialog}
+        setOpen={setShowConfirmationDialog}
+        title="حذف تخصص"
+      />
       <PrimaryButton
         type="button"
         title="اضــافة تخصص"
@@ -127,8 +142,13 @@ const SpecializationsTable = () => {
                   />
                   <DeleteRoundedIcon
                     sx={{ cursor: "pointer", color: "red" }}
-                    onClick={async () => {
-                      dispatch(deleteSpecialization(String(item.id)));
+                    onClick={() => {
+                      setSpecializationData({
+                        id: item.id,
+                        name: item.name,
+                        description: item.description,
+                      });
+                      setShowConfirmationDialog(true);
                     }}
                   />
                 </Box>

@@ -1,17 +1,17 @@
 "use client";
 
-import TestPage from "@/core/shared/components/test";
 import Sidebar from "@/core/layout/sidebar/index";
 import Rooms from "@/modules/subdepartments-crud/presentation/pages/rooms/Rooms";
+import ProtectedLayout from "@/core/shared/components/ProtectedLayout";
 
 // ----------------------------------------------------------------------
 
 export default function rooms() {
   return (
-    <div>
-      <Sidebar pageTitle={'الغــــرف'}>
+    <ProtectedLayout>
+      <Sidebar pageTitle={"الغــــرف"}>
         <Rooms />
       </Sidebar>
-    </div>
+    </ProtectedLayout>
   );
 }
