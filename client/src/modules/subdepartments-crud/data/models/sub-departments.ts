@@ -1,4 +1,4 @@
-import SubDepartmentsInterface from '../../domain/interfaces/sub-departments-interface';
+import {SubDepartmentsAssignFeaturesInterface, SubDepartmentsInterface} from '../../domain/interfaces/sub-departments-interface';
 
 export default class SubDepartmentsModel {
 
@@ -9,6 +9,13 @@ export default class SubDepartmentsModel {
             roomId: entity.roomId,
             specializationId : entity.specializationId,
             departmentId : entity.departmentId
+        }
+    }
+
+    static assignFeaturesToJson(entity: SubDepartmentsAssignFeaturesInterface): any {
+        return {
+            AddedFeatures: entity.AddedFeatures,
+            RemovedFeatures: entity.RemovedFeatures,
         }
     }
 

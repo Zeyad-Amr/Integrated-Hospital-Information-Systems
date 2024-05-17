@@ -154,7 +154,7 @@ model Permissions {
   featureId       Int
   role            RoleType      @relation(fields: [roleTypeId], references: [id])
   roleTypeId      Int
-  subDepartment   SubDepartment @relation(fields: [subDepartmentId], references: [id])
+  subDepartment   SubDepartment @relation(fields: [subDepartmentId], references: [id],onDelete: Cascade)
   subDepartmentId Int
 
   @@unique([featureId, roleTypeId, subDepartmentId], map: "FeatureRoleSubDepartment")

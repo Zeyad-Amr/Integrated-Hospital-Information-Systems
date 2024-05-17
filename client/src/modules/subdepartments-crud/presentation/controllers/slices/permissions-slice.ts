@@ -4,6 +4,7 @@ import { PermissionsState } from "../types";
 import { ErrorResponse } from "@/core/api";
 import PermissionEntity from "@/modules/subdepartments-crud/domain/entities/permission-entity";
 import PermissionInterface from "@/modules/subdepartments-crud/domain/interfaces/permission-interface";
+import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
 const initialState: PermissionsState = {
@@ -52,6 +53,7 @@ const permissionsSlice = createSlice({
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
             state.permissionsList = [];
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* create Permission 
@@ -63,10 +65,12 @@ const permissionsSlice = createSlice({
             state.loading = false;
             state.currentPermission = initialState.currentPermission;
             state.error = "";
+            AlertService.showAlert( 'تم اضافة صلاحية بنجاح' , 'success')
         });
         builder.addCase(createPermission.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* update Permission 
@@ -78,10 +82,12 @@ const permissionsSlice = createSlice({
             state.loading = false;
             state.currentPermission = initialState.currentPermission;
             state.error = "";
+            AlertService.showAlert( 'تم تحديث صلاحية بنجاح' , 'success')
         });
         builder.addCase(updatePermission.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* delete Permission 
@@ -93,11 +99,12 @@ const permissionsSlice = createSlice({
             state.loading = false;
             state.error = "";
             state.permissionsList = state.permissionsList.filter((permission : PermissionInterface) => permission.id !== _action.payload);
-
+            AlertService.showAlert( 'تم حذف صلاحية بنجاح' , 'success')
         });
         builder.addCase(deletePermission.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* get single Permission details
@@ -114,6 +121,7 @@ const permissionsSlice = createSlice({
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
             state.currentPermission = initialState.currentPermission;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
     },

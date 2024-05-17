@@ -3,8 +3,11 @@ import { Box, Typography} from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import { LocalStorage } from '../../utils/local-storage';
+import { useRouter } from 'next/navigation';
 
 const ProfileDialog = (props: any) => {
+    const router = useRouter()
 
   return (
     <Box sx={{
@@ -35,7 +38,10 @@ const ProfileDialog = (props: any) => {
                 حسابي
             </Typography>
         </Box>
-        <Box sx={{width:'100%', display:'flex', color:'red', cursor:'pointer',transition:'0.2s',padding:'10px 20px',borderRadius:'5px', pointerEvents:'auto !important', '&:hover': {backgroundColor:'primary.lighter'}}}>
+        <Box onClick={() => {
+            LocalStorage.clearAll()
+            router.push("/login")
+        }} sx={{width:'100%', display:'flex', color:'red', cursor:'pointer',transition:'0.2s',padding:'10px 20px',borderRadius:'5px', pointerEvents:'auto !important', '&:hover': {backgroundColor:'primary.lighter'}}}>
             <LogoutIcon sx={{fontSize:'1.5rem'}}/>
             <Typography sx={{marginLeft:'1rem', fontSize:'0.9rem', fontWeight:'semibold'}}>
                 تسجيل الخروج

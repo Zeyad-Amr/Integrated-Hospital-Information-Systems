@@ -39,12 +39,11 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   isRequired = false,
   width,
   sx,
-  multiple,
+  multiple = false,
   hideLabel = true,
 }: SelectFieldProps<T>) => {
   // Create a new array with the default value added to the beginning
   const updatedOptions = [defaultValue, ...options];
-  console.log(name, value)
 
   return (
     <Box
@@ -80,7 +79,6 @@ const CustomSelectField = <T extends { id: any; value: string }>({
           label={label}
           onChange={(event: SelectChangeEvent<T>, child: ReactNode) => {
             onChange(event, child);
-            console.log(event.target.value);
           }}
           onBlur={onBlur}
           sx={{

@@ -1,6 +1,6 @@
 import { ErrorResponse, ErrorMessage } from "@/core/api";
 import { BaseSubDepartmentsDataSource } from "../datasources/sub-departments-datasource";
-import SubDepartmentsInterface from "../../domain/interfaces/sub-departments-interface";
+import {SubDepartmentsAssignFeaturesInterface, SubDepartmentsInterface} from "../../domain/interfaces/sub-departments-interface";
 
 class SubDepartmentsRepository extends BaseSubDepartmentsDataSource {
     constructor(private baseSubDepartmentsDataSource: BaseSubDepartmentsDataSource) {
@@ -22,6 +22,16 @@ class SubDepartmentsRepository extends BaseSubDepartmentsDataSource {
     override async updateSubDepartment(subDepartment: SubDepartmentsInterface): Promise<boolean> {
         try {
             await this.baseSubDepartmentsDataSource.updateSubDepartment(subDepartment);
+            return true;
+        } catch (error) {
+            const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;
+            throw errorResponse;
+        }
+    }
+
+    override async updateSubDepartmentAssignFeature(assignFeatures: SubDepartmentsAssignFeaturesInterface): Promise<boolean> {
+        try {
+            await this.baseSubDepartmentsDataSource.updateSubDepartmentAssignFeature(assignFeatures);
             return true;
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;

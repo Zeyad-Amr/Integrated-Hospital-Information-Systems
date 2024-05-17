@@ -89,7 +89,9 @@ const CustomBasicTable = <T,>({
               {...rowProps}
             >
               {headerItem.map((headerItem) =>
-                headerItem.isIcon ? (
+                {console.log(headerItem);
+                
+                  return headerItem.isIcon ? (
                   <TableCell
                     key={headerItem.id}
                     {...headerItem.tableCellProps}
@@ -106,14 +108,14 @@ const CustomBasicTable = <T,>({
                       borderLeft: headerItem.showBorder
                         ? `0.25rem solid ${
                             (item as any).gender == "ذكر" ? "aqua" : "pink"
-                          }`
+                          }  !important`
                         : "transparent",
                       ...headerItem.cellSx,
                     }}
                   >
                     {(item as any)[headerItem.id]}
                   </TableCell>
-                )
+                )}
               )}
             </TableRow>
           ))}

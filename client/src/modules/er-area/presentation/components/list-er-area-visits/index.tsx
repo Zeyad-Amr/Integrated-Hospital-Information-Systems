@@ -19,9 +19,9 @@ const ERVisitsTable = () => {
     useEffect(() => {
         let eventSource = new EventSource(HOST_API + 'streaming/event')
         eventSource.onmessage = (ev) => {
-            let data_json = JSON.parse(ev.data)
-            console.log(ev.data)
+            let data_json = JSON.parse(ev.data).items
             setStreamedData(data_json);
+            console.log(ev.data)
             console.log(data_json)
         }
     }, [])

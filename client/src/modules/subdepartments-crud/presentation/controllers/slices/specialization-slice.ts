@@ -4,6 +4,7 @@ import { SpecializationState } from "../types";
 import { ErrorResponse } from "@/core/api";
 import SpecializationEntity from "@/modules/subdepartments-crud/domain/entities/specialization-entity";
 import SpecializationInterface from "@/modules/subdepartments-crud/domain/interfaces/specialization -interface";
+import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
 const initialState: SpecializationState = {
@@ -52,6 +53,7 @@ const specializationSlice = createSlice({
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
             state.specializationList = [];
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* create specialization 
@@ -63,10 +65,12 @@ const specializationSlice = createSlice({
             state.loading = false;
             state.currentSpecialization = initialState.currentSpecialization;
             state.error = "";
+            AlertService.showAlert( 'تم اضافة تخصص بنجاح' , 'success')
         });
         builder.addCase(createSpecialization.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* update specialization 
@@ -78,10 +82,12 @@ const specializationSlice = createSlice({
             state.loading = false;
             state.currentSpecialization = initialState.currentSpecialization;
             state.error = "";
+            AlertService.showAlert( 'تم تحديث تخصص بنجاح' , 'success')
         });
         builder.addCase(updateSpecializations.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* delete specialization 
@@ -93,11 +99,12 @@ const specializationSlice = createSlice({
             state.loading = false;
             state.error = "";
             state.specializationList = state.specializationList.filter((specialization : SpecializationInterface) => specialization.id !== _action.payload);
-
+            AlertService.showAlert( 'تم حذف تخصص بنجاح' , 'success')
         });
         builder.addCase(deleteSpecialization.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
         //* get single specialization details
@@ -114,6 +121,7 @@ const specializationSlice = createSlice({
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
             state.currentSpecialization = initialState.currentSpecialization;
+            AlertService.showAlert( `${state.error}` , 'error');
         });
 
     },

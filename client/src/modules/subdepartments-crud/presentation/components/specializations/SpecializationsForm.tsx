@@ -9,32 +9,33 @@ import { createSpecialization , updateSpecializations } from "@/modules/subdepar
 import SpecializationInterface from '@/modules/subdepartments-crud/domain/interfaces/specialization -interface';
 
 interface SpecializationsFormProps {
-    edit?: boolean;
+    isEdit: boolean;
+    setShowSpecializationForm : (isShown : boolean) => void;
     propsIntialValues?: SpecializationInterface
 }
 
-const SpecializationsForm = ({ edit, propsIntialValues }: SpecializationsFormProps) => {
+const SpecializationsForm = ({ isEdit, setShowSpecializationForm , propsIntialValues }: SpecializationsFormProps) => {
 
     const dispatch = useAppDispatch();
 
     return (
         <Formik
-            initialValues={edit && propsIntialValues ? { name : propsIntialValues.name , description : propsIntialValues.description } : SpecializationEntity.defaultValue()}
+            initialValues={isEdit && propsIntialValues ? propsIntialValues : SpecializationEntity.defaultValue()}
             onSubmit={async (values) => { 
                 console.log(values) ; 
-                edit && propsIntialValues ? 
+                isEdit && propsIntialValues ? 
                 // in case edit mode
                 dispatch(updateSpecializations({
                     id : String(propsIntialValues.id),
                     name : values.name,
                     description : values.description,
                 })).then(() => {
-                    // setShowDialog('none')
+                    setShowSpecializationForm(false)
                 })
                 : 
                 // in case not edit mode
                 dispatch(createSpecialization(values)).then(() => {
-                    // setShowDialog('none')
+                    setShowSpecializationForm(false)
                 })
              }}
             validationSchema={SpecializationEntity.specializationsFormValidations()}
@@ -78,7 +79,7 @@ const SpecializationsForm = ({ edit, propsIntialValues }: SpecializationsFormPro
                     />
 
                     <PrimaryButton
-                        title={edit ? "حفــــظ" : "اضـــافة"}
+                        title={isEdit ? "حفــــظ" : "اضـــافة"}
                         type="submit"
                     />
                 </Box>

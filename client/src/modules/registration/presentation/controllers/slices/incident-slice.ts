@@ -3,6 +3,7 @@ import { IncidentState } from "../types";
 import { createSlice } from "@reduxjs/toolkit";
 import { createIncident } from "../thunks/incident-thunk";
 import { ErrorResponse } from "@/core/api";
+import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
 const initialState: IncidentState = {
@@ -32,10 +33,12 @@ const incidentSlice = createSlice({
             .addCase(createIncident.fulfilled, (state, _action) => {
                 state.loading = false;
                 state.error = "";
+                AlertService.showAlert( 'تم اضافة اصابة جماعية بنجاح' , 'success');
             })
             .addCase(createIncident.rejected, (state, action) => {
                 state.loading = false;
                 state.error = (action.payload as ErrorResponse).message;
+                AlertService.showAlert( `${state.error}` , 'error');
             })
     }
 
