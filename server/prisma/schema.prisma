@@ -31,7 +31,6 @@ model Person {
   birthDate            DateTime?     @db.Date
   phone                String?       @unique
   address              String?
-  type                 PersonType
 
   employee  Employee?
   patient   Patient?
@@ -294,12 +293,6 @@ model Transfer {
 
   visit     Visit  @relation(fields: [visitCode], references: [code])
   visitCode String
-}
-
-enum PersonType {
-  PATIENT
-  COMPANION
-  EMPLOYEE
 }
 
 // enum IdentityEnum {
