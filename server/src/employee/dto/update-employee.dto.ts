@@ -57,13 +57,6 @@ export class UpdateEmployeeDto {
   @IsInt()
   shiftId: number;
 
-  @ApiProperty({
-    type: String,
-    example: 'c6527fcc-2b70-4572-a415-7e74c6d0df65',
-  })
-  @IsOptional()
-  @IsUUID()
-  departmentId: string;
 
   @ApiProperty({ type: AuthUpdateDto, required: true })
   @IsObject()

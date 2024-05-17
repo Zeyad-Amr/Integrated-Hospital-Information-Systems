@@ -79,10 +79,8 @@ export class EmployeeController {
     @FilteringParams([
       'shiftId',
       'roleId',
-      'departmentId',
       'createdAt',
       'updatedAt',
-      'departmentId'
     ]) filters?: Array<Filter>,
   ) {
     try {

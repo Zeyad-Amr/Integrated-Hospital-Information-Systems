@@ -43,17 +43,7 @@ async function insertAdmin() {
                 type: PrismaClient.PersonType.EMPLOYEE
               },
             },
-            shift: { connect: { value: 'يوم كامل' } },
-            department: {
-              connectOrCreate: {
-                where: {
-                  name: 'Administration',
-                },
-                create: {
-                  name: 'Administration',
-                },
-              },
-            },
+            shift: { connect: { value: 'يوم كامل' } }
           },
         },
       },

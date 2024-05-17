@@ -322,7 +322,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
     {
       patient: { include: { person: { include: { verificationMethod: true, gender: true, governate: true } }, comorbidities: true } },
       companion: { include: { person: { include: { verificationMethod: true, gender: true, governate: true } }, kinship: true } },
-      creator: { include: { person: { include: { verificationMethod: true, gender: true, governate: true } }, department: true, role: true, shift: true } },
+      creator: { include: { person: { include: { verificationMethod: true, gender: true, governate: true } },role: true, shift: true } },
       AdditionalInformation: { include: { Attendant: { include: { attendantRole: true } }, Car: true, cameFrom: true } },
       incident: true,
     }
