@@ -294,12 +294,6 @@ model Transfer {
   visitCode String
 }
 
-enum PersonType {
-  PATIENT
-  COMPANION
-  EMPLOYEE
-}
-
 // enum IdentityEnum {
 //   NATIONALIDCARD
 //   PASSPORT

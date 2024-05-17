@@ -5,7 +5,6 @@ import {
   Attendant,
   Incident,
   Person,
-  PersonType,
   Prisma,
   Visit,
   VisitAdditionalInformation,
@@ -124,7 +123,7 @@ export class IncidentRepo extends PrismaGenericRepo<
         await tx.person.createMany({
           data: incidentDto.companions.map((companion) => {
             let { kinshipId, ...personalData } = companion
-            return { ...personalData, type: PersonType.COMPANION, fullName: `${companion.firstName} ${companion.secondName} ${companion.thirdName} ${companion.fourthName}` }
+            return { ...personalData, fullName: `${companion.firstName} ${companion.secondName} ${companion.thirdName} ${companion.fourthName}` }
           }),
           skipDuplicates: true,
         });
