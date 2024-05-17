@@ -301,8 +301,8 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
             },
             transfers: {
               create: {
-                from: 'ER Area',
-                to: data.transferTo,
+                fromSubDepId: data.transferFromId,
+                toSubDepId: data.transferToId,
               },
             },
             patient: {
@@ -367,7 +367,6 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
         person: {
           include: { verificationMethod: true, gender: true, governate: true },
         },
-        department: true,
         role: true,
         shift: true,
       },
