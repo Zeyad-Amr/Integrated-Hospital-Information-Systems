@@ -137,7 +137,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
             );
           }
 
-          if (!person.patient) {
+          if (!person?.patient) {
             const {
               verificationMethodId,
               genderId,
@@ -193,7 +193,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
               createVisitDto.companion.SSN,
             );
 
-            if (!person.companion) {
+            if (!person?.companion) {
               companion = await tx.companion.create({
                 data: {
                   kinship: { connect: { id: kinshipId } },
