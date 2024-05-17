@@ -1,16 +1,17 @@
 "use client";
 
 import Sidebar from "@/core/layout/sidebar/index";
+import ProtectedLayout from "@/core/shared/components/ProtectedLayout";
 import VisitTableComponent from "@/modules/registration/presentation/pages/visit/anomynous-visit";
 
 // ----------------------------------------------------------------------
 
 export default function AllUsers() {
   return (
-    <div>
-      <Sidebar pageTitle={'الزيـــارات'}>
+    <ProtectedLayout>
+      <Sidebar pageTitle={"الزيـــارات"}>
         <VisitTableComponent />
       </Sidebar>
-    </div>
+    </ProtectedLayout>
   );
 }
