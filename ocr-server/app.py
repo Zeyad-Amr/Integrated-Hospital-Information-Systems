@@ -1,7 +1,7 @@
 from flask import Flask, request, make_response, jsonify
 from werkzeug.utils import secure_filename
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
+from keras.models import load_model
+from keras.preprocessing import image
 import numpy as np
 import cv2
 import os
