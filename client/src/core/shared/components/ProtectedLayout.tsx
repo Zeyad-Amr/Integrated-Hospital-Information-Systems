@@ -1,5 +1,4 @@
 import { useEffect, useState, ReactNode } from "react";
-import LoginPage from "@/modules/auth/presentation/pages/login";
 import { useRouter } from "next/navigation";
 
 interface ProtectedLayoutProps {
@@ -19,7 +18,7 @@ const ProtectedLayout: React.FC<ProtectedLayoutProps> = ({ children }) => {
     }
   }, []);
 
-  return isAuthenticated ? <>{children}</> : <LoginPage />;
+  return isAuthenticated ? <>{children}</> : null;
 };
 
 export default ProtectedLayout;
