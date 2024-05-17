@@ -37,7 +37,7 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
     try {
       const res = await this.prismaService.person.findUnique({
         where: { SSN: ssn },
-        include: this.personInclude
+        include: {...this.personInclude, patient:true,companion:true}
       });
       // if (!res)
       //   throw new NotFoundException()
