@@ -18,7 +18,7 @@ export class CreateSubdepartmentDto {
     @ApiProperty({ required: false, example: '1' })
     @IsString()
     @IsOptional()
-    departmentId: string
+    departmentId: number
 }
 
 

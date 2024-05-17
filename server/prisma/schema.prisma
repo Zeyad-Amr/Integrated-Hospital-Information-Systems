@@ -85,7 +85,9 @@ model Employee {
   createdById       String?
   createdEmployees  Employee[] @relation("CreatedBy")
 
+  subdepartments SubDepartment[]
   visitsCreated Visit[]
+
 }
 
 model User {
@@ -109,7 +111,7 @@ model Department {
 
 model SubDepartment {
   id               Int            @id @default(autoincrement())
-  name             String
+  name             String @unique
   roomId           Int
   room             Room           @relation(fields: [roomId], references: [id])
   specializationId Int
@@ -120,6 +122,8 @@ model SubDepartment {
   transferTo Transfer[]   @relation("toSubDepartment")
   Department   Department?   @relation(fields: [departmentId], references: [id])
   departmentId Int?
+  employee   Employee?   @relation(fields: [employeeId], references: [id])
+  employeeId String?
   Permissions  Permissions[]
 }
 

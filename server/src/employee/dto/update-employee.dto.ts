@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsArray,
   IsEmail,
   IsInt,
   IsObject,
@@ -43,11 +44,19 @@ export class UpdateEmployeeDto {
 
   @ApiProperty({
     type: String,
-    example: 'EMPLOYEE',
+    example: 1,
   })
   @IsOptional()
   @IsInt()
   roleId: number;
+
+  @ApiProperty({
+    type: String,
+    example: [4],
+  })
+  @IsInt()
+  @IsArray({each:true})
+  suDepartmentIds: number;
 
   @ApiProperty({
     type: String,
