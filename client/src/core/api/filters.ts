@@ -46,10 +46,15 @@ class Filter {
     static sortDescending(field: string): FilterQuery {
         return { filter: `${field}:desc` };
     }
+
+    static custom(filter: string): FilterQuery {
+        return { filter, isCustom: true };
+    }
 }
 
 interface FilterQuery {
     filter: string;
+    isCustom?: boolean;
 }
 
 export default Filter;

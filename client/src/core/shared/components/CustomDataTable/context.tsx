@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { FilterColumn, HeaderItem, SearchQuery, SortedColumn } from ".";
 import { isEqual } from "lodash";
+import { FilterQuery } from "@/core/api";
 
 // Define the type for TableContext
 interface TableContextType<T> {
@@ -39,7 +40,13 @@ export const useTableContext = <T,>() => {
 };
 
 // TableProvider component to wrap your application and provide the context
-export const TableProvider = (props: any) => {
+export const TableProvider = (props: {
+  applyFilters: (filters: FilterQuery[]) => void;
+  initSortedColumn: SortedColumn;
+  columnHeader: HeaderItem[];
+  data: any[];
+  children: React.ReactNode;
+}) => {
   const { applyFilters, initSortedColumn, columnHeader, data } = props;
 
   const [filterColumns, setFilterColumns] = useState<FilterColumn[]>([]);

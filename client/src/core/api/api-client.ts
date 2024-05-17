@@ -40,7 +40,12 @@ class ApiClient {
     // Add filters to the URL
     if (filters) {
       filters.forEach((f: FilterQuery) => {
-        url = url.concat(`filters=${f.filter}&`);
+        if (f.isCustom == true) {
+          url = url.concat(`${f.filter}&`);
+        } else {
+          url = url.concat(`filters=${f.filter}&`);
+        }
+
       });
     }
 
@@ -69,6 +74,7 @@ class ApiClient {
       ...config,
     };
     try {
+      console.log('GET url', url);
       const response = await axiosInstance.get(url, requestConfig);
       return response;
     } catch (error) {

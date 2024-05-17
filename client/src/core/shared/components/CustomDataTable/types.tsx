@@ -2,7 +2,7 @@ import { FilterQuery } from "@/core/api";
 import { SxProps, TableCellProps } from "@mui/material";
 
 interface CustomDataTableProps<T> {
-  applyFilters?: (filters: FilterQuery[]) => void;
+  applyFilters: (filters: FilterQuery[]) => void;
   data: T[];
   headerItems: HeaderItem[];
   width?: string;
@@ -48,6 +48,7 @@ interface HeaderItem {
   sortable?: boolean;
   filterable?: boolean;
   searchable?: boolean;
+  isCustomFilter?: boolean;
   display?: boolean;
 }
 
