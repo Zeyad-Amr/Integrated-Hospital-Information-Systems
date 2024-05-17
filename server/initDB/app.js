@@ -42,17 +42,7 @@ async function insertAdmin() {
                 address: 'Fasil',
               },
             },
-            shift: { connect: { value: 'يوم كامل' } },
-            department: {
-              connectOrCreate: {
-                where: {
-                  name: 'Administration',
-                },
-                create: {
-                  name: 'Administration',
-                },
-              },
-            },
+            shift: { connect: { value: 'يوم كامل' } }
           },
         },
       },

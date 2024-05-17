@@ -21,18 +21,16 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
     creatorId: string,
   ): Promise<Employee> {
     try {
-      const { auth, person, roleId, shiftId, departmentId } = item;
+      const { auth, person, roleId, shiftId,suDepartmentIds } = item;
       const { verificationMethodId, genderId, governateId, ...personData } = person
       const employee = await this.prismaService.employee.create({
         data: {
           role: { connect: { id: roleId } },
           shift: { connect: { id: shiftId } },
-          department: {
-            connect: {
-              id: departmentId,
-            },
-          },
           auth: { create: { ...auth } },
+          subdepartments:{
+            connect:suDepartmentIds.map((id)=>({id}))
+          },
           person: {
             connectOrCreate: {
               where: { SSN: person.SSN },
@@ -61,18 +59,13 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
 
   async update(id: string, item: UpdateEmployeeDto): Promise<any> {
     try {
-      const { roleId, shiftId, departmentId, personalData, auth } = item;
+      const { roleId, shiftId,  personalData, auth } = item;
 
       const employee = await this.prismaService.employee.update({
         where: { id },
         data: {
           role: { connect: { id: roleId } },
           shift: { connect: { id: shiftId } },
-          department: {
-            update: {
-              id: departmentId,
-            },
-          },
           person: {
             update: {
               data: {
@@ -128,13 +121,13 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
 
   private includeObj: Prisma.EmployeeInclude = {
     person: { include: { verificationMethod: true, gender: true } },
-    department: true,
     auth: {
       select: {
         username: true,
         email: true,
       },
     },
+    subdepartments:true,
     role: true,
     shift: true,
   };
@@ -166,14 +159,6 @@ function getCustomFilters(customFilters: CustomFilters) {
     additionalWhereConditions.push({
       role: {
         id: +customFilters.roleId
-      }
-    })
-  }
-
-  if (customFilters?.departmentId) {
-    additionalWhereConditions.push({
-      department: {
-        id: customFilters.departmentId
       }
     })
   }

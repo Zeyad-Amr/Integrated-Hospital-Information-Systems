@@ -17,7 +17,7 @@ export class AuthRepo extends PrismaGenericRepo<User> {
         where: {
           username,
         },
-        include: { employee: { include: { person: true, department: true, role: true, shift: true } } },
+        include: { employee: { include: { person: true, subdepartments: true, role: true, shift: true } } },
       });
       return user;
     } catch (error) {
