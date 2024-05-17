@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../shared/services/prisma-client/prisma.service';
-import { Companion, Patient, Person, PersonType, Prisma } from '@prisma/client';
+import { Companion, Patient, Person,  Prisma } from '@prisma/client';
 import { VisitRepo } from 'src/visit/visit.repo';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { PrismaGenericRepo } from 'src/shared/services/prisma-client/prisma-generic.repo';
