@@ -37,8 +37,8 @@ export class CreateEmployeeDto {
     type: String,
     example: [1,2,3],
   })
-  @IsInt()
-  @IsArray({each:true})
+  @IsArray()
+  @IsInt({ each: true })
   suDepartmentIds: number[];
 
   @ApiProperty({
