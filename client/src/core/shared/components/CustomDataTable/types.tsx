@@ -4,6 +4,7 @@ import { SxProps, TableCellProps } from "@mui/material";
 interface CustomDataTableProps<T> {
   applyFilters: (filters: FilterQuery[]) => void;
   data: T[];
+  totalItems: number;
   headerItems: HeaderItem[];
   width?: string;
   height?: string;

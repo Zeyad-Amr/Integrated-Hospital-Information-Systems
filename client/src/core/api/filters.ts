@@ -40,11 +40,11 @@ class Filter {
     }
 
     static sortAscending(field: string): FilterQuery {
-        return { filter: `${field}:asc` };
+        return { filter: `${field}:asc`, isSort: true };
     }
 
     static sortDescending(field: string): FilterQuery {
-        return { filter: `${field}:desc` };
+        return { filter: `${field}:desc`, isSort: true };
     }
 
     static custom(filter: string): FilterQuery {
@@ -54,6 +54,7 @@ class Filter {
 
 interface FilterQuery {
     filter: string;
+    isSort?: boolean;
     isCustom?: boolean;
 }
 

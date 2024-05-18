@@ -13,6 +13,7 @@ export default class CompanionModel {
 
     // //* --------------------- Deserialization: Create a model from JSON data ---------------------
     static fromJson(json: any): CompanionInterface {
+        console.log('CompanionModel.fromJson', json);
         return {
             ...PersonModel.fromJson(json.person),
             kinship: json.kinship,

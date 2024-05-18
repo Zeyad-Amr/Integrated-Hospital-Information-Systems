@@ -5,8 +5,7 @@ export interface AnonymizedVisit {
   companionName: string;
   companionSSN: string;
   code: string;
-  date: string;
-  time: string;
+  createdAt: string;
   update?: any;
 }
 
@@ -19,7 +18,7 @@ export const header: HeaderItem[] = [
     tableCellProps: { align: "center" },
     sortable: true,
     filterable: false,
-    searchable: true,
+    searchable: false,
     onClick: () => {},
   },
   {
@@ -57,21 +56,11 @@ export const header: HeaderItem[] = [
     onClick: () => {},
   },
   {
-    id: "date",
+    id: "createdAt",
     label: "تاريخ الحجز",
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
-    sortable: false,
-    filterable: false,
-    searchable: false,
-    onClick: () => {},
-  },
-  {
-    id: "time",
-    label: "وقت الحجز",
-    minWidth: 100,
-    tableCellProps: { align: "center", style: { direction: "ltr" } },
-    sortable: false,
+    sortable: true,
     filterable: false,
     searchable: false,
     onClick: () => {},

@@ -8,7 +8,7 @@ interface CustomTablePaginationProps {
 const CustomTablePagination = ({ dataLength }: CustomTablePaginationProps) => {
   const { page, rowsPerPage, setPage, setRowsPerPage } = useTableContext();
 
-  const rowsPerPageOptions = [5, 10, 25, 100];
+  const rowsPerPageOptions = [1, 5, 10, 25, 100];
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number

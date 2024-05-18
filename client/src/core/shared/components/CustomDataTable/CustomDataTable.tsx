@@ -21,6 +21,7 @@ import { CustomDataTableProps } from "./types";
 /**
  * @param {applyFilters} - The function to apply the query to the data.
  * @param {T[]} data - The array of data items to be rendered.
+ * @param {number} totalItems - The total number of items in the data array.
  * @param {HeaderItem[]} headerItems - The array of header items to define the table columns.
  * @param {string} [width] - The width of the table (optional).
  * @param {string} [height] - The height of the table (optional).
@@ -38,6 +39,7 @@ import { CustomDataTableProps } from "./types";
 const CustomDataTable = <T,>({
   applyFilters,
   data,
+  totalItems,
   headerItems,
   width = "80vw",
   height = "70vh",
@@ -247,7 +249,7 @@ const CustomDataTable = <T,>({
             width: width,
           }}
         >
-          <CustomTablePagination dataLength={filterdData.length} />
+          <CustomTablePagination dataLength={totalItems} />
         </Box>
       </Box>
     </TableProvider>

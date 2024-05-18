@@ -43,12 +43,12 @@ const VisitsTable = () => {
           item.companion?.fourthName
         : "لا يوجد",
       companionSSN: item?.companion?.SSN ?? "لا يوجد",
-      date: item?.createdAt
-        ? new Date(item?.createdAt).toLocaleDateString()
+      createdAt: item?.createdAt
+        ? new Date(item?.createdAt).toLocaleDateString() +
+          " " +
+          new Date(item?.createdAt).toLocaleTimeString()
         : "",
-      time: item?.createdAt
-        ? new Date(item?.createdAt).toLocaleTimeString()
-        : "",
+
       update: (
         <Button
           color="info"
@@ -76,6 +76,8 @@ const VisitsTable = () => {
           console.log(filters);
           dispatch(getAnonymousVisits(filters));
         }}
+        initSortedColumn={{ columnId: "createdAt", isAscending: false }}
+        totalItems={state.total}
         data={tableData}
         headerItems={header}
         stickyHeader={true}

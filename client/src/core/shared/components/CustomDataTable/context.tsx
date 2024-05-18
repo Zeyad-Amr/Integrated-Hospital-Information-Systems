@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { FilterColumn, HeaderItem, SearchQuery, SortedColumn } from ".";
 import { isEqual } from "lodash";
-import { FilterQuery } from "@/core/api";
+import { Filter, FilterQuery } from "@/core/api";
 
 // Define the type for TableContext
 interface TableContextType<T> {
@@ -66,7 +66,13 @@ export const TableProvider = (props: {
 
   const initialRender = useRef(true);
 
+  // useEffect to apply filters initially on the first render
+
   useEffect(() => {
+    applyFiltersHandler();
+  }, [page, rowsPerPage, sortedColumn, searchQuery, filterColumns]);
+
+  const applyFiltersHandler = () => {
     if (initialRender.current) {
       // Skip the initial render
       initialRender.current = false;
@@ -118,9 +124,43 @@ export const TableProvider = (props: {
       console.log(filterColumns);
 
       // Apply filters
-      applyFilters([]);
+      // filters list
+      let filters: FilterQuery[] = [];
+      if (searchQuery.value && searchQuery.columnId) {
+        if (
+          columnHeader.find((item) => item.id === searchQuery.columnId)
+            ?.isCustomFilter === true
+        ) {
+          filters.push(
+            Filter.custom(`${searchQuery.columnId}=${searchQuery.value}`)
+          );
+        } else {
+          filters.push(Filter.like(searchQuery.columnId, searchQuery.value));
+        }
+      }
+
+      if (sortedColumn) {
+        if (
+          columnHeader.find((item) => item.id === sortedColumn.columnId)
+            ?.isCustomFilter === true
+        ) {
+          // custom sort
+        } else {
+          if (sortedColumn.isAscending) {
+            filters.push(Filter.sortAscending(sortedColumn.columnId));
+          } else {
+            filters.push(Filter.sortDescending(sortedColumn.columnId));
+          }
+        }
+      }
+
+      if (rowsPerPage) {
+        filters.push(Filter.custom(`page=${page + 1}&size=${rowsPerPage}`));
+      }
+
+      applyFilters(filters);
     }
-  }, [page, rowsPerPage, sortedColumn, searchQuery, filterColumns]);
+  };
 
   return (
     <TableContext.Provider

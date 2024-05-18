@@ -43,7 +43,11 @@ class ApiClient {
         if (f.isCustom == true) {
           url = url.concat(`${f.filter}&`);
         } else {
-          url = url.concat(`filters=${f.filter}&`);
+          if (f.isSort) {
+            url = url.concat(`sort=${f.filter}&`);
+          } else {
+            url = url.concat(`filters=${f.filter}&`);
+          }
         }
 
       });

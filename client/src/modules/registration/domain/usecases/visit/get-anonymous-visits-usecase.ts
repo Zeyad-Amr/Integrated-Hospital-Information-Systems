@@ -2,13 +2,13 @@
 import BaseUseCase from "@/core/base/base-usecase";
 import BaseRegistrationRepository from "../../repositories/base-visit-repository";
 import VisitInterface from "../../interfaces/visit-interface";
-import { FilterQuery } from "@/core/api";
+import { FilterQuery, PaginatedList } from "@/core/api";
 
 class GetAnonymousVisitUseCase
-    implements BaseUseCase<VisitInterface[], FilterQuery[]> {
+    implements BaseUseCase<PaginatedList<VisitInterface>, FilterQuery[]> {
     constructor(private baseRegistrationRepository: BaseRegistrationRepository) { }
 
-    async call(params: FilterQuery[]): Promise<VisitInterface[]> {
+    async call(params: FilterQuery[]): Promise<PaginatedList<VisitInterface>> {
         return await this.baseRegistrationRepository.getAllAnonymousVisits(params);
     }
 }

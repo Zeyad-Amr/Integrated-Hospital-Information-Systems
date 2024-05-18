@@ -43,14 +43,14 @@ export default class AdditionalDataModel {
             place: json.injuryLocation,
             reason: json.injuryCause,
             notes: json.notes,
-            firstChar: json.Car.firstChar,
-            secondChar: json.Car.secondChar,
-            thirdChar: json.Car.thirdChar,
-            carNum: json.Car.number,
-            attendantName: json.Attendant.name,
-            attendantSerialNumber: json.Attendant.cardId,
-            attendantSSN: json.Attendant.SSN,
-            attendantRole: json.Attendant.attendantRoleId
+            firstChar: json.Car == null ? undefined : json.Car.firstChar,
+            secondChar: json.Car == null ? undefined : json.Car.secondChar,
+            thirdChar: json.Car == null ? undefined : json.Car.thirdChar,
+            carNum: json.Car == null ? undefined : json.Car.number,
+            attendantName: json.Attendant == null ? undefined : json.Attendant.name,
+            attendantSerialNumber: json.Attendant == null ? undefined : json.Attendant.cardId,
+            attendantSSN: json.Attendant == null ? undefined : json.Attendant.SSN,
+            attendantRole: json.Attendant == null ? undefined : json.Attendant.attendantRoleId
         };
     }
 }
