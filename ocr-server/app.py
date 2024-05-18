@@ -16,7 +16,6 @@ UPLOAD_FOLDER = 'IDs'
 @app.route('/extractdata', methods=['POST'])
 def extract_id():
 
-    try:
         if 'front' not in request.files or 'back' not in request.files:
             return make_response(jsonify({"message": "Some data is missing in the request"}), 400)
 
@@ -59,9 +58,6 @@ def extract_id():
 
         return make_response(jsonify({"message": "Invalid file format"}), 400)
 
-    except Exception as e:
-        print(e)
-        return make_response({"message": "internal server error"}, 500)
 
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -178,7 +174,8 @@ def ping():
 
 
 if __name__ == '__main__':
+    print("Starting server")
     os.makedirs(f'./{UPLOAD_FOLDER}', exist_ok=True)
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     nationalIdObj = NationalID()
-    app.run(debug=True)
+    app.run("0.0.0.0",debug=True)
