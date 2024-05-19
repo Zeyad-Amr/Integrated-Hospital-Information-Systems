@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Person, PersonType, Prisma } from '@prisma/client';
+import { Person, Prisma } from '@prisma/client';
 import { PrismaGenericRepo } from 'src/shared/services/prisma-client/prisma-generic.repo';
 import { PrismaService } from 'src/shared/services/prisma-client/prisma.service';
 import { CreatePersonDto } from './dto/create-person.dto';
@@ -10,7 +10,7 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
     super('person', prismaService);
   }
 
-  async createIfNotExist(person: CreatePersonDto, type: PersonType): Promise<Person> {
+  async createIfNotExist(person: CreatePersonDto): Promise<Person> {
     try {
       const { verificationMethodId, genderId, governateId, ...personData } = person
       return await this.prismaService.person.upsert({
@@ -23,7 +23,6 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
           verificationMethod: { connect: { id: verificationMethodId } },
           governate: governateId ? { connect: { id: governateId } } : undefined,
           gender: { connect: { id: genderId } },
-          type,
           fullName: `${person.firstName} ${person.secondName} ${person.thirdName} ${person.fourthName}`
         },
         include: this.personInclude
@@ -37,7 +36,7 @@ export class PersonRepo extends PrismaGenericRepo<Person> {
     try {
       const res = await this.prismaService.person.findUnique({
         where: { SSN: ssn },
-        include: this.personInclude
+        include: {...this.personInclude, patient:true,companion:true}
       });
       // if (!res)
       //   throw new NotFoundException()

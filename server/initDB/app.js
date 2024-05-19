@@ -40,20 +40,9 @@ async function insertAdmin() {
                 birthDate: '2001-07-12T00:00:00.000Z',
                 governate: { connect: { id: 1 } },
                 address: 'Fasil',
-                type: PrismaClient.PersonType.EMPLOYEE
               },
             },
-            shift: { connect: { value: 'يوم كامل' } },
-            department: {
-              connectOrCreate: {
-                where: {
-                  name: 'Administration',
-                },
-                create: {
-                  name: 'Administration',
-                },
-              },
-            },
+            shift: { connect: { value: 'يوم كامل' } }
           },
         },
       },

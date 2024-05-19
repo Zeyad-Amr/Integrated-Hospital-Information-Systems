@@ -31,7 +31,6 @@ model Person {
   birthDate            DateTime?     @db.Date
   phone                String?       @unique
   address              String?
-  type                 PersonType
 
   employee  Employee?
   patient   Patient?
@@ -86,10 +85,9 @@ model Employee {
   createdById       String?
   createdEmployees  Employee[] @relation("CreatedBy")
 
+  subdepartments SubDepartment[]
   visitsCreated Visit[]
 
-  department   Department @relation(fields: [departmentId], references: [id])
-  departmentId String
 }
 
 model User {
@@ -105,24 +103,27 @@ model User {
 }
 
 model Department {
-  id   String @id @default(uuid())
+  id               Int            @id @default(autoincrement())
   name String @unique
 
-  Employees      Employee[]
   SubDepartments SubDepartment[]
 }
 
 model SubDepartment {
   id               Int            @id @default(autoincrement())
-  name             String
+  name             String @unique
   roomId           Int
   room             Room           @relation(fields: [roomId], references: [id])
   specializationId Int
   specialization   Specialization @relation(fields: [specializationId], references: [id])
   features         Feature[]
 
+  transferFrom Transfer[] @relation("fromSubDepartment")
+  transferTo Transfer[]   @relation("toSubDepartment")
   Department   Department?   @relation(fields: [departmentId], references: [id])
-  departmentId String?
+  departmentId Int?
+  employee   Employee?   @relation(fields: [employeeId], references: [id])
+  employeeId String?
   Permissions  Permissions[]
 }
 
@@ -285,20 +286,17 @@ model Vitals {
 
 model Transfer {
   id   String @id @default(uuid())
-  from String
-  to   String
+
+  fromSubDep SubDepartment @relation("fromSubDepartment",fields: [fromSubDepId],references: [id])
+  fromSubDepId Int
+  toSubDep SubDepartment @relation("toSubDepartment",fields: [toSubDepId],references: [id])
+  toSubDepId   Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   visit     Visit  @relation(fields: [visitCode], references: [code])
   visitCode String
-}
-
-enum PersonType {
-  PATIENT
-  COMPANION
-  EMPLOYEE
 }
 
 // enum IdentityEnum {

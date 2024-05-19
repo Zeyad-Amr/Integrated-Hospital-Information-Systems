@@ -113,11 +113,19 @@ export class TriageAXDto {
 
     @ApiProperty({
         type: String,
-        example: 'Triage A',
+        example: 1,
     })
     @IsNotEmpty()
-    @IsString()
-    transferTo: string;
+    @IsInt()
+    transferFromId: number;
+
+    @ApiProperty({
+        type: String,
+        example: 2,
+    })
+    @IsNotEmpty()
+    @IsInt()
+    transferToId: number;
 
     @ApiProperty({ type: VitalsDto, required: false })
     @IsOptional()
