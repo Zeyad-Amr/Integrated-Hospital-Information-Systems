@@ -178,7 +178,7 @@ const SubDepartmentsTable = () => {
         />
       </CustomizedDialog>
       <CustomDataTable
-        applyFilters={(filters: FilterQueryParam[]) => {
+        fetchData={(filters: FilterQueryParam[]) => {
           console.log(filters);
         }}
         data={subDepartmentsState?.subDepartmentsList?.map(

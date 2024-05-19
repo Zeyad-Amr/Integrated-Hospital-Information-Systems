@@ -42,13 +42,13 @@ export const useTableContext = <T,>() => {
 
 // TableProvider component to wrap your application and provide the context
 export const TableProvider = (props: {
-  applyFilters: (filters: FilterQuery[]) => void;
+  fetchData: (filters: FilterQuery[]) => void;
   initSortedColumn: SortedColumn;
   columnHeader: HeaderItem[];
   data: any[];
   children: React.ReactNode;
 }) => {
-  const { applyFilters, initSortedColumn, columnHeader, data } = props;
+  const { fetchData, initSortedColumn, columnHeader, data } = props;
 
   const [filterColumns, setFilterColumns] = useState<FilterColumn[]>([]);
   const [searchQuery, setSearchQuery] = useState<SearchQuery>({
@@ -161,7 +161,7 @@ export const TableProvider = (props: {
         filters.push(Filter.custom(`page=${page + 1}&size=${rowsPerPage}`));
       }
 
-      applyFilters(filters);
+      fetchData(filters);
       if (initialRender.current) {
         initialRender.current = false;
       }

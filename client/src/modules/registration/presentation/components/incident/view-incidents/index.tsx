@@ -45,7 +45,7 @@ const IncidentTable = () => {
   return (
     <Box pt={3}>
       <CustomDataTable
-        applyFilters={(filters: FilterQuery[]) => {
+        fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
         }}
         data={tableData}

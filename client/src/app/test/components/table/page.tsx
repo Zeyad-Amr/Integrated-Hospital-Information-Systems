@@ -18,7 +18,7 @@ const TablePageTest = () => {
       <Typography variant="h4">Fully Dynamic Table</Typography>
       <Typography variant="h5">Example 1</Typography>
       <CustomDataTable
-        applyFilters={(filters: FilterQuery[]) => {
+        fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
         }}
         data={data}
@@ -32,7 +32,7 @@ const TablePageTest = () => {
       />
       <Typography variant="h4">Example 2</Typography>
       <CustomDataTable
-        applyFilters={(filters: FilterQuery[]) => {
+        fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
         }}
         data={data}
@@ -47,7 +47,7 @@ const TablePageTest = () => {
       />
       <Typography variant="h4">Example 3</Typography>
       <CustomDataTable
-        applyFilters={(filters: FilterQuery[]) => {
+        fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
         }}
         data={data}

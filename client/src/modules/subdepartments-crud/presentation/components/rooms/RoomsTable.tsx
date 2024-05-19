@@ -106,7 +106,7 @@ const RoomsTable = () => {
         />
       </CustomizedDialog>
       <CustomDataTable
-        applyFilters={(filters: FilterQueryParam[]) => {
+        fetchData={(filters: FilterQueryParam[]) => {
           // console.log(filters);
         }}
         data={roomState?.roomList?.map((item: RoomInterface) => {

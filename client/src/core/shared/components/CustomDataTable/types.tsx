@@ -2,7 +2,7 @@ import { FilterQuery } from "@/core/api";
 import { SxProps, TableCellProps } from "@mui/material";
 
 interface CustomDataTableProps<T> {
-  applyFilters: (filters: FilterQuery[]) => void;
+  fetchData: (filters: FilterQuery[]) => void;
   data: T[];
   totalItems: number;
   headerItems: HeaderItem[];

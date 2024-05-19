@@ -72,7 +72,7 @@ const VisitsTable = () => {
       }}
     >
       <CustomDataTable
-        applyFilters={(filters: FilterQuery[]) => {
+        fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
           dispatch(getAnonymousVisits(filters));
         }}

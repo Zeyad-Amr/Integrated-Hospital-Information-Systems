@@ -19,7 +19,7 @@ import { TableProvider } from "./context";
 import { CustomDataTableProps } from "./types";
 
 /**
- * @param {applyFilters} - The function to apply the query to the data.
+ * @param {fetchData} - The function to apply the query to the data.
  * @param {T[]} data - The array of data items to be rendered.
  * @param {number} totalItems - The total number of items in the data array.
  * @param {HeaderItem[]} headerItems - The array of header items to define the table columns.
@@ -37,7 +37,7 @@ import { CustomDataTableProps } from "./types";
  */
 /** */
 const CustomDataTable = <T,>({
-  applyFilters,
+  fetchData,
   data,
   totalItems,
   headerItems,
@@ -59,7 +59,7 @@ const CustomDataTable = <T,>({
   return (
     <TableProvider
       data={data}
-      applyFilters={applyFilters}
+      fetchData={fetchData}
       columnHeader={headerItems}
       initSortedColumn={initSortedColumn}
     >

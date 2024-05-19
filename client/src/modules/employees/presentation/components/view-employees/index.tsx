@@ -32,7 +32,7 @@ const EmployeesTable = () => {
       }}
     >
       <CustomDataTable
-        applyFilters={(filters: FilterQuery[]) => {
+        fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
           dispatch(getEmployeeList());
         }}
