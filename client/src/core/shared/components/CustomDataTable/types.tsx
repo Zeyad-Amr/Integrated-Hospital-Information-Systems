@@ -49,6 +49,7 @@ interface HeaderItem {
   sortable?: boolean;
   filterable?: boolean;
   searchable?: boolean;
+  filterOptions?: FilterOption[];
   isCustomFilter?: boolean;
   display?: boolean;
 }
@@ -93,8 +94,13 @@ interface SearchColumn {
 interface FilterColumn {
   columnId: string;
   label: string;
-  values: { id: string; value: string }[];
+  values: FilterOption[];
   selectedValuesIds: string[];
+}
+
+interface FilterOption {
+  id: string;
+  value: string;
 }
 
 export type {
@@ -104,4 +110,5 @@ export type {
   SearchQuery,
   SearchColumn,
   FilterColumn,
+  FilterOption,
 };

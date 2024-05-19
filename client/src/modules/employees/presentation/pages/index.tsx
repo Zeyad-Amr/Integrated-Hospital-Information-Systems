@@ -2,8 +2,6 @@
 "use client";
 import * as React from "react";
 import Box from "@mui/material/Box";
-import PersonAddAltRoundedIcon from "@mui/icons-material/PersonAddAltRounded";
-import PageHeader from "@/core/shared/components/headers/PageHeader";
 import CreateUserForm from "../components/create-user-form/CreateUserForm";
 
 const CreateUserComponent = () => {

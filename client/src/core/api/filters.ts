@@ -50,6 +50,10 @@ class Filter {
     static custom(filter: string): FilterQuery {
         return { filter, isCustom: true };
     }
+
+    static anyOf(field: string, values: string[]): FilterQuery {
+        return { filter: `${field}:any:${values.join(",")}` };
+    }
 }
 
 interface FilterQuery {

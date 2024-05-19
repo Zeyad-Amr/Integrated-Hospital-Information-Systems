@@ -44,20 +44,10 @@ const CustomTableFilter = () => {
   };
 
   // get all unique values of the column in the data
-  const getUniqueValues = (columnId: string) => {
-    // get all values of data column by columnId
-    const columnValues = data.map((row: any) => row[columnId]);
-
-    // filter repeated values if same id
-    const uniqueValues: { id: string; value: string }[] = [];
-    columnValues.forEach((value) => {
-      if (!uniqueValues.find((uniqueValue) => uniqueValue?.id === value?.id)) {
-        uniqueValues.push(value);
-      }
-    });
-
-    return uniqueValues;
-  };
+  // const getSelectedFilterOptions = (columnId: string): FilterOption[] => {
+  //   // filterColumns is the data that will be displayed in the filter
+  //   //
+  // };
 
   // get FilterColumns
   const getFilterColumns = (): FilterColumn[] => {
@@ -68,12 +58,14 @@ const CustomTableFilter = () => {
       return [];
     }
     // get filter columns
-    const filterColumnsData = filterColumns.map((column) => {
+    const filterColumnsData: FilterColumn[] = filterColumns.map((column) => {
       return {
         columnId: column.id,
         label: column.label,
-        values: getUniqueValues(column.id),
-        selectedValuesIds: getUniqueValues(column.id).map((value) => value?.id),
+        values: column.filterOptions ?? [],
+        selectedValuesIds: (column.filterOptions ?? []).map(
+          (option) => option.id
+        ),
       };
     });
 
@@ -82,9 +74,12 @@ const CustomTableFilter = () => {
 
   useEffect(() => {
     const result: FilterColumn[] = getFilterColumns();
-    // setFilterColumnsData(result);
     setFilterColumns(result);
   }, [data]);
+
+  useEffect(() => {
+    console.log(filterColumns);
+  }, [filterColumns]);
 
   //* ---------------------------------------- Handle Checking
   const handleCheck = (columnId: string, valueId: string) => {
@@ -172,7 +167,8 @@ const CustomTableFilter = () => {
               <Grid item xs={4} key={index}>
                 <Box
                   sx={{
-                    padding: "0.5rem 0.5rem",
+                    padding: "1rem 0.5rem",
+                    mr: 4,
                     display: "flex",
                     flexDirection: "column",
                   }}
@@ -196,7 +192,9 @@ const CustomTableFilter = () => {
                       />
                     }
                   />
-                  <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
+                  <Box
+                    sx={{ display: "flex", flexDirection: "column", ml: 2.5 }}
+                  >
                     {column.values.map((value, index) => {
                       return (
                         <FormControlLabel

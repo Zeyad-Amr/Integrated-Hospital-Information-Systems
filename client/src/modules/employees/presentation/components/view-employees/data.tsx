@@ -117,7 +117,7 @@ export const header: HeaderItem[] = [
     minWidth: 50,
     maxWidth: 50,
     tableCellProps: { align: "center" },
-    sortable: true,
+    sortable: false,
     searchable: false,
     filterable: false,
   },
@@ -127,7 +127,7 @@ export const header: HeaderItem[] = [
     minWidth: 100,
     maxWidth: 100,
     tableCellProps: { align: "center" },
-    sortable: true,
+    sortable: false,
     searchable: true,
     filterable: false,
   },
@@ -137,7 +137,7 @@ export const header: HeaderItem[] = [
     minWidth: 50,
     maxWidth: 50,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
-    sortable: true,
+    sortable: false,
     searchable: true,
     filterable: false,
   },
@@ -159,9 +159,27 @@ export const header: HeaderItem[] = [
     minWidth: 100,
     maxWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
-    sortable: true,
-    searchable: true,
+    sortable: false,
+    searchable: false,
     filterable: true,
+    filterOptions: [
+      {
+        id: "ADMIN",
+        value: "المدير",
+      },
+      {
+        id: "RECEPTIONIST",
+        value: "الاستقبال",
+      },
+      {
+        id: "DOCTOR",
+        value: "الطبيب",
+      },
+      {
+        id: "NURSE",
+        value: "الممرض",
+      },
+    ],
   },
   {
     id: "shift",
@@ -169,8 +187,22 @@ export const header: HeaderItem[] = [
     minWidth: 100,
     maxWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
-    sortable: true,
-    searchable: true,
+    sortable: false,
+    searchable: false,
     filterable: true,
+    filterOptions: [
+      {
+        id: "1",
+        value: "الصباحية",
+      },
+      {
+        id: "2",
+        value: "المسائية",
+      },
+      {
+        id: "3",
+        value: "الليلية",
+      },
+    ],
   },
 ];

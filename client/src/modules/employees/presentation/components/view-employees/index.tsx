@@ -2,7 +2,7 @@ import CustomDataTable from "@/core/shared/components/CustomDataTable/CustomData
 import { DataItem, header } from "./data";
 import { Box } from "@mui/system";
 import CompleteVisit from "../../../../registration/presentation/components/visit/complete-visit-data/CompleteVisit";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import { EmployeeState } from "../../controllers/types";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
@@ -11,10 +11,6 @@ import { getEmployeeList } from "../../controllers/thunks/employee-thunks";
 
 const EmployeesTable = () => {
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getEmployeeList());
-  }, [dispatch]);
 
   const employeeState: EmployeeState = useAppSelector(
     (state: any) => state.employees
@@ -34,7 +30,7 @@ const EmployeesTable = () => {
       <CustomDataTable
         fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
-          dispatch(getEmployeeList());
+          dispatch(getEmployeeList(filters));
         }}
         totalItems={employeeState.employeeList.length}
         data={employeeState.employeeList.map<DataItem>(

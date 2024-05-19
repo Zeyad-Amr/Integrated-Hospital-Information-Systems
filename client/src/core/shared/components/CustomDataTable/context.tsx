@@ -120,8 +120,10 @@ export const TableProvider = (props: {
       console.log(filterColumns);
 
       // Apply filters
-      // filters list
+      //* Create an array of filters
       let filters: FilterQuery[] = [];
+
+      //* Search
       if (searchQuery.value && searchQuery.columnId) {
         if (
           columnHeader.find((item) => item.id === searchQuery.columnId)
@@ -135,6 +137,7 @@ export const TableProvider = (props: {
         }
       }
 
+      //* Sorting
       if (sortedColumn) {
         if (
           columnHeader.find((item) => item.id === sortedColumn.columnId)
@@ -150,7 +153,7 @@ export const TableProvider = (props: {
         }
       }
 
-      // reset page and size if any of the filters changed
+      //* reset page and size if any of the filters changed
       if (sortedColumnChanged || searchQueryChanged || filterColumnsChanged) {
         filters.push(
           Filter.custom(`page=${initialPage + 1}&size=${initialRowsPerPage}`)
@@ -161,7 +164,26 @@ export const TableProvider = (props: {
         filters.push(Filter.custom(`page=${page + 1}&size=${rowsPerPage}`));
       }
 
+      //* Option filters
+      // check if all options selected
+      const allOptionsSelected = filterColumns.every((column) => {
+        return column.selectedValuesIds.length === column.values.length;
+      });
+
+      if (filterColumns.length > 0 && !allOptionsSelected) {
+        filterColumns.forEach((column) => {
+          if (column.selectedValuesIds.length > 0) {
+            filters.push(
+              Filter.anyOf(column.columnId, column.selectedValuesIds)
+            );
+          }
+        });
+      }
+
+      //* Fetch data with the filters
       fetchData(filters);
+
+      // Set initialRender to false after the first render
       if (initialRender.current) {
         initialRender.current = false;
       }
