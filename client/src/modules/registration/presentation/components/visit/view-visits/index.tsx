@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import { AnonymizedVisit, header } from "./data";
 import { Box } from "@mui/system";
 import CompleteVisit from "../complete-visit-data/CompleteVisit";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { VisitsState } from "../../../controllers/types";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
@@ -14,9 +14,9 @@ const VisitsTable = () => {
   const state: VisitsState = useAppSelector((state: any) => state.visits);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(getAnonymousVisits([]));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getAnonymousVisits([]));
+  // }, []);
 
   // useRef
   const refIdValue = useRef("");

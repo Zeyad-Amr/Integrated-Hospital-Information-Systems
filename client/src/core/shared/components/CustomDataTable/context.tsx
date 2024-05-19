@@ -73,12 +73,6 @@ export const TableProvider = (props: {
   }, [page, rowsPerPage, sortedColumn, searchQuery, filterColumns]);
 
   const applyFiltersHandler = () => {
-    if (initialRender.current) {
-      // Skip the initial render
-      initialRender.current = false;
-      return;
-    }
-
     // Check if any of the values have changed
     const pageChanged = prevPage.current !== page;
     const rowsPerPageChanged = prevRowsPerPage.current !== rowsPerPage;
@@ -108,7 +102,8 @@ export const TableProvider = (props: {
       rowsPerPageChanged ||
       sortedColumnChanged ||
       searchQueryChanged ||
-      filterColumnsChanged
+      filterColumnsChanged ||
+      initialRender.current
     ) {
       // Logic for handling Pagination
       console.log(page);
@@ -159,6 +154,9 @@ export const TableProvider = (props: {
       }
 
       applyFilters(filters);
+      if (initialRender.current) {
+        initialRender.current = false;
+      }
     }
   };
 
