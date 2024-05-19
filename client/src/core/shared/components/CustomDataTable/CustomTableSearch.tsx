@@ -12,6 +12,7 @@ import {
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { SearchColumn, SearchQuery } from ".";
 import { useTableContext } from "./context";
+import AlertService from "../../utils/alert-service";
 
 const CustomTableSearch = () => {
   const { columnHeader, setSearchQuery } = useTableContext();
@@ -60,7 +61,10 @@ const CustomTableSearch = () => {
                 value: search.current,
               } as SearchQuery);
             } else {
-              alert("اختر العمود الذي تريد البحث عنه");
+              AlertService.showAlert(
+                "اختر العمود الذي تريد البحث عنه",
+                "error"
+              );
             }
           }}
         />

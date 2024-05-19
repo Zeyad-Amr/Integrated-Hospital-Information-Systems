@@ -4,9 +4,9 @@ export interface DataItem {
   SSN: string;
   name: string;
   phone: string;
-  email: string;
+  createdAt: string;
   role: string;
-  // update?: any;
+  shift: string;
 }
 
 export const data = [
@@ -141,16 +141,18 @@ export const header: HeaderItem[] = [
     searchable: true,
     filterable: false,
   },
+
   {
-    id: "email",
-    label: "الايميل",
-    minWidth: 50,
-    maxWidth: 50,
+    id: "createdAt",
+    label: "التاريخ",
+    minWidth: 100,
+    maxWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
-    sortable: false,
-    searchable: true,
+    sortable: true,
+    searchable: false,
     filterable: false,
   },
+
   {
     id: "role",
     label: "الوظيفة",
@@ -161,16 +163,14 @@ export const header: HeaderItem[] = [
     searchable: true,
     filterable: true,
   },
-  // {
-  //   id: "time",
-  //   label: "وقت الحجز",
-  //   minWidth: 100,
-  //   tableCellProps: { align: "center", style: { direction: "ltr" } },
-  // },
-  // {
-  //   id: "update",
-  //   label: "",
-  //   minWidth: 100,
-  //   tableCellProps: { align: "center" },
-  // },
+  {
+    id: "shift",
+    label: "الوردية",
+    minWidth: 100,
+    maxWidth: 100,
+    tableCellProps: { align: "center", style: { direction: "ltr" } },
+    sortable: true,
+    searchable: true,
+    filterable: true,
+  },
 ];
