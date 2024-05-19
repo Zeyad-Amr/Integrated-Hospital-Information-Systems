@@ -4,7 +4,8 @@ import { useTableContext } from "./context";
 interface CustomTablePaginationProps {
   dataLength: number;
 }
-
+export const initialPage = 0;
+export const initialRowsPerPage = 5;
 const CustomTablePagination = ({ dataLength }: CustomTablePaginationProps) => {
   const { page, rowsPerPage, setPage, setRowsPerPage } = useTableContext();
 
@@ -21,8 +22,8 @@ const CustomTablePagination = ({ dataLength }: CustomTablePaginationProps) => {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     console.log(event.target.value);
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setRowsPerPage(parseInt(event.target.value, initialRowsPerPage));
+    setPage(initialPage);
   };
   console.log("CustomTablePagination", dataLength, page, rowsPerPage);
   return (

@@ -8,6 +8,7 @@ import React, {
 import { FilterColumn, HeaderItem, SearchQuery, SortedColumn } from ".";
 import { isEqual } from "lodash";
 import { Filter, FilterQuery } from "@/core/api";
+import { initialPage, initialRowsPerPage } from "./CustomTablePagination";
 
 // Define the type for TableContext
 interface TableContextType<T> {
@@ -55,8 +56,8 @@ export const TableProvider = (props: {
   } as SearchQuery);
   const [sortedColumn, setSortedColumn] =
     useState<SortedColumn>(initSortedColumn);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useState(initialPage);
+  const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
 
   const prevPage = useRef(page);
   const prevRowsPerPage = useRef(rowsPerPage);
@@ -149,7 +150,14 @@ export const TableProvider = (props: {
         }
       }
 
-      if (rowsPerPage) {
+      // reset page and size if any of the filters changed
+      if (sortedColumnChanged || searchQueryChanged || filterColumnsChanged) {
+        filters.push(
+          Filter.custom(`page=${initialPage + 1}&size=${initialRowsPerPage}`)
+        );
+        setPage(initialPage);
+        setRowsPerPage(initialRowsPerPage);
+      } else if (rowsPerPage) {
         filters.push(Filter.custom(`page=${page + 1}&size=${rowsPerPage}`));
       }
 
