@@ -54,8 +54,8 @@ export class UpdateEmployeeDto {
     type: String,
     example: [4],
   })
-  @IsInt()
-  @IsArray({each:true})
+  @IsArray()
+  @IsInt({ each: true })
   suDepartmentIds: number;
 
   @ApiProperty({
@@ -65,7 +65,6 @@ export class UpdateEmployeeDto {
   @IsOptional()
   @IsInt()
   shiftId: number;
-
 
   @ApiProperty({ type: AuthUpdateDto, required: true })
   @IsObject()
