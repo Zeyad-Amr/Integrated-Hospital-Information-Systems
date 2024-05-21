@@ -4,9 +4,9 @@ export interface DataItem {
   SSN: string;
   name: string;
   phone: string;
-  email: string;
+  createdAt: string;
   role: string;
-  // update?: any;
+  shift: string;
 }
 
 export const data = [
@@ -117,7 +117,7 @@ export const header: HeaderItem[] = [
     minWidth: 50,
     maxWidth: 50,
     tableCellProps: { align: "center" },
-    sortable: true,
+    sortable: false,
     searchable: false,
     filterable: false,
   },
@@ -127,7 +127,7 @@ export const header: HeaderItem[] = [
     minWidth: 100,
     maxWidth: 100,
     tableCellProps: { align: "center" },
-    sortable: true,
+    sortable: false,
     searchable: true,
     filterable: false,
   },
@@ -137,40 +137,72 @@ export const header: HeaderItem[] = [
     minWidth: 50,
     maxWidth: 50,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
-    sortable: true,
-    searchable: true,
-    filterable: false,
-  },
-  {
-    id: "email",
-    label: "الايميل",
-    minWidth: 50,
-    maxWidth: 50,
-    tableCellProps: { align: "center", style: { direction: "ltr" } },
     sortable: false,
     searchable: true,
     filterable: false,
   },
+
+  {
+    id: "createdAt",
+    label: "التاريخ",
+    minWidth: 100,
+    maxWidth: 100,
+    tableCellProps: { align: "center", style: { direction: "ltr" } },
+    sortable: true,
+    searchable: false,
+    filterable: false,
+  },
+
   {
     id: "role",
     label: "الوظيفة",
     minWidth: 100,
     maxWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
-    sortable: true,
-    searchable: true,
+    sortable: false,
+    searchable: false,
     filterable: true,
+    filterOptions: [
+      {
+        id: "ADMIN",
+        value: "المدير",
+      },
+      {
+        id: "RECEPTIONIST",
+        value: "الاستقبال",
+      },
+      {
+        id: "DOCTOR",
+        value: "الطبيب",
+      },
+      {
+        id: "NURSE",
+        value: "الممرض",
+      },
+    ],
   },
-  // {
-  //   id: "time",
-  //   label: "وقت الحجز",
-  //   minWidth: 100,
-  //   tableCellProps: { align: "center", style: { direction: "ltr" } },
-  // },
-  // {
-  //   id: "update",
-  //   label: "",
-  //   minWidth: 100,
-  //   tableCellProps: { align: "center" },
-  // },
+  {
+    id: "shift",
+    label: "الوردية",
+    minWidth: 100,
+    maxWidth: 100,
+    tableCellProps: { align: "center", style: { direction: "ltr" } },
+    sortable: false,
+    searchable: false,
+    filterable: true,
+    filterOptions: [
+      {
+        id: "1",
+        value: "الصباحية",
+      },
+      {
+        id: "2",
+        value: "المسائية",
+      },
+      {
+        id: "3",
+        value: "الليلية",
+      },
+    ],
+  },
 ];

@@ -33,8 +33,9 @@ export default class VisitModel {
             sequenceNumber: json.sequenceNumber,
             createdAt: json.createdAt,
             updatedAt: json.updatedAt,
-            patient: PersonModel.fromJson(json.patient),
-            companion: CompanionModel.fromJson(json.companion),
+            patient: json.patientId == null ? undefined : PersonModel.fromJson(json.patient.person),
+            companion: json.companionId == null ? undefined : CompanionModel.fromJson(json.companion),
+            additionalInfo: json.AdditionalInformation == null ? undefined : AdditionalDataModel.fromJson(json.AdditionalInformation),
         };
     }
 }

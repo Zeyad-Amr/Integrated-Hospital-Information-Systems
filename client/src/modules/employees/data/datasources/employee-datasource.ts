@@ -1,10 +1,10 @@
 import EmployeeModel from '../models/employee-model';
-import { ApiClient, Endpoints } from "@/core/api";
+import { ApiClient, Endpoints, FilterQuery } from "@/core/api";
 import EmployeeInterface from '../../domain/interfaces/employee-interface';
 
 abstract class BaseEmployeeDataSource {
     abstract getEmployeeById(id: string): Promise<EmployeeInterface>;
-    abstract getAllEmployees(): Promise<EmployeeInterface[]>;
+    abstract getAllEmployees(filters: FilterQuery[]): Promise<EmployeeInterface[]>;
     abstract createEmployee(employee: EmployeeInterface): Promise<boolean>;
     abstract updateEmployee(employee: EmployeeInterface): Promise<boolean>;
     abstract deleteEmployee(id: string): Promise<boolean>;
@@ -22,8 +22,8 @@ class EmployeeDataSource extends BaseEmployeeDataSource {
         return EmployeeModel.fromJson(response.data);
     }
 
-    override async getAllEmployees(): Promise<EmployeeInterface[]> {
-        const response = await this.apiClient.get(Endpoints.employee.list);
+    override async getAllEmployees(filters: FilterQuery[]): Promise<EmployeeInterface[]> {
+        const response = await this.apiClient.get(Endpoints.employee.list, { filters: filters });
         return response.data.items.map((item: any) => EmployeeModel.fromJson(item));
     }
 

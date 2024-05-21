@@ -110,7 +110,7 @@ const SpecializationsTable = () => {
       </CustomizedDialog>
 
       <CustomDataTable
-        applyFilters={(filters: FilterQueryParam[]) => {
+        fetchData={(filters: FilterQueryParam[]) => {
           console.log(filters);
         }}
         data={specializationState?.specializationList?.map(

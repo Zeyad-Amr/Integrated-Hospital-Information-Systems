@@ -12,10 +12,12 @@ import {
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { SearchColumn, SearchQuery } from ".";
 import { useTableContext } from "./context";
+import AlertService from "../../utils/alert-service";
 
 const CustomTableSearch = () => {
   const { columnHeader, setSearchQuery } = useTableContext();
   const search = useRef("");
+  const searchOnRef = useRef<SearchColumn>();
 
   const searchOptions: SearchColumn[] = [];
   const handleSearchOptions = () => {
@@ -41,16 +43,36 @@ const CustomTableSearch = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        width: "100%",
+      }}
+    >
       <InputAdornment position="start">
         <SearchRoundedIcon
           sx={{ cursor: "pointer" }}
-          onClick={() => document.getElementById("table-search-field")?.focus()}
+          onClick={() => {
+            //  document.getElementById("table-search-field")?.focus();
+            if (searchOn?.columnId) {
+              setSearchQuery({
+                columnId: searchOn?.columnId,
+                value: search.current,
+              } as SearchQuery);
+            } else {
+              AlertService.showAlert(
+                "اختر العمود الذي تريد البحث عنه",
+                "error"
+              );
+            }
+          }}
         />
       </InputAdornment>
       <FormControl sx={{ width: "12rem" }} size="small">
         <Select
           displayEmpty
+          ref={searchOnRef}
           value={searchOn?.columnId}
           onChange={handleChange}
           renderValue={(selected) => {
@@ -83,10 +105,10 @@ const CustomTableSearch = () => {
         sx={{ ml: 1, flex: 1 }}
         placeholder="بحـــث"
         onChange={(e) => {
-          setSearchQuery({
-            columnId: searchOn?.columnId,
-            value: e.target.value,
-          } as SearchQuery);
+          // setSearchQuery({
+          //   columnId: searchOn?.columnId,
+          //   value: e.target.value,
+          // } as SearchQuery);
 
           search.current = e.target.value;
         }}

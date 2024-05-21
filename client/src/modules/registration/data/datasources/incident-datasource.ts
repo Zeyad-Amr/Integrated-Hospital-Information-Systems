@@ -21,7 +21,7 @@ class IncidentDataSource extends BaseIncidentDataSource {
 
     // TODO
     // override async getAllIncidents(): Promise<IncidentInterface[]> {
-    //     const response = await this.apiClient.get(Endpoints.incident.list, { filters: [FilterQueryParam.isNull('patientId')] });
+    //     const response = await this.apiClient.get(Endpoints.incident.list, { filters: [FilterQuery.isNull('patientId')] });
     //     console.log(response.data.items);
     //     return response.data.items.map((item: any) => IncidentModel.fromJson(item));
     // }

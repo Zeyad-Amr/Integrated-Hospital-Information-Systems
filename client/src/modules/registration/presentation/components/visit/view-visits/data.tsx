@@ -1,12 +1,11 @@
 import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
-export interface DataItem {
+export interface AnonymizedVisit {
   sequenceNumber: string;
-  name: string;
+  companionName: string;
+  companionSSN: string;
   code: string;
-  date: string;
-  time: string;
-  // kinship: { id: string; value: string };
+  createdAt: string;
   update?: any;
 }
 
@@ -19,7 +18,7 @@ export const header: HeaderItem[] = [
     tableCellProps: { align: "center" },
     sortable: true,
     filterable: false,
-    searchable: true,
+    searchable: false,
     onClick: () => {},
   },
   {
@@ -33,42 +32,35 @@ export const header: HeaderItem[] = [
     onClick: () => {},
   },
   {
-    id: "name",
+    id: "companionName",
     label: "اسم المرافق",
     minWidth: 50,
     maxWidth: 70,
     tableCellProps: { align: "center" },
-    sortable: true,
+    sortable: false,
     filterable: false,
     searchable: true,
+    isCustomFilter: true,
     onClick: () => {},
   },
-  // {
-  //   id: "kinship",
-  //   label: "صلة القرابة",
-  //   minWidth: 100,
-  //   tableCellProps: { align: "center" },
-  //   sortable: false,
-  //   filterable: true,
-  //   searchable: false,
-  //   onClick: () => {},
-  // },
   {
-    id: "date",
+    id: "companionSSN",
+    label: "رقم هوية المرافق",
+    minWidth: 50,
+    maxWidth: 70,
+    tableCellProps: { align: "center" },
+    sortable: false,
+    filterable: false,
+    searchable: true,
+    isCustomFilter: true,
+    onClick: () => {},
+  },
+  {
+    id: "createdAt",
     label: "تاريخ الحجز",
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
-    sortable: false,
-    filterable: false,
-    searchable: false,
-    onClick: () => {},
-  },
-  {
-    id: "time",
-    label: "وقت الحجز",
-    minWidth: 100,
-    tableCellProps: { align: "center", style: { direction: "ltr" } },
-    sortable: false,
+    sortable: true,
     filterable: false,
     searchable: false,
     onClick: () => {},

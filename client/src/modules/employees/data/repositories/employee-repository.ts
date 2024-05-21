@@ -1,4 +1,4 @@
-import { ErrorResponse, ErrorMessage } from "@/core/api";
+import { ErrorResponse, ErrorMessage, FilterQuery } from "@/core/api";
 import BaseEmployeeRepository from '../../domain/repositories/base-employee-repository';
 import { BaseEmployeeDataSource } from '../datasources/employee-datasource';
 import EmployeeInterface from "../../domain/interfaces/employee-interface";
@@ -17,9 +17,9 @@ class EmployeeRepository extends BaseEmployeeRepository {
             throw errorResponse;
         }
     }
-    override async getAllEmployees(): Promise<EmployeeInterface[]> {
+    override async getAllEmployees(filters: FilterQuery[]): Promise<EmployeeInterface[]> {
         try {
-            const result = await this.baseEmployeeDataSource.getAllEmployees();
+            const result = await this.baseEmployeeDataSource.getAllEmployees(filters);
             return result;
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;

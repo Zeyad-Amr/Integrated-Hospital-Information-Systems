@@ -1,24 +1,23 @@
 import CustomDataTable from "@/core/shared/components/CustomDataTable/CustomDataTable";
 import { Button } from "@mui/material";
-import { DataItem, header } from "./data";
+import { AnonymizedVisit, header } from "./data";
 import { Box } from "@mui/system";
 import CompleteVisit from "../complete-visit-data/CompleteVisit";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { VisitsState } from "../../../controllers/types";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
 import { getAnonymousVisits } from "../../../controllers/thunks/visits-thunks";
-import { FilterQueryParam } from "@/core/api";
+import { FilterQuery } from "@/core/api";
 
 const VisitsTable = () => {
   const state: VisitsState = useAppSelector((state: any) => state.visits);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    console.log("getAnonymousVisits([])");
-    dispatch(getAnonymousVisits([]));
-  }, []);
-  console.log("VisitsTable ---------");
+  // useEffect(() => {
+  //   dispatch(getAnonymousVisits([]));
+  // }, []);
+
   // useRef
   const refIdValue = useRef("");
 
@@ -29,12 +28,12 @@ const VisitsTable = () => {
   const apiData: VisitInterface[] = state.visits;
   console.log("apiDataaaa", apiData);
 
-  let tableData: DataItem[] = [];
+  let tableData: AnonymizedVisit[] = [];
   apiData.forEach((item) => {
     tableData.push({
       sequenceNumber: item?.sequenceNumber ?? "",
       code: item?.code ?? "",
-      name: item?.companion
+      companionName: item?.companion
         ? item.companion?.firstName +
           " " +
           item.companion?.secondName +
@@ -43,13 +42,13 @@ const VisitsTable = () => {
           " " +
           item.companion?.fourthName
         : "لا يوجد",
-      date: item?.createdAt
-        ? new Date(item?.createdAt).toLocaleDateString()
+      companionSSN: item?.companion?.SSN ?? "لا يوجد",
+      createdAt: item?.createdAt
+        ? new Date(item?.createdAt).toLocaleDateString() +
+          " " +
+          new Date(item?.createdAt).toLocaleTimeString()
         : "",
-      time: item?.createdAt
-        ? new Date(item?.createdAt).toLocaleTimeString()
-        : "",
-      // kinship: item?.kinship ?? { id: "", value: "" },
+
       update: (
         <Button
           color="info"
@@ -73,10 +72,12 @@ const VisitsTable = () => {
       }}
     >
       <CustomDataTable
-        applyFilters={(filters: FilterQueryParam[]) => {
+        fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
           dispatch(getAnonymousVisits(filters));
         }}
+        initSortedColumn={{ columnId: "createdAt", isAscending: false }}
+        totalItems={state.total}
         data={tableData}
         headerItems={header}
         stickyHeader={true}

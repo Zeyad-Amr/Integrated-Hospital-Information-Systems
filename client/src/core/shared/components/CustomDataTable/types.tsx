@@ -1,9 +1,10 @@
-import { FilterQueryParam } from "@/core/api";
+import { FilterQuery } from "@/core/api";
 import { SxProps, TableCellProps } from "@mui/material";
 
 interface CustomDataTableProps<T> {
-  applyFilters?: (filters: FilterQueryParam[]) => void;
+  fetchData: (filters: FilterQuery[]) => void;
   data: T[];
+  totalItems: number;
   headerItems: HeaderItem[];
   width?: string;
   height?: string;
@@ -48,6 +49,9 @@ interface HeaderItem {
   sortable?: boolean;
   filterable?: boolean;
   searchable?: boolean;
+  filterOptions?: FilterOption[];
+  isCustomFilter?: boolean;
+  display?: boolean;
 }
 
 /**
@@ -90,8 +94,13 @@ interface SearchColumn {
 interface FilterColumn {
   columnId: string;
   label: string;
-  values: { id: string; value: string }[];
+  values: FilterOption[];
   selectedValuesIds: string[];
+}
+
+interface FilterOption {
+  id: string;
+  value: string;
 }
 
 export type {
@@ -101,4 +110,5 @@ export type {
   SearchQuery,
   SearchColumn,
   FilterColumn,
+  FilterOption,
 };

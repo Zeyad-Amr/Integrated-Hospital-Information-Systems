@@ -3,14 +3,14 @@ import { DataItem, header } from "./data";
 import { Box } from "@mui/system";
 import CompleteVisit from "../../../../registration/presentation/components/visit/complete-visit-data/CompleteVisit";
 import { useRef, useState } from "react";
-import { useAppSelector } from "@/core/state/store";
+import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import { EmployeeState } from "../../controllers/types";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
-import { Typography } from "@mui/material";
-import { FilterQueryParam } from "@/core/api";
+import { FilterQuery } from "@/core/api";
+import { getEmployeeList } from "../../controllers/thunks/employee-thunks";
 
 const EmployeesTable = () => {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const employeeState: EmployeeState = useAppSelector(
     (state: any) => state.employees
@@ -27,48 +27,44 @@ const EmployeesTable = () => {
         p: 3,
       }}
     >
-      {employeeState.loading ? (
-        <Box
-          sx={{
-            p: 3,
-          }}
-        >
-          <Typography variant="h6" align="center">
-            Loading...
-          </Typography>
-        </Box>
-      ) : (
-        <CustomDataTable
-          applyFilters={(filters: FilterQueryParam[]) => {
-            console.log(filters);
-          }}
-          data={employeeState.employeeList.map<DataItem>(
-            (item: EmployeeInterface) => {
-              return {
-                SSN: item.person?.SSN ?? "",
-                email: item.auth?.email ?? "",
-                phone: item.person?.phone ?? "",
-                role: item.role?.value.toLowerCase() ?? "",
-                name:
-                  item.person?.firstName +
+      <CustomDataTable
+        fetchData={(filters: FilterQuery[]) => {
+          console.log(filters);
+          dispatch(getEmployeeList(filters));
+        }}
+        totalItems={employeeState.employeeList.length}
+        data={employeeState.employeeList.map<DataItem>(
+          (item: EmployeeInterface) => {
+            return {
+              SSN: item.person?.SSN ?? "لا يوجد",
+              createdAt: item?.createdAt
+                ? new Date(item?.createdAt).toLocaleDateString() +
                   " " +
-                  item.person?.secondName +
-                  " " +
-                  item.person?.thirdName +
-                  " " +
-                  item.person?.fourthName,
-              };
-            }
-          )}
-          width="100%"
-          height="100%"
-          boxShadow={10}
-          sx={{ mb: 5 }}
-          onRowClick={(item) => console.log(item)}
-          headerItems={header}
-          stickyHeader={true}
-        />
-      )}
+                  new Date(item?.createdAt).toLocaleTimeString()
+                : "لا يوجد",
+              shift: item.shift?.value ?? "لا يوجد",
+              phone: item.person?.phone ?? "لا يوجد",
+              role: item.role?.value ?? "لا يوجد",
+              name:
+                item.person?.firstName +
+                " " +
+                item.person?.secondName +
+                " " +
+                item.person?.thirdName +
+                " " +
+                item.person?.fourthName,
+            };
+          }
+        )}
+        headerItems={header}
+        stickyHeader={true}
+        boxShadow={5}
+        width="100%"
+        height="80vh"
+        sx={{ mb: 5 }}
+        onRowClick={(item: any) => console.log(item)}
+      />
+
       <CompleteVisit
         display={showDialog}
         DialogStateController={setShawDialog}

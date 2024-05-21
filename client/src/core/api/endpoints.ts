@@ -13,7 +13,7 @@ const Endpoints = {
     visit: {
         list: '/visit',
         details: '/visit/:visitcode',
-        create: '/visit/',
+        create: '/visit',
         createAnonymously: '/visit/anonymous',
         update: '/patient',
         triageAX: '/visit/triage/:visitCode',
@@ -36,21 +36,21 @@ const Endpoints = {
     person: {
         details: '/person/:ssn'
     },
-    room :{
+    room: {
         list: '/room',
         details: '/room/:id',
         create: '/room',
         update: '/room/:id',
         delete: '/room/:id',
     },
-    specialization :{
+    specialization: {
         list: '/specialization',
         details: '/specialization/:id',
         create: '/specialization',
         update: '/specialization/:id',
         delete: '/specialization/:id',
     },
-    subdepartment :{
+    subdepartment: {
         list: '/subdepartment',
         details: '/subdepartment/:id',
         create: '/subdepartment',
@@ -58,21 +58,21 @@ const Endpoints = {
         updateAssignFeatures: '/subdepartment/:id/assignfeatures',
         delete: '/subdepartment/:id',
     },
-    feature :{
+    feature: {
         list: '/feature',
         details: '/feature/:id',
         create: '/feature',
         update: '/feature/:id',
         delete: '/feature/:id',
     },
-    permission :{
+    permission: {
         list: '/permission',
         details: '/permission/:id',
         create: '/permission',
         update: '/permission/:id',
         delete: '/permission/:id',
     },
-    role :{
+    role: {
         list: '/role',
         details: '/role/:id',
         create: '/role',

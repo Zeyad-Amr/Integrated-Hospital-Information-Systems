@@ -12,14 +12,15 @@ import {
     GetEmployeeByIdUseCaseParameters
 } from "@/modules/employees/domain/usecases";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
+import { FilterQuery } from "@/core/api/filters";
 
 //* Get All Employee Members 
 export const getEmployeeList = createAsyncThunk(
     "employees/get",
-    async (_data, thunkApi) => {
+    async (filters: FilterQuery[], thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
-            const result = await sl.get<GetAllEmployeesUseCase>(ServiceKeys.GetAllEmployeesUseCase).call();
+            const result = await sl.get<GetAllEmployeesUseCase>(ServiceKeys.GetAllEmployeesUseCase).call(filters);
             console.log('Result:', result);
             return result;
         } catch (error) {
