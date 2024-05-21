@@ -66,8 +66,6 @@ export class EmployeeController {
   @ApiOperation({ summary: 'get all employees' })
   @ApiOkResponse({ description: 'get all employees' })
   @CustomGetAllParamDecorator()
-  @ApiQuery({ name: 'departmentId', required: false })
-  @ApiQuery({ name: 'roleId', required: false })
   @ApiQuery({ name: 'SSN', required: false })
   @ApiQuery({ name: 'name', required: false })
   @ApiQuery({ name: 'email', required: false })
@@ -75,7 +73,12 @@ export class EmployeeController {
   async findAll(
     @Query() customFilters?: CustomFilters,
     @PaginationParams() pagination?: Pagination,
-    @SortingParams() sort?: Sorting,
+    @SortingParams([
+      'shiftId',
+      'roleId',
+      'createdAt',
+      'updatedAt',
+    ]) sort?: Sorting,
     @FilteringParams([
       'shiftId',
       'roleId',
