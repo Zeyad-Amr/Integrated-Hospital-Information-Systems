@@ -8,6 +8,15 @@ import { EmployeeState } from "../../controllers/types";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
 import { FilterQuery } from "@/core/api";
 import { getEmployeeList } from "../../controllers/thunks/employee-thunks";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import ConfirmationDialog from "@/core/shared/components/ConfirmationDialog";
+import {
+  deleteEmployee,
+  updateEmployee,
+} from "@/modules/employees/presentation/controllers/thunks/employee-thunks";
+import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
+import CreateUserForm from "../create-user-form/CreateUserForm";
 
 const EmployeesTable = () => {
   const dispatch = useAppDispatch();
@@ -20,6 +29,9 @@ const EmployeesTable = () => {
 
   // useState
   const [showDialog, setShawDialog] = useState("none");
+  const [showConfirmationDialog, setShowConfirmationDialog] = useState<boolean>(false);
+  const [showEditEmployeeDialog, setShowEditEmployeeDialog] = useState<boolean>(false);
+  const [employeeData, setEmployeeData] = useState<EmployeeInterface>();
 
   return (
     <Box
@@ -27,10 +39,24 @@ const EmployeesTable = () => {
         p: 3,
       }}
     >
+      <CustomizedDialog maxWidth={10} open={showEditEmployeeDialog} setOpen={setShowEditEmployeeDialog} title="تحديث بيانات موظف">
+          <CreateUserForm employeeData={employeeData} />
+      </CustomizedDialog>
+      <ConfirmationDialog
+        confirmFunction={async () =>
+          dispatch(deleteEmployee(String(employeeData?.id))).then(() => {
+            setShowConfirmationDialog(false);
+          })
+        }
+        contentMessage="في حالة حذف الموظف لن تستطيع العودة اليه مجددا, هل انت متأكد من حذف هذا الموظف؟"
+        open={showConfirmationDialog}
+        setOpen={setShowConfirmationDialog}
+        title="حذف موظف"
+      />
       <CustomDataTable
         fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
-          dispatch(getEmployeeList(filters));
+          dispatch(getEmployeeList([]));
         }}
         totalItems={employeeState.employeeList.length}
         data={employeeState.employeeList.map<DataItem>(
@@ -53,6 +79,32 @@ const EmployeesTable = () => {
                 item.person?.thirdName +
                 " " +
                 item.person?.fourthName,
+              update: (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 2,
+                    color: "primary.dark",
+                  }}
+                >
+                  <EditRoundedIcon
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setEmployeeData(item);
+                      setShowEditEmployeeDialog(true)
+                    }}
+                  />
+                  <DeleteRoundedIcon
+                    sx={{ cursor: "pointer", color: "red" }}
+                    onClick={() => {
+                      setEmployeeData(item);
+                      setShowConfirmationDialog(true);
+                    }}
+                  />
+                </Box>
+              ),
             };
           }
         )}

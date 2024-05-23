@@ -28,14 +28,24 @@ import {
   ShiftType,
 } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 import PersonalData from "@/core/shared/components/PersonalData";
+import { getSubDepartmentsList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/sub-departments-thunks ";
+import { SubDepartmentsState } from "@/modules/subdepartments-crud/presentation/controllers/types";
+import { SubDepartmentsInterface } from "@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface";
 
-const CreateUserForm = () => {
+interface CreateUserFormProps {
+  employeeData?: EmployeeInterface;
+}
+
+const CreateUserForm = ({ employeeData }: CreateUserFormProps) => {
   const dispatch = useAppDispatch();
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
   const employeeState: EmployeeState = useAppSelector(
     (state: any) => state.employees
+  );
+  const subDepartmentsState: SubDepartmentsState = useAppSelector(
+    (state: any) => state.subDepartments
   );
 
   //* buttons useRef
@@ -77,7 +87,7 @@ const CreateUserForm = () => {
         ...employeeState.currentEmployee,
         shift: values.shift,
         role: values.role,
-        department: values.department,
+        suDepartmentIds: values.suDepartmentIds,
       })
     );
     console.log("Submit Employee:", values);
@@ -119,6 +129,11 @@ const CreateUserForm = () => {
     }
   }, [personValid, authValid, employeeValid]);
 
+//* dispatch getSubdepartments 
+  useEffect(() => {
+    dispatch(getSubDepartmentsList());
+  }, []);
+
   return (
     <Box sx={{ marginTop: "2.5rem" }}>
       {/* --------------- Peronal Data Section --------------- */}
@@ -130,13 +145,11 @@ const CreateUserForm = () => {
         isClosable={false}
       >
         <Formik
-          initialValues={PersonEntity.defaultValue()}
+          initialValues={employeeData?.person ?? PersonEntity.defaultValue()}
           onSubmit={onSubmitPerson}
           validationSchema={PersonEntity.getSchema()}
         >
-          {({
-            handleSubmit,
-          }) => (
+          {({ handleSubmit }) => (
             <Box component="form" onSubmit={handleSubmit} noValidate>
               <PersonalData />
               <Button
@@ -158,7 +171,11 @@ const CreateUserForm = () => {
         isClosable={false}
       >
         <Formik
-          initialValues={AuthDataEntity.defaultValue()}
+          initialValues={
+            employeeData?.auth
+              ??
+               AuthDataEntity.defaultValue()
+          }
           validationSchema={AuthDataEntity.getSchema()}
           onSubmit={(values) => {
             onSubmitAuth(values);
@@ -190,22 +207,24 @@ const CreateUserForm = () => {
                     }}
                   />
                 </Grid>
-                <Grid item lg={3} md={3} sm={12} xs={12}>
-                  <CustomTextField
-                    isRequired
-                    name="password"
-                    label="الرقم السري"
-                    value={values.password}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={errors.password}
-                    touched={touched.password}
-                    width="100%"
-                    props={{
-                      type: "password",
-                    }}
-                  />
-                </Grid>
+                {!employeeData ? (
+                  <Grid item lg={3} md={3} sm={12} xs={12}>
+                    <CustomTextField
+                      isRequired
+                      name="password"
+                      label="الرقم السري"
+                      value={values.password}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={errors.password}
+                      touched={touched.password}
+                      width="100%"
+                      props={{
+                        type: "password",
+                      }}
+                    />
+                  </Grid>
+                ) : null}
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                   <CustomTextField
                     name="email"
@@ -242,7 +261,7 @@ const CreateUserForm = () => {
         isClosable={false}
       >
         <Formik
-          initialValues={EmployeeEntity.defaultValue()}
+          initialValues={employeeData ? { id : employeeData?.id , shift : employeeData?.shift as ShiftType , role : employeeData?.role as RoleType , suDepartmentIds : employeeData?.suDepartmentIds as number[] | string[] } : EmployeeEntity.defaultValue()}
           validationSchema={EmployeeEntity.getSchema()}
           onSubmit={(values) => {
             onSubmitEmployee(values);
@@ -287,17 +306,23 @@ const CreateUserForm = () => {
                   />
                 </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
-                  <CustomSelectField<Department>
+                  <CustomSelectField
+                    multiple
                     isRequired
-                    name="department"
-                    label="القسم"
-                    value={values.department}
+                    name="suDepartmentIds"
+                    label="القسم الفرعي"
+                    value={values.suDepartmentIds}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={errors.department}
-                    touched={touched.department}
+                    error={errors.suDepartmentIds}
+                    touched={touched.suDepartmentIds}
                     width="100%"
-                    options={lookupsState.lookups.departments}
+                    options={subDepartmentsState?.subDepartmentsList.map(( subdepartmentEl : SubDepartmentsInterface ) => {
+                      return {
+                        id : subdepartmentEl.id,
+                        value : subdepartmentEl.name
+                      }
+                    })}
                   />
                 </Grid>
               </Grid>

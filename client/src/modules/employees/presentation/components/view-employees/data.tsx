@@ -128,7 +128,7 @@ export const header: HeaderItem[] = [
     maxWidth: 100,
     tableCellProps: { align: "center" },
     sortable: false,
-    searchable: true,
+    searchable: false,
     filterable: false,
   },
   {
@@ -138,7 +138,7 @@ export const header: HeaderItem[] = [
     maxWidth: 50,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
     sortable: false,
-    searchable: true,
+    searchable: false,
     filterable: false,
   },
 
@@ -148,7 +148,7 @@ export const header: HeaderItem[] = [
     minWidth: 100,
     maxWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
-    sortable: true,
+    sortable: false,
     searchable: false,
     filterable: false,
   },
@@ -204,5 +204,16 @@ export const header: HeaderItem[] = [
         value: "الليلية",
       },
     ],
+  },
+  {
+    id: "update",
+    label: "",
+    isComponent: true,
+    minWidth: 100,
+    tableCellProps: { align: "right" },
+    sortable: false,
+    filterable: false,
+    searchable: false,
+    onClick: () => {},
   },
 ];

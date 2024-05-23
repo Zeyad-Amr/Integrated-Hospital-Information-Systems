@@ -27,6 +27,10 @@ export class EnumsService {
       const LOC = await tx.lOC.findMany()
       const comorbidities = await tx.comorbidity.findMany()
       const governate = await tx.governate.findMany()
+      const department = await tx.department.findMany()
+      const subDepartment = await tx.subDepartment.findMany()
+      const specialization = await tx.specialization.findMany()
+      const room = await tx.room.findMany()
 
       return {
         identityType,
@@ -40,6 +44,10 @@ export class EnumsService {
         LOC,
         comorbidities,
         governate,
+        department,
+        subDepartment,
+        specialization,
+        room,
       }
 
     })

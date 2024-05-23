@@ -69,6 +69,6 @@ export interface Governate {
 }
 
 export interface Department {
-    id: string;
+    id: number;
     value: string;
 }
