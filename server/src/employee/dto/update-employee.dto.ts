@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  Matches,
   MinLength,
   Validate,
   ValidateNested,
@@ -25,6 +26,23 @@ export class AuthUpdateDto {
   @IsString()
   @MinLength(5)
   username: string;
+
+  
+  @ApiProperty({
+    type: String,
+    description: 'new password of the user',
+    example: 'Admin1',
+  })
+  @IsOptional()
+  @IsString()
+  @MinLength(5)
+  @Matches(/.*[0-9].*/, {
+    message: 'password must contain at least one number',
+  })
+  @Matches(/.*[A-Z].*/, {
+    message: 'password must contain at least one uppercase letter',
+  })
+  password: string;
 
   @ApiProperty({
     type: String,
