@@ -1,16 +1,18 @@
 import Box from "@mui/material/Box";
 import { SidebarContext } from "./context/context";
 import React, { useContext } from "react";
-import SidebarHeader from "./sidebar-header";
 import SidebarComponent from "./sidebar-component";
 import { Button, Typography } from "@mui/material";
 import { NotificationIcon } from "@/assets/icons/index";
 import ProfileIcon from "@/core/shared/components/profile/ProfileIcon";
-import { SessionStorage, SessionStorageKeys } from "@/core/shared/utils/session-storage";
+import {
+  SessionStorage,
+  SessionStorageKeys,
+} from "@/core/shared/utils/session-storage";
 
 const SidebarLayout = (props: any) => {
   const { collapsed } = useContext(SidebarContext);
-  const userData = SessionStorage.getDataByKey(SessionStorageKeys.userData)  
+  const userData = SessionStorage.getDataByKey(SessionStorageKeys.userData);
 
   return (
     <Box
@@ -98,7 +100,10 @@ const SidebarLayout = (props: any) => {
                   <NotificationIcon primary="#0f70f2" />
                 </Box>
               </Button>
-              <ProfileIcon name={userData?.user?.username} pos={userData?.user?.employee?.role?.value} />
+              <ProfileIcon
+                name={userData?.user?.username}
+                pos={userData?.user?.employee?.role?.value}
+              />
             </Box>
           </Box>
           <Box>{props.children}</Box>
