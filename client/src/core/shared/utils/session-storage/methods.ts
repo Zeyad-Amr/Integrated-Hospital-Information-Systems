@@ -1,6 +1,6 @@
 export class SessionStorage {
 
-   // Save data to session storage
+  // Save data to session storage
   static saveData(key: string, data: any): void {
     sessionStorage.setItem(key, JSON.stringify(data));
   }
@@ -11,7 +11,7 @@ export class SessionStorage {
     return data ? this.safeJSONParse(data) : null;
   }
 
-  private static safeJSONParse(str:any) {
+  private static safeJSONParse(str: any) {
     try {
       return JSON.parse(str);
     } catch (e) {
@@ -36,12 +36,12 @@ export class SessionStorage {
   }
 }
 
-class NotAllowedDataTypeException extends Error {
-  constructor() {
-    super('The data type is not allowed for storage');
-    this.name = 'NotAllowedDataTypeException';
-  }
-}
+// class NotAllowedDataTypeException extends Error {
+//   constructor() {
+//     super('The data type is not allowed for storage');
+//     this.name = 'NotAllowedDataTypeException';
+//   }
+// }
 
 class SomethingWrongException extends Error {
   constructor() {

@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { HOST_API } from '@/config/settings/app-config';
 import ErrorResponse from './error-response';
-import { LocalStorage, LocalStorageKeys } from '../shared/utils/local-storage';
-import AlertService from '../shared/utils/alert-service';
 import LoadingService from '../shared/utils/loading-service';
+import { SessionStorage, SessionStorageKeys } from '../shared/utils/session-storage';
 
 // Create a custom axios instance
 const axiosInstance = axios.create({ baseURL: HOST_API });
@@ -13,17 +12,11 @@ axiosInstance.interceptors.request.use(
     (config) => {
         LoadingService.showLoading();
         // Modify the request configuration here (e.g., add headers, authentication tokens, etc.)  
-        const token: string = localStorage.getItem('token') ?? '';
+        const token: string = SessionStorage.getDataByKey(SessionStorageKeys.token) ?? '';
         if (token.length > 0) {
-            config.headers['Authorization'] = 'Bearer ' + LocalStorage.fetch<string>(LocalStorageKeys.token) ?? '';
+            config.headers['Authorization'] = 'Bearer ' + token;
         }
-        // if (!config.url?.includes('page') && config.method?.toLowerCase() === 'get') {
-        //     config.params = {
-        //         ...config.params,
-        //         page: 1,
-        //         size: 100
-        //     }
-        // }
+
         return config;
     },
     (error) => {

@@ -1,7 +1,6 @@
 import AuthDataModel from '../models/auth-data-model';
 import { ApiClient, Endpoints } from "@/core/api";
 import UserModel from '../models/user-model';
-import { LocalStorage, LocalStorageKeys } from '@/core/shared/utils/local-storage';
 import AuthInterface from '../../domain/interfaces/auth-interface';
 import UserInterface from '../../domain/interfaces/user-interface';
 import { SessionStorage, SessionStorageKeys } from '@/core/shared/utils/session-storage';
@@ -20,6 +19,7 @@ class AuthDataSource extends BaseAuthDataSource {
         try {
             const response = await this.apiClient.post(Endpoints.user.login, AuthDataModel.toJson(authData));
             SessionStorage.saveData(SessionStorageKeys.userData, response.data)
+            SessionStorage.saveData(SessionStorageKeys.token, response.data['access_token'])
             return true;
         } catch (error) {
             SessionStorage.clearAll();
