@@ -1,11 +1,12 @@
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import ProfileDialog from "./ProfileDialog";
 import { useEffect, useRef, useState } from "react";
 
 const ProfileIcon = (props: any) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const popperRef = useRef<HTMLDivElement>(null);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
@@ -27,13 +28,12 @@ const ProfileIcon = (props: any) => {
   }, []);
 
   return (
-    <Box sx={{ position: "relative" }}>
-      <Box
-        ref={popperRef}
+    <>
+      <Button
         sx={{
           display: "flex",
           alignItems: "center",
-          cursor: "pointer",
+
           paddingRight: "20px",
         }}
         onClick={handleClick}
@@ -65,13 +65,13 @@ const ProfileIcon = (props: any) => {
             {props.pos}
           </Typography>
         </Box>
-      </Box>
+      </Button>
       <ProfileDialog
-        opacity={anchorEl ? 1 : 0}
-        display={anchorEl ? "block" : "none"}
+        popperRef={popperRef}
+        anchorEl={anchorEl}
         name={props.name}
       />
-    </Box>
+    </>
   );
 };
 
