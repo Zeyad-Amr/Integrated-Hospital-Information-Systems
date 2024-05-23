@@ -1,5 +1,6 @@
 import { useEffect, useState, ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import { SessionStorage, SessionStorageKeys } from "../utils/session-storage";
 
 interface ProtectedLayoutProps {
   children: ReactNode;
@@ -10,8 +11,8 @@ const ProtectedLayout: React.FC<ProtectedLayoutProps> = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
+    const userData = SessionStorage.getDataByKey(SessionStorageKeys.userData);
+    if (!userData?.access_token) {
       router.push("/login");
     } else {
       setIsAuthenticated(true);

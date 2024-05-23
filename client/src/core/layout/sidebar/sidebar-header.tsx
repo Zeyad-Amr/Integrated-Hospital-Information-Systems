@@ -9,11 +9,13 @@ import {
   NotificationIcon,
 } from "@/assets/icons/index";
 import ProfileIcon from "@/core/shared/components/profile/ProfileIcon";
+import { SessionStorage, SessionStorageKeys } from "@/core/shared/utils/session-storage";
 
 interface SidebarHeaderProps {
   height?: string;
 }
 const SidebarHeader = (props: SidebarHeaderProps) => {
+  const userData = SessionStorage.getDataByKey(SessionStorageKeys.userData)
   const { collapsed, onCollapse } = useContext(SidebarContext);
   return (
     <Box
@@ -93,7 +95,7 @@ const SidebarHeader = (props: SidebarHeaderProps) => {
               <NotificationIcon primary="#232836" />
             </Box>
         </Button>
-          <ProfileIcon name = "عبدالرحمن ياسر" pos = "موظف استقبال"/>
+        <ProfileIcon name={userData?.user?.username} pos={userData?.user?.employee?.role?.value} />
       </Box>
     </Box>
   );
