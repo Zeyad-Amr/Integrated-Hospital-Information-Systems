@@ -26,7 +26,7 @@ export class CreateEmployeeDto {
   auth: AuthDataDto;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     example: 1,
   })
   @IsNotEmpty()
@@ -34,7 +34,7 @@ export class CreateEmployeeDto {
   roleId: number;
 
   @ApiProperty({
-    type: String,
+    type: Array<Number>,
     example: [1,2,3],
   })
   @IsArray()
@@ -42,8 +42,8 @@ export class CreateEmployeeDto {
   suDepartmentIds: number[];
 
   @ApiProperty({
-    type: String,
-    example: 'MORNING12',
+    type: Number,
+    example: 1,
   })
   @IsNotEmpty()
   @IsInt()
