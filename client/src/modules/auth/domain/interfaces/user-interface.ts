@@ -6,7 +6,7 @@ export default interface UserInterface {
     id: string;
     role?: RoleType;
     shift?: ShiftType;
-    department?: Department;
+    suDepartmentIds?: number[] | string[];
     person?: PersonInterface;
     auth?: AuthInterface;
     createdAt?: Date;

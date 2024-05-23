@@ -27,7 +27,7 @@ export default class EmployeeModel {
             id: baseModel.id,
             role: baseModel.role,
             shift: baseModel.shift,
-            department: baseModel.department,
+            suDepartmentIds: baseModel.suDepartmentIds,
             createdAt: baseModel.createdAt,
             updatedAt: baseModel.updatedAt,
             person: baseModel.person,

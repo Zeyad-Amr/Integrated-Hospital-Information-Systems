@@ -79,13 +79,14 @@ const CustomSelectField = <T extends { id: any; value: string }>({
           label={label}
           onChange={(event: SelectChangeEvent<T>, child: ReactNode) => {
             onChange(event, child);
+            
           }}
           onBlur={onBlur}
           sx={{
             backgroundColor: "#fff ",
             height: "3.5rem",
           }}
-          value={multiple ? (Array.isArray(value) ? value : [defaultValue.id]) : value}
+          value={multiple ? (Array.isArray(value) ? value : []) : value}
           name={name}
           error={error && touched ? true : false}
           hidden={hideLabel}
