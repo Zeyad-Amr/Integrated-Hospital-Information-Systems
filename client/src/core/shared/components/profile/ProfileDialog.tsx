@@ -1,54 +1,117 @@
-import React from 'react'
-import { Box, Typography} from "@mui/material";
-import PersonIcon from '@mui/icons-material/Person';
-import LogoutIcon from '@mui/icons-material/Logout';
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import { LocalStorage } from '../../utils/local-storage';
-import { useRouter } from 'next/navigation';
+import React, { useState } from "react";
+import { Box, Typography } from "@mui/material";
+import PersonIcon from "@mui/icons-material/Person";
+import LogoutIcon from "@mui/icons-material/Logout";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
+import { useRouter } from "next/navigation";
+import { SessionStorage } from "../../utils/session-storage";
+import ConfirmationDialog from "../ConfirmationDialog";
 
 const ProfileDialog = (props: any) => {
-    const router = useRouter()
+  const router = useRouter();
+  const [showConfirmationDialog, setShowConfirmationDialog] =
+    useState<boolean>(false);
 
   return (
-    <Box sx={{
-        position:"absolute",
-        marginTop: '0.5rem',
-        marginLeft: '-5rem',
-        width: "15rem", 
-        backgroundColor:"#fff",
+    <Box
+      sx={{
+        position: "absolute",
+        marginTop: "0.5rem",
+        marginLeft: "-5rem",
+        width: "15rem",
+        backgroundColor: "#fff",
         filter: "drop-shadow(0px 0px 6px #0000004f);",
-        borderRadius:"10px",
+        borderRadius: "10px",
         // transition:"0.1s",
         opacity: props.opacity,
         visibility: props.display,
-        padding: '2rem 1rem 1rem',
-        zIndex:'1000',
-        pointerEvents:'none',
-    }}>
+        padding: "2rem 1rem 1rem",
+        zIndex: "1000",
+        pointerEvents: "none",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          color: "primary.darker",
+          alignItems: "center",
+          marginBottom: "2rem",
+        }}
+      >
+        <AccountCircleRoundedIcon sx={{ fontSize: "5rem" }} />
+        <Box
+          sx={{ display: "flex", justifyContent: "space-evenly", width: "70%" }}
+        >
+          اهلاً
+          <Typography sx={{ fontWeight: "bold" }}>{props.name}</Typography>
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          color: "primary.main",
+          cursor: "pointer",
+          transition: "0.2s",
+          padding: "10px 20px",
+          borderRadius: "5px",
+          pointerEvents: "auto !important",
+          "&:hover": { backgroundColor: "primary.lighter" },
+        }}
+      >
+        <PersonIcon sx={{ fontSize: "1.5rem" }} />
+        <Typography
+          sx={{
+            marginLeft: "1rem",
+            fontSize: "0.9rem",
+            fontWeight: "semibold",
+          }}
+        >
+          حسابي
+        </Typography>
+      </Box>
+      <Box
+        onClick={() => {
+          setShowConfirmationDialog(true);
+        }}
+        sx={{
+          width: "100%",
+          display: "flex",
+          color: "red",
+          cursor: "pointer",
+          transition: "0.2s",
+          padding: "10px 20px",
+          borderRadius: "5px",
+          pointerEvents: "auto !important",
+          "&:hover": { backgroundColor: "primary.lighter" },
+        }}
+      >
+        <LogoutIcon sx={{ fontSize: "1.5rem" }} />
+        <Typography
+          sx={{
+            marginLeft: "1rem",
+            fontSize: "0.9rem",
+            fontWeight: "semibold",
+          }}
+        >
+          تسجيل الخروج
+        </Typography>
+      </Box>
 
-        <Box sx={{display:'flex', flexDirection: 'column', color:'primary.darker', alignItems:'center', marginBottom:'2rem', }}>
-            <AccountCircleRoundedIcon sx={{fontSize:'5rem'}}/>
-            <Box sx={{display:'flex',justifyContent:'space-evenly', width:'70%'}}>اهلاً  
-                <Typography sx={{fontWeight:'bold'}}>{props.name}</Typography>
-            </Box>
-        </Box>
-        <Box sx={{width:'100%', display:'flex', color:'primary.main', cursor:'pointer',transition:'0.2s',padding:'10px 20px',borderRadius:'5px', pointerEvents:'auto !important', '&:hover': {backgroundColor:'primary.lighter'}}}>
-            <PersonIcon sx={{fontSize:'1.5rem'}}/>
-            <Typography sx={{marginLeft:'1rem', fontSize:'0.9rem', fontWeight:'semibold'}}>
-                حسابي
-            </Typography>
-        </Box>
-        <Box onClick={() => {
-            LocalStorage.clearAll()
-            router.push("/login")
-        }} sx={{width:'100%', display:'flex', color:'red', cursor:'pointer',transition:'0.2s',padding:'10px 20px',borderRadius:'5px', pointerEvents:'auto !important', '&:hover': {backgroundColor:'primary.lighter'}}}>
-            <LogoutIcon sx={{fontSize:'1.5rem'}}/>
-            <Typography sx={{marginLeft:'1rem', fontSize:'0.9rem', fontWeight:'semibold'}}>
-                تسجيل الخروج
-            </Typography>
-        </Box>
+      {/* confirmation dialog */}
+      <ConfirmationDialog
+        confirmFunction={() => {
+          SessionStorage.clearAll();
+          router.push("/login");
+        }}
+        contentMessage="هل أنت متأكد أنك تريد تسجيل الخروج؟ سيتم مسح جميع البيانات المؤقتة وسيتم إعادة توجيهك إلى صفحة تسجيل الدخول."
+        open={showConfirmationDialog}
+        setOpen={setShowConfirmationDialog}
+        title="تسجيل خروج"
+      />
     </Box>
-  )
-}
+  );
+};
 
-export default ProfileDialog
+export default ProfileDialog;
