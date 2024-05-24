@@ -1,1 +1,39 @@
+name: Frontend Check
 
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run Frontend Checks
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./client/
+
+      - name: Run Linter
+        run: npm run lint
+        working-directory: ./client/
+
+      - name: Type Check
+        run: npm run type-check
+        working-directory: ./client/
+
+      - name: Build Project
+        run: npm run build
+        working-directory: ./client/
