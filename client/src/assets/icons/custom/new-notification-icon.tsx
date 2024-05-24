@@ -1,4 +1,3 @@
-import { memo } from "react";
 import Box from "@mui/material/Box";
 import { IconProps, IconColorProps } from "../icon-props";
 import { useTheme } from "@mui/material/styles";

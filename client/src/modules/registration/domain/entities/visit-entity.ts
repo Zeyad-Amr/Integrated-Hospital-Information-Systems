@@ -1,8 +1,9 @@
 import { Yup } from '@/core/shared/utils/validation';
-import VisitInterface, { CompanionInterface } from '../interfaces/visit-interface';
+import VisitInterface from '../interfaces/visit-interface';
 import store from '@/core/state/store';
 import PersonInterface from '@/core/shared/modules/person/domain/interfaces/person-interface';
 import PersonEntity from '@/core/shared/modules/person/domain/entities/person-entity';
+import { CompanionInterface } from '../interfaces/companion-interface';
 
 interface PersonInputInterface extends Omit<PersonInterface, 'id' | 'createdAt' | 'updatedAt'> { }
 

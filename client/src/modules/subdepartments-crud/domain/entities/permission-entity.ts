@@ -1,5 +1,4 @@
 import PermissionInterface from "../interfaces/permission-interface";
-import { Yup } from '@/core/shared/utils/validation';
 
 
 export default class PermissionEntity {
@@ -8,9 +7,9 @@ export default class PermissionEntity {
     static defaultValue(): PermissionInterface {
         return {
             id: '',
-            featureId : '',
-            subdepartmentId : '',
-            roleId : '',
+            featureId: '',
+            subdepartmentId: '',
+            roleId: '',
         };
     }
 }

@@ -1,7 +1,4 @@
 import { Noto_Sans_Arabic, Almarai } from 'next/font/google';
-
-import type { Theme } from '@mui/material/styles';
-
 // ----------------------------------------------------------------------
 
 export function remToPx(value: string) {

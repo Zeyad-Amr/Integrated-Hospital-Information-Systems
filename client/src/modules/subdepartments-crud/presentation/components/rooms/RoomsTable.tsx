@@ -1,4 +1,3 @@
-import { FilterQueryParam } from "@/core/api";
 import {
   CustomDataTable,
   HeaderItem,
@@ -18,6 +17,7 @@ import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import ConfirmationDialog from "@/core/shared/components/ConfirmationDialog";
+import { FilterQuery } from "@/core/api";
 
 const roomsTableHeader: HeaderItem[] = [
   {
@@ -106,9 +106,10 @@ const RoomsTable = () => {
         />
       </CustomizedDialog>
       <CustomDataTable
-        fetchData={(filters: FilterQueryParam[]) => {
-          // console.log(filters);
+        fetchData={(filters: FilterQuery[]) => {
+          console.log(filters);
         }}
+        totalItems={roomState?.roomList?.length ?? 0}
         data={roomState?.roomList?.map((item: RoomInterface) => {
           return {
             name: item.name ?? "",

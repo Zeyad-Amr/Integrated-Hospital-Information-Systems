@@ -1,8 +1,7 @@
 import CustomDataTable from "@/core/shared/components/CustomDataTable/CustomDataTable";
 import { Box, Button } from "@mui/material";
 import { DataItem, IncidentType, data, header } from "./data";
-import CompleteIncident from "../../../pages/incident/CompleteIncident";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { FilterQuery } from "@/core/api";
 
 const IncidentTable = () => {
@@ -10,7 +9,7 @@ const IncidentTable = () => {
   const refIdValue = useRef("");
 
   // useState
-  const [showDialog, setShawDialog] = useState("none");
+  // const [showDialog, setShawDialog] = useState("none");
 
   //* data that in the state
   const apiData: any[] = data;
@@ -33,7 +32,7 @@ const IncidentTable = () => {
           fullWidth
           onClick={() => {
             refIdValue.current = item.id;
-            setShawDialog("block");
+            // setShawDialog("block");
           }}
         >
           استكمال بيانات
@@ -48,6 +47,7 @@ const IncidentTable = () => {
         fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
         }}
+        totalItems={apiData.length}
         data={tableData}
         headerItems={header}
         stickyHeader={true}
@@ -58,11 +58,11 @@ const IncidentTable = () => {
         onRowClick={(item: any) => console.log(item)}
       />
 
-      <CompleteIncident
+      {/* <CompleteIncident
         display={showDialog}
         DialogStateController={setShawDialog}
         id={refIdValue.current}
-      />
+      /> */}
     </Box>
   );
 };

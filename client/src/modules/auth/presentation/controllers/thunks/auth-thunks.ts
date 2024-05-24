@@ -2,8 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { sl, ServiceKeys } from "@/core/service-locator";
 import {
     LoginUseCase,
-    GetMeUseCase,
-    LoginUseCaseParameters
+    GetMeUseCase
 } from "../../../domain/usecases";
 import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
 
@@ -15,7 +14,7 @@ export const login = createAsyncThunk(
         const { rejectWithValue } = thunkApi;
         try {
             const result = await sl.get<LoginUseCase>(ServiceKeys.LoginUseCase).call(
-        data
+                data
             );
             console.log('Result:', result);
             return result;

@@ -1,4 +1,3 @@
-import { FilterQueryParam } from "@/core/api";
 import {
   CustomDataTable,
   HeaderItem,
@@ -18,6 +17,7 @@ import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import ConfirmationDialog from "@/core/shared/components/ConfirmationDialog";
+import { FilterQuery } from "@/core/api";
 
 const SpecializationsTableHeader: HeaderItem[] = [
   {
@@ -110,9 +110,10 @@ const SpecializationsTable = () => {
       </CustomizedDialog>
 
       <CustomDataTable
-        fetchData={(filters: FilterQueryParam[]) => {
+        fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
         }}
+        totalItems={specializationState?.specializationList?.length ?? 0}
         data={specializationState?.specializationList?.map(
           (item: SpecializationInterface) => {
             return {

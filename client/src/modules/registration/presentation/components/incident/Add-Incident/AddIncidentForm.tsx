@@ -13,18 +13,19 @@ import IncidentEntity from "@/modules/registration/domain/entities/incident-enti
 import CompanionList from "../CompanionList";
 import CompanionForm from "../../CompanionForm";
 import VisitEntity from "@/modules/registration/domain/entities/visit-entity";
-import { CompanionInterface } from "@/modules/registration/domain/interfaces/visit-interface";
 import IncidentInterface from "@/modules/registration/domain/interfaces/incident-interface";
 import { AdditionalDataInterface } from "@/modules/registration/domain/interfaces/additional-data-interface";
 import { useAppDispatch } from "@/core/state/store";
 import { createIncident } from "../../../controllers/thunks/incident-thunk";
+import { CompanionInterface } from "@/modules/registration/domain/interfaces/companion-interface";
 
 const AddIncidentForm = () => {
   const dispatch = useAppDispatch();
 
   const [openAlert, setOpenAlert] = useState<boolean>(false);
 
-  const [AdditionalDataAccordion, setAdditionalDataAccordion] = useState<boolean>(true);
+  const [AdditionalDataAccordion, setAdditionalDataAccordion] =
+    useState<boolean>(true);
   const [companionAccordion, setCompanionAccordion] = useState<boolean>(false);
 
   const [editing, setEditing] = useState<boolean>(false);
@@ -33,7 +34,6 @@ const AddIncidentForm = () => {
   const [companionsArray, setCompanionsArray] = useState<{}[]>([]);
 
   const [combinedValues, setCombinedValues] = useState<IncidentInterface>();
-
 
   // companion form Ref
   const formRef = useRef(null);
@@ -47,41 +47,36 @@ const AddIncidentForm = () => {
   const numOfPatients = useRef<any>();
   const additionalData = useRef<AdditionalDataInterface>();
 
-
   //* Submit functions
   const submitNumOfPatients = () => {
     if (refSubmitNumOfPatients.current) {
       refSubmitNumOfPatients.current.click();
     }
-  }
+  };
   const submitCompanion = () => {
     if (refSubmitCompanion.current) {
       refSubmitCompanion.current.click();
     }
-  }
+  };
   const submitAdditionalData = () => {
     if (refSubmitAdditionalData.current) {
       console.log("hhhhh");
       refSubmitAdditionalData.current.click();
     }
-  }
-
+  };
 
   //* Handle Companion Submit
   const handleCompanionSubmit = (values: CompanionInterface) => {
     if (editing) {
-      setSearchSSN(true)
+      setSearchSSN(true);
       setCompanionsArray((previous) => {
-        previous[index] = values
-        return previous
-      })
-      setEditing(false)
+        previous[index] = values;
+        return previous;
+      });
+      setEditing(false);
     } else {
-      setCompanionsArray((previous) => ([
-        ...previous,
-        values,
-      ]))
-      setEditing(false)
+      setCompanionsArray((previous) => [...previous, values]);
+      setEditing(false);
     }
   };
 
@@ -89,53 +84,44 @@ const AddIncidentForm = () => {
   const handleSubmitAllForms = () => {
     console.log("ah");
 
-    submitNumOfPatients()
-    submitAdditionalData()
+    submitNumOfPatients();
+    submitAdditionalData();
     setCombinedValues((previous) => ({
       ...previous,
       companions: companionsArray,
-    }))
-  }
+    }));
+  };
 
   //* Handle Number of Patients Submit
   const handleNumOfPatientsSubmit = (values: { numOfPatients: string }) => {
-    numOfPatients.current = values
+    numOfPatients.current = values;
     setCombinedValues((previous) => ({
       ...previous,
       numOfPatients: values.numOfPatients,
-    }))
+    }));
   };
 
   //* Handle Additional Data Submit
   const handleAdditionalDataSubmit = (values: AdditionalDataInterface) => {
-    additionalData.current = values
+    additionalData.current = values;
     setCombinedValues((previous) => ({
       ...previous,
       additionalInfo: values,
-    }))
+    }));
   };
 
-
   useEffect(() => {
-    if (numOfPatients.current &&
-      additionalData.current) {
+    if (numOfPatients.current && additionalData.current) {
       if (combinedValues) {
-
-        dispatch(
-          createIncident(combinedValues)
-        ).then(() => {
-          numOfPatients.current = undefined
-          additionalData.current = undefined
-          setCompanionsArray([])
-        })
-        console.log(combinedValues)
+        dispatch(createIncident(combinedValues)).then(() => {
+          numOfPatients.current = undefined;
+          additionalData.current = undefined;
+          setCompanionsArray([]);
+        });
+        console.log(combinedValues);
       }
     }
-  },
-    [combinedValues]
-  );
-
-
+  }, [combinedValues]);
 
   return (
     <>
@@ -148,8 +134,8 @@ const AddIncidentForm = () => {
         }}
         validationSchema={IncidentEntity.getNumOfPatientsSchema()}
         onSubmit={(values, { resetForm }) => {
-          handleNumOfPatientsSubmit(values)
-          resetForm()
+          handleNumOfPatientsSubmit(values);
+          resetForm();
         }}
       >
         {({
@@ -203,13 +189,12 @@ const AddIncidentForm = () => {
           initialValues={AdditionalDataEntity.defaultValue()}
           onSubmit={(values) => {
             console.log(values);
-            return handleAdditionalDataSubmit(values)
+            return handleAdditionalDataSubmit(values);
           }}
           refSubmitButton={refSubmitAdditionalData}
           isResetForm
         />
       </CustomAccordion>
-
 
       {/* //* Start Companion Accordion************************************************* */}
       <CustomAccordion
@@ -220,25 +205,26 @@ const AddIncidentForm = () => {
         isClosable={false}
       >
         <Box sx={{ display: "flex" }}>
-
           {/* //* Start Companion Form */}
           <Box sx={{ width: "75%" }}>
             <CompanionForm
               isResetForm
               initialValues={VisitEntity.companionDefaultValue()}
               validationSchema={VisitEntity.getCompanionSchema(true)}
-              onSubmit={(values) => { return handleCompanionSubmit(values) }}
+              onSubmit={(values) => {
+                return handleCompanionSubmit(values);
+              }}
               refSubmitButton={refSubmitCompanion}
               searchSSN={searchSSN}
               innerFormRef={formRef}
-            // newValues={companionFormValues}
+              // newValues={companionFormValues}
             />
             <SecondaryButton
               id="add-comp-btn"
               title={editing ? "حفــــظ" : "اضــــافة"}
               type="button"
               onClick={() => {
-                submitCompanion()
+                submitCompanion();
               }}
             />
           </Box>

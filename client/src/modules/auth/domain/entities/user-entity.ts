@@ -1,8 +1,5 @@
 import { Yup } from "@/core/shared/utils/validation";
 import UserInterface from "../interfaces/user-interface";
-import store from "@/core/state/store";
-import { Department, RoleType, ShiftType } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
-
 export default class UserEntity {
 
     //* --------------------- Methods ---------------------
@@ -20,7 +17,6 @@ export default class UserEntity {
     }
 
     static getSchema(): Yup.ObjectSchema<any> {
-        const state = store.getState();
         return Yup.object().shape({
             // role: Yup.number()
             //     .oneOf(state.lookups.lookups.roleTypes.map((e : any) => e.id)).required("الوظيفة مطلوب"),

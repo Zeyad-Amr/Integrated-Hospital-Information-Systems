@@ -2,8 +2,7 @@ import CustomDataTable from "@/core/shared/components/CustomDataTable/CustomData
 import { Button } from "@mui/material";
 import { AnonymizedVisit, header } from "./data";
 import { Box } from "@mui/system";
-import CompleteVisit from "../complete-visit-data/CompleteVisit";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { VisitsState } from "../../../controllers/types";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
@@ -22,7 +21,7 @@ const VisitsTable = () => {
   const refIdValue = useRef("");
 
   // useState
-  const [showDialog, setShawDialog] = useState("none");
+  // const [showDialog, setShawDialog] = useState("none");
 
   //* data that in the state
   const apiData: VisitInterface[] = state.visits;
@@ -56,7 +55,7 @@ const VisitsTable = () => {
           fullWidth
           onClick={() => {
             refIdValue.current = item.code ?? "";
-            setShawDialog("block");
+            // setShawDialog("block");
           }}
         >
           استكمال بيانات
@@ -87,11 +86,11 @@ const VisitsTable = () => {
         sx={{ mb: 5 }}
         onRowClick={(item: any) => console.log(item)}
       />
-      <CompleteVisit
+      {/* <CompleteVisit
         display={showDialog}
         DialogStateController={setShawDialog}
         id={refIdValue.current}
-      />
+      /> */}
     </Box>
   );
 };

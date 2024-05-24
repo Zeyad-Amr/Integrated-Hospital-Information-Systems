@@ -1,8 +1,7 @@
-import PageHeader from '@/core/shared/components/headers/PageHeader'
-import { Box } from '@mui/system'
-import React from 'react'
-import ErAreaForm from '../components/er-area-form/ErAreaForm'
-
+import { Box } from "@mui/system";
+import React from "react";
+// import ErAreaForm from '../components/er-area-form/ErAreaForm'
+// TODO: Remove this file
 const ErAreaPage = () => {
   return (
     <Box
@@ -12,11 +11,9 @@ const ErAreaPage = () => {
         margin: "0 auto 0",
       }}
     >
-      {/* <PageHeader title="التــريــاج">
-      </PageHeader>  */}
-      <ErAreaForm/>
+      {/* <ErAreaForm/> */}
     </Box>
-  )
-}
+  );
+};
 
-export default ErAreaPage
+export default ErAreaPage;

@@ -1,6 +1,6 @@
 import BaseUseCase from "@/core/base/base-usecase";
-import SubDepartmentsInterface from "../../interfaces/sub-departments-interface";
 import BaseSubDepartmentsRepository from "../../repositories/base-sub-departments-repository";
+import { SubDepartmentsInterface } from "../../interfaces/sub-departments-interface";
 
 class UpdateSubDepartmentUseCase
     implements BaseUseCase<boolean, SubDepartmentsInterface> {

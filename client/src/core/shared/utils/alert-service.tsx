@@ -10,8 +10,8 @@ class AlertService {
     message: React.ReactNode,
     severity: "error" | "warning" | "info" | "success",
     duration: number = 5000,
-    customIcon?: React.ReactNode, 
-    messageStyle?: React.CSSProperties, 
+    customIcon?: React.ReactNode,
+    messageStyle?: React.CSSProperties,
     closeIconStyle?: React.CSSProperties
   ) {
     const alertElement = document.createElement("div");
@@ -35,7 +35,6 @@ class AlertService {
         icon={customIcon}
         action={
           <IconButton
-            size="larger"
             onClick={closeAlert}
             style={{ ...closeIconStyle, marginTop: "-0.3rem" }}
           >

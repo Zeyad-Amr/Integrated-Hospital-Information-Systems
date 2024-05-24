@@ -1,4 +1,3 @@
-import { FilterQueryParam } from "@/core/api";
 import {
   CustomDataTable,
   HeaderItem,
@@ -31,6 +30,7 @@ import { getFeaturesList } from "../../controllers/thunks/features-thunks";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import AddModeratorIcon from "@mui/icons-material/AddModerator";
 import ConfirmationDialog from "@/core/shared/components/ConfirmationDialog";
+import { FilterQuery } from "@/core/api";
 
 const SubDepartmentsTableHeader: HeaderItem[] = [
   {
@@ -178,9 +178,10 @@ const SubDepartmentsTable = () => {
         />
       </CustomizedDialog>
       <CustomDataTable
-        fetchData={(filters: FilterQueryParam[]) => {
+        fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
         }}
+        totalItems={subDepartmentsState?.subDepartmentsList?.length ?? 0}
         data={subDepartmentsState?.subDepartmentsList?.map(
           (item: SubDepartmentsInterface) => {
             return {

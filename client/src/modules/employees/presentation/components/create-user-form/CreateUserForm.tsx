@@ -23,7 +23,6 @@ import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import { EmployeeState } from "../../controllers/types";
 import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
 import {
-  Department,
   RoleType,
   ShiftType,
 } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
@@ -129,7 +128,7 @@ const CreateUserForm = ({ employeeData }: CreateUserFormProps) => {
     }
   }, [personValid, authValid, employeeValid]);
 
-//* dispatch getSubdepartments 
+  //* dispatch getSubdepartments
   useEffect(() => {
     dispatch(getSubDepartmentsList());
   }, []);
@@ -171,11 +170,7 @@ const CreateUserForm = ({ employeeData }: CreateUserFormProps) => {
         isClosable={false}
       >
         <Formik
-          initialValues={
-            employeeData?.auth
-              ??
-               AuthDataEntity.defaultValue()
-          }
+          initialValues={employeeData?.auth ?? AuthDataEntity.defaultValue()}
           validationSchema={AuthDataEntity.getSchema()}
           onSubmit={(values) => {
             onSubmitAuth(values);
@@ -261,7 +256,18 @@ const CreateUserForm = ({ employeeData }: CreateUserFormProps) => {
         isClosable={false}
       >
         <Formik
-          initialValues={employeeData ? { id : employeeData?.id , shift : employeeData?.shift as ShiftType , role : employeeData?.role as RoleType , suDepartmentIds : employeeData?.suDepartmentIds as number[] | string[] } : EmployeeEntity.defaultValue()}
+          initialValues={
+            employeeData
+              ? {
+                  id: employeeData?.id,
+                  shift: employeeData?.shift as ShiftType,
+                  role: employeeData?.role as RoleType,
+                  suDepartmentIds: employeeData?.suDepartmentIds as
+                    | number[]
+                    | string[],
+                }
+              : EmployeeEntity.defaultValue()
+          }
           validationSchema={EmployeeEntity.getSchema()}
           onSubmit={(values) => {
             onSubmitEmployee(values);
@@ -317,12 +323,14 @@ const CreateUserForm = ({ employeeData }: CreateUserFormProps) => {
                     error={errors.suDepartmentIds}
                     touched={touched.suDepartmentIds}
                     width="100%"
-                    options={subDepartmentsState?.subDepartmentsList.map(( subdepartmentEl : SubDepartmentsInterface ) => {
-                      return {
-                        id : subdepartmentEl.id,
-                        value : subdepartmentEl.name
+                    options={subDepartmentsState?.subDepartmentsList.map(
+                      (subdepartmentEl: SubDepartmentsInterface) => {
+                        return {
+                          id: subdepartmentEl.id,
+                          value: subdepartmentEl.name,
+                        };
                       }
-                    })}
+                    )}
                   />
                 </Grid>
               </Grid>

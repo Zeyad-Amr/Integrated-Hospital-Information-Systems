@@ -1,4 +1,6 @@
 const Endpoints = {
+    base: 'https://qasr-server-lqj1.onrender.com/api',
+
     user: {
         login: '/user/login',
         me: '/user/me',

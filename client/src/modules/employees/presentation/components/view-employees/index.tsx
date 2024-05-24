@@ -1,8 +1,7 @@
 import CustomDataTable from "@/core/shared/components/CustomDataTable/CustomDataTable";
 import { DataItem, header } from "./data";
 import { Box } from "@mui/system";
-import CompleteVisit from "../../../../registration/presentation/components/visit/complete-visit-data/CompleteVisit";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import { EmployeeState } from "../../controllers/types";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
@@ -11,10 +10,7 @@ import { getEmployeeList } from "../../controllers/thunks/employee-thunks";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import ConfirmationDialog from "@/core/shared/components/ConfirmationDialog";
-import {
-  deleteEmployee,
-  updateEmployee,
-} from "@/modules/employees/presentation/controllers/thunks/employee-thunks";
+import { deleteEmployee } from "@/modules/employees/presentation/controllers/thunks/employee-thunks";
 import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
 import CreateUserForm from "../create-user-form/CreateUserForm";
 
@@ -25,12 +21,14 @@ const EmployeesTable = () => {
     (state: any) => state.employees
   );
   // useRef
-  const refIdValue = useRef("");
+  // const refIdValue = useRef("");
 
   // useState
-  const [showDialog, setShawDialog] = useState("none");
-  const [showConfirmationDialog, setShowConfirmationDialog] = useState<boolean>(false);
-  const [showEditEmployeeDialog, setShowEditEmployeeDialog] = useState<boolean>(false);
+  // const [showDialog, setShawDialog] = useState("none");
+  const [showConfirmationDialog, setShowConfirmationDialog] =
+    useState<boolean>(false);
+  const [showEditEmployeeDialog, setShowEditEmployeeDialog] =
+    useState<boolean>(false);
   const [employeeData, setEmployeeData] = useState<EmployeeInterface>();
 
   return (
@@ -39,8 +37,13 @@ const EmployeesTable = () => {
         p: 3,
       }}
     >
-      <CustomizedDialog maxWidth={10} open={showEditEmployeeDialog} setOpen={setShowEditEmployeeDialog} title="تحديث بيانات موظف">
-          <CreateUserForm employeeData={employeeData} />
+      <CustomizedDialog
+        maxWidth={"md"}
+        open={showEditEmployeeDialog}
+        setOpen={setShowEditEmployeeDialog}
+        title="تحديث بيانات موظف"
+      >
+        <CreateUserForm employeeData={employeeData} />
       </CustomizedDialog>
       <ConfirmationDialog
         confirmFunction={async () =>
@@ -93,7 +96,7 @@ const EmployeesTable = () => {
                     sx={{ cursor: "pointer" }}
                     onClick={() => {
                       setEmployeeData(item);
-                      setShowEditEmployeeDialog(true)
+                      setShowEditEmployeeDialog(true);
                     }}
                   />
                   <DeleteRoundedIcon
@@ -117,11 +120,11 @@ const EmployeesTable = () => {
         onRowClick={(item: any) => console.log(item)}
       />
 
-      <CompleteVisit
+      {/* <CompleteVisit
         display={showDialog}
         DialogStateController={setShawDialog}
         id={refIdValue.current}
-      />
+      /> */}
     </Box>
   );
 };

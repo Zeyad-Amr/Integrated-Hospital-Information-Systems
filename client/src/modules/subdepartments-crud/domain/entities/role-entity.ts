@@ -1,5 +1,4 @@
 import RoleInterface from "../interfaces/role-interface";
-import { Yup } from '@/core/shared/utils/validation';
 
 
 export default class RoleEntity {
@@ -8,7 +7,7 @@ export default class RoleEntity {
     static defaultValue(): RoleInterface {
         return {
             id: '',
-            value : '',
+            value: '',
         };
     }
 }

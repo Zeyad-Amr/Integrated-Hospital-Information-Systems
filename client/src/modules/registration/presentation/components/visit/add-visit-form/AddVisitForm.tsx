@@ -11,10 +11,11 @@ import AdditionalDataEntity from "@/modules/registration/domain/entities/additio
 import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
 import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
 import VisitEntity from "@/modules/registration/domain/entities/visit-entity";
-import VisitInterface, { CompanionInterface } from "@/modules/registration/domain/interfaces/visit-interface";
+import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
 import { createVisit } from "../../../controllers/thunks/visits-thunks";
 import CompanionForm from "../../CompanionForm";
 import PersonalData from "@/core/shared/components/PersonalData";
+import { CompanionInterface } from "@/modules/registration/domain/interfaces/companion-interface";
 
 const AddVisitForm = () => {
   const dispatch = useAppDispatch();
@@ -28,7 +29,6 @@ const AddVisitForm = () => {
   const [combinedValues, setCombinedValues] = useState<VisitInterface>();
 
   const [isChild, setIsChild] = useState<boolean>(false);
-
 
   //* buttons useRef
   const refSubmitPatient: any = useRef(null);
@@ -45,76 +45,72 @@ const AddVisitForm = () => {
     if (refSubmitPatient.current) {
       refSubmitPatient.current.click();
     }
-  }
+  };
   const submitCompanion = () => {
     if (refSubmitCompanion.current) {
       refSubmitCompanion.current.click();
     }
-  }
+  };
   const submitAdditionalData = () => {
     if (refSubmitAdditionalData.current) {
       refSubmitAdditionalData.current.click();
     }
-  }
+  };
 
   //* Handle Patient Submit
-  const handlePatientSubmit = (values: PersonInterface & { sequenceNumber: string }) => {
+  const handlePatientSubmit = (
+    values: PersonInterface & { sequenceNumber: string }
+  ) => {
     const { sequenceNumber, ...patientPersonalData } = values;
     patientData.current = values;
     setCombinedValues((previous) => ({
       ...previous,
       patient: patientPersonalData,
-      sequenceNumber
-    }))
+      sequenceNumber,
+    }));
   };
-
 
   //* Handle Companion Submit
   const handleCompanionSubmit = (values: PersonInterface) => {
-    companionData.current = values
+    companionData.current = values;
     setCombinedValues((previous) => ({
       ...previous,
       companion: values,
-    }))
+    }));
   };
-
 
   //* Handle Additional Data Submit
   const handleAdditionalDataSubmit = (values: AdditionalDataInterface) => {
-    additionalData.current = values
+    additionalData.current = values;
     setCombinedValues((previous) => ({
       ...previous,
       additionalInfo: values,
-    }))
+    }));
   };
 
   //* Handle Submit all Forms
   const handleSubmitAllForms = () => {
-    submitPatient()
-    submitCompanion()
-    submitAdditionalData()
-  }
-
+    submitPatient();
+    submitCompanion();
+    submitAdditionalData();
+  };
 
   useEffect(() => {
-    if (patientData.current &&
+    if (
+      patientData.current &&
       companionData.current &&
-      additionalData.current) {
+      additionalData.current
+    ) {
       if (combinedValues) {
-
-        dispatch(
-          createVisit(combinedValues)
-        ).then(() => {
-          patientData.current = undefined
-          companionData.current = undefined
-          additionalData.current = undefined
-        })
-        console.log(combinedValues)
+        dispatch(createVisit(combinedValues)).then(() => {
+          patientData.current = undefined;
+          companionData.current = undefined;
+          additionalData.current = undefined;
+        });
+        console.log(combinedValues);
       }
     }
-  },
-    [combinedValues]
-  );
+  }, [combinedValues]);
 
   return (
     <Box sx={{ marginTop: "2.5rem" }}>
@@ -128,7 +124,10 @@ const AddVisitForm = () => {
         {/* //* Start Patient form ********************* */}
         <Formik
           initialValues={{ sequenceNumber: "", ...PersonEntity.defaultValue() }}
-          onSubmit={(values) => { console.log(values); handlePatientSubmit(values) }}
+          onSubmit={(values) => {
+            console.log(values);
+            handlePatientSubmit(values);
+          }}
           // validateOnMount={true}
           validationSchema={VisitEntity.getPatientSchema(!isChild)}
         >
@@ -174,8 +173,8 @@ const AddVisitForm = () => {
                       padding: "0.6rem 0.7rem ",
                       width: "max-content",
                       cursor: "pointer",
-                      transition: '0.2s',
-                      userSelect: 'none'
+                      transition: "0.2s",
+                      userSelect: "none",
                     }}
                     onClick={() => setIsChild(!isChild)}
                   >
@@ -208,12 +207,11 @@ const AddVisitForm = () => {
             refSubmitButton={refSubmitAdditionalData}
             onSubmit={(values) => {
               setAdditionalDataExpanded(true);
-              return handleAdditionalDataSubmit(values)
+              return handleAdditionalDataSubmit(values);
             }}
           />
         </CustomAccordion>
       </Box>
-
 
       {/* //* Start Companion ************************************* */}
       <Box mt={2}>

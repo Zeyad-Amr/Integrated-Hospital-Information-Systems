@@ -2,8 +2,6 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
   Breakpoint,
@@ -76,7 +74,10 @@ export default function ConfirmationDialog(props: {
           </Box>
         </DialogContent>
         <DialogActions sx={{ margin: "0.3rem 0.8rem" }}>
-          <PrimaryButton title="تأكيد" onClick={() => props.confirmFunction()} />
+          <PrimaryButton
+            title="تأكيد"
+            onClick={() => props.confirmFunction()}
+          />
           <SecondaryButton title="الغاء" onClick={handleClose} />
         </DialogActions>
       </BootstrapDialog>

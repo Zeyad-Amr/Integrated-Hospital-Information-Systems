@@ -1,8 +1,6 @@
-import PageHeader from '@/core/shared/components/headers/PageHeader'
-import { Box } from '@mui/system'
-import React from 'react'
-import HealthAndSafetyOutlinedIcon from '@mui/icons-material/HealthAndSafetyOutlined';
-import AddIncidentForm from '../../components/incident/Add-Incident/AddIncidentForm';
+import { Box } from "@mui/system";
+import React from "react";
+import AddIncidentForm from "../../components/incident/Add-Incident/AddIncidentForm";
 
 const AddIncident = () => {
   return (
@@ -19,8 +17,7 @@ const AddIncident = () => {
 
       <AddIncidentForm />
     </Box>
-  )
-}
+  );
+};
 
-
-export default AddIncident
+export default AddIncident;
