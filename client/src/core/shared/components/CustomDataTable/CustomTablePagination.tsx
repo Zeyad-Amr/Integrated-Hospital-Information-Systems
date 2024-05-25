@@ -22,7 +22,7 @@ const CustomTablePagination = ({ dataLength }: CustomTablePaginationProps) => {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     console.log(event.target.value);
-    setRowsPerPage(parseInt(event.target.value, initialRowsPerPage));
+    setRowsPerPage(parseInt(event.target.value, 10));
     setPage(initialPage);
   };
   console.log("CustomTablePagination", dataLength, page, rowsPerPage);
