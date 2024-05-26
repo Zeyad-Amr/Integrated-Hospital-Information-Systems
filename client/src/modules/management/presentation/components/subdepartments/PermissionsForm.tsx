@@ -166,14 +166,14 @@ const PermissionsForm = ({
                 غرفة :{" "}
                 {getNameOfItemWithItsId(
                   subDepartmentData?.roomId,
-                  roomsState?.roomList
+                  roomsState?.rooms.items
                 )}
               </Typography>
               <Typography>
                 تخصص :
                 {getNameOfItemWithItsId(
                   subDepartmentData?.specializationId,
-                  specializationsState?.specializationList
+                  specializationsState?.specializations.items
                 )}
               </Typography>
             </Box>

@@ -121,7 +121,7 @@ const SubDepartmentsForm = ({
             </Grid>
             <Grid item lg={6} md={6} sm={6} xs={12}>
               <CustomSelectField
-                options={roomsState?.roomList.map((room: RoomInterface) => {
+                options={roomsState?.rooms.items.map((room: RoomInterface) => {
                   return {
                     id: room.id,
                     value: room.name,
@@ -141,7 +141,7 @@ const SubDepartmentsForm = ({
             </Grid>
             <Grid item lg={12} md={12} sm={12} xs={12}>
               <CustomSelectField
-                options={specializationsState?.specializationList.map(
+                options={specializationsState?.specializations.items.map(
                   (specialization: SpecializationInterface) => {
                     return {
                       id: specialization.id,

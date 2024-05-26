@@ -130,7 +130,8 @@ const CreateUserForm = ({ employeeData }: CreateUserFormProps) => {
 
   //* dispatch getSubdepartments
   useEffect(() => {
-    dispatch(getSubDepartmentsList());
+    // TODO: Add applied filters
+    dispatch(getSubDepartmentsList([]));
   }, []);
 
   return (
@@ -323,7 +324,7 @@ const CreateUserForm = ({ employeeData }: CreateUserFormProps) => {
                     error={errors.suDepartmentIds}
                     touched={touched.suDepartmentIds}
                     width="100%"
-                    options={subDepartmentsState?.subDepartmentsList.map(
+                    options={subDepartmentsState?.subDepartments.items.map(
                       (subdepartmentEl: SubDepartmentsInterface) => {
                         return {
                           id: subdepartmentEl.id,
