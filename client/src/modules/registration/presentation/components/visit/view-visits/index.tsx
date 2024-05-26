@@ -13,10 +13,6 @@ const VisitsTable = () => {
   const state: VisitsState = useAppSelector((state: any) => state.visits);
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   dispatch(getAnonymousVisits([]));
-  // }, []);
-
   // useRef
   const refIdValue = useRef("");
 
@@ -24,7 +20,7 @@ const VisitsTable = () => {
   // const [showDialog, setShawDialog] = useState("none");
 
   //* data that in the state
-  const apiData: VisitInterface[] = state.visits;
+  const apiData: VisitInterface[] = state.visits.items;
   console.log("apiDataaaa", apiData);
 
   let tableData: AnonymizedVisit[] = [];
@@ -76,15 +72,9 @@ const VisitsTable = () => {
           dispatch(getAnonymousVisits(filters));
         }}
         initSortedColumn={{ columnId: "createdAt", isAscending: false }}
-        totalItems={state.total}
+        totalItems={state.visits.total}
         data={tableData}
         headerItems={header}
-        stickyHeader={true}
-        boxShadow={5}
-        width="100%"
-        height="80vh"
-        sx={{ mb: 5 }}
-        onRowClick={(item: any) => console.log(item)}
       />
       {/* <CompleteVisit
         display={showDialog}

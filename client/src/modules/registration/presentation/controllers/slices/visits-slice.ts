@@ -7,14 +7,13 @@ import {
 } from "../thunks/visits-thunks";
 import { VisitsState } from "../types";
 import { ErrorResponse } from "@/core/api";
-import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
 import AlertService from "@/core/shared/utils/alert-service";
 import VisitEntity from "@/modules/registration/domain/entities/visit-entity";
+import { PaginatedListModel } from "@/core/api/pagination";
 
 //* Initial State
 const initialState: VisitsState = {
-    visits: [],
-    total: 0,
+    visits: PaginatedListModel.default(),
     currentVisit: VisitEntity.defaultValue(),
     loading: false,
     error: "",
@@ -27,22 +26,6 @@ const visitSlice = createSlice({
         setLoading(state, action: { payload: boolean, type: string }) {
             state.loading = action.payload;
         },
-        clearError(state) {
-            state.error = initialState.error;
-        },
-        clearVisit(state) {
-            state.visits = initialState.visits;
-        },
-        clearCurrentVisit(state) {
-            state.currentVisit = initialState.currentVisit;
-        },
-        setVisit(state, action: { payload: VisitInterface[], type: string }) {
-            state.visits = action.payload;
-        },
-        setCurrentVisit(state, action: { payload: VisitInterface, type: string }) {
-            state.currentVisit = action.payload;
-        }
-
     },
     extraReducers(builder) {
         //* Create Visit
@@ -53,7 +36,7 @@ const visitSlice = createSlice({
         builder.addCase(createVisit.fulfilled, (state, action) => {
             state.loading = false;
             state.error = "";
-            state.visits = [action.payload]
+            state.visits.items.push(action.payload);
             AlertService.showAlert('تم اضافة زيارة مريض بنجاح', 'success');
             console.log('state.visits', state.visits);
         });
@@ -86,8 +69,7 @@ const visitSlice = createSlice({
         });
         builder.addCase(getAnonymousVisits.fulfilled, (state, action) => {
             state.loading = false;
-            state.visits = action.payload.items;
-            state.total = action.payload.total;
+            state.visits = action.payload;
             state.error = "";
         });
         builder.addCase(getAnonymousVisits.rejected, (state, action) => {
@@ -115,12 +97,6 @@ const visitSlice = createSlice({
 });
 
 export const {
-    clearError,
     setLoading,
-    clearVisit,
-    setVisit,
-    clearCurrentVisit,
-    setCurrentVisit
-
 } = visitSlice.actions;
 export default visitSlice.reducer;

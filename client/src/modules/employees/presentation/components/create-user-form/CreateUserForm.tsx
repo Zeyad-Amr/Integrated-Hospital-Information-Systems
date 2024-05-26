@@ -27,9 +27,9 @@ import {
   ShiftType,
 } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 import PersonalData from "@/core/shared/components/PersonalData";
-import { getSubDepartmentsList } from "@/modules/subdepartments-crud/presentation/controllers/thunks/sub-departments-thunks ";
-import { SubDepartmentsState } from "@/modules/subdepartments-crud/presentation/controllers/types";
-import { SubDepartmentsInterface } from "@/modules/subdepartments-crud/domain/interfaces/sub-departments-interface";
+import { getSubDepartmentsList } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
+import { SubDepartmentsState } from "@/modules/management/presentation/controllers/types";
+import { SubDepartmentsInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
 
 interface CreateUserFormProps {
   employeeData?: EmployeeInterface;
@@ -130,7 +130,8 @@ const CreateUserForm = ({ employeeData }: CreateUserFormProps) => {
 
   //* dispatch getSubdepartments
   useEffect(() => {
-    dispatch(getSubDepartmentsList());
+    // TODO: Add applied filters
+    dispatch(getSubDepartmentsList([]));
   }, []);
 
   return (
@@ -323,7 +324,7 @@ const CreateUserForm = ({ employeeData }: CreateUserFormProps) => {
                     error={errors.suDepartmentIds}
                     touched={touched.suDepartmentIds}
                     width="100%"
-                    options={subDepartmentsState?.subDepartmentsList.map(
+                    options={subDepartmentsState?.subDepartments.items.map(
                       (subdepartmentEl: SubDepartmentsInterface) => {
                         return {
                           id: subdepartmentEl.id,

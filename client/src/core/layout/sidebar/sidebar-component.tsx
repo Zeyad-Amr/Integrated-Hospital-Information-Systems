@@ -110,20 +110,20 @@ const SidebarComponent = () => {
           <ApartmentIcon sx={{ color: "primary.main", textAlign: "center" }} />
         }
         activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
-        text="الأقسام الفرعية"
-        path="/dashboard/subdepartments/"
+        text="إدارة الأقسام"
+        path="/dashboard/departments/manage"
       >
         <SidebarSubmenuItem
           text="الغرف"
-          path="/dashboard/subdepartments/rooms"
+          path="/dashboard/departments/manage/rooms"
         />
         <SidebarSubmenuItem
           text="التخصصات"
-          path="/dashboard/subdepartments/specializations"
+          path="/dashboard/departments/manage/specializations"
         />
         <SidebarSubmenuItem
-          text="اضافة قسم فرعي"
-          path="/dashboard/subdepartments/details"
+          text="الأقسام الفرعية"
+          path="/dashboard/departments/manage/subdepartments"
         />
       </SidebarMenuItem>
     </Box>
