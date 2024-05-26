@@ -6,6 +6,9 @@ import EmployeeEntity from "@/modules/employees/domain/entities/employee-entity"
 import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
 import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
 import AlertService from "@/core/shared/utils/alert-service";
+import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
+import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
+import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
 
 //* Initial State
 const initialState: EmployeeState = {
@@ -21,6 +24,28 @@ const employeeSlice = createSlice({
     name: "employees",
     initialState,
     reducers: {
+
+        clearEmployeeError(state) {
+            state.error = "";
+        },
+        clearCurrentEmployee(state) {
+            state.currentEmployee = initialState.currentEmployee;
+        },
+        clearEmployeeList(state) {
+            state.employees = initialState.employees;
+        },
+        setCurrentEmployee(state, action: { payload: EmployeeInterface, type: string }) {
+            state.currentEmployee = action.payload;
+        },
+        setCurrentAuth(state, action: { payload: AuthInterface, type: string }) {
+            state.currentAuth = action.payload;
+        },
+        setCurrentPerson(state, action: { payload: PersonInterface, type: string }) {
+            state.currentPerson = action.payload;
+        },
+        setEmployeeList(state, action: { payload: EmployeeInterface[], type: string }) {
+            state.employees.items = action.payload;
+        },
         setLoading(state, action: { payload: boolean, type: string }) {
             state.loading = action.payload;
         }
@@ -114,6 +139,14 @@ const employeeSlice = createSlice({
 });
 
 export const {
-    setLoading
+    setLoading,
+    setCurrentEmployee,
+    clearEmployeeError,
+    clearCurrentEmployee,
+    clearEmployeeList,
+    setEmployeeList,
+    setCurrentAuth,
+    setCurrentPerson,
+
 } = employeeSlice.actions;
 export default employeeSlice.reducer;

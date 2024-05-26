@@ -30,7 +30,7 @@ export default class PersonModel {
             verificationMethod: json.verificationMethodId,
             gender: json.genderId,
             birthDate: json.birthDate,
-            phone: json.phone,
+            phone: json.phone?.length == 13 ? json.phone.substring(2) : json.phone,
             governate: json.governateId,
             address: json.address,
         };
