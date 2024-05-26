@@ -2,7 +2,7 @@
 
 import Sidebar from "@/core/layout/sidebar/index";
 import ProtectedLayout from "@/core/shared/components/ProtectedLayout";
-import SubDepartments from "@/modules/subdepartments-crud/presentation/pages/subdepartments/SubDepartments";
+import SubDepartments from "@/modules/management/presentation/pages/subdepartments/SubDepartments";
 
 // ----------------------------------------------------------------------
 

@@ -37,59 +37,59 @@ import { BaseIncidentDataSource, IncidentDataSource } from "@/modules/registrati
 import BaseIncidentRepository from "@/modules/registration/domain/repositories/base-incident-repository";
 import IncidentRepository from "@/modules/registration/data/repositories/incident-repository";
 import CreateIncidentUseCase from "@/modules/registration/domain/usecases/incident/create-incident-usecase";
-import { BaseRoomDataSource, RoomDataSource } from "@/modules/subdepartments-crud/data/datasources/room-datasource";
-import BaseRoomRepository from "@/modules/subdepartments-crud/domain/repositories/base-room-repository";
-import RoomRepository from "@/modules/subdepartments-crud/data/repositories/room-repository";
-import CreateRoomUseCase from "@/modules/subdepartments-crud/domain/usecases/rooms/create-room-usecase";
-import DeleteRoomUseCase from "@/modules/subdepartments-crud/domain/usecases/rooms/delete-room-usecase";
-import UpdateRoomUseCase from "@/modules/subdepartments-crud/domain/usecases/rooms/update-room-usecase";
-import GetAllRoomsUseCase from "@/modules/subdepartments-crud/domain/usecases/rooms/get-all-rooms-usecase";
-import GetRoomByIdUseCase from "@/modules/subdepartments-crud/domain/usecases/rooms/get-room-by-Id-usecase";
-import { BaseSpecializationDataSource, SpecializationDataSource } from "@/modules/subdepartments-crud/data/datasources/specialization-datasource";
-import BaseSpecializationRepository from "@/modules/subdepartments-crud/domain/repositories/base-specialization-repository";
-import SpecializationRepository from "@/modules/subdepartments-crud/data/repositories/specialization-repository";
-import UpdateSpecializationUseCase from '@/modules/subdepartments-crud/domain/usecases/specializations/update-specialization-usecase';
-import DeleteSpecializationUseCase from '@/modules/subdepartments-crud/domain/usecases/specializations/delete-specialization-usecase';
-import GetAllSpecializationsUseCase from '@/modules/subdepartments-crud/domain/usecases/specializations/get-all-specializations-usecase';
-import GetSpecializationByIdUseCase from '@/modules/subdepartments-crud/domain/usecases/specializations/get-specialization-by-Id-usecase';
-import CreateSpecializationUseCase from "@/modules/subdepartments-crud/domain/usecases/specializations/create-specialization-usecase";
-import { BaseDepartmentsDataSource, DepartmentsDataSource } from "@/modules/subdepartments-crud/data/datasources/departments-datasource";
-import BaseDepartmentsRepository from "@/modules/subdepartments-crud/domain/repositories/base-departments-repository";
-import DepartmentsRepository from "@/modules/subdepartments-crud/data/repositories/departments-repository";
-import GetAllDepartmentsUseCase from "@/modules/subdepartments-crud/domain/usecases/departments/get-all-departments-usecase";
-import { BaseSubDepartmentsDataSource, SubDepartmentsDataSource } from "@/modules/subdepartments-crud/data/datasources/sub-departments-datasource";
-import BaseSubDepartmentsRepository from "@/modules/subdepartments-crud/domain/repositories/base-sub-departments-repository";
-import SubDepartmentsRepository from "@/modules/subdepartments-crud/data/repositories/sub-departments-repository";
-import CreateSubDepartmentUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/create-sub-department-usecase";
-import DeleteSubDepartmentUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/delete-sub-department-usecase";
-import UpdateSubDepartmentUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/update-sub-department-usecase";
-import GetAllSubDepartmentsUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/get-all-sub-departments-usecase";
-import GetSubDepartmentUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/get-sub-departments-by-Id-usecase";
-import { BaseFeaturesDataSource, FeaturesDataSource } from "@/modules/subdepartments-crud/data/datasources/features-datasource";
-import BaseFeaturesRepository from "@/modules/subdepartments-crud/domain/repositories/base-features-repository";
-import FeaturesRepository from "@/modules/subdepartments-crud/data/repositories/features-repository";
-import CreateFeatureUseCase from "@/modules/subdepartments-crud/domain/usecases/features/create-feature-usecase";
-import DeleteFeatureUseCase from "@/modules/subdepartments-crud/domain/usecases/features/delete-feature-usecase";
-import UpdateFeatureUseCase from "@/modules/subdepartments-crud/domain/usecases/features/update-feature-usecase";
-import GetAllFeaturesUseCase from "@/modules/subdepartments-crud/domain/usecases/features/get-all-features-usecase";
-import GetFeatureUseCase from "@/modules/subdepartments-crud/domain/usecases/features/get-feature-by-Id-usecase";
-import { BasePermissionsDataSource, PermissionsDataSource } from "@/modules/subdepartments-crud/data/datasources/permissions-datasource";
-import BasePermissionsRepository from "@/modules/subdepartments-crud/domain/repositories/base-permissions-repository";
-import PermissionsRepository from "@/modules/subdepartments-crud/data/repositories/permissions-repository";
-import CreatePermissionUseCase from "@/modules/subdepartments-crud/domain/usecases/permissions/create-permission-usecase";
-import DeletePermissionUseCase from "@/modules/subdepartments-crud/domain/usecases/permissions/delete-permission-usecase";
-import UpdatePermissionUseCase from "@/modules/subdepartments-crud/domain/usecases/permissions/update-permission-usecase";
-import GetAllPermissionsUseCase from "@/modules/subdepartments-crud/domain/usecases/permissions/get-all-permissions-usecase";
-import GetPermissionUseCase from "@/modules/subdepartments-crud/domain/usecases/permissions/get-permission-by-Id-usecase";
-import { BaseRolesDataSource, RolesDataSource } from "@/modules/subdepartments-crud/data/datasources/roles-datasource";
-import BaseRolesRepository from "@/modules/subdepartments-crud/domain/repositories/base-roles-repository";
-import RolesRepository from "@/modules/subdepartments-crud/data/repositories/roles-repository";
-import CreateRoleUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/create-role-usecase";
-import DeleteRoleUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/delete-role-usecase";
-import UpdateRoleUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/update-role-usecase";
-import GetAllRolesUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/get-all-roles-usecase";
-import GetRoleUseCase from "@/modules/subdepartments-crud/domain/usecases/roles/get-role-by-Id-usecase";
-import UpdateSubDepartmentAssignFeaturesUseCase from "@/modules/subdepartments-crud/domain/usecases/sub-departments/update-sub-department-assign-features-usecase";
+import { BaseRoomDataSource, RoomDataSource } from "@/modules/management/data/datasources/room-datasource";
+import BaseRoomRepository from "@/modules/management/domain/repositories/base-room-repository";
+import RoomRepository from "@/modules/management/data/repositories/room-repository";
+import CreateRoomUseCase from "@/modules/management/domain/usecases/rooms/create-room-usecase";
+import DeleteRoomUseCase from "@/modules/management/domain/usecases/rooms/delete-room-usecase";
+import UpdateRoomUseCase from "@/modules/management/domain/usecases/rooms/update-room-usecase";
+import GetAllRoomsUseCase from "@/modules/management/domain/usecases/rooms/get-all-rooms-usecase";
+import GetRoomByIdUseCase from "@/modules/management/domain/usecases/rooms/get-room-by-Id-usecase";
+import { BaseSpecializationDataSource, SpecializationDataSource } from "@/modules/management/data/datasources/specialization-datasource";
+import BaseSpecializationRepository from "@/modules/management/domain/repositories/base-specialization-repository";
+import SpecializationRepository from "@/modules/management/data/repositories/specialization-repository";
+import UpdateSpecializationUseCase from '@/modules/management/domain/usecases/specializations/update-specialization-usecase';
+import DeleteSpecializationUseCase from '@/modules/management/domain/usecases/specializations/delete-specialization-usecase';
+import GetAllSpecializationsUseCase from '@/modules/management/domain/usecases/specializations/get-all-specializations-usecase';
+import GetSpecializationByIdUseCase from '@/modules/management/domain/usecases/specializations/get-specialization-by-Id-usecase';
+import CreateSpecializationUseCase from "@/modules/management/domain/usecases/specializations/create-specialization-usecase";
+import { BaseDepartmentsDataSource, DepartmentsDataSource } from "@/modules/management/data/datasources/departments-datasource";
+import BaseDepartmentsRepository from "@/modules/management/domain/repositories/base-departments-repository";
+import DepartmentsRepository from "@/modules/management/data/repositories/departments-repository";
+import GetAllDepartmentsUseCase from "@/modules/management/domain/usecases/departments/get-all-departments-usecase";
+import { BaseSubDepartmentsDataSource, SubDepartmentsDataSource } from "@/modules/management/data/datasources/sub-departments-datasource";
+import BaseSubDepartmentsRepository from "@/modules/management/domain/repositories/base-sub-departments-repository";
+import SubDepartmentsRepository from "@/modules/management/data/repositories/sub-departments-repository";
+import CreateSubDepartmentUseCase from "@/modules/management/domain/usecases/sub-departments/create-sub-department-usecase";
+import DeleteSubDepartmentUseCase from "@/modules/management/domain/usecases/sub-departments/delete-sub-department-usecase";
+import UpdateSubDepartmentUseCase from "@/modules/management/domain/usecases/sub-departments/update-sub-department-usecase";
+import GetAllSubDepartmentsUseCase from "@/modules/management/domain/usecases/sub-departments/get-all-sub-departments-usecase";
+import GetSubDepartmentUseCase from "@/modules/management/domain/usecases/sub-departments/get-sub-departments-by-Id-usecase";
+import { BaseFeaturesDataSource, FeaturesDataSource } from "@/modules/management/data/datasources/features-datasource";
+import BaseFeaturesRepository from "@/modules/management/domain/repositories/base-features-repository";
+import FeaturesRepository from "@/modules/management/data/repositories/features-repository";
+import CreateFeatureUseCase from "@/modules/management/domain/usecases/features/create-feature-usecase";
+import DeleteFeatureUseCase from "@/modules/management/domain/usecases/features/delete-feature-usecase";
+import UpdateFeatureUseCase from "@/modules/management/domain/usecases/features/update-feature-usecase";
+import GetAllFeaturesUseCase from "@/modules/management/domain/usecases/features/get-all-features-usecase";
+import GetFeatureUseCase from "@/modules/management/domain/usecases/features/get-feature-by-Id-usecase";
+import { BasePermissionsDataSource, PermissionsDataSource } from "@/modules/management/data/datasources/permissions-datasource";
+import BasePermissionsRepository from "@/modules/management/domain/repositories/base-permissions-repository";
+import PermissionsRepository from "@/modules/management/data/repositories/permissions-repository";
+import CreatePermissionUseCase from "@/modules/management/domain/usecases/permissions/create-permission-usecase";
+import DeletePermissionUseCase from "@/modules/management/domain/usecases/permissions/delete-permission-usecase";
+import UpdatePermissionUseCase from "@/modules/management/domain/usecases/permissions/update-permission-usecase";
+import GetAllPermissionsUseCase from "@/modules/management/domain/usecases/permissions/get-all-permissions-usecase";
+import GetPermissionUseCase from "@/modules/management/domain/usecases/permissions/get-permission-by-Id-usecase";
+import { BaseRolesDataSource, RolesDataSource } from "@/modules/management/data/datasources/roles-datasource";
+import BaseRolesRepository from "@/modules/management/domain/repositories/base-roles-repository";
+import RolesRepository from "@/modules/management/data/repositories/roles-repository";
+import CreateRoleUseCase from "@/modules/management/domain/usecases/roles/create-role-usecase";
+import DeleteRoleUseCase from "@/modules/management/domain/usecases/roles/delete-role-usecase";
+import UpdateRoleUseCase from "@/modules/management/domain/usecases/roles/update-role-usecase";
+import GetAllRolesUseCase from "@/modules/management/domain/usecases/roles/get-all-roles-usecase";
+import GetRoleUseCase from "@/modules/management/domain/usecases/roles/get-role-by-Id-usecase";
+import UpdateSubDepartmentAssignFeaturesUseCase from "@/modules/management/domain/usecases/sub-departments/update-sub-department-assign-features-usecase";
 
 
 class AppServicesLocator {
@@ -287,7 +287,7 @@ class AppServicesLocator {
         sl.registerFactory<GetSubDepartmentUseCase>(ServiceKeys.GetSubDepartmentByIdUseCase, () => new GetSubDepartmentUseCase(
             sl.get<BaseSubDepartmentsRepository>(ServiceKeys.SubDepartmentsRepository)
         ));
-        
+
         // Specializations
         sl.registerFactory<CreateSpecializationUseCase>(ServiceKeys.CreateSpecializationUseCase, () => new CreateSpecializationUseCase(
             sl.get<BaseSpecializationRepository>(ServiceKeys.SpecializationRepository)
