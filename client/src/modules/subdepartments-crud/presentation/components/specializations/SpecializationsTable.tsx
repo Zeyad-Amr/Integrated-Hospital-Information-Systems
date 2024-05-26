@@ -74,7 +74,7 @@ const SpecializationsTable = () => {
   }, []);
 
   return (
-    <>
+    <Box>
       <ConfirmationDialog
         confirmFunction={async () =>
           dispatch(deleteSpecialization(String(specializationData?.id))).then(
@@ -157,15 +157,10 @@ const SpecializationsTable = () => {
             };
           }
         )}
-        width="100%"
-        height="100%"
-        boxShadow={10}
-        sx={{ mb: 5 }}
-        onRowClick={(item) => console.log(item)}
         headerItems={SpecializationsTableHeader}
-        stickyHeader={true}
+        height="75vh"
       />
-    </>
+    </Box>
   );
 };
 

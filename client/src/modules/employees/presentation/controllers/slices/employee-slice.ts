@@ -1,18 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getEmployeeList, createEmployee, updateEmployee, deleteEmployee, getEmployeeDetails } from "../thunks/employee-thunks";
 import { EmployeeState } from "../types";
-import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
-import { ErrorResponse } from "@/core/api";
+import { ErrorResponse, PaginatedListModel } from "@/core/api";
 import EmployeeEntity from "@/modules/employees/domain/entities/employee-entity";
 import AuthDataEntity from "@/modules/auth/domain/entities/auth-data-entity";
 import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
-import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
-import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
 import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
 const initialState: EmployeeState = {
-    employeeList: [],
+    employees: PaginatedListModel.default(),
     currentEmployee: EmployeeEntity.defaultValue(),
     currentAuth: AuthDataEntity.defaultValue(),
     currentPerson: PersonEntity.defaultValue(),
@@ -24,27 +21,6 @@ const employeeSlice = createSlice({
     name: "employees",
     initialState,
     reducers: {
-        clearEmployeeError(state) {
-            state.error = "";
-        },
-        clearCurrentEmployee(state) {
-            state.currentEmployee = initialState.currentEmployee;
-        },
-        clearEmployeeList(state) {
-            state.employeeList = [];
-        },
-        setCurrentEmployee(state, action: { payload: EmployeeInterface, type: string }) {
-            state.currentEmployee = action.payload;
-        },
-        setCurrentAuth(state, action: { payload: AuthInterface, type: string }) {
-            state.currentAuth = action.payload;
-        },
-        setCurrentPerson(state, action: { payload: PersonInterface, type: string }) {
-            state.currentPerson = action.payload;
-        },
-        setEmployeeList(state, action: { payload: EmployeeInterface[], type: string }) {
-            state.employeeList = action.payload;
-        },
         setLoading(state, action: { payload: boolean, type: string }) {
             state.loading = action.payload;
         }
@@ -57,15 +33,15 @@ const employeeSlice = createSlice({
         });
         builder.addCase(getEmployeeList.fulfilled, (state, action) => {
             state.loading = false;
-            state.employeeList = action.payload;
             state.error = "";
+            state.employees = action.payload;
             console.log('Employees List', action.payload);
         });
         builder.addCase(getEmployeeList.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
-            AlertService.showAlert( `${state.error}` , 'error');
-            state.employeeList = [];
+            AlertService.showAlert(`${state.error}`, 'error');
+
         });
 
         //* create employee member
@@ -75,14 +51,14 @@ const employeeSlice = createSlice({
         });
         builder.addCase(createEmployee.fulfilled, (state, _action) => {
             state.loading = false;
-            state.currentEmployee = initialState.currentEmployee;
-            AlertService.showAlert( 'تم اضافة موظف بنجاح' , 'success');
             state.error = "";
+            AlertService.showAlert('تم اضافة موظف بنجاح', 'success');
+
         });
         builder.addCase(createEmployee.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
-            AlertService.showAlert( `${state.error}` , 'error');
+            AlertService.showAlert(`${state.error}`, 'error');
         });
 
         //* update employee member
@@ -92,14 +68,13 @@ const employeeSlice = createSlice({
         });
         builder.addCase(updateEmployee.fulfilled, (state, _action) => {
             state.loading = false;
-            state.currentEmployee = initialState.currentEmployee;
-            AlertService.showAlert( 'تم تحديث موظف بنجاح' , 'success');
+            AlertService.showAlert('تم تحديث موظف بنجاح', 'success');
             state.error = "";
         });
         builder.addCase(updateEmployee.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
-            AlertService.showAlert( `${state.error}` , 'error');
+            AlertService.showAlert(`${state.error}`, 'error');
         });
 
         //* delete employee member
@@ -110,13 +85,12 @@ const employeeSlice = createSlice({
         builder.addCase(deleteEmployee.fulfilled, (state, _action) => {
             state.loading = false;
             state.error = "";
-            state.employeeList = state.employeeList.filter((employee) => employee.id !== _action.payload);
-            AlertService.showAlert( 'تم حذف موظف بنجاح' , 'success');
+            AlertService.showAlert('تم حذف موظف بنجاح', 'success');
         });
         builder.addCase(deleteEmployee.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
-            AlertService.showAlert( `${state.error}` , 'error');
+            AlertService.showAlert(`${state.error}`, 'error');
         });
 
         //* get employee details
@@ -132,7 +106,7 @@ const employeeSlice = createSlice({
         builder.addCase(getEmployeeDetails.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
-            AlertService.showAlert( `${state.error}` , 'error');
+            AlertService.showAlert(`${state.error}`, 'error');
             state.currentEmployee = initialState.currentEmployee;
         });
 
@@ -140,13 +114,6 @@ const employeeSlice = createSlice({
 });
 
 export const {
-    clearEmployeeError,
-    clearCurrentEmployee,
-    clearEmployeeList,
-    setCurrentEmployee,
-    setCurrentAuth,
-    setCurrentPerson,
-    setEmployeeList,
     setLoading
 } = employeeSlice.actions;
 export default employeeSlice.reducer;

@@ -133,7 +133,7 @@ const SubDepartmentsTable = () => {
   };
 
   return (
-    <>
+    <Box>
       <ConfirmationDialog
         confirmFunction={async () =>
           dispatch(deleteSubDepartment(String(subDepartmentData?.id))).then(
@@ -250,15 +250,10 @@ const SubDepartmentsTable = () => {
             };
           }
         )}
-        width="100%"
-        height="100%"
-        boxShadow={10}
-        sx={{ mb: 5 }}
-        onRowClick={(item) => console.log(item)}
         headerItems={SubDepartmentsTableHeader}
-        stickyHeader={true}
+        height="75vh"
       />
-    </>
+    </Box>
   );
 };
 

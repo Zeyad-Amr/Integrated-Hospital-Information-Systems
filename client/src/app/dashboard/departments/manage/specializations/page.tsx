@@ -9,7 +9,7 @@ import ProtectedLayout from "@/core/shared/components/ProtectedLayout";
 export default function specializations() {
   return (
     <ProtectedLayout>
-      <Sidebar>
+      <Sidebar pageTitle={"التخصصـات"}>
         <Specializations />
       </Sidebar>
     </ProtectedLayout>

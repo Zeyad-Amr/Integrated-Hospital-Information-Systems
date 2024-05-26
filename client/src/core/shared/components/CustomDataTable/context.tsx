@@ -138,7 +138,7 @@ export const TableProvider = (props: {
       }
 
       //* Sorting
-      if (sortedColumn) {
+      if (sortedColumn && sortedColumn.disableSort !== true) {
         if (
           columnHeader.find((item) => item.id === sortedColumn.columnId)
             ?.isCustomFilter === true

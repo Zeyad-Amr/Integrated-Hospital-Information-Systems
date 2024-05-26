@@ -36,22 +36,32 @@ import { CustomDataTableProps } from "./types";
  * @param {SortedColumn} initSortedColumn - The initial sorted column.
  */
 /** */
+
 const CustomDataTable = <T,>({
   fetchData,
   data,
   totalItems,
   headerItems,
-  width = "80vw",
-  height = "70vh",
-  boxShadow = 10,
-  stickyHeader = false,
-  sx,
+  width = "100%",
+  height = "80vh",
+  boxShadow = 5,
+  stickyHeader = true,
+  sx = { mb: 5 },
   onRowClick,
   hover = true,
   variantBackground = true,
   rowHeight = "1rem",
   rowPaddingY = "0.1rem",
-  initSortedColumn = { columnId: headerItems[0].id, isAscending: true },
+  initSortedColumn = headerItems.filter((item) => item.searchable).length > 0
+    ? {
+        isAscending: true,
+        columnId: headerItems.filter((item) => item.searchable)[0].id,
+      }
+    : {
+        disableSort: true,
+        columnId: "",
+        isAscending: true,
+      },
 }: CustomDataTableProps<T>) => {
   const filterdData = [...data];
 

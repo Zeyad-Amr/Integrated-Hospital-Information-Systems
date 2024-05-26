@@ -50,12 +50,6 @@ const IncidentTable = () => {
         totalItems={apiData.length}
         data={tableData}
         headerItems={header}
-        stickyHeader={true}
-        boxShadow={5}
-        width="100%"
-        height="80vh"
-        sx={{ mb: 5 }}
-        onRowClick={(item: any) => console.log(item)}
       />
 
       {/* <CompleteIncident

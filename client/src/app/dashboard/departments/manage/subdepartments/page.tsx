@@ -9,7 +9,7 @@ import SubDepartments from "@/modules/subdepartments-crud/presentation/pages/sub
 export default function details() {
   return (
     <ProtectedLayout>
-      <Sidebar>
+      <Sidebar pageTitle={"الأقسـام الفرعيـة"}>
         <SubDepartments />
       </Sidebar>
     </ProtectedLayout>

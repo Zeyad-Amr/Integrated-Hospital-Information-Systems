@@ -1,4 +1,4 @@
-import { ErrorResponse, ErrorMessage, FilterQuery } from "@/core/api";
+import { ErrorResponse, ErrorMessage, FilterQuery, PaginatedList } from "@/core/api";
 import BaseEmployeeRepository from '../../domain/repositories/base-employee-repository';
 import { BaseEmployeeDataSource } from '../datasources/employee-datasource';
 import EmployeeInterface from "../../domain/interfaces/employee-interface";
@@ -17,7 +17,7 @@ class EmployeeRepository extends BaseEmployeeRepository {
             throw errorResponse;
         }
     }
-    override async getAllEmployees(filters: FilterQuery[]): Promise<EmployeeInterface[]> {
+    override async getAllEmployees(filters: FilterQuery[]): Promise<PaginatedList<EmployeeInterface>> {
         try {
             const result = await this.baseEmployeeDataSource.getAllEmployees(filters);
             return result;

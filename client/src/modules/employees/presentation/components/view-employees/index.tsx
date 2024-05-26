@@ -34,7 +34,7 @@ const EmployeesTable = () => {
   return (
     <Box
       sx={{
-        p: 3,
+        pt: 3,
       }}
     >
       <CustomizedDialog
@@ -59,10 +59,10 @@ const EmployeesTable = () => {
       <CustomDataTable
         fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
-          dispatch(getEmployeeList([]));
+          dispatch(getEmployeeList(filters));
         }}
-        totalItems={employeeState.employeeList.length}
-        data={employeeState.employeeList.map<DataItem>(
+        totalItems={employeeState.employees.total}
+        data={employeeState.employees.items.map<DataItem>(
           (item: EmployeeInterface) => {
             return {
               SSN: item.person?.SSN ?? "لا يوجد",
@@ -112,12 +112,6 @@ const EmployeesTable = () => {
           }
         )}
         headerItems={header}
-        stickyHeader={true}
-        boxShadow={5}
-        width="100%"
-        height="80vh"
-        sx={{ mb: 5 }}
-        onRowClick={(item: any) => console.log(item)}
       />
 
       {/* <CompleteVisit

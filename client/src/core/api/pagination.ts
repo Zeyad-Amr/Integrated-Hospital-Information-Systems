@@ -32,4 +32,13 @@ export class PaginatedListModel<T> {
         });
     }
 
+    public static default<T>(): PaginatedList<T> {
+        return {
+            total: 0,
+            items: [],
+            page: 0,
+            size: 0,
+        };
+    }
+
 }

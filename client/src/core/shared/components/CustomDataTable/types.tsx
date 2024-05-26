@@ -62,6 +62,7 @@ interface HeaderItem {
 interface SortedColumn {
   columnId: string;
   isAscending: boolean;
+  disableSort?: boolean;
 }
 
 /**

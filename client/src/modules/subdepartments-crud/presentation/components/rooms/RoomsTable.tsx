@@ -73,7 +73,7 @@ const RoomsTable = () => {
   }, []);
 
   return (
-    <>
+    <Box>
       <ConfirmationDialog
         confirmFunction={async () =>
           dispatch(deleteRoom(String(roomData?.id))).then(() => {
@@ -151,14 +151,10 @@ const RoomsTable = () => {
             ),
           };
         })}
-        width="100%"
-        height="100%"
-        boxShadow={10}
-        sx={{ mb: 5 }}
         headerItems={roomsTableHeader}
-        stickyHeader={true}
+        height="75vh"
       />
-    </>
+    </Box>
   );
 };
 

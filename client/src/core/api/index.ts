@@ -4,6 +4,7 @@ export type { default as ErrorResponse } from './error-response';
 export { default as ErrorMessage } from './error-message';
 export { default as ErrorsCodes } from './error-codes';
 export type { PaginatedList } from './pagination';
+export { PaginatedListModel } from './pagination';
 export type { PaginatedApiRequestParams } from './pagination';
 export type { FilterQuery } from './filters';
 export { default as Filter } from './filters';
