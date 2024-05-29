@@ -5,8 +5,8 @@ export interface DataItem {
   name: string;
   phone: string;
   createdAt: string;
-  role: string;
-  shift: string;
+  roleName: string;
+  shiftName: string;
 }
 
 export const data = [

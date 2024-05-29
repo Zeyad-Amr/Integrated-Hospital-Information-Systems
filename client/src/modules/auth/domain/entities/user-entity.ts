@@ -6,8 +6,8 @@ export default class UserEntity {
     static defaultValue(): UserInterface {
         return {
             id: '',
-            role: undefined,
-            shift: undefined,
+            roleId: undefined,
+            shiftId: undefined,
             suDepartmentIds: undefined,
             createdAt: undefined,
             updatedAt: undefined,
@@ -18,10 +18,8 @@ export default class UserEntity {
 
     static getSchema(): Yup.ObjectSchema<any> {
         return Yup.object().shape({
-            // role: Yup.number()
-            //     .oneOf(state.lookups.lookups.roleTypes.map((e : any) => e.id)).required("الوظيفة مطلوب"),
-            // shift: Yup.number()
-            //     .oneOf(state.lookups.lookups.shiftTypes.map((e : any) => e.id)).required("موعد العمل مطلوب"),
+            roleId: Yup.string().required("الوظيفة مطلوب"),
+            shiftId: Yup.string().required("موعد العمل مطلوب"),
             // suDepartmentIds: 
             //        Yup.number()
             //     .oneOf(state.lookups.lookups.departments.map((e : any ) => e.id)).required("القسم الفرعي مطلوب"),

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import { Formik } from "formik";
 import Box from "@mui/material/Box";
@@ -7,7 +7,7 @@ import { Grid } from "@mui/material";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
-import { createEmployee } from "../../controllers/thunks/employee-thunks";
+import { createEmployee , updateEmployee } from "../../controllers/thunks/employee-thunks";
 import {
   setCurrentEmployee,
   setCurrentAuth,
@@ -33,9 +33,11 @@ import { SubDepartmentsInterface } from "@/modules/management/domain/interfaces/
 
 interface CreateUserFormProps {
   employeeData?: EmployeeInterface;
+  setShowEditEmployeeDialog : Dispatch<SetStateAction<boolean>>;
 }
 
-const CreateUserForm = ({ employeeData }: CreateUserFormProps) => {
+const CreateUserForm = ({ employeeData , setShowEditEmployeeDialog }: CreateUserFormProps) => {
+  console.log(employeeData,'employeeData')
   const dispatch = useAppDispatch();
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
@@ -84,8 +86,8 @@ const CreateUserForm = ({ employeeData }: CreateUserFormProps) => {
     dispatch(
       setCurrentEmployee({
         ...employeeState.currentEmployee,
-        shift: values.shift,
-        role: values.role,
+        shiftId: values.shiftId,
+        roleId: values.roleId,
         suDepartmentIds: values.suDepartmentIds,
       })
     );
@@ -116,13 +118,22 @@ const CreateUserForm = ({ employeeData }: CreateUserFormProps) => {
   useEffect(() => {
     if (personValid && authValid && employeeValid) {
       console.log("Submit All Forms:", employeeState.currentEmployee);
-      dispatch(
-        createEmployee({
+      //* Edit mode
+      if (employeeData) {
+        dispatch(updateEmployee({
           ...employeeState.currentEmployee,
-          auth: employeeState.currentAuth,
-          person: employeeState.currentPerson,
-        })
-      );
+            auth: employeeState.currentAuth,
+            person: employeeState.currentPerson,
+        })).then(() => setShowEditEmployeeDialog(false));
+      } else {
+        dispatch(
+          createEmployee({
+            ...employeeState.currentEmployee,
+            auth: employeeState.currentAuth,
+            person: employeeState.currentPerson,
+          })
+        );
+      }
     } else {
       console.log("Not Valid");
     }
@@ -261,11 +272,9 @@ const CreateUserForm = ({ employeeData }: CreateUserFormProps) => {
             employeeData
               ? {
                   id: employeeData?.id,
-                  shift: employeeData?.shift as ShiftType,
-                  role: employeeData?.role as RoleType,
-                  suDepartmentIds: employeeData?.suDepartmentIds as
-                    | number[]
-                    | string[],
+                  shiftId: employeeData?.shiftId as number | string,
+                  roleId: employeeData?.roleId as number | string,
+                  suDepartmentIds: employeeData?.suDepartmentIds ?? [],
                 }
               : EmployeeEntity.defaultValue()
           }
@@ -287,13 +296,13 @@ const CreateUserForm = ({ employeeData }: CreateUserFormProps) => {
                 <Grid item lg={3} md={3} sm={12} xs={12}>
                   <CustomSelectField<RoleType>
                     isRequired
-                    name="role"
+                    name="roleId"
                     label="الوظيفة"
-                    value={values.role}
+                    value={values.roleId}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={errors.role}
-                    touched={touched.role}
+                    error={errors.roleId}
+                    touched={touched.roleId}
                     width="100%"
                     options={lookupsState.lookups.roleTypes}
                   />
@@ -301,13 +310,13 @@ const CreateUserForm = ({ employeeData }: CreateUserFormProps) => {
                 <Grid item lg={3} md={3} sm={12} xs={12}>
                   <CustomSelectField<ShiftType>
                     isRequired
-                    name="shift"
+                    name="shiftId"
                     label="موعد العمل"
-                    value={values.shift}
+                    value={values.shiftId}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={errors.shift}
-                    touched={touched.shift}
+                    error={errors.shiftId}
+                    touched={touched.shiftId}
                     width="100%"
                     options={lookupsState.lookups.shiftTypes}
                   />

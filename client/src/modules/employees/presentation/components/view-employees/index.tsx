@@ -20,11 +20,8 @@ const EmployeesTable = () => {
   const employeeState: EmployeeState = useAppSelector(
     (state: any) => state.employees
   );
-  // useRef
-  // const refIdValue = useRef("");
 
   // useState
-  // const [showDialog, setShawDialog] = useState("none");
   const [showConfirmationDialog, setShowConfirmationDialog] =
     useState<boolean>(false);
   const [showEditEmployeeDialog, setShowEditEmployeeDialog] =
@@ -38,12 +35,12 @@ const EmployeesTable = () => {
       }}
     >
       <CustomizedDialog
-        maxWidth={"md"}
+        maxWidth={"lg"}
         open={showEditEmployeeDialog}
         setOpen={setShowEditEmployeeDialog}
         title="تحديث بيانات موظف"
       >
-        <CreateUserForm employeeData={employeeData} />
+        <CreateUserForm setShowEditEmployeeDialog={setShowEditEmployeeDialog} employeeData={employeeData} />
       </CustomizedDialog>
       <ConfirmationDialog
         confirmFunction={async () =>
@@ -62,7 +59,7 @@ const EmployeesTable = () => {
           dispatch(getEmployeeList(filters));
         }}
         totalItems={employeeState.employees.total}
-        data={employeeState.employees.items.map<DataItem>(
+        data={employeeState.employees.items.map(
           (item: EmployeeInterface) => {
             return {
               SSN: item.person?.SSN ?? "لا يوجد",
@@ -71,9 +68,9 @@ const EmployeesTable = () => {
                   " " +
                   new Date(item?.createdAt).toLocaleTimeString()
                 : "لا يوجد",
-              shift: item.shift?.value ?? "لا يوجد",
+              shiftName: item.shiftId as string ?? "لا يوجد",
               phone: item.person?.phone ?? "لا يوجد",
-              role: item.role?.value ?? "لا يوجد",
+              roleName: item.roleId as string ?? "لا يوجد",
               name:
                 item.person?.firstName +
                 " " +
