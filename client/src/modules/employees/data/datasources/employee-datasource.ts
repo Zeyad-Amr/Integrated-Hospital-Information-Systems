@@ -34,7 +34,7 @@ class EmployeeDataSource extends BaseEmployeeDataSource {
     }
 
     override async updateEmployee(employee: EmployeeInterface): Promise<boolean> {
-        await this.apiClient.patch(Endpoints.employee.update, EmployeeModel.toJson(employee), {
+        await this.apiClient.patch(Endpoints.employee.update, EmployeeModel.toJsonUpdateEmployee(employee), {
             pathVariables: { id: employee.id },
         });
         return true;

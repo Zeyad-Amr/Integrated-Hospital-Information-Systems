@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Button from "@mui/material/Button";
 import { Formik } from "formik";
 import Box from "@mui/material/Box";
@@ -7,7 +13,10 @@ import { Grid } from "@mui/material";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
-import { createEmployee , updateEmployee } from "../../controllers/thunks/employee-thunks";
+import {
+  createEmployee,
+  updateEmployee,
+} from "../../controllers/thunks/employee-thunks";
 import {
   setCurrentEmployee,
   setCurrentAuth,
@@ -33,11 +42,13 @@ import { SubDepartmentsInterface } from "@/modules/management/domain/interfaces/
 
 interface CreateUserFormProps {
   employeeData?: EmployeeInterface;
-  setShowEditEmployeeDialog : Dispatch<SetStateAction<boolean>>;
+  setShowEditEmployeeDialog: Dispatch<SetStateAction<boolean>>;
 }
 
-const CreateUserForm = ({ employeeData , setShowEditEmployeeDialog }: CreateUserFormProps) => {
-  console.log(employeeData,'employeeData')
+const CreateUserForm = ({
+  employeeData,
+  setShowEditEmployeeDialog,
+}: CreateUserFormProps) => {
   const dispatch = useAppDispatch();
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
@@ -120,11 +131,14 @@ const CreateUserForm = ({ employeeData , setShowEditEmployeeDialog }: CreateUser
       console.log("Submit All Forms:", employeeState.currentEmployee);
       //* Edit mode
       if (employeeData) {
-        dispatch(updateEmployee({
-          ...employeeState.currentEmployee,
+        dispatch(
+          updateEmployee({
+            ...employeeState.currentEmployee,
+            id: employeeData?.id,
             auth: employeeState.currentAuth,
             person: employeeState.currentPerson,
-        })).then(() => setShowEditEmployeeDialog(false));
+          })
+        ).then(() => setShowEditEmployeeDialog(false));
       } else {
         dispatch(
           createEmployee({
