@@ -42,7 +42,7 @@ import { SubDepartmentsInterface } from "@/modules/management/domain/interfaces/
 
 interface CreateUserFormProps {
   employeeData?: EmployeeInterface;
-  setShowEditEmployeeDialog: Dispatch<SetStateAction<boolean>>;
+  setShowEditEmployeeDialog?: Dispatch<SetStateAction<boolean>>;
 }
 
 const CreateUserForm = ({
@@ -133,7 +133,7 @@ const CreateUserForm = ({
         : createEmployee(employeePayload);
 
       dispatch(action).then((res) => {
-        if (res && employeeData) {
+        if (res && employeeData && setShowEditEmployeeDialog ) {
           setShowEditEmployeeDialog(false);
         }
       });
