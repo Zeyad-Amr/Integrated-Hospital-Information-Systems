@@ -46,7 +46,7 @@ const subDepartmentsSlice = createSlice({
         });
         builder.addCase(getSubDepartmentsList.fulfilled, (state, action) => {
             state.loading = false;
-            state.subDepartments = action.payload;
+            state.subDepartments = PaginatedListModel.updatePaginatedList(state.subDepartments, action.payload);
             state.error = "";
             console.log('getSubDepartmentsList', action.payload);
         });
@@ -64,6 +64,7 @@ const subDepartmentsSlice = createSlice({
         builder.addCase(createSubDepartment.fulfilled, (state, _action) => {
             state.loading = false;
             state.currentSubDepartment = initialState.currentSubDepartment;
+            state.subDepartments = PaginatedListModel.resetPaginatedList(state.subDepartments)
             state.error = "";
             AlertService.showAlert('تم اضافة قسم فرعي بنجاح', 'success')
         });
@@ -81,6 +82,7 @@ const subDepartmentsSlice = createSlice({
         builder.addCase(updateSubDepartment.fulfilled, (state, _action) => {
             state.loading = false;
             state.currentSubDepartment = initialState.currentSubDepartment;
+            state.subDepartments = PaginatedListModel.resetPaginatedList(state.subDepartments)
             state.error = "";
             AlertService.showAlert('تم تحديث قسم فرعي بنجاح', 'success')
         });
@@ -114,7 +116,7 @@ const subDepartmentsSlice = createSlice({
         builder.addCase(deleteSubDepartment.fulfilled, (state, _action) => {
             state.loading = false;
             state.error = "";
-
+            state.subDepartments = PaginatedListModel.resetPaginatedList(state.subDepartments)
             AlertService.showAlert('تم حذف قسم فرعي بنجاح', 'success')
         });
         builder.addCase(deleteSubDepartment.rejected, (state, action) => {

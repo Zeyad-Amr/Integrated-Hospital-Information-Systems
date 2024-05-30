@@ -62,6 +62,7 @@ const CustomDataTable = <T,>({
         columnId: "",
         isAscending: true,
       },
+  resetControls = false,
 }: CustomDataTableProps<T>) => {
   const filterdData = [...data];
 
@@ -72,6 +73,7 @@ const CustomDataTable = <T,>({
       fetchData={fetchData}
       columnHeader={headerItems}
       initSortedColumn={initSortedColumn}
+      resetControls={resetControls}
     >
       <Box
         sx={{

@@ -7,7 +7,6 @@ import UpdateSubDepartmentUseCase from "@/modules/management/domain/usecases/sub
 import DeleteSubDepartmentUseCase from "@/modules/management/domain/usecases/sub-departments/delete-sub-department-usecase";
 import GetSubDepartmentUseCase from "@/modules/management/domain/usecases/sub-departments/get-sub-departments-by-Id-usecase";
 import UpdateSubDepartmentAssignFeaturesUseCase from "@/modules/management/domain/usecases/sub-departments/update-sub-department-assign-features-usecase";
-import { getPermissionsList } from './permissions-thunks'
 import { FilterQuery } from "@/core/api";
 
 //* Get All SubDepartments
@@ -16,6 +15,7 @@ export const getSubDepartmentsList = createAsyncThunk(
   async (filters: FilterQuery[], thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
+
       const result = await sl
         .get<GetAllSubDepartmentsUseCase>(
           ServiceKeys.GetAllSubDepartmentsUseCase
@@ -35,17 +35,14 @@ export const getSubDepartmentsList = createAsyncThunk(
 export const createSubDepartment = createAsyncThunk(
   "subdepartment/create",
   async (data: SubDepartmentsInterface, thunkApi) => {
-    const { rejectWithValue, dispatch } = thunkApi;
+    const { rejectWithValue } = thunkApi;
     try {
       console.log("Thunk", data);
       const result = await sl
         .get<CreateSubDepartmentUseCase>(
           ServiceKeys.CreateSubDepartmentUseCase
         )
-        .call(data).then(() => {
-          // TODO: add applied filters
-          dispatch(getSubDepartmentsList([]))
-        })
+        .call(data);
       console.log("Result:", result);
       return result;
     } catch (error) {
@@ -59,16 +56,13 @@ export const createSubDepartment = createAsyncThunk(
 export const updateSubDepartment = createAsyncThunk(
   "subdepartment/update",
   async (data: SubDepartmentsInterface, thunkApi) => {
-    const { rejectWithValue, dispatch } = thunkApi;
+    const { rejectWithValue } = thunkApi;
     try {
       const result = await sl
         .get<UpdateSubDepartmentUseCase>(
           ServiceKeys.UpdateSubDepartmentUseCase
         )
-        .call(data).then(() => {
-          // TODO: add applied filters
-          dispatch(getSubDepartmentsList([]))
-        })
+        .call(data);
       console.log("Result:", result);
       return result;
     } catch (error) {
@@ -82,17 +76,13 @@ export const updateSubDepartment = createAsyncThunk(
 export const updateSubDepartmentAssignFeatures = createAsyncThunk(
   "subdepartment/update/assignfeatures",
   async (data: SubDepartmentsAssignFeaturesInterface, thunkApi) => {
-    const { rejectWithValue, dispatch } = thunkApi;
+    const { rejectWithValue } = thunkApi;
     try {
       const result = await sl
         .get<UpdateSubDepartmentAssignFeaturesUseCase>(
           ServiceKeys.UpdateSubDepartmentAssignFeaturesUseCase
         )
-        .call(data).then(() => {
-          // TODO: add applied filters
-          dispatch(getSubDepartmentsList([]))
-          dispatch(getPermissionsList())
-        })
+        .call(data);
       console.log("Result:", result);
       return result;
     } catch (error) {
@@ -106,16 +96,13 @@ export const updateSubDepartmentAssignFeatures = createAsyncThunk(
 export const deleteSubDepartment = createAsyncThunk(
   "subdepartment/delete",
   async (id: string, thunkApi) => {
-    const { rejectWithValue, dispatch } = thunkApi;
+    const { rejectWithValue } = thunkApi;
     try {
       const result = await sl
         .get<DeleteSubDepartmentUseCase>(
           ServiceKeys.DeleteSubDepartmentUseCase
         )
-        .call(id).then(() => {
-          // TODO: add applied filters
-          dispatch(getSubDepartmentsList([]))
-        })
+        .call(id);
       console.log("Result:", result);
       return id;
     } catch (error) {

@@ -72,6 +72,7 @@ const EmployeesTable = () => {
           dispatch(getLookups());
           dispatch(getEmployeeList(filters));
         }}
+        resetControls={employeeState.employees.isInitial}
         totalItems={employeeState.employees.total}
         data={employeeState.employees.items.map<DataItem>(
           (item: EmployeeInterface) => {

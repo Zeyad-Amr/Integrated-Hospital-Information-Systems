@@ -20,7 +20,14 @@ export default class LookupsModel {
             LOC: json.LOC || [],
             comorbidities: json.comorbidities || [],
             governates: json.governate || [],
-            departments: json.department || [],
+            departments: (json.department || []).map((department: any) => {
+                return {
+                    id: department.id,
+                    value: department.name,
+                };
+            }
+            ),
+
             features: json.features || [
                 {
                     "id": 1,

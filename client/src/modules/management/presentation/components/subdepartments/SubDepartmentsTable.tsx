@@ -122,7 +122,7 @@ const SubDepartmentsTable = () => {
   // function to get name value of item using its id
   const getNameOfItemWithItsId = (id: string | number, listOfSearch: any) => {
     const targetEl = listOfSearch?.find((el: any) => el.id == id);
-    return targetEl?.name ?? "";
+    return targetEl?.name ?? targetEl?.value ?? "";
   };
 
   return (
@@ -175,6 +175,7 @@ const SubDepartmentsTable = () => {
           console.log(filters);
           dispatch(getSubDepartmentsList(filters));
         }}
+        resetControls={subDepartmentsState?.subDepartments.isInitial}
         totalItems={subDepartmentsState?.subDepartments.total}
         data={subDepartmentsState?.subDepartments.items?.map(
           (item: SubDepartmentsInterface) => {
