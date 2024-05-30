@@ -69,12 +69,12 @@ export class UpdateEmployeeDto {
   roleId: number;
 
   @ApiProperty({
-    type: String,
+    type: Array<Number>,
     example: [4],
   })
   @IsArray()
   @IsInt({ each: true })
-  suDepartmentIds: number;
+  suDepartmentIds: number[];
 
   @ApiProperty({
     type: String,
