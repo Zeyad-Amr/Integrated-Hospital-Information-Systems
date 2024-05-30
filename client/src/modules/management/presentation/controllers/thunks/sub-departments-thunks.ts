@@ -21,6 +21,7 @@ export const getSubDepartmentsList = createAsyncThunk(
           ServiceKeys.GetAllSubDepartmentsUseCase
         )
         .call(filters);
+
       console.log("Result:", result);
       return result;
     } catch (error) {

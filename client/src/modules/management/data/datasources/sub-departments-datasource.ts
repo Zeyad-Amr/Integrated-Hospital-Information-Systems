@@ -45,7 +45,7 @@ class SubDepartmentsDataSource extends BaseSubDepartmentsDataSource {
             size: 10
         }
         console.log(response.data, 'getAllSubDepartments');
-        return PaginatedListModel.fromJson<SubDepartmentsInterface>(response.data, response.data.items.map((item: any) => SubDepartmentsModel.fromJson(item)));
+        return PaginatedListModel.fromJson<SubDepartmentsInterface>(response.data, response.data.items.map((item: any) => SubDepartmentsModel.fromJson(item)), filters);
     }
 
     override async getSubDepartmentById(id: string): Promise<SubDepartmentsInterface> {

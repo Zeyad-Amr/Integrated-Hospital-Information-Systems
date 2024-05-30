@@ -133,7 +133,7 @@ const CreateUserForm = ({
         : createEmployee(employeePayload);
 
       dispatch(action).then((res) => {
-        if (res && employeeData && setShowEditEmployeeDialog ) {
+        if (res && employeeData && setShowEditEmployeeDialog) {
           setShowEditEmployeeDialog(false);
         }
       });

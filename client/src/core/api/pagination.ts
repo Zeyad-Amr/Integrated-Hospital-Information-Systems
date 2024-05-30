@@ -1,8 +1,11 @@
+import { FilterQuery } from "./filters";
+
 export interface PaginatedList<T> {
     total: number;
     items: T[];
     page: number;
     size: number;
+    filters: FilterQuery[];
 }
 
 export interface PaginatedApiRequestParams {
@@ -10,32 +13,25 @@ export interface PaginatedApiRequestParams {
     size: number;
 }
 
-export class PaginatedListModel<T> {
-    total: number;
-    items: T[];
-    page: number;
-    size: number;
+export class PaginatedListModel {
 
-    constructor(data: PaginatedList<T>) {
-        this.total = data.total;
-        this.items = data.items;
-        this.page = data.page;
-        this.size = data.size;
-    }
 
-    public static fromJson<T>(json: any, items: T[]): PaginatedList<T> {
-        return new PaginatedListModel<T>({
+    public static fromJson<T>(json: any, items: T[], filters: FilterQuery[]): PaginatedList<T> {
+        return {
             total: json.total,
             items: items,
+            filters: filters,
             page: json.page,
             size: json.size,
-        });
+        }
     }
+
 
     public static default<T>(): PaginatedList<T> {
         return {
             total: 0,
             items: [],
+            filters: [],
             page: 0,
             size: 0,
         };

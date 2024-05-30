@@ -38,7 +38,7 @@ class RoomDataSource extends BaseRoomDataSource {
         }
         console.log(response.data);
 
-        return PaginatedListModel.fromJson<RoomInterface>(response.data, response.data.items.map((item: any) => RoomModel.fromJson(item)));
+        return PaginatedListModel.fromJson<RoomInterface>(response.data, response.data.items.map((item: any) => RoomModel.fromJson(item)), filters);
     }
 
     override async getRoomById(id: string): Promise<RoomInterface> {
