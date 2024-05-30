@@ -13,24 +13,21 @@ import {
 } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
 import { getRoomList } from "@/modules/management/presentation/controllers/thunks/room-thunks";
 import { getSpecializationList } from "@/modules/management/presentation/controllers/thunks/specialization-thunks";
-import { getRolesList } from "@/modules/management/presentation/controllers/thunks/roles-thunks";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import {
-  DepartmentsState,
   RoomState,
   SpecializationState,
   SubDepartmentsState,
 } from "../../controllers/types";
 import { SubDepartmentsInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
-import { getDepartmentsList } from "@/modules/management/presentation/controllers/thunks/departments-thunks";
 import PermissionsForm from "./PermissionsForm";
 import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
 import { getPermissionsList } from "../../controllers/thunks/permissions-thunks";
-import { getFeaturesList } from "../../controllers/thunks/features-thunks";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import AddModeratorIcon from "@mui/icons-material/AddModerator";
 import ConfirmationDialog from "@/core/shared/components/ConfirmationDialog";
 import { FilterQuery } from "@/core/api";
+import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
 
 const SubDepartmentsTableHeader: HeaderItem[] = [
   {
@@ -110,8 +107,8 @@ const SubDepartmentsTable = () => {
   const specializationsState: SpecializationState = useAppSelector(
     (state: any) => state.specializations
   );
-  const departmentsState: DepartmentsState = useAppSelector(
-    (state: any) => state.departments
+  const lookupsState: LookupsState = useAppSelector(
+    (state: any) => state.lookups
   );
   const dispatch = useAppDispatch();
 
@@ -119,16 +116,13 @@ const SubDepartmentsTable = () => {
   useEffect(() => {
     dispatch(getRoomList([]));
     dispatch(getSpecializationList([]));
-    dispatch(getRolesList());
     dispatch(getPermissionsList());
-    dispatch(getFeaturesList());
-    dispatch(getDepartmentsList());
   }, []);
 
   // function to get name value of item using its id
   const getNameOfItemWithItsId = (id: string | number, listOfSearch: any) => {
     const targetEl = listOfSearch?.find((el: any) => el.id == id);
-    return targetEl?.name ?? "";
+    return targetEl?.name ?? targetEl?.value ?? "";
   };
 
   return (
@@ -181,6 +175,7 @@ const SubDepartmentsTable = () => {
           console.log(filters);
           dispatch(getSubDepartmentsList(filters));
         }}
+        resetControls={subDepartmentsState?.subDepartments.isInitial}
         totalItems={subDepartmentsState?.subDepartments.total}
         data={subDepartmentsState?.subDepartments.items?.map(
           (item: SubDepartmentsInterface) => {
@@ -188,7 +183,7 @@ const SubDepartmentsTable = () => {
               name: item.name ?? "",
               department: getNameOfItemWithItsId(
                 item.departmentId,
-                departmentsState?.departmentsList
+                lookupsState.lookups.departments
               ),
               room: getNameOfItemWithItsId(
                 item.roomId,

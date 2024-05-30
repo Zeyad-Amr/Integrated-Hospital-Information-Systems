@@ -31,7 +31,7 @@ class VisitDataSource extends BaseVisitDataSource {
         console.log("getAllAnonymousVisits DS:", filters);
         const response = await this.apiClient.get(Endpoints.visit.list, { filters: [Filter.isNotNull('patientId'), ...filters] });
         console.log(response.data.items);
-        return PaginatedListModel.fromJson<VisitInterface>(response.data, response.data.items.map((item: any) => VisitModel.fromJson(item)));
+        return PaginatedListModel.fromJson<VisitInterface>(response.data, response.data.items.map((item: any) => VisitModel.fromJson(item)), filters);
     }
 
     override async getVisitByCode(visitcode: string): Promise<VisitInterface> {

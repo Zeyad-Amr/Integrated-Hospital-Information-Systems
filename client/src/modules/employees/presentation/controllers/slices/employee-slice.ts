@@ -59,7 +59,7 @@ const employeeSlice = createSlice({
         builder.addCase(getEmployeeList.fulfilled, (state, action) => {
             state.loading = false;
             state.error = "";
-            state.employees = action.payload;
+            state.employees = PaginatedListModel.updatePaginatedList(state.employees, action.payload);
             console.log('Employees List', action.payload);
         });
         builder.addCase(getEmployeeList.rejected, (state, action) => {
@@ -77,6 +77,7 @@ const employeeSlice = createSlice({
         builder.addCase(createEmployee.fulfilled, (state, _action) => {
             state.loading = false;
             state.error = "";
+            state.employees = PaginatedListModel.resetPaginatedList(state.employees);
             AlertService.showAlert('تم اضافة موظف بنجاح', 'success');
 
         });
@@ -94,6 +95,7 @@ const employeeSlice = createSlice({
         builder.addCase(updateEmployee.fulfilled, (state, _action) => {
             state.loading = false;
             AlertService.showAlert('تم تحديث موظف بنجاح', 'success');
+            state.employees = PaginatedListModel.resetPaginatedList(state.employees);
             state.error = "";
         });
         builder.addCase(updateEmployee.rejected, (state, action) => {
@@ -110,6 +112,7 @@ const employeeSlice = createSlice({
         builder.addCase(deleteEmployee.fulfilled, (state, _action) => {
             state.loading = false;
             state.error = "";
+            state.employees = PaginatedListModel.resetPaginatedList(state.employees);
             AlertService.showAlert('تم حذف موظف بنجاح', 'success');
         });
         builder.addCase(deleteEmployee.rejected, (state, action) => {

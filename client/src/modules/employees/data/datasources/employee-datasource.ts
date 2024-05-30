@@ -25,7 +25,7 @@ class EmployeeDataSource extends BaseEmployeeDataSource {
 
     override async getAllEmployees(filters: FilterQuery[]): Promise<PaginatedList<EmployeeInterface>> {
         const response = await this.apiClient.get(Endpoints.employee.list, { filters: filters });
-        return PaginatedListModel.fromJson<EmployeeInterface>(response.data, response.data.items.map((item: any) => EmployeeModel.fromJson(item)));
+        return PaginatedListModel.fromJson<EmployeeInterface>(response.data, response.data.items.map((item: any) => EmployeeModel.fromJson(item)), filters);
     }
 
     override async createEmployee(employee: EmployeeInterface): Promise<boolean> {

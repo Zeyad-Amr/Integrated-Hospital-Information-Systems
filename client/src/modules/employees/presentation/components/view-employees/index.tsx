@@ -1,7 +1,7 @@
 import CustomDataTable from "@/core/shared/components/CustomDataTable/CustomDataTable";
 import { DataItem, header } from "./data";
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import { EmployeeState } from "../../controllers/types";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
@@ -14,7 +14,11 @@ import { deleteEmployee } from "@/modules/employees/presentation/controllers/thu
 import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
 import CreateUserForm from "../create-user-form/CreateUserForm";
 import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
-import { RoleType, ShiftType } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
+import {
+  RoleType,
+  ShiftType,
+} from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
+import { getSubDepartmentsList } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
 
 const EmployeesTable = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +30,10 @@ const EmployeesTable = () => {
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
+
+  useEffect(() => {
+    dispatch(getSubDepartmentsList([]));
+  }, []);
 
   // useState
   const [showConfirmationDialog, setShowConfirmationDialog] =
@@ -46,7 +54,10 @@ const EmployeesTable = () => {
         setOpen={setShowEditEmployeeDialog}
         title="تحديث بيانات موظف"
       >
-        <CreateUserForm setShowEditEmployeeDialog={setShowEditEmployeeDialog} employeeData={employeeData} />
+        <CreateUserForm
+          setShowEditEmployeeDialog={setShowEditEmployeeDialog}
+          employeeData={employeeData}
+        />
       </CustomizedDialog>
       <ConfirmationDialog
         confirmFunction={async () =>
@@ -64,6 +75,7 @@ const EmployeesTable = () => {
           console.log(filters);
           dispatch(getEmployeeList(filters));
         }}
+        resetControls={employeeState.employees.isInitial}
         totalItems={employeeState.employees.total}
         data={employeeState.employees.items.map<DataItem>(
           (item: EmployeeInterface) => {
@@ -74,9 +86,15 @@ const EmployeesTable = () => {
                   " " +
                   new Date(item?.createdAt).toLocaleTimeString()
                 : "لا يوجد",
-              shiftName: lookupsState?.lookups?.shiftTypes?.find(( el : ShiftType ) => el.id == item.shiftId)?.value ?? "لا يوجد",
+              shiftName:
+                lookupsState?.lookups?.shiftTypes?.find(
+                  (el: ShiftType) => el.id == item.shiftId
+                )?.value ?? "لا يوجد",
               phone: item.person?.phone ?? "لا يوجد",
-              roleName:  lookupsState?.lookups?.roleTypes?.find(( el : RoleType ) => el.id == item.roleId)?.value ?? "لا يوجد",
+              roleName:
+                lookupsState?.lookups?.roleTypes?.find(
+                  (el: RoleType) => el.id == item.roleId
+                )?.value ?? "لا يوجد",
               name:
                 item.person?.firstName +
                 " " +

@@ -7,10 +7,7 @@ import lookups from "@/core/shared/modules/lookups/presentation/controllers/slic
 import person from "../shared/modules/person/presentation/controllers/slices/person-slice";
 import rooms from "@/modules/management/presentation/controllers/slices/room-slice";
 import specializations from "@/modules/management/presentation/controllers/slices/specialization-slice";
-import departments from "@/modules/management/presentation/controllers/slices/departments-slice";
-import features from "@/modules/management/presentation/controllers/slices/features-slice";
 import permissions from "@/modules/management/presentation/controllers/slices/permissions-slice";
-import roles from "@/modules/management/presentation/controllers/slices/roles-slice";
 import subDepartments from "@/modules/management/presentation/controllers/slices/sub-departments-slice";
 
 const store = configureStore({
@@ -21,10 +18,7 @@ const store = configureStore({
         lookups: lookups,
         rooms,
         specializations,
-        departments,
-        features,
         permissions,
-        roles,
         subDepartments,
         person
     },

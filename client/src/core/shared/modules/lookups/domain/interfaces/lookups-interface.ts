@@ -11,6 +11,7 @@ export interface LookupsInterface {
     comorbidities: Comorbidities[];
     governates: Governate[];
     departments: Department[];
+    features: Feature[];
 }
 
 export interface IdentityType {
@@ -69,6 +70,11 @@ export interface Governate {
 }
 
 export interface Department {
+    id: number;
+    value: string;
+}
+
+export interface Feature {
     id: number;
     value: string;
 }

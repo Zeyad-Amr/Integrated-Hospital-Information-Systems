@@ -10,6 +10,7 @@ import AlertService from "@/core/shared/utils/alert-service";
 const initialState: SpecializationState = {
     specializations: PaginatedListModel.default(),
     currentSpecialization: SpecializationEntity.defaultValue(),
+    isFetched: false,
     loading: false,
     error: "",
 };
@@ -45,7 +46,8 @@ const specializationSlice = createSlice({
         });
         builder.addCase(getSpecializationList.fulfilled, (state, action) => {
             state.loading = false;
-            state.specializations = action.payload;
+
+            state.specializations = PaginatedListModel.updatePaginatedList(state.specializations, action.payload);
             state.error = "";
             console.log('getSpecializationList', action.payload);
         });
@@ -64,6 +66,7 @@ const specializationSlice = createSlice({
         builder.addCase(createSpecialization.fulfilled, (state, _action) => {
             state.loading = false;
             state.currentSpecialization = initialState.currentSpecialization;
+            state.specializations = PaginatedListModel.resetPaginatedList(state.specializations)
             state.error = "";
             AlertService.showAlert('تم اضافة تخصص بنجاح', 'success')
         });
@@ -81,6 +84,7 @@ const specializationSlice = createSlice({
         builder.addCase(updateSpecializations.fulfilled, (state, _action) => {
             state.loading = false;
             state.currentSpecialization = initialState.currentSpecialization;
+            state.specializations = PaginatedListModel.resetPaginatedList(state.specializations)
             state.error = "";
             AlertService.showAlert('تم تحديث تخصص بنجاح', 'success')
         });
@@ -98,11 +102,13 @@ const specializationSlice = createSlice({
         builder.addCase(deleteSpecialization.fulfilled, (state, _action) => {
             state.loading = false;
             state.error = "";
+            state.specializations = PaginatedListModel.resetPaginatedList(state.specializations)
             AlertService.showAlert('تم حذف تخصص بنجاح', 'success')
         });
         builder.addCase(deleteSpecialization.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
+
             AlertService.showAlert(`${state.error}`, 'error');
         });
 

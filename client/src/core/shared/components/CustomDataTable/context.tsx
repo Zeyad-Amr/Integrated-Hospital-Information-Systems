@@ -10,7 +10,7 @@ import { isEqual } from "lodash";
 import { Filter, FilterQuery } from "@/core/api";
 import { initialPage, initialRowsPerPage } from "./CustomTablePagination";
 
-// Define the type for TableContext
+//* Define the type for TableContext
 interface TableContextType<T> {
   filterColumns: FilterColumn[];
   setFilterColumns: React.Dispatch<React.SetStateAction<FilterColumn[]>>;
@@ -26,12 +26,12 @@ interface TableContextType<T> {
   setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-// Create the TableContext
+//* Create the TableContext
 const TableContext = createContext<TableContextType<any> | undefined>(
   undefined
 );
 
-// Custom hook to use the TableContext
+//* Custom hook to use the TableContext
 export const useTableContext = <T,>() => {
   const context = useContext(TableContext);
   if (!context) {
@@ -40,16 +40,19 @@ export const useTableContext = <T,>() => {
   return context as TableContextType<T>;
 };
 
-// TableProvider component to wrap your application and provide the context
+//* TableProvider component to wrap your application and provide the context
 export const TableProvider = (props: {
   fetchData: (filters: FilterQuery[]) => void;
   initSortedColumn: SortedColumn;
   columnHeader: HeaderItem[];
   data: any[];
   children: React.ReactNode;
+  resetControls?: boolean;
 }) => {
-  const { fetchData, initSortedColumn, columnHeader, data } = props;
+  const { fetchData, initSortedColumn, columnHeader, data, resetControls } =
+    props;
 
+  //***************** Define the state values
   const [filterColumns, setFilterColumns] = useState<FilterColumn[]>([]);
   const [searchQuery, setSearchQuery] = useState<SearchQuery>({
     value: "",
@@ -58,6 +61,7 @@ export const TableProvider = (props: {
     useState<SortedColumn>(initSortedColumn);
   const [page, setPage] = useState(initialPage);
   const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
+  const [reset, setReset] = useState(false);
 
   const prevPage = useRef(page);
   const prevRowsPerPage = useRef(rowsPerPage);
@@ -67,12 +71,126 @@ export const TableProvider = (props: {
 
   const initialRender = useRef(true);
 
-  // useEffect to apply filters initially on the first render
-
+  //***************** useEffect to apply filters initially on the first render
   useEffect(() => {
-    applyFiltersHandler();
+    if (reset !== true) {
+      console.log("resetControls useEffect:", resetControls);
+      applyFiltersHandler();
+      setReset(false);
+    }
   }, [page, rowsPerPage, sortedColumn, searchQuery, filterColumns]);
 
+  //***************** reset all filters
+  const resetFilters = () => {
+    initialRender.current = true;
+    setFilterColumns([]);
+    setSearchQuery({ value: "" });
+    setSortedColumn(initSortedColumn);
+    setPage(initialPage);
+    setRowsPerPage(initialRowsPerPage);
+    setReset(true);
+
+    // Update the previous values
+    prevPage.current = page;
+    prevRowsPerPage.current = rowsPerPage;
+    prevSortedColumn.current = sortedColumn;
+    prevSearchQuery.current = searchQuery;
+    prevFilterColumns.current = filterColumns;
+  };
+
+  //***************** on resetFilters change, reset all filters
+  useEffect(() => {
+    console.log("resetControls:", resetControls);
+    if (resetControls === true) {
+      resetFilters();
+      fetchDataHandler(true);
+    }
+  }, [resetControls]);
+
+  //***************** Function to handle fetching data
+  const fetchDataHandler = (resetPage: boolean) => {
+    // Logic for handling Pagination
+    console.log(page);
+    console.log(rowsPerPage);
+
+    // Logic for handling Sorting
+    console.log(sortedColumn);
+
+    // Logic for handling Searching
+    console.log(searchQuery);
+
+    // Logic for handling Filtering
+    console.log(filterColumns);
+
+    // Apply filters
+    //* Create an array of filters
+    let filters: FilterQuery[] = [];
+
+    //* Search
+    if (searchQuery.value && searchQuery.columnId) {
+      if (
+        columnHeader.find((item) => item.id === searchQuery.columnId)
+          ?.isCustomFilter === true
+      ) {
+        filters.push(
+          Filter.custom(`${searchQuery.columnId}=${searchQuery.value}`)
+        );
+      } else {
+        filters.push(Filter.like(searchQuery.columnId, searchQuery.value));
+      }
+    }
+
+    //* Sorting
+    if (sortedColumn && sortedColumn.disableSort !== true) {
+      if (
+        columnHeader.find((item) => item.id === sortedColumn.columnId)
+          ?.isCustomFilter === true
+      ) {
+        // custom sort
+      } else {
+        if (sortedColumn.isAscending) {
+          filters.push(Filter.sortAscending(sortedColumn.columnId));
+        } else {
+          filters.push(Filter.sortDescending(sortedColumn.columnId));
+        }
+      }
+    }
+
+    //* reset page and size if any of the filters changed
+    if (resetPage) {
+      filters.push(
+        Filter.custom(`page=${initialPage + 1}&size=${initialRowsPerPage}`)
+      );
+      setPage(initialPage);
+      setRowsPerPage(initialRowsPerPage);
+    } else if (rowsPerPage) {
+      filters.push(Filter.custom(`page=${page + 1}&size=${rowsPerPage}`));
+    }
+
+    //* Option filters
+    // check if all options selected
+    const allOptionsSelected = filterColumns.every((column) => {
+      return column.selectedValuesIds.length === column.values.length;
+    });
+
+    if (filterColumns.length > 0 && !allOptionsSelected) {
+      filterColumns.forEach((column) => {
+        if (column.selectedValuesIds.length > 0) {
+          filters.push(Filter.anyOf(column.columnId, column.selectedValuesIds));
+        }
+      });
+    }
+
+    //* Fetch data with the filters
+    fetchData(filters);
+
+    // Set initialRender to false after the first render
+    if (initialRender.current) {
+      initialRender.current = false;
+    }
+  };
+
+  //***************** Function to apply filters
   const applyFiltersHandler = () => {
     // Check if any of the values have changed
     const pageChanged = prevPage.current !== page;
@@ -89,6 +207,7 @@ export const TableProvider = (props: {
     console.log("sortedColumnChanged", sortedColumnChanged);
     console.log("searchQueryChanged", searchQueryChanged);
     console.log("filterColumnsChanged", filterColumnsChanged);
+    console.log("initialRender", initialRender.current);
 
     // Update the previous values
     prevPage.current = page;
@@ -106,87 +225,9 @@ export const TableProvider = (props: {
       filterColumnsChanged ||
       initialRender.current
     ) {
-      // Logic for handling Pagination
-      console.log(page);
-      console.log(rowsPerPage);
-
-      // Logic for handling Sorting
-      console.log(sortedColumn);
-
-      // Logic for handling Searching
-      console.log(searchQuery);
-
-      // Logic for handling Filtering
-      console.log(filterColumns);
-
-      // Apply filters
-      //* Create an array of filters
-      let filters: FilterQuery[] = [];
-
-      //* Search
-      if (searchQuery.value && searchQuery.columnId) {
-        if (
-          columnHeader.find((item) => item.id === searchQuery.columnId)
-            ?.isCustomFilter === true
-        ) {
-          filters.push(
-            Filter.custom(`${searchQuery.columnId}=${searchQuery.value}`)
-          );
-        } else {
-          filters.push(Filter.like(searchQuery.columnId, searchQuery.value));
-        }
-      }
-
-      //* Sorting
-      if (sortedColumn && sortedColumn.disableSort !== true) {
-        if (
-          columnHeader.find((item) => item.id === sortedColumn.columnId)
-            ?.isCustomFilter === true
-        ) {
-          // custom sort
-        } else {
-          if (sortedColumn.isAscending) {
-            filters.push(Filter.sortAscending(sortedColumn.columnId));
-          } else {
-            filters.push(Filter.sortDescending(sortedColumn.columnId));
-          }
-        }
-      }
-
-      //* reset page and size if any of the filters changed
-      if (sortedColumnChanged || searchQueryChanged || filterColumnsChanged) {
-        filters.push(
-          Filter.custom(`page=${initialPage + 1}&size=${initialRowsPerPage}`)
-        );
-        setPage(initialPage);
-        setRowsPerPage(initialRowsPerPage);
-      } else if (rowsPerPage) {
-        filters.push(Filter.custom(`page=${page + 1}&size=${rowsPerPage}`));
-      }
-
-      //* Option filters
-      // check if all options selected
-      const allOptionsSelected = filterColumns.every((column) => {
-        return column.selectedValuesIds.length === column.values.length;
-      });
-
-      if (filterColumns.length > 0 && !allOptionsSelected) {
-        filterColumns.forEach((column) => {
-          if (column.selectedValuesIds.length > 0) {
-            filters.push(
-              Filter.anyOf(column.columnId, column.selectedValuesIds)
-            );
-          }
-        });
-      }
-
-      //* Fetch data with the filters
-      fetchData(filters);
-
-      // Set initialRender to false after the first render
-      if (initialRender.current) {
-        initialRender.current = false;
-      }
+      fetchDataHandler(
+        sortedColumnChanged || searchQueryChanged || filterColumnsChanged
+      );
     }
   };
 

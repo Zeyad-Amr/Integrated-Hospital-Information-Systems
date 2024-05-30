@@ -17,6 +17,7 @@ interface CustomDataTableProps<T> {
   rowHeight?: string;
   rowPaddingY?: string;
   initSortedColumn?: SortedColumn;
+  resetControls?: boolean;
 }
 
 /**

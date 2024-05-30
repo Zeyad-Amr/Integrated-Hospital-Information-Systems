@@ -18,6 +18,7 @@ export default class LookupsEntity {
             comorbidities: [],
             governates: [],
             departments: [],
+            features: [],
         };
     }
 }

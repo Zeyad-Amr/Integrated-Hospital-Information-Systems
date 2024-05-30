@@ -5,18 +5,18 @@ import { Formik } from "formik";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import {
-  DepartmentsState,
-  FeaturesState,
   PermissionsState,
-  RolesState,
   RoomState,
   SpecializationState,
 } from "../../controllers/types";
-import RoleInterface from "@/modules/management/domain/interfaces/role-interface";
-import FeatureInterface from "@/modules/management/domain/interfaces/feature-interface";
 import { updateSubDepartmentAssignFeatures } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
 import PermissionInterface from "@/modules/management/domain/interfaces/permission-interface";
 import { SubDepartmentsInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
+import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
+import {
+  Feature,
+  RoleType,
+} from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 
 interface PermissionsFormProps {
   subDepartmentData?: SubDepartmentsInterface;
@@ -29,19 +29,16 @@ const PermissionsForm = ({
 }: PermissionsFormProps) => {
   //   get data from store
   const dispatch = useAppDispatch();
-  const rolesState: RolesState = useAppSelector((state: any) => state.roles);
-  const featuresState: FeaturesState = useAppSelector(
-    (state: any) => state.features
+  const lookupsState: LookupsState = useAppSelector(
+    (state: any) => state.lookups
   );
+
   const permissionsState: PermissionsState = useAppSelector(
     (state: any) => state.permissions
   );
   const roomsState: RoomState = useAppSelector((state: any) => state.rooms);
   const specializationsState: SpecializationState = useAppSelector(
     (state: any) => state.specializations
-  );
-  const departmentsState: DepartmentsState = useAppSelector(
-    (state: any) => state.departments
   );
 
   //   function to get name of item using its id by searching it on its list
@@ -56,7 +53,7 @@ const PermissionsForm = ({
   const getListOfFeaturesWithItsRole = () => {
     const newRolesWithFeaturesList: { roleId: any; features: any[] }[] = [];
 
-    rolesState?.rolesList?.forEach((role: RoleInterface) => {
+    lookupsState.lookups.roleTypes?.forEach((role: RoleType) => {
       const featuresOfSpecificRole: any[] = [];
 
       permissionsState?.permissionsList.forEach(
@@ -151,7 +148,7 @@ const PermissionsForm = ({
                 قسم :{" "}
                 {getNameOfItemWithItsId(
                   subDepartmentData?.departmentId,
-                  departmentsState?.departmentsList
+                  lookupsState.lookups.departments
                 )}
               </Typography>
             </Box>
@@ -185,11 +182,11 @@ const PermissionsForm = ({
                   <CustomSelectField
                     multiple
                     value={values.roles[index].features}
-                    options={featuresState?.featuresList?.map(
-                      (feature: FeatureInterface) => {
+                    options={lookupsState.lookups.features.map(
+                      (feature: Feature) => {
                         return {
                           id: feature.id,
-                          value: feature.name,
+                          value: feature.value,
                         };
                       }
                     )}
@@ -197,7 +194,7 @@ const PermissionsForm = ({
                     name={`roles[${index}].features`}
                     label={`الميــزات ل ${getNameOfItemWithItsId(
                       roleEl.roleId,
-                      rolesState?.rolesList
+                      lookupsState.lookups.roleTypes
                     )}`}
                     onChange={handleChange}
                     onBlur={handleBlur}

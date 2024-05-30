@@ -8,18 +8,15 @@ import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik } from "formik";
 import React from "react";
-import {
-  RoomState,
-  SpecializationState,
-  DepartmentsState,
-} from "../../controllers/types";
+import { RoomState, SpecializationState } from "../../controllers/types";
 import RoomInterface from "@/modules/management/domain/interfaces/room-interface";
 import SpecializationInterface from "@/modules/management/domain/interfaces/specialization -interface";
-import DepartmentsInterface from "@/modules/management/domain/interfaces/departments-interface";
 import {
   createSubDepartment,
   updateSubDepartment,
 } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
+import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
+import { Department } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 
 interface SubDepartmentsFormProps {
   isEdit: boolean;
@@ -37,8 +34,8 @@ const SubDepartmentsForm = ({
   const specializationsState: SpecializationState = useAppSelector(
     (state: any) => state.specializations
   );
-  const departmentsState: DepartmentsState = useAppSelector(
-    (state: any) => state.departments
+  const lookupsState: LookupsState = useAppSelector(
+    (state: any) => state.lookups
   );
   const dispatch = useAppDispatch();
 
@@ -100,11 +97,11 @@ const SubDepartmentsForm = ({
             <Grid item lg={6} md={6} sm={6} xs={12}>
               <CustomSelectField
                 value={values.departmentId}
-                options={departmentsState?.departmentsList?.map(
-                  (department: DepartmentsInterface) => {
+                options={lookupsState.lookups.departments?.map(
+                  (department: Department) => {
                     return {
                       id: department.id,
-                      value: department.name,
+                      value: department.value,
                     };
                   }
                 )}

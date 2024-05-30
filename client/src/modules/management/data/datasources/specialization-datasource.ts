@@ -37,7 +37,7 @@ class SpecializationDataSource extends BaseSpecializationDataSource {
             size: 10
         }
         console.log(response.data);
-        return PaginatedListModel.fromJson<SpecializationInterface>(response.data, response.data.items.map((item: any) => SpecializationModel.fromJson(item)));
+        return PaginatedListModel.fromJson<SpecializationInterface>(response.data, response.data.items.map((item: any) => SpecializationModel.fromJson(item)), filters);
     }
 
     override async getSpecializationById(id: string): Promise<SpecializationInterface> {
