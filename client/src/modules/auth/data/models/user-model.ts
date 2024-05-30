@@ -1,15 +1,15 @@
-import store from '@/core/state/store';
 import UserInterface from '../../domain/interfaces/user-interface';
 import AuthDataModel from './auth-data-model';
 import PersonModel from '../../../../core/shared/modules/person/data/models/person-model';
+import { ExtendedSubDepartmentsInterface } from '@/modules/employees/domain/interfaces/employee-interface';
 
 export default class UserModel {
 
     //* --------------------- Serialization: Convert the model to JSON ---------------------
     static toJson(entity: UserInterface): any {
         return {
-            roleId: entity.role,
-            shiftId: entity.shift,
+            roleId: entity.roleId,
+            shiftId: entity.shiftId,
             suDepartmentIds: entity.suDepartmentIds,
             person: entity.person ? PersonModel.toJson(entity.person) : null,
             auth: entity.auth ? AuthDataModel.toJson(entity.auth) : null,
@@ -18,12 +18,11 @@ export default class UserModel {
 
     //* --------------------- Deserialization: Create a model from JSON data ---------------------
     static fromJson(json: any): UserInterface {
-        const state = store.getState();
         return {
             id: json.id,
-            role: json.role ?? state.lookups.lookups.roleTypes[0],
-            shift: json.shift ?? state.lookups.lookups.shiftTypes[0],
-            suDepartmentIds: json.suDepartmentIds ?? [],
+            roleId: json.roleId,
+            shiftId: json.shiftId,
+            suDepartmentIds: json?.subdepartments?.map((suDepartmentId : ExtendedSubDepartmentsInterface) => suDepartmentId?.id),
             createdAt: json.createdAt,
             updatedAt: json.updatedAt,
             person: PersonModel.fromJson(json.person),
