@@ -10,6 +10,7 @@ import AlertService from "@/core/shared/utils/alert-service";
 const initialState: SpecializationState = {
     specializations: PaginatedListModel.default(),
     currentSpecialization: SpecializationEntity.defaultValue(),
+    isFetched: false,
     loading: false,
     error: "",
 };

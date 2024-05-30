@@ -10,6 +10,7 @@ import AlertService from "@/core/shared/utils/alert-service";
 const initialState: RoomState = {
     rooms: PaginatedListModel.default(),
     currentRoom: RoomEntity.defaultValue(),
+    isFetched: false,
     loading: false,
     error: "",
 };

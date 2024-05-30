@@ -8,7 +8,6 @@ import DeleteSubDepartmentUseCase from "@/modules/management/domain/usecases/sub
 import GetSubDepartmentUseCase from "@/modules/management/domain/usecases/sub-departments/get-sub-departments-by-Id-usecase";
 import UpdateSubDepartmentAssignFeaturesUseCase from "@/modules/management/domain/usecases/sub-departments/update-sub-department-assign-features-usecase";
 import { getPermissionsList } from './permissions-thunks'
-import { getRolesList } from './roles-thunks'
 import { FilterQuery } from "@/core/api";
 
 //* Get All SubDepartments
@@ -91,7 +90,6 @@ export const updateSubDepartmentAssignFeatures = createAsyncThunk(
         .call(data).then(() => {
           // TODO: add applied filters
           dispatch(getSubDepartmentsList([]))
-          dispatch(getRolesList())
           dispatch(getPermissionsList())
         })
       console.log("Result:", result);

@@ -21,8 +21,20 @@ export default class LookupsModel {
             comorbidities: json.comorbidities || [],
             governates: json.governate || [],
             departments: json.department || [],
+            features: json.features || [
+                {
+                    "id": 1,
+                    "value": "Nerve test",
+                },
+                {
+                    "id": 2,
+                    "value": "Cardiology test",
+                }
+            ],
         };
     }
 
 
 }
+
+
