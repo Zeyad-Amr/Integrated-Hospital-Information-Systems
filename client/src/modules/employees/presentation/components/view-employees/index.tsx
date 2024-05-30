@@ -1,7 +1,7 @@
 import CustomDataTable from "@/core/shared/components/CustomDataTable/CustomDataTable";
 import { DataItem, header } from "./data";
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import { EmployeeState } from "../../controllers/types";
 import EmployeeInterface from "@/modules/employees/domain/interfaces/employee-interface";
@@ -18,7 +18,7 @@ import {
   RoleType,
   ShiftType,
 } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
-import { getLookups } from "@/core/shared/modules/lookups/presentation/controllers/thunks/lookups-thuck";
+import { getSubDepartmentsList } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
 
 const EmployeesTable = () => {
   const dispatch = useAppDispatch();
@@ -30,6 +30,10 @@ const EmployeesTable = () => {
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
+
+  useEffect(() => {
+    dispatch(getSubDepartmentsList([]));
+  }, []);
 
   // useState
   const [showConfirmationDialog, setShowConfirmationDialog] =
@@ -69,7 +73,6 @@ const EmployeesTable = () => {
       <CustomDataTable
         fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
-          dispatch(getLookups());
           dispatch(getEmployeeList(filters));
         }}
         resetControls={employeeState.employees.isInitial}
