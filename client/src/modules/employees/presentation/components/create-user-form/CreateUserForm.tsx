@@ -81,14 +81,12 @@ const CreateUserForm = ({
   const onSubmitPerson = (values: PersonInterface) => {
     setPersonValid(true);
     dispatch(setCurrentPerson(values));
-    console.log("Submit Person:", values);
   };
 
   //* Handle on submit auth data section
   const onSubmitAuth = (values: AuthInterface) => {
     setAuthValid(true);
     dispatch(setCurrentAuth(values));
-    console.log("Submit Auth:", values);
   };
 
   //* handle on submit employee specific data section
@@ -102,7 +100,6 @@ const CreateUserForm = ({
         suDepartmentIds: values.suDepartmentIds,
       })
     );
-    console.log("Submit Employee:", values);
   };
 
   //* handle on submit all forms
@@ -110,54 +107,44 @@ const CreateUserForm = ({
   const handleSubmitAllForms = () => {
     if (refSubmitPerson.current) {
       setPersonValid(false);
-      console.log("Submit Person");
       refSubmitPerson.current.click();
     }
     if (refSubmitAuth.current) {
       setAuthValid(false);
-      console.log("Submit Auth");
       refSubmitAuth.current.click();
     }
     if (refSubmitEmployee.current) {
       setEmployeeValid(false);
-      console.log("Submit Employee");
       refSubmitEmployee.current.click();
     }
   };
 
-  //* dispatch when all forms are valid
+  //* Dispatch when all forms are valid
   useEffect(() => {
     if (personValid && authValid && employeeValid) {
-      console.log("Submit All Forms:", employeeState.currentEmployee);
-      //* Edit mode
-      if (employeeData) {
-        dispatch(
-          updateEmployee({
-            ...employeeState.currentEmployee,
-            id: employeeData?.id,
-            auth: employeeState.currentAuth,
-            person: employeeState.currentPerson,
-          })
-        ).then(() => setShowEditEmployeeDialog(false));
-      } else {
-        dispatch(
-          createEmployee({
-            ...employeeState.currentEmployee,
-            auth: employeeState.currentAuth,
-            person: employeeState.currentPerson,
-          })
-        );
-      }
-    } else {
-      console.log("Not Valid");
+      const employeePayload = {
+        ...employeeState.currentEmployee,
+        auth: employeeState.currentAuth,
+        person: employeeState.currentPerson,
+      };
+
+      const action = employeeData
+        ? updateEmployee({ ...employeePayload, id: employeeData.id })
+        : createEmployee(employeePayload);
+
+      dispatch(action).then((res) => {
+        if (res && employeeData) {
+          setShowEditEmployeeDialog(false);
+        }
+      });
     }
   }, [personValid, authValid, employeeValid]);
 
-  //* dispatch getSubdepartments
+  //* Dispatch to get subdepartments
   useEffect(() => {
     // TODO: Add applied filters
     dispatch(getSubDepartmentsList([]));
-  }, []);
+  }, [dispatch]);
 
   return (
     <Box sx={{ marginTop: "2.5rem" }}>

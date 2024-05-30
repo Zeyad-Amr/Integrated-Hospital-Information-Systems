@@ -13,12 +13,18 @@ import ConfirmationDialog from "@/core/shared/components/ConfirmationDialog";
 import { deleteEmployee } from "@/modules/employees/presentation/controllers/thunks/employee-thunks";
 import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
 import CreateUserForm from "../create-user-form/CreateUserForm";
+import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
+import { RoleType, ShiftType } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 
 const EmployeesTable = () => {
   const dispatch = useAppDispatch();
 
+  //* Get data from store
   const employeeState: EmployeeState = useAppSelector(
     (state: any) => state.employees
+  );
+  const lookupsState: LookupsState = useAppSelector(
+    (state: any) => state.lookups
   );
 
   // useState
@@ -59,7 +65,7 @@ const EmployeesTable = () => {
           dispatch(getEmployeeList(filters));
         }}
         totalItems={employeeState.employees.total}
-        data={employeeState.employees.items.map(
+        data={employeeState.employees.items.map<DataItem>(
           (item: EmployeeInterface) => {
             return {
               SSN: item.person?.SSN ?? "لا يوجد",
@@ -68,9 +74,9 @@ const EmployeesTable = () => {
                   " " +
                   new Date(item?.createdAt).toLocaleTimeString()
                 : "لا يوجد",
-              shiftName: item.shiftId as string ?? "لا يوجد",
+              shiftName: lookupsState?.lookups?.shiftTypes?.find(( el : ShiftType ) => el.id == item.shiftId)?.value ?? "لا يوجد",
               phone: item.person?.phone ?? "لا يوجد",
-              roleName: item.roleId as string ?? "لا يوجد",
+              roleName:  lookupsState?.lookups?.roleTypes?.find(( el : RoleType ) => el.id == item.roleId)?.value ?? "لا يوجد",
               name:
                 item.person?.firstName +
                 " " +
@@ -110,12 +116,6 @@ const EmployeesTable = () => {
         )}
         headerItems={header}
       />
-
-      {/* <CompleteVisit
-        display={showDialog}
-        DialogStateController={setShawDialog}
-        id={refIdValue.current}
-      /> */}
     </Box>
   );
 };

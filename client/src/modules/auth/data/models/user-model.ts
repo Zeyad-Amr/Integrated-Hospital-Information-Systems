@@ -1,4 +1,3 @@
-import store from '@/core/state/store';
 import UserInterface from '../../domain/interfaces/user-interface';
 import AuthDataModel from './auth-data-model';
 import PersonModel from '../../../../core/shared/modules/person/data/models/person-model';
@@ -19,7 +18,6 @@ export default class UserModel {
 
     //* --------------------- Deserialization: Create a model from JSON data ---------------------
     static fromJson(json: any): UserInterface {
-        const state = store.getState();
         return {
             id: json.id,
             roleId: json.roleId,

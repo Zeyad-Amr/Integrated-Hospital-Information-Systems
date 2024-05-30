@@ -154,7 +154,7 @@ export const header: HeaderItem[] = [
   },
 
   {
-    id: "role",
+    id: "roleName",
     label: "الوظيفة",
     minWidth: 100,
     maxWidth: 100,
@@ -182,7 +182,7 @@ export const header: HeaderItem[] = [
     ],
   },
   {
-    id: "shift",
+    id: "shiftName",
     label: "الوردية",
     minWidth: 100,
     maxWidth: 100,
