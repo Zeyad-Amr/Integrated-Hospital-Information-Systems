@@ -110,6 +110,7 @@ const SpecializationsTable = () => {
           console.log(filters);
           dispatch(getSpecializationList(filters));
         }}
+        resetControls={specializationState?.specializations.isInitial}
         totalItems={specializationState?.specializations.total}
         data={specializationState?.specializations.items.map(
           (item: SpecializationInterface) => {

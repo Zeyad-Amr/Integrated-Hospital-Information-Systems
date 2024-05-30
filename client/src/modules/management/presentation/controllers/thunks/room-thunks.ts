@@ -36,15 +36,12 @@ export const getRoomList = createAsyncThunk(
 export const createRoom = createAsyncThunk(
   "rooms/create",
   async (data: RoomInterface, thunkApi) => {
-    const { rejectWithValue, dispatch } = thunkApi;
+    const { rejectWithValue } = thunkApi;
     try {
       console.log("Thunk", data);
       const result = await sl
         .get<CreateRoomUseCase>(ServiceKeys.CreateRoomUseCase)
-        .call(new CreateRoomUseCaseParameters(data)).then(() => {
-          // TODO: add applied filters
-          dispatch(getRoomList([]))
-        })
+        .call(new CreateRoomUseCaseParameters(data));
       console.log("Result:", result);
       return result;
     } catch (error) {
@@ -58,14 +55,11 @@ export const createRoom = createAsyncThunk(
 export const updateRoom = createAsyncThunk(
   "rooms/update",
   async (data: RoomInterface, thunkApi) => {
-    const { rejectWithValue, dispatch } = thunkApi;
+    const { rejectWithValue } = thunkApi;
     try {
       const result = await sl
         .get<UpdateRoomUseCase>(ServiceKeys.UpdateRoomUseCase)
-        .call(new UpdateRoomUseCaseParameters(data)).then(() => {
-          // TODO: add applied filters
-          dispatch(getRoomList([]))
-        })
+        .call(new UpdateRoomUseCaseParameters(data));
       console.log("Result:", result);
       return result;
     } catch (error) {
@@ -79,14 +73,11 @@ export const updateRoom = createAsyncThunk(
 export const deleteRoom = createAsyncThunk(
   "rooms/delete",
   async (id: string, thunkApi) => {
-    const { rejectWithValue, dispatch } = thunkApi;
+    const { rejectWithValue } = thunkApi;
     try {
       const result = await sl
         .get<DeleteRoomUseCase>(ServiceKeys.DeleteRoomUseCase)
-        .call(new DeleteRoomUseCaseParameters(id)).then(() => {
-          // TODO: add applied filters
-          dispatch(getRoomList([]))
-        })
+        .call(new DeleteRoomUseCaseParameters(id));
       console.log("Result:", result);
       return id;
     } catch (error) {

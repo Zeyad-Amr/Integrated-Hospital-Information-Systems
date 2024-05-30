@@ -47,6 +47,7 @@ const roomSlice = createSlice({
         builder.addCase(getRoomList?.fulfilled, (state, action) => {
             state.loading = false;
             state.rooms = action.payload;
+            state.rooms = PaginatedListModel.updatePaginatedList(state.rooms, action.payload);
             state.error = "";
             console.log('rooms List', action.payload);
         });
@@ -65,6 +66,7 @@ const roomSlice = createSlice({
         builder.addCase(createRoom.fulfilled, (state, _action) => {
             state.loading = false;
             state.currentRoom = initialState.currentRoom;
+            state.rooms = PaginatedListModel.resetPaginatedList(state.rooms)
             state.error = "";
             AlertService.showAlert('تم اضافة غرفة بنجاح', 'success');
         });
@@ -82,6 +84,7 @@ const roomSlice = createSlice({
         builder.addCase(updateRoom.fulfilled, (state, _action) => {
             state.loading = false;
             state.currentRoom = initialState.currentRoom;
+            state.rooms = PaginatedListModel.resetPaginatedList(state.rooms)
             state.error = "";
             AlertService.showAlert('تم تحديث غرفة بنجاح', 'success')
         });
@@ -99,6 +102,7 @@ const roomSlice = createSlice({
         builder.addCase(deleteRoom.fulfilled, (state, _action) => {
             state.loading = false;
             state.error = "";
+            state.rooms = PaginatedListModel.resetPaginatedList(state.rooms)
             AlertService.showAlert('تم حذف غرفة بنجاح', 'success')
 
         });

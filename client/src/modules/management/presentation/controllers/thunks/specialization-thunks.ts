@@ -38,17 +38,14 @@ export const getSpecializationList = createAsyncThunk(
 export const createSpecialization = createAsyncThunk(
   "specializations/create",
   async (data: SpecializationInterface, thunkApi) => {
-    const { rejectWithValue, dispatch } = thunkApi;
+    const { rejectWithValue } = thunkApi;
     try {
       console.log("Thunk", data);
       const result = await sl
         .get<CreatespecializationUseCase>(
           ServiceKeys.CreateSpecializationUseCase
         )
-        .call(new CreateSpecializationUseCaseParameters(data)).then(() => {
-          // TODO: add applied filters
-          dispatch(getSpecializationList([]))
-        })
+        .call(new CreateSpecializationUseCaseParameters(data));
       console.log("Result:", result);
       return result;
     } catch (error) {
@@ -62,16 +59,13 @@ export const createSpecialization = createAsyncThunk(
 export const updateSpecializations = createAsyncThunk(
   "specializations/update",
   async (data: SpecializationInterface, thunkApi) => {
-    const { rejectWithValue, dispatch } = thunkApi;
+    const { rejectWithValue } = thunkApi;
     try {
       const result = await sl
         .get<UpdateSpecializationUseCase>(
           ServiceKeys.UpdateSpecializationUseCase
         )
-        .call(new UpdateSpecializationUseCaseParameters(data)).then(() => {
-          // TODO: add applied filters
-          dispatch(getSpecializationList([]))
-        })
+        .call(new UpdateSpecializationUseCaseParameters(data));
       console.log("Result:", result);
       return result;
     } catch (error) {
@@ -85,16 +79,13 @@ export const updateSpecializations = createAsyncThunk(
 export const deleteSpecialization = createAsyncThunk(
   "specializations/delete",
   async (id: string, thunkApi) => {
-    const { rejectWithValue, dispatch } = thunkApi;
+    const { rejectWithValue } = thunkApi;
     try {
       const result = await sl
         .get<DeleteSpecializationUseCase>(
           ServiceKeys.DeleteSpecializationUseCase
         )
-        .call(new DeleteSpecializationUseCaseParameters(id)).then(() => {
-          // TODO: add applied filters
-          dispatch(getSpecializationList([]))
-        })
+        .call(new DeleteSpecializationUseCaseParameters(id));
       console.log("Result:", result);
       return id;
     } catch (error) {

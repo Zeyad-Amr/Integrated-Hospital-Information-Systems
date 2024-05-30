@@ -106,6 +106,7 @@ const RoomsTable = () => {
           console.log(filters);
           dispatch(getRoomList(filters));
         }}
+        resetControls={roomState?.rooms.isInitial}
         totalItems={roomState?.rooms.total}
         data={roomState?.rooms.items?.map((item: RoomInterface) => {
           return {
