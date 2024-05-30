@@ -28,27 +28,35 @@ on:
 #     strategy:
 #       matrix:
 #         node-version: [18]
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
 
-#       - name: Set up Node.JS
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: 18
+jobs:
+  test:
+    name: Run Backend Checks
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-#       - name: Install dependencies
-#         run: npm install
-#         working-directory: ./server/
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-#       - name: Run Linter for backend
-#         run: npm run lint
-#         working-directory: ./server/
-      
-#       - name: Install dependencies
-#         run: npm install
-#         working-directory: ./client/
-      
-#       - name: Run Linter for frontend
-#         run: npm run lint
-#         working-directory: ./client/
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./server/
+
+      - name: Run Linter
+        run: npm run lint
+        working-directory: ./server/
+
+      - name: Type Check
+        run: npm run type-check
+        working-directory: ./server/
+
+      - name: Build Project
+        run: npm run build
+        working-directory: ./server/
