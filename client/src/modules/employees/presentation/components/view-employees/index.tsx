@@ -14,7 +14,11 @@ import { deleteEmployee } from "@/modules/employees/presentation/controllers/thu
 import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
 import CreateUserForm from "../create-user-form/CreateUserForm";
 import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
-import { RoleType, ShiftType } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
+import {
+  RoleType,
+  ShiftType,
+} from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
+import { getLookups } from "@/core/shared/modules/lookups/presentation/controllers/thunks/lookups-thuck";
 
 const EmployeesTable = () => {
   const dispatch = useAppDispatch();
@@ -46,7 +50,10 @@ const EmployeesTable = () => {
         setOpen={setShowEditEmployeeDialog}
         title="تحديث بيانات موظف"
       >
-        <CreateUserForm setShowEditEmployeeDialog={setShowEditEmployeeDialog} employeeData={employeeData} />
+        <CreateUserForm
+          setShowEditEmployeeDialog={setShowEditEmployeeDialog}
+          employeeData={employeeData}
+        />
       </CustomizedDialog>
       <ConfirmationDialog
         confirmFunction={async () =>
@@ -62,6 +69,7 @@ const EmployeesTable = () => {
       <CustomDataTable
         fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
+          dispatch(getLookups());
           dispatch(getEmployeeList(filters));
         }}
         totalItems={employeeState.employees.total}
@@ -74,9 +82,15 @@ const EmployeesTable = () => {
                   " " +
                   new Date(item?.createdAt).toLocaleTimeString()
                 : "لا يوجد",
-              shiftName: lookupsState?.lookups?.shiftTypes?.find(( el : ShiftType ) => el.id == item.shiftId)?.value ?? "لا يوجد",
+              shiftName:
+                lookupsState?.lookups?.shiftTypes?.find(
+                  (el: ShiftType) => el.id == item.shiftId
+                )?.value ?? "لا يوجد",
               phone: item.person?.phone ?? "لا يوجد",
-              roleName:  lookupsState?.lookups?.roleTypes?.find(( el : RoleType ) => el.id == item.roleId)?.value ?? "لا يوجد",
+              roleName:
+                lookupsState?.lookups?.roleTypes?.find(
+                  (el: RoleType) => el.id == item.roleId
+                )?.value ?? "لا يوجد",
               name:
                 item.person?.firstName +
                 " " +

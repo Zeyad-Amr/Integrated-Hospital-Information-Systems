@@ -7,6 +7,7 @@ import LookupsEntity from "../../../domain/entities/lookups-entity";
 //* Initial State
 const initialState: LookupsState = {
     lookups: LookupsEntity.defaultValue(),
+    isFetched: false,
     loading: false,
     error: "",
 };
@@ -34,6 +35,7 @@ const lookupsSlice = createSlice({
         builder.addCase(getLookups.fulfilled, (state, action) => {
             state.loading = false;
             state.lookups = action.payload;
+            state.isFetched = true;
             state.error = "";
         });
         builder.addCase(getLookups.rejected, (state, action) => {
