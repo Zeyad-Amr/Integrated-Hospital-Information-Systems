@@ -2,29 +2,30 @@ import CustomDataTable from "@/core/shared/components/CustomDataTable/CustomData
 import { Button } from "@mui/material";
 import { AnonymizedVisit, header } from "./data";
 import { Box } from "@mui/system";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { VisitsState } from "../../../controllers/types";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
 import { getAnonymousVisits } from "../../../controllers/thunks/visits-thunks";
 import { FilterQuery } from "@/core/api";
+import CompleteVisit from "../complete-visit-data/CompleteVisit";
 
 const VisitsTable = () => {
   const state: VisitsState = useAppSelector((state: any) => state.visits);
   const dispatch = useAppDispatch();
 
   // useRef
-  const refIdValue = useRef("");
+  const refAnonymousPatientData = useRef<VisitInterface>();
 
   // useState
-  // const [showDialog, setShawDialog] = useState("none");
+  const [showCompletePatientDialog, setShowCompletePatientDialog] = useState<boolean>(false);  
 
   //* data that in the state
   const apiData: VisitInterface[] = state.visits.items;
   console.log("apiDataaaa", apiData);
 
   let tableData: AnonymizedVisit[] = [];
-  apiData.forEach((item) => {
+  apiData.forEach((item : VisitInterface) => {
     tableData.push({
       sequenceNumber: item?.sequenceNumber ?? "",
       code: item?.code ?? "",
@@ -50,8 +51,8 @@ const VisitsTable = () => {
           variant="outlined"
           fullWidth
           onClick={() => {
-            refIdValue.current = item.code ?? "";
-            // setShawDialog("block");
+            refAnonymousPatientData.current = item ?? "";
+            setShowCompletePatientDialog(true)
           }}
         >
           استكمال بيانات
@@ -81,6 +82,7 @@ const VisitsTable = () => {
         DialogStateController={setShawDialog}
         id={refIdValue.current}
       /> */}
+      <CompleteVisit setShowCompletePatientDialog={setShowCompletePatientDialog} showCompletePatientDialog={showCompletePatientDialog} anonymousPatientData={refAnonymousPatientData.current} />
     </Box>
   );
 };

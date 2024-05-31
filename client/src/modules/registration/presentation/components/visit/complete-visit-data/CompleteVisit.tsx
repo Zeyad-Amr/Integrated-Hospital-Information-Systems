@@ -1,290 +1,126 @@
-// TODO: Refactor this component
-// import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
-// import SecondaryButton from "@/core/shared/components/btns/SecondaryButton";
-// import { Button, Box } from "@mui/material";
-// import * as Yup from "yup";
-// import { Formik } from "formik";
-// import React, { useEffect, useRef, useState } from "react";
-// import CustomTextField from "@/core/shared/components/CustomTextField";
-// import CustomSelectField from "@/core/shared/components/CustomSelectField";
-// import Dialog from "@/core/shared/components/Dialog";
-// import PersonalDataComponent from "@/core/shared/components/PersonalDataComponent";
-// import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
-// import { useAppSelector } from "@/core/state/store";
-// import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
-// import VisitEntity from "@/modules/registration/domain/entities/visit-entity";
-// import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
+import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
+import PersonalData from "@/core/shared/components/PersonalData";
+import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
+import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
+import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
+import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
+import { Button, Box, Typography } from "@mui/material";
+import { Formik } from "formik";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
-// interface CompleteVisitProps {
-//   display: string;
-//   DialogStateController: React.Dispatch<React.SetStateAction<string>>;
-//   id?: string
-// }
+interface CompleteVisitPropsInterface {
+  showCompletePatientDialog: boolean;
+  setShowCompletePatientDialog: Dispatch<SetStateAction<boolean>>;
+  anonymousPatientData?: VisitInterface;
+}
 
-// const CompleteVisit = ({
-//   display,
-//   DialogStateController,
-//   id,
-// }: CompleteVisitProps) => {
+const CompleteVisit = ({
+  showCompletePatientDialog,
+  setShowCompletePatientDialog,
+  anonymousPatientData,
+}: CompleteVisitPropsInterface) => {
+  //* useState
+  const [combinedValues, setCombinedValues] = useState<any>();
 
-//   const lookupsState: LookupsState = useAppSelector(
-//     (state: any) => state.lookups
-//   );
+  //* buttons useRef
+  const refSubmitPatient: any = useRef(null);
 
-//   // useRef
-//   const refSubmitFirstStepButton: any = useRef(null);
-//   const refSubmitSecondStepButton: any = useRef(null);
-//   const sequenceNumberValue: any = useRef("");
-//   const kinshipValue: any = useRef("");
-//   const patientData: any = useRef({});
-//   const checkFirstRender = useRef(true);
+  //* Form data refrence
+  const patientData = useRef<PersonInterface>();
 
-//   // useState
-//   const [submitPatientFlag, setSubmitPatientFlag] = useState<boolean>(false);
-//   const [showCompanionFlag, setShowCompanionFlag] = useState<boolean>(false);
-//   const [addCompanionClicked, setAddCompanionClicked] =
-//     useState<boolean>(false);
-//   const [submitCompanionFlag, setSubmitCompanionFlag] =
-//     useState<boolean>(false);
-//   const [combinedValues, setCombinedValues] = useState<any>({
-//     patient: {},
-//     companion: {},
-//     visit: {
-//       sequenceNumber: "",
-//       kinship: "",
-//     },
-//   });
+  //* Submit functions
+  const submitPatient = () => {
+    if (refSubmitPatient.current) {
+      refSubmitPatient.current.click();
+    }
+  };
 
-//   const sharedInitialValues = {
-//     firstName: "",
-//     secondName: "",
-//     thirdName: "",
-//     forthName: "",
-//     email: "",
-//     SSN: "",
-//     phone: "",
-//     id: "",
-//     gender: "",
-//     governate: "",
-//     birthDate: null,
-//     address: "",
-//     verificationMethod: "",
-//     search: "",
-//   };
+  //* Handle Patient Submit
+  const handlePatientSubmit = (values: PersonInterface) => {
+    patientData.current = values;
+    if (anonymousPatientData?.code) {
+      setCombinedValues((previous: any) => ({
+        ...previous,
+        patient: values,
+        visitCode: anonymousPatientData?.code,
+      }));
+    }
+  };
 
-//   const handlePatientSubmit = (values: PersonInterface) => {
-//     if (addCompanionClicked) {
-//       setShowCompanionFlag(true);
-//       patientData.current = values;
-//     } else {
-//       setCombinedValues((prevValues: any) => ({
-//         ...prevValues,
-//         patient: values,
-//         companion: {},
-//         visit: {
-//           sequenceNumber: sequenceNumberValue.current,
-//           kinship: "",
-//         },
-//       }));
-//     }
-//   };
+  useEffect(() => {
+    if (patientData.current && combinedValues) {
+      console.log(combinedValues, "combinedValues");
+      // patientData.current = undefined;
+    }
+  }, [combinedValues]);
 
-//   const handleRestPatientSubmit = (values: { sequenceNumber: string }) => {
-//     setSubmitPatientFlag(!submitPatientFlag);
-//     sequenceNumberValue.current = values.sequenceNumber;
-//   };
+  return (
+    <CustomizedDialog
+      maxWidth={"lg"}
+      open={showCompletePatientDialog}
+      setOpen={setShowCompletePatientDialog}
+      title="استكمال بيانات مريض"
+    >
+      {/* //* Anonymous patient data */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          backgroundColor: "#0f70f2",
+          borderRadius: "6px",
+          color: "#fff",
+          margin: "0rem 0rem 1rem 0rem",
+          padding: "0.6rem 1rem",
+        }}
+      >
+        <Typography>
+          رقم التردد :{" "}
+          {anonymousPatientData && anonymousPatientData?.sequenceNumber}
+        </Typography>
+        <Typography>
+          اسم المرافق :{" "}
+          {anonymousPatientData?.companion
+            ? (anonymousPatientData.companion.firstName ?? "") +
+              (anonymousPatientData.companion.secondName ?? "")
+            : "لا يوجد"}
+        </Typography>
+        <Typography>
+          رقم المريض : {anonymousPatientData && anonymousPatientData?.code}
+        </Typography>
+      </Box>
+      {/* //* Start Patient form */}
+      <Formik
+        initialValues={PersonEntity.defaultValue()}
+        onSubmit={(values) => {
+          handlePatientSubmit(values);
+        }}
+        validationSchema={PersonEntity.getSchema()}
+      >
+        {({ handleSubmit }) => (
+          <Box component="form" onSubmit={handleSubmit} noValidate>
+            <PersonalData />
+            <Button
+              type="submit"
+              sx={{ display: "none" }}
+              ref={refSubmitPatient}
+            ></Button>
+          </Box>
+        )}
+      </Formik>
+      <PrimaryButton
+        title="تأكيــد"
+        type="button"
+        onClick={() => submitPatient()}
+      />
+    </CustomizedDialog>
+  );
+};
 
-//   const onTriggerRestAndPatientForm = () => {
-//     if (refSubmitFirstStepButton.current) {
-//       refSubmitFirstStepButton.current.click();
-//       if (showCompanionFlag) {
-//         if (refSubmitSecondStepButton.current) {
-//           refSubmitSecondStepButton.current.click();
-//         }
-//       }
-//     }
-//   };
-
-//   const restPatientFormSchema = Yup.object({
-//     sequenceNumber: Yup.string()
-//       .required("يجب ادخال رقم التردد")
-//       .matches(/^[0-9]+$/, "رقم التردد يجب ان يكون ارقام عددية"),
-//   });
-
-//   // second step
-//   const restCompanionFormSchema = Yup.object({
-//     kinship: Yup.string().required("يجب اختيار درجة القرابة"),
-//   });
-
-//   const handleRestCompanionSubmit = (values: { kinship: number }) => {
-//     setSubmitCompanionFlag(!submitCompanionFlag);
-//     kinshipValue.current = values.kinship;
-//   };
-
-//   const handleCompanionSubmit = (values: PersonInterface) => {
-//     console.log("totalSubmit", values);
-//     setCombinedValues((prevValues: any) => ({
-//       ...prevValues,
-//       patient: patientData.current,
-//       companion: values,
-//       visit: {
-//         sequenceNumber: sequenceNumberValue.current,
-//         kinship: kinshipValue.current,
-//       },
-//     }));
-//   };
-
-//   const onDeleteCompanion = () => {
-//     setShowCompanionFlag(false);
-//     setAddCompanionClicked(false);
-//   };
-
-//   useEffect(() => {
-//     if (checkFirstRender.current) {
-//       checkFirstRender.current = false;
-//     } else {
-//       console.log(combinedValues);
-//     }
-//   }, [combinedValues]);
-
-//   return (
-//     <Dialog
-//       display={display}
-//       DialogStateController={DialogStateController}
-//       title="استكمال بيانات زيارة"
-//     >
-//       {/* start rest patient form */}
-//       <Box sx={{ width: "100%", overflowY: "scroll", padding: "2rem", height: '30rem' }}>
-//         <Formik
-//           initialValues={{ sequenceNumber: "" }}
-//           validationSchema={restPatientFormSchema}
-//           onSubmit={(values) => {
-//             handleRestPatientSubmit(values);
-//           }}
-//         >
-//           {({
-//             values,
-//             touched,
-//             errors,
-//             handleChange,
-//             handleBlur,
-//             handleSubmit,
-//           }) => (
-//             <Box component="form" onSubmit={handleSubmit} noValidate>
-//               <CustomTextField
-//                 isRequired
-//                 name="sequenceNumber"
-//                 label="رقم التردد"
-//                 value={values.sequenceNumber}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 error={errors.sequenceNumber}
-//                 touched={touched.sequenceNumber}
-//                 width="100%"
-//                 props={{
-//                   type: "text",
-//                 }}
-//               />
-//               <Button
-//                 type="submit"
-//                 sx={{ display: "none" }}
-//                 ref={refSubmitFirstStepButton}
-//               ></Button>
-//             </Box>
-//           )}
-//         </Formik>
-
-//         {/* start patient form */}
-//         <PersonalDataComponent
-//           initialValues={PersonEntity.defaultValue()}
-//           onSubmit={handlePatientSubmit}
-//           isSubmitted={submitPatientFlag}
-//         />
-
-//         <br />
-//         <hr />
-//         <br />
-
-//         {/* second step */}
-//         {/* start rest companion form */}
-//         <Box sx={{ display: showCompanionFlag === true ? "block" : "none" }}>
-//           <Formik
-//             initialValues={{ kinship: 0 }}
-//             validationSchema={VisitEntity.kinshipSchema()}
-//             onSubmit={(values) => {
-//               handleRestCompanionSubmit(values);
-//             }}
-//           >
-//             {({
-//               values,
-//               touched,
-//               errors,
-//               handleChange,
-//               handleBlur,
-//               handleSubmit,
-//             }) => (
-//               <Box component="form" onSubmit={handleSubmit} noValidate>
-//                 <CustomSelectField<any>
-//                   isRequired
-//                   name="kinship"
-//                   label="درجة القرابة"
-//                   value={values.kinship}
-//                   onChange={handleChange}
-//                   onBlur={handleBlur}
-//                   error={errors.kinship}
-//                   touched={touched.kinship}
-//                   width="100%"
-//                   options={lookupsState.lookups.kinshipTypes}
-//                 />
-//                 <Button
-//                   type="submit"
-//                   sx={{ display: "none" }}
-//                   ref={refSubmitSecondStepButton}
-//                 ></Button>
-//               </Box>
-//             )}
-//           </Formik>
-
-//           {/* start companion form */}
-//           <PersonalDataComponent
-//             initialValues={PersonEntity.defaultValue()}
-//             onSubmit={handleCompanionSubmit}
-//             isSubmitted={submitCompanionFlag}
-//           />
-//         </Box>
-
-//         <Box
-//           sx={{
-//             display: "flex",
-//             justifyContent: "flex-start",
-//             alignItems: "center",
-//             height: "4rem",
-//           }}
-//         >
-//           <PrimaryButton
-//             title="تأكيــد"
-//             type="button"
-//             onClick={() => onTriggerRestAndPatientForm()}
-//           />
-//           <SecondaryButton
-//             title="اضــــافة مـــرافق"
-//             type="button"
-//             onClick={() => {
-//               setAddCompanionClicked(true);
-//               onTriggerRestAndPatientForm();
-//             }}
-//             sx={{ display: showCompanionFlag ? "none" : "block" }}
-//           />
-//           <SecondaryButton
-//             title="حذف مـــرافق"
-//             type="button"
-//             onClick={() => onDeleteCompanion()}
-//             sx={{ display: showCompanionFlag ? "block" : "none" }}
-//           />
-//         </Box>
-//       </Box>
-//     </Dialog>
-//   );
-// };
-
-// export default CompleteVisit;
+export default CompleteVisit;
