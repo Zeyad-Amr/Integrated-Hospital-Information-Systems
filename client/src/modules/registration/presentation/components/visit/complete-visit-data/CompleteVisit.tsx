@@ -106,7 +106,7 @@ const CompleteVisit = ({
       </Box>
       {/* //* Start Patient form */}
       <Formik
-        initialValues={ anonymousPatientData?.patient ? PersonEntity.handleFormValues(anonymousPatientData?.patient) : PersonEntity.defaultValue()}
+        initialValues={ anonymousPatientData?.patient ? CompleteVisitEntity.handleNullFormValues(PersonEntity.handleFormValues(anonymousPatientData?.patient)) : PersonEntity.defaultValue()}
         onSubmit={(values) => {
           handlePatientSubmit(values);
         }}

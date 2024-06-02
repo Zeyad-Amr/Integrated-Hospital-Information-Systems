@@ -5,6 +5,25 @@ import PersonInterface from "@/core/shared/modules/person/domain/interfaces/pers
 interface PersonInputInterface extends Omit<PersonInterface, "id"> {}
 
 export default class CompleteVisitEntity {
+  static handleNullFormValues(patient: PersonInterface): PersonInterface {
+    const processedPatient: PersonInterface = { ...patient };
+
+    for (const key in processedPatient) {
+      if (processedPatient.hasOwnProperty(key)) {
+        const value = processedPatient[key as keyof PersonInterface];
+        if (value === null) {
+          if (typeof value === "string") {
+            processedPatient[key as keyof PersonInterface] = "" as any;
+          } else if (typeof value === "number") {
+            processedPatient[key as keyof PersonInterface] = 0 as any;
+          }
+        }
+      }
+    }
+
+    return processedPatient;
+  }
+
   static getPatientSchema(): Yup.ObjectSchema<PersonInputInterface> {
     const state = store.getState();
     const coditionCallback = (
