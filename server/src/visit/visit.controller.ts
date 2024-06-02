@@ -67,6 +67,7 @@ export class VisitController {
   @CustomGetAllParamDecorator()
   @ApiQuery({ name: 'companionName', required: false })
   @ApiQuery({ name: 'companionSSN', required: false })
+  @ApiQuery({ name: 'patientSSN', required: false })
   @Get()
   async findAll(
     @PaginationParams() paginationParams: Pagination,
@@ -78,6 +79,8 @@ export class VisitController {
       'companionId',
       'patientId',
       'incidentId',
+      'patient.person.SSN',
+      'companion.person.SSN',
     ]) filters?: Array<Filter>,
     @SortingParams(['createdAt', 'sequenceNumber', 'code']) sort?: Sorting,
     @Query() customFilters?: { companionName: string ,companionSSN: string},
