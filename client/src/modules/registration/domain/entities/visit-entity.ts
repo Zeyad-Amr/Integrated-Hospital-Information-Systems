@@ -124,19 +124,23 @@ export default class VisitEntity {
             sequenceNumber: Yup.number()
                 .required("يجب ادخال رقم التردد"),
             firstName: Yup.string()
-                .required("الاسم الأول مطلوب")
+                .when([],
+                (values, schema) => coditionCallback(values, schema, "الاسم الأول مطلوب"))
                 .min(3, "يجب أن يكون الاسم الأول على الأقل 3 أحرف")
                 .max(45, "يجب أن يكون الاسم الأول على الأكثر 45 حرفًا"),
             secondName: Yup.string()
-                .required("الاسم الثاني مطلوب")
+                .when([],
+                (values, schema) => coditionCallback(values, schema, "الاسم الثاني مطلوب"))
                 .min(3, "يجب أن يكون الاسم الثاني على الأقل 3 أحرف")
                 .max(45, "يجب أن يكون الاسم الثاني على الأكثر 45 حرفًا"),
             thirdName: Yup.string()
-                .required("الاسم الثالث مطلوب")
+                .when([],
+                (values, schema) => coditionCallback(values, schema, "الاسم الثالث مطلوب"))
                 .min(3, "يجب أن يكون الاسم الثالث على الأقل 3 أحرف")
                 .max(45, "يجب أن يكون الاسم الثالث على الأكثر 45 حرفًا"),
             fourthName: Yup.string()
-                .required("الاسم الرابع مطلوب")
+                .when([],
+                (values, schema) => coditionCallback(values, schema, "الاسم الرابع مطلوب"))
                 .min(3, "يجب أن يكون الاسم الرابع على الأقل 3 أحرف")
                 .max(45, "يجب أن يكون الاسم الرابع على الأكثر 45 حرفًا"),
             SSN: Yup.string()

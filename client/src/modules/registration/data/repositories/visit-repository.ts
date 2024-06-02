@@ -2,6 +2,7 @@ import { ErrorResponse, ErrorMessage, FilterQuery, PaginatedList } from "@/core/
 import BaseVisitRepository from "../../domain/repositories/base-visit-repository";
 import { BaseVisitDataSource } from "../datasources/visit-datasource";
 import VisitInterface from "../../domain/interfaces/visit-interface";
+import { CompleteVisitInterface } from "../../domain/interfaces/complete-visit-interface";
 
 class VisitRepository extends BaseVisitRepository {
     constructor(private baseVisitDataSource: BaseVisitDataSource) {
@@ -20,9 +21,9 @@ class VisitRepository extends BaseVisitRepository {
         }
     }
 
-    override async updateVisit(visit: VisitInterface): Promise<boolean> {
+    override async updateVisit(data: CompleteVisitInterface): Promise<boolean> {
         try {
-            await this.baseVisitDataSource.updateVisit(visit);
+            await this.baseVisitDataSource.updateVisit(data);
             return true;
         } catch (error) {
             const errorResponse: ErrorResponse = error instanceof Error ? ErrorMessage.get(error.message) : error;
