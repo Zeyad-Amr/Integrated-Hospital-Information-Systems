@@ -46,18 +46,6 @@ enum ServiceKeys {
     UpdateRoomUseCase = 'UpdateRoomUseCase',
     DeleteRoomUseCase = 'DeleteRoomUseCase',
 
-    GetAllRolesUseCase = 'GetAllRolesUseCase',
-    GetRoleByIdUseCase = 'GetRoleByIdUseCase',
-    CreateRoleUseCase = 'CreateRoleUseCase',
-    UpdateRoleUseCase = 'UpdateRoleUseCase',
-    DeleteRoleUseCase = 'DeleteRoleUseCase',
-
-    GetAllFeaturesUseCase = 'GetAllFeaturesUseCase',
-    GetFeatureByIdUseCase = 'GetFeatureByIdUseCase',
-    CreateFeatureUseCase = 'CreateFeatureUseCase',
-    UpdateFeatureUseCase = 'UpdateFeatureUseCase',
-    DeleteFeatureUseCase = 'DeleteFeatureUseCase',
-
     GetAllPermissionsUseCase = 'GetAllPermissionsUseCase',
     GetPermissionByIdUseCase = 'GetPermissionByIdUseCase',
     CreatePermissionUseCase = 'CreatePermissionUseCase',
