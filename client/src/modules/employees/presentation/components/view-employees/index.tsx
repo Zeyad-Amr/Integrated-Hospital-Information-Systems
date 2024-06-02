@@ -15,8 +15,8 @@ import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
 import CreateUserForm from "../create-user-form/CreateUserForm";
 import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
 import {
-  RoleType,
-  ShiftType,
+  RoleTypeInterface,
+  ShiftTypeInterface,
 } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 import { getSubDepartmentsList } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
 
@@ -88,12 +88,12 @@ const EmployeesTable = () => {
                 : "لا يوجد",
               shiftName:
                 lookupsState?.lookups?.shiftTypes?.find(
-                  (el: ShiftType) => el.id == item.shiftId
+                  (el: ShiftTypeInterface) => el.id == item.shiftId
                 )?.value ?? "لا يوجد",
               phone: item.person?.phone ?? "لا يوجد",
               roleName:
                 lookupsState?.lookups?.roleTypes?.find(
-                  (el: RoleType) => el.id == item.roleId
+                  (el: RoleTypeInterface) => el.id == item.roleId
                 )?.value ?? "لا يوجد",
               name:
                 item.person?.firstName +

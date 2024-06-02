@@ -16,7 +16,7 @@ import {
   updateSubDepartment,
 } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
 import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
-import { Department } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
+import { DepartmentInterface } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 
 interface SubDepartmentsFormProps {
   isEdit: boolean;
@@ -98,7 +98,7 @@ const SubDepartmentsForm = ({
               <CustomSelectField
                 value={values.departmentId}
                 options={lookupsState.lookups.departments?.map(
-                  (department: Department) => {
+                  (department: DepartmentInterface) => {
                     return {
                       id: department.id,
                       value: department.value,
