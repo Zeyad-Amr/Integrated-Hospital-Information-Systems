@@ -6,8 +6,6 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "lint": "next lint",
-    "type-check": "tsc --noEmit"
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "npx prisma migrate deploy && node initDB/app.js && nest start",

@@ -150,9 +150,10 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
                 person: {
                   connectOrCreate: {
                     where: {
+                      id:createVisitDto.patient.SSN?undefined:"",
                       SSN: createVisitDto.patient.SSN
                         ? createVisitDto.patient.SSN
-                        : '',
+                        : undefined,
                     },
                     create: {
                       ...personalData,
