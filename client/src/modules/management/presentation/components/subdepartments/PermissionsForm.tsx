@@ -14,8 +14,8 @@ import PermissionInterface from "@/modules/management/domain/interfaces/permissi
 import { SubDepartmentsInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
 import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
 import {
-  Feature,
-  RoleType,
+  FeatureInterface,
+  RoleTypeInterface,
 } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 
 interface PermissionsFormProps {
@@ -53,7 +53,7 @@ const PermissionsForm = ({
   const getListOfFeaturesWithItsRole = () => {
     const newRolesWithFeaturesList: { roleId: any; features: any[] }[] = [];
 
-    lookupsState.lookups.roleTypes?.forEach((role: RoleType) => {
+    lookupsState.lookups.roleTypes?.forEach((role: RoleTypeInterface) => {
       const featuresOfSpecificRole: any[] = [];
 
       permissionsState?.permissionsList.forEach(
@@ -183,7 +183,7 @@ const PermissionsForm = ({
                     multiple
                     value={values.roles[index].features}
                     options={lookupsState.lookups.features.map(
-                      (feature: Feature) => {
+                      (feature: FeatureInterface) => {
                         return {
                           id: feature.id,
                           value: feature.value,

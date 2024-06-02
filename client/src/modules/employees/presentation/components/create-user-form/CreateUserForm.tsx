@@ -32,8 +32,8 @@ import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import { EmployeeState } from "../../controllers/types";
 import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
 import {
-  RoleType,
-  ShiftType,
+  RoleTypeInterface,
+  ShiftTypeInterface,
 } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 import PersonalData from "@/core/shared/components/PersonalData";
 import { getSubDepartmentsList } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
@@ -295,7 +295,7 @@ const CreateUserForm = ({
             <Box component="form" onSubmit={handleSubmit} noValidate>
               <Grid container columns={12} spacing={2}>
                 <Grid item lg={3} md={3} sm={12} xs={12}>
-                  <CustomSelectField<RoleType>
+                  <CustomSelectField<RoleTypeInterface>
                     isRequired
                     name="roleId"
                     label="الوظيفة"
@@ -309,7 +309,7 @@ const CreateUserForm = ({
                   />
                 </Grid>
                 <Grid item lg={3} md={3} sm={12} xs={12}>
-                  <CustomSelectField<ShiftType>
+                  <CustomSelectField<ShiftTypeInterface>
                     isRequired
                     name="shiftId"
                     label="موعد العمل"
