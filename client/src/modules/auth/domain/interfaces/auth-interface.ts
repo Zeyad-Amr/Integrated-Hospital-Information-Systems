@@ -3,9 +3,3 @@ export default interface AuthInterface {
     password?: string;
     email?: string;
 }
-
-// export interface AuthorizationInterface {
-//     id: string;
-//     feature
-// }
-

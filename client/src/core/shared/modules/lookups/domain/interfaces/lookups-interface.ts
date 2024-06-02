@@ -77,4 +77,5 @@ export interface DepartmentInterface {
 export interface FeatureInterface {
     id: number;
     value: string;
+    subDepartmentId: number;
 }

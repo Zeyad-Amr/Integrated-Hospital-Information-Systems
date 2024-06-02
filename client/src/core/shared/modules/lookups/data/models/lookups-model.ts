@@ -27,15 +27,21 @@ export default class LookupsModel {
                 };
             }
             ),
-
             features: json.features || [
                 {
                     "id": 1,
                     "value": "Nerve test",
+                    "subDepartmentId": 1,
                 },
                 {
                     "id": 2,
                     "value": "Cardiology test",
+                    "subDepartmentId": 1,
+                },
+                {
+                    "id": 3,
+                    "value": "Brain MRI test",
+                    "subDepartmentId": 4,
                 }
             ],
         };
