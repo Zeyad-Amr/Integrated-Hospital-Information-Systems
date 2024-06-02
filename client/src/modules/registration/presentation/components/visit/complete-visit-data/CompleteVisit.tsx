@@ -3,6 +3,7 @@ import PersonalData from "@/core/shared/components/PersonalData";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
 import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
+import CompleteVisitEntity from "@/modules/registration/domain/entities/complete-visit-entity";
 import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
 import { Button, Box, Typography } from "@mui/material";
 import { Formik } from "formik";
@@ -101,7 +102,7 @@ const CompleteVisit = ({
         onSubmit={(values) => {
           handlePatientSubmit(values);
         }}
-        validationSchema={PersonEntity.getSchema()}
+        validationSchema={CompleteVisitEntity.getPatientSchema()}
       >
         {({ handleSubmit }) => (
           <Box component="form" onSubmit={handleSubmit} noValidate>
