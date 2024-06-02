@@ -3,6 +3,7 @@ import VisitModel from "../models/visit-model";
 import VisitInterface from "../../domain/interfaces/visit-interface";
 import Filter from "@/core/api/filters";
 import { PaginatedListModel } from "@/core/api/pagination";
+import { CompleteVisitInterface } from "../../domain/interfaces/complete-visit-interface";
 
 abstract class BaseVisitDataSource {
     abstract createVisit(visit: VisitInterface): Promise<VisitInterface>;
@@ -22,8 +23,8 @@ class VisitDataSource extends BaseVisitDataSource {
         return response.data;
     }
 
-    override async updateVisit(visit: VisitInterface): Promise<boolean> {
-        await this.apiClient.patch(Endpoints.visit.update, VisitModel.toUpdateJson(visit));
+    override async updateVisit(data: CompleteVisitInterface): Promise<boolean> {
+        await this.apiClient.patch(Endpoints.visit.update, VisitModel.toUpdateJson(data));
         return true;
     }
 

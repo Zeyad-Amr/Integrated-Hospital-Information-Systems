@@ -3,13 +3,13 @@ import { sl, ServiceKeys } from "@/core/service-locator";
 import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
 import { FilterQuery } from "@/core/api/filters";
 import {
-    UpdateVisitUseCaseParameters,
     GetVisitByCodeUseCaseParameters,
     CreateVisitUseCase,
     UpdateVisitUseCase,
     GetAnonymousVisitUseCase,
     GetVisitByCodeUseCase
 } from "@/modules/registration/domain/usecases/visit";
+import { CompleteVisitInterface } from "@/modules/registration/domain/interfaces/complete-visit-interface";
 
 //* Create Visit
 export const createVisit = createAsyncThunk(
@@ -31,12 +31,10 @@ export const createVisit = createAsyncThunk(
 //* Update Visit
 export const updateVisit = createAsyncThunk(
     "registration/update",
-    async (_data: VisitInterface, thunkApi) => {
+    async (data: CompleteVisitInterface, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
-            const result = await sl.get<UpdateVisitUseCase>(ServiceKeys.UpdateVisitUseCase).call(
-                new UpdateVisitUseCaseParameters(_data)
-            );
+            const result = await sl.get<UpdateVisitUseCase>(ServiceKeys.UpdateVisitUseCase).call(data);
             console.log('Result:', result);
             return result;
         } catch (error) {

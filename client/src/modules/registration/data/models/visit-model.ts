@@ -3,6 +3,7 @@ import PersonModel from '../../../../core/shared/modules/person/data/models/pers
 import VisitInterface from '../../domain/interfaces/visit-interface';
 import AdditionalDataModel from './additional-data-model';
 import CompanionModel from './companion-model';
+import { CompleteVisitInterface } from '../../domain/interfaces/complete-visit-interface';
 
 export default class VisitModel {
 
@@ -18,11 +19,11 @@ export default class VisitModel {
         }
     }
 
-    static toUpdateJson(entity: VisitInterface): any {
+    static toUpdateJson(entity: CompleteVisitInterface): any {
         return {
-            patient: entity.patient !== null ? PersonModel.toJson(entity.patient!) : null,
-            companion: entity.companion !== null ? PersonModel.toJson(entity.companion!) : null,
-            visitCode: entity.code,
+            patient: entity.patient ? PersonModel.toJson(entity.patient) : undefined,
+            companion: entity.companion && !allValuesUndefined(entity.companion) ? { ...PersonModel.toJson(entity.companion), kinshipId: entity.companion.kinship } : undefined,
+            visitCode: entity.visitCode,
         };
     }
 

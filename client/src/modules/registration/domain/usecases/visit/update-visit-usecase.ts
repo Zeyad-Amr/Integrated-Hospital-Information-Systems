@@ -1,13 +1,13 @@
 import BaseUseCase from "@/core/base/base-usecase";
-import { UpdateVisitUseCaseParameters } from "./usecase-params";
 import BaseRegistrationRepository from "../../repositories/base-visit-repository";
+import { CompleteVisitInterface } from "../../interfaces/complete-visit-interface";
 
 class UpdateVisitUseCase
-    implements BaseUseCase<boolean, UpdateVisitUseCaseParameters> {
+    implements BaseUseCase<boolean, CompleteVisitInterface> {
     constructor(private baseRegistrationRepository: BaseRegistrationRepository) { }
 
-    async call(param: UpdateVisitUseCaseParameters): Promise<boolean> {
-        return await this.baseRegistrationRepository.updateVisit(param.visit);
+    async call(data: CompleteVisitInterface): Promise<boolean> {
+        return await this.baseRegistrationRepository.updateVisit(data);
     }
 }
 

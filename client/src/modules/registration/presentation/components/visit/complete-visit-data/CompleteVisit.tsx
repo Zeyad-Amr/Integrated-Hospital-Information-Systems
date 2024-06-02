@@ -7,6 +7,7 @@ import CompleteVisitEntity from "@/modules/registration/domain/entities/complete
 import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
 import { Button, Box, Typography } from "@mui/material";
 import { Formik } from "formik";
+import { updateVisit } from "../../../controllers/thunks/visits-thunks";
 import React, {
   Dispatch,
   SetStateAction,
@@ -14,6 +15,8 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useAppDispatch } from "@/core/state/store";
+import { CompleteVisitInterface } from "@/modules/registration/domain/interfaces/complete-visit-interface";
 
 interface CompleteVisitPropsInterface {
   showCompletePatientDialog: boolean;
@@ -26,8 +29,10 @@ const CompleteVisit = ({
   setShowCompletePatientDialog,
   anonymousPatientData,
 }: CompleteVisitPropsInterface) => {
+  const dispatch = useAppDispatch();
   //* useState
-  const [combinedValues, setCombinedValues] = useState<any>();
+  const [combinedValues, setCombinedValues] =
+    useState<CompleteVisitInterface>();
 
   //* buttons useRef
   const refSubmitPatient: any = useRef(null);
@@ -56,8 +61,11 @@ const CompleteVisit = ({
 
   useEffect(() => {
     if (patientData.current && combinedValues) {
-      console.log(combinedValues, "combinedValues");
-      // patientData.current = undefined;
+      dispatch(updateVisit(combinedValues)).then((res: any) => {
+        if (res) {
+          patientData.current = undefined;
+        }
+      });
     }
   }, [combinedValues]);
 
@@ -88,7 +96,7 @@ const CompleteVisit = ({
         <Typography>
           اسم المرافق :{" "}
           {anonymousPatientData?.companion
-            ? (anonymousPatientData.companion.firstName ?? "") +
+            ? (anonymousPatientData.companion.firstName ?? "") + " " +
               (anonymousPatientData.companion.secondName ?? "")
             : "لا يوجد"}
         </Typography>
@@ -98,7 +106,7 @@ const CompleteVisit = ({
       </Box>
       {/* //* Start Patient form */}
       <Formik
-        initialValues={PersonEntity.defaultValue()}
+        initialValues={ anonymousPatientData?.patient ? PersonEntity.handleFormValues(anonymousPatientData?.patient) : PersonEntity.defaultValue()}
         onSubmit={(values) => {
           handlePatientSubmit(values);
         }}
