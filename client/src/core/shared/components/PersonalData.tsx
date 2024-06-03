@@ -22,6 +22,7 @@ import { green } from "@mui/material/colors";
 import Fab from "@mui/material/Fab";
 import CheckIcon from "@mui/icons-material/Check";
 import PrimaryButton from "./btns/PrimaryButton";
+// import { getPerson } from "@/core/shared/modules/person/presentation/controllers/thunks/person-thunk";
 interface PersonalDataProps {
   //   initialValues?: PersonInterface;
   //   onSubmit?: (values: PersonInterface) => void;
@@ -177,36 +178,45 @@ const PersonalData = ({
     handleBlur,
     handleSubmit,
     setValues,
-    setFieldValue
   } = useFormikContext<PersonInterface>()
 
   useEffect(() => {
-    if ((values?.SSN as string).length === 14) {
-      if (searchSSN) {
-        sl.get<GetPersonUseCase>(ServiceKeys.GetPersonUseCase)
-          .call(values.SSN as string)
-          .then(
-            (res: any) => {
-              if (!allValuesUndefined(res)) {
-                setValues((prev) => ({ ...prev, ...PersonEntity.handleFormValues(res) }));
-              }
-            },
-            (err: any) => {
-              console.log("not find user by SSN Error", err);
-              setFieldValue(
-                "gender",
-                extractSSNData(values.SSN as string)?.gender
-              );
-              setFieldValue(
-                "birthDate",
-                extractSSNData(values.SSN as string)?.birthdate
-              );
-              setFieldValue("verificationMethod", 1);
-            }
-          );
+  const ssn = values?.SSN as string;
+
+  if (ssn.length === 14 && searchSSN) {
+    const getPersonUseCase = sl.get<GetPersonUseCase>(ServiceKeys.GetPersonUseCase);
+
+    const mergeSSNData = (res: any) => {
+      const extractedData = extractSSNData(ssn);
+      if (extractedData) {
+        const updatedValues = {
+          ...PersonEntity.handleFormValues(res),
+          SSN: ssn,
+          gender: extractedData.gender,
+          birthDate: extractedData.birthdate,
+          verificationMethod: 1,
+        };
+        setValues((prev) => ({ ...prev, ...updatedValues }));
       }
-    }
-  }, [values.SSN]);
+    };
+
+    getPersonUseCase.call(ssn).then(
+      (res: any) => {
+        console.log(res, 'res');
+        if (!allValuesUndefined(res)) {
+          setValues((prev) => ({ ...prev, ...PersonEntity.handleFormValues(res) }));
+        } else {
+          mergeSSNData(res);
+        }
+      },
+      (err: any) => {
+        console.log("not find user by SSN Error", err);
+        mergeSSNData({});
+      }
+    );
+  }
+}, [values.SSN, searchSSN]);
+
 
   return (
 

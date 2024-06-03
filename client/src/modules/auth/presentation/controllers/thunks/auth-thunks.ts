@@ -5,18 +5,22 @@ import {
     GetMeUseCase
 } from "../../../domain/usecases";
 import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
+import { getLookups } from "@/core/shared/modules/lookups/presentation/controllers/thunks/lookups-thuck";
 
 
 //* Login
 export const login = createAsyncThunk(
     "auth/login",
     async (data: AuthInterface, thunkApi) => {
-        const { rejectWithValue } = thunkApi;
+        const { rejectWithValue, dispatch } = thunkApi;
         try {
             const result = await sl.get<LoginUseCase>(ServiceKeys.LoginUseCase).call(
                 data
-            );
+            ).then((_res) => {
+                dispatch(getLookups());
+            });
             console.log('Result:', result);
+
             return result;
         } catch (error) {
             console.log('Error:', error);

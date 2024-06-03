@@ -1,80 +1,81 @@
 export interface LookupsInterface {
-    identityTypes: IdentityType[];
-    genderTypes: GenderType[];
-    kinshipTypes: KinshipType[];
-    roleTypes: RoleType[];
-    shiftTypes: ShiftType[];
-    cameFromOptions: CameFromOptions[];
-    attendantRoles: AttendantRole[];
-    triageTypes: TriageType[];
-    LOC: LOC[];
-    comorbidities: Comorbidities[];
-    governates: Governate[];
-    departments: Department[];
-    features: Feature[];
+    identityTypes: IdentityTypeInterface[];
+    genderTypes: GenderTypeInterface[];
+    kinshipTypes: KinshipTypeInterface[];
+    roleTypes: RoleTypeInterface[];
+    shiftTypes: ShiftTypeInterface[];
+    cameFromOptions: CameFromOptionsInterface[];
+    attendantRoles: AttendantRoleInterface[];
+    triageTypes: TriageTypeInterface[];
+    LOC: LOCInterface[];
+    comorbidities: ComorbiditiesInterface[];
+    governates: GovernateInterface[];
+    departments: DepartmentInterface[];
+    features: FeatureInterface[];
 }
 
-export interface IdentityType {
+export interface IdentityTypeInterface {
     id: number;
     value: string;
 }
 
-export interface GenderType {
+export interface GenderTypeInterface {
     id: number;
     value: string;
 }
 
-export interface KinshipType {
+export interface KinshipTypeInterface {
     id: number;
     value: string;
 }
 
-export interface RoleType {
+export interface RoleTypeInterface {
     id: number;
     value: string;
 }
 
-export interface ShiftType {
+export interface ShiftTypeInterface {
     id: number;
     value: string;
 }
 
-export interface CameFromOptions {
+export interface CameFromOptionsInterface {
     id: number;
     value: string;
 }
 
-export interface AttendantRole {
+export interface AttendantRoleInterface {
     id: number;
     value: string;
 }
 
-export interface TriageType {
+export interface TriageTypeInterface {
     id: number;
     value: string;
 }
 
-export interface LOC {
+export interface LOCInterface {
     id: number;
     value: string;
 }
 
-export interface Comorbidities {
+export interface ComorbiditiesInterface {
     id: number;
     value: string;
 }
 
-export interface Governate {
+export interface GovernateInterface {
     id: number;
     value: string;
 }
 
-export interface Department {
+export interface DepartmentInterface {
     id: number;
     value: string;
 }
 
-export interface Feature {
+export interface FeatureInterface {
     id: number;
     value: string;
+    subDepartmentId: number;
 }

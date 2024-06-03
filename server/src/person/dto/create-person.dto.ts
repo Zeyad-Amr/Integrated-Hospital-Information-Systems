@@ -13,7 +13,7 @@ export class CreatePersonDto {
     type: String,
     example: 'Ahmed',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   firstName: string;
 
@@ -21,7 +21,7 @@ export class CreatePersonDto {
     type: String,
     example: 'Raouf',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   secondName: string;
 
@@ -29,7 +29,7 @@ export class CreatePersonDto {
     type: String,
     example: 'Mohamed',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   thirdName: string;
 
@@ -37,7 +37,7 @@ export class CreatePersonDto {
     type: String,
     example: 'Hussein',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   fourthName: string;
 
@@ -46,6 +46,7 @@ export class CreatePersonDto {
     example: '30002103105556',
   })
   @IsOptional()
+  @IsNotEmpty()
   @IsString()
   SSN: string;
 
