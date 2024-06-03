@@ -16,15 +16,15 @@ datasource db {
 
 model Person {
   id                   String        @id @default(uuid())
-  firstName            String
-  secondName           String
-  thirdName            String
-  fourthName           String
-  fullName             String
+  firstName            String?
+  secondName           String?
+  thirdName            String?
+  fourthName           String?
+  fullName             String?
   SSN                  String?       @unique
   verificationMethod   IdentityType? @relation(fields: [verificationMethodId], references: [id])
   verificationMethodId Int?
-  gender               GenderType?   @relation(fields: [genderId], references: [id])
+  gender               GenderType   @relation(fields: [genderId], references: [id])
   genderId             Int
   governate            Governate?    @relation(fields: [governateId], references: [id])
   governateId          Int?
