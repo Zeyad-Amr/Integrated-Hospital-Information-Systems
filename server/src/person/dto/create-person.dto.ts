@@ -46,6 +46,7 @@ export class CreatePersonDto {
     example: '30002103105556',
   })
   @IsOptional()
+  @IsNotEmpty()
   @IsString()
   SSN: string;
 
