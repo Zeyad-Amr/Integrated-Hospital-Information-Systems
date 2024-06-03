@@ -12,7 +12,7 @@ export default class PersonModel {
             verificationMethodId: entity.verificationMethod,
             genderId: entity.gender,
             birthDate: entity.birthDate ? new Date(entity.birthDate) : undefined,
-            phone: '+2' + entity.phone,
+            phone: entity?.phone ? '+2' + entity?.phone : '',
             governateId: entity.governate,
             address: entity.address
         };
