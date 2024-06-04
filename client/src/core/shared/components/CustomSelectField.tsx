@@ -3,13 +3,15 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { InputLabel, SelectChangeEvent } from "@mui/material";
-import { ReactNode } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Checkbox from "@mui/material/Checkbox";
+import ListItemText from "@mui/material/ListItemText";
 import { FormikErrors, FormikTouched } from "formik";
 
 export interface SelectFieldProps<T> {
-  onChange: (event: SelectChangeEvent<T>, child: ReactNode) => void;
+  onChange: (event: SelectChangeEvent<T> | unknown, child: ReactNode) => void;
   onBlur: (event: React.FocusEvent<{ value: unknown }>) => void;
   name: string;
   label: string;
@@ -25,7 +27,6 @@ export interface SelectFieldProps<T> {
   sx?: any;
 }
 
-
 const CustomSelectField = <T extends { id: any; value: string }>({
   onChange,
   onBlur,
@@ -35,15 +36,100 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   touched,
   value,
   options = [],
-  defaultValue = { id: 0, value: "" },
   isRequired = false,
   width,
   sx,
   multiple = false,
   hideLabel = true,
 }: SelectFieldProps<T>) => {
-  // Create a new array with the default value added to the beginning
-  const updatedOptions = [defaultValue, ...options];
+  const [selectAll, setSelectAll] = useState(false);
+
+  //* To know if selected all case applied or not
+  useEffect(() => {
+    if (Array.isArray(value) && value.length === options.length) {
+      setSelectAll(true);
+    } else {
+      setSelectAll(false);
+    }
+  }, [value, options]);
+
+  //* Handle each selected element style in input field
+  const handleSelectedElementStyle = (items: unknown[]) => {
+    return items?.map((item: any, index: number) => {
+      return (
+        <span
+          key={index}
+          style={{
+            backgroundColor: "#003768",
+            borderRadius: "4rem",
+            color: "#fff",
+            padding: "0.5rem 1rem",
+            fontSize: "10px",
+            margin: "0rem 0.35rem",
+          }}
+        >
+          {item}
+        </span>
+      );
+    });
+  };
+
+  //* Handle change of any checkbox including select all checkbox in all cases ( single or multiple checkboxes )
+  const handleSelectChange = (event: SelectChangeEvent<T>) => {
+    const newValue = event.target.value as any;
+    if (multiple && newValue && newValue.includes(0)) {
+      const allIds = options.map((option) => option.id);
+      setSelectAll(!selectAll);
+      onChange(
+        {
+          target: { name, value: selectAll ? [] : allIds },
+        } as unknown as SelectChangeEvent<T>,
+        null
+      );
+    } else {
+      onChange(event, null);
+    }
+  };
+
+  //* Handling appearance of multiple items in input field
+  const handleApearanceOfSelectedItems = (
+    selectedItems: unknown[],
+    itemsNumber: number = 4
+  ) => {
+    if (selectedItems.length > itemsNumber) {
+      let items = [];
+      for (let index = 0; index < itemsNumber; index++) {
+        items.push(
+          options.find((option) => option.id === selectedItems[index])?.value
+        );
+      }
+      return (
+        <span style={{ display: "flex", alignItems: "center" }}>
+          <span
+            style={{
+              color: "#061540",
+              fontSize: "15px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            {selectedItems.length - items.length}+
+          </span>
+          {handleSelectedElementStyle(items)}
+        </span>
+      );
+    } else {
+      return (
+        <span style={{ display: "flex", alignItems: "center" }}>
+          {handleSelectedElementStyle(
+            selectedItems.map(
+              (val) => options.find((option) => option.id === val)?.value
+            )
+          )}
+        </span>
+      );
+    }
+  };
 
   return (
     <Box
@@ -61,7 +147,6 @@ const CustomSelectField = <T extends { id: any; value: string }>({
             flexGrow: 1,
             fontSize: "0.9rem !important",
             margin: "0rem 0.5rem",
-
           }}
         >
           {label} {isRequired && <span style={{ color: "#FF5630" }}>*</span>}
@@ -77,19 +162,25 @@ const CustomSelectField = <T extends { id: any; value: string }>({
         <Select
           multiple={multiple ?? false}
           label={label}
-          onChange={(event: SelectChangeEvent<T>, child: ReactNode) => {
-            onChange(event, child);
-            
-          }}
+          onChange={handleSelectChange}
           onBlur={onBlur}
           sx={{
-            backgroundColor: "#fff ",
+            backgroundColor: "#fff",
             height: "3.5rem",
           }}
           value={multiple ? (Array.isArray(value) ? value : []) : value}
           name={name}
           error={error && touched ? true : false}
-          hidden={hideLabel}
+          displayEmpty
+          renderValue={(selected: unknown) => {
+            if (Array.isArray(selected)) {
+              return handleApearanceOfSelectedItems(selected);
+            }
+            const selectedOption = options.find(
+              (option) => option.id === selected
+            );
+            return selectedOption ? selectedOption.value : "";
+          }}
           MenuProps={{
             PaperProps: {
               style: {
@@ -98,34 +189,93 @@ const CustomSelectField = <T extends { id: any; value: string }>({
             },
           }}
         >
-          {updatedOptions?.map((option: { id: any; value: string }) => (
+          {multiple && (
+            <MenuItem
+              key={0}
+              value={0}
+              sx={{
+                color: "#232836",
+                opacity: 0.9,
+                transition: "0.5s ease",
+                margin: 1,
+                ...sx,
+                "&.Mui-selected": {
+                  backgroundColor: !multiple ? "primary.dark" : "none",
+                  color: !multiple ? "#fff" : "#232836",
+                  opacity: 0.9,
+                },
+                "&:hover": {
+                  opacity: !multiple ? 0.6 : 0.9,
+                  color: "#232836",
+                },
+                "&.Mui-selected:hover": {
+                  opacity: 0.9,
+                  backgroundColor: !multiple ? "primary.dark" : "none",
+                  color: !multiple ? "#fff" : "#232836",
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <ListItemText primary="Select All" />
+                <Checkbox
+                  checked={selectAll}
+                  sx={{
+                    marginRight: 1,
+                    "&.Mui-checked": {
+                      color: "primary.dark",
+                    },
+                  }}
+                />
+              </Box>
+            </MenuItem>
+          )}
+
+          {options.map((option) => (
             <MenuItem
               key={option.id}
               value={option.id}
               sx={{
-                // backgroundColor : "#232836",
-                opacity: 0.8,
                 color: "#232836",
-                transitionDuration: "0.5s ease",
+                opacity: 0.9,
+                transition: "0.5s ease",
                 margin: 1,
+                width: multiple ? "98.5%" : "none",
                 ...sx,
-                // selected background color
                 "&.Mui-selected": {
-                  // backgroundColor: "#232836",
-                  // color: "white",
-                  // margin: 1,
-                  // borderRadius: 25,
+                  backgroundColor: !multiple ? "primary.dark" : "none",
+                  color: !multiple ? "#fff" : "#232836",
+                  opacity: 0.9,
                 },
-                // hover background color
                 "&:hover": {
-                  // backgroundColor: "green",
-                  // color: "white",
-                  // margin: 1,
-                  // borderRadius: 25,
+                  opacity: !multiple ? 0.6 : 0.9,
+                  color: "#232836",
+                },
+                "&.Mui-selected:hover": {
+                  opacity: 0.9,
+                  backgroundColor: !multiple ? "primary.dark" : "none",
+                  color: !multiple ? "#fff" : "#232836",
                 },
               }}
             >
-              {option.value}
+              <ListItemText primary={option.value} />
+              {multiple && (
+                <Checkbox
+                  checked={Array.isArray(value) && value.includes(option.id)}
+                  sx={{
+                    marginRight: 1,
+                    "&.Mui-checked": {
+                      color: "primary.dark",
+                    },
+                  }}
+                />
+              )}
             </MenuItem>
           ))}
         </Select>
