@@ -140,7 +140,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
           displayEmpty
           renderValue={(selected: unknown) => {
             if (Array.isArray(selected)) {
-              return handleApearanceOfSelectedItems(selected, 1);
+              return handleApearanceOfSelectedItems(selected);
             }
             const selectedOption = options.find(
               (option) => option.id === selected
