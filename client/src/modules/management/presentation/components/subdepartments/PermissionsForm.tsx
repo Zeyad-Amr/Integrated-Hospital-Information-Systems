@@ -11,7 +11,7 @@ import {
 } from "../../controllers/types";
 import { updateSubDepartmentAssignFeatures } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
 import PermissionInterface from "@/modules/management/domain/interfaces/permission-interface";
-import { SubDepartmentsInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
+import { SubDepartmentInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
 import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
 import {
   FeatureInterface,
@@ -19,7 +19,7 @@ import {
 } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 
 interface PermissionsFormProps {
-  subDepartmentData?: SubDepartmentsInterface;
+  subDepartmentData?: SubDepartmentInterface;
   setShowPermissionsForm: (isShown: boolean) => void;
 }
 

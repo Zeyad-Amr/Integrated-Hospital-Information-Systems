@@ -17,6 +17,7 @@ export const login = createAsyncThunk(
             const result = await sl.get<LoginUseCase>(ServiceKeys.LoginUseCase).call(
                 data
             ).then((_res) => {
+                dispatch(getMe());
                 dispatch(getLookups());
             });
             console.log('Result:', result);

@@ -29,13 +29,7 @@ class RoomDataSource extends BaseRoomDataSource {
 
     override async getAllRooms(filters: FilterQuery[]): Promise<PaginatedList<RoomInterface>> {
         const response = await this.apiClient.get(Endpoints.room.list, { filters: filters });
-        // TODO: Remove this line after the API is fixed
-        response.data = {
-            items: response.data,
-            total: response.data.length,
-            page: 1,
-            size: 10
-        }
+
         console.log(response.data);
 
         return PaginatedListModel.fromJson<RoomInterface>(response.data, response.data.items.map((item: any) => RoomModel.fromJson(item)), filters);

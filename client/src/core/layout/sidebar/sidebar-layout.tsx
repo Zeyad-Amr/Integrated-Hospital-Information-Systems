@@ -5,14 +5,17 @@ import SidebarComponent from "./sidebar-component";
 import { Button, Typography } from "@mui/material";
 import { NotificationIcon } from "@/assets/icons/index";
 import ProfileIcon from "@/core/shared/components/profile/ProfileIcon";
-import {
-  SessionStorage,
-  SessionStorageKeys,
-} from "@/core/shared/utils/session-storage";
+import { useAppSelector } from "@/core/state/store";
+import { AuthState } from "@/modules/auth/presentation/controllers/types";
+import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
 
 const SidebarLayout = (props: any) => {
   const { collapsed } = useContext(SidebarContext);
-  const userData = SessionStorage.getDataByKey(SessionStorageKeys.userData);
+  const authState: AuthState = useAppSelector((state: any) => state.auth);
+  const lookupsState: LookupsState = useAppSelector(
+    (state: any) => state.lookups
+  );
+  const userData = authState.me;
 
   return (
     <Box
@@ -101,8 +104,16 @@ const SidebarLayout = (props: any) => {
                 </Box>
               </Button>
               <ProfileIcon
-                name={userData?.user?.username}
-                pos={userData?.user?.employee?.role?.value}
+                name={
+                  (userData?.person?.firstName ?? "") +
+                  " " +
+                  (userData?.person?.secondName ?? "")
+                }
+                pos={
+                  lookupsState.lookups.roleTypes.find(
+                    (role) => role.id === userData?.roleId
+                  )?.value
+                }
               />
             </Box>
           </Box>

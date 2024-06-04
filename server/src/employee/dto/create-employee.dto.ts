@@ -35,11 +35,11 @@ export class CreateEmployeeDto {
 
   @ApiProperty({
     type: Array<Number>,
-    example: [1,2,3],
+    example: [1, 2, 3],
   })
   @IsArray()
   @IsInt({ each: true })
-  suDepartmentIds: number[];
+  subDepartmentIds: number[];
 
   @ApiProperty({
     type: Number,
