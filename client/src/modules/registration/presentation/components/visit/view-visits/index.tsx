@@ -18,14 +18,15 @@ const VisitsTable = () => {
   const refAnonymousPatientData = useRef<VisitInterface>();
 
   // useState
-  const [showCompletePatientDialog, setShowCompletePatientDialog] = useState<boolean>(false);  
+  const [showCompletePatientDialog, setShowCompletePatientDialog] =
+    useState<boolean>(false);
 
   //* data that in the state
   const apiData: VisitInterface[] = state.visits.items;
   console.log("apiDataaaa", apiData);
 
   let tableData: AnonymizedVisit[] = [];
-  apiData.forEach((item : VisitInterface) => {
+  apiData.forEach((item: VisitInterface) => {
     tableData.push({
       sequenceNumber: item?.sequenceNumber ?? "",
       code: item?.code ?? "",
@@ -52,7 +53,7 @@ const VisitsTable = () => {
           fullWidth
           onClick={() => {
             refAnonymousPatientData.current = item ?? "";
-            setShowCompletePatientDialog(true)
+            setShowCompletePatientDialog(true);
           }}
         >
           استكمال بيانات
@@ -77,12 +78,13 @@ const VisitsTable = () => {
         data={tableData}
         headerItems={header}
       />
-      {/* <CompleteVisit
-        display={showDialog}
-        DialogStateController={setShawDialog}
-        id={refIdValue.current}
-      /> */}
-      <CompleteVisit setShowCompletePatientDialog={setShowCompletePatientDialog} showCompletePatientDialog={showCompletePatientDialog} anonymousPatientData={refAnonymousPatientData.current} />
+      {refAnonymousPatientData.current && (
+        <CompleteVisit
+          setShowCompletePatientDialog={setShowCompletePatientDialog}
+          showCompletePatientDialog={showCompletePatientDialog}
+          anonymousPatientData={refAnonymousPatientData.current}
+        />
+      )}
     </Box>
   );
 };
