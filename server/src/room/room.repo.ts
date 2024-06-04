@@ -2,13 +2,17 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/shared/services/prisma-client/prisma.service";
 import { CreateRoomDto } from "./dto/create-room.dto";
 import { UpdateRoomDto } from "./dto/update-room.dto";
+import { PrismaGenericRepo } from "src/shared/services/prisma-client/prisma-generic.repo";
+import { Room } from "@prisma/client";
 
 @Injectable()
-export class RoomRepo {
-    constructor(private prisma: PrismaService) { }
+export class RoomRepo extends PrismaGenericRepo<Room> {
+    constructor(private prismaService: PrismaService) {
+        super('room', prismaService);
+    }
     async create(room: CreateRoomDto) {
         try {
-            return await this.prisma.room.create({
+            return await this.prismaService.room.create({
                 data: {
                     name: room.name,
                     location: room.location
@@ -19,21 +23,9 @@ export class RoomRepo {
         }
     }
 
-    async findAll() {
-        try {
-            return await this.prisma.room.findMany({
-                include: {
-                    SubDepartment: true
-                }
-            });
-        } catch (error) {
-            throw error;
-        }
-    }
-
     async findOne(id: number) {
         try {
-            const res = await this.prisma.room.findUnique({
+            const res = await this.prismaService.room.findUnique({
                 where: {
                     id
                 },
@@ -50,9 +42,9 @@ export class RoomRepo {
         }
     }
 
-    async update(id: number, room: UpdateRoomDto) {
+    async updateRoom(id: number, room: UpdateRoomDto) {
         try {
-            return await this.prisma.room.update({
+            return await this.prismaService.room.update({
                 where: {
                     id
                 },
@@ -68,7 +60,7 @@ export class RoomRepo {
 
     async remove(id: number) {
         try {
-            return await this.prisma.room.delete({
+            return await this.prismaService.room.delete({
                 where: {
                     id
                 }

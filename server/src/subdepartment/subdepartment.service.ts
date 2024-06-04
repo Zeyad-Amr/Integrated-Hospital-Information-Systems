@@ -2,10 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { AssignFeatures, CreateSubdepartmentDto } from './dto/create-subdepartment.dto';
 import { UpdateSubdepartmentDto } from './dto/update-subdepartment.dto';
 import { SubDepartmentRepo } from './subdepartment.repo';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class SubdepartmentService {
   constructor(private subdepartmentRepo: SubDepartmentRepo) { }
+  IncludeObj: Prisma.SubDepartmentInclude = {
+    Department: true,
+    features: true,
+    specialization: true,
+    room: true
+  }
+
   create(createSubdepartmentDto: CreateSubdepartmentDto) {
     try {
       return this.subdepartmentRepo.create(createSubdepartmentDto);
@@ -14,9 +22,18 @@ export class SubdepartmentService {
     }
   }
 
-  findAll() {
+  findAll(
+    pagination,
+    sort,
+    filters,
+  ) {
     try {
-      return this.subdepartmentRepo.findAll();
+      return this.subdepartmentRepo.getAll({
+        filters,
+        sort,
+        paginationParams: pagination,
+        include: this.IncludeObj
+      });
     } catch (error) {
       throw error;
     }
@@ -32,7 +49,7 @@ export class SubdepartmentService {
 
   update(id: string, updateSubdepartmentDto: UpdateSubdepartmentDto) {
     try {
-      return this.subdepartmentRepo.update(+id, updateSubdepartmentDto);
+      return this.subdepartmentRepo.updateSub(+id, updateSubdepartmentDto);
     } catch (error) {
       throw error;
     }

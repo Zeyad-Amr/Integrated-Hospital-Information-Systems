@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { RoomRepo } from './room.repo';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class RoomService {
@@ -12,13 +13,24 @@ export class RoomService {
     } catch (error) {
       throw error;
     }
-
-
   }
 
-  findAll() {
+  include: Prisma.RoomInclude = {
+    SubDepartment: true
+  }
+
+  findAll(pagination,
+    sort,
+    filters,) {
     try {
-      return this.roomRepo.findAll();
+      return this.roomRepo.getAll(
+        {
+          include: this.include,
+          sort,
+          filters,
+          paginationParams: pagination
+        }
+      );
     } catch (error) {
       throw error;
     }
@@ -34,7 +46,7 @@ export class RoomService {
 
   update(id: string, updateRoomDto: UpdateRoomDto) {
     try {
-      return this.roomRepo.update(+id, updateRoomDto);
+      return this.roomRepo.updateRoom(+id, updateRoomDto);
     } catch (error) {
 
     }
