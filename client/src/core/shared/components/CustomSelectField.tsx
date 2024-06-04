@@ -27,7 +27,7 @@ export interface SelectFieldProps<T> {
   sx?: any;
 }
 
-const CustomSelectField = <T extends { id: any; value: string }>({
+const CustomSelectField = <T extends { id: string | number; value: string }>({
   onChange,
   onBlur,
   name,
@@ -54,7 +54,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
 
   const handleSelectChange = (event: SelectChangeEvent<T>) => {
     const newValue = event.target.value as any;
-    if (newValue.includes("select-all")) {
+    if (multiple && newValue && newValue.includes(0)) {
       const allIds = options.map((option) => option.id);
       setSelectAll(!selectAll);
       onChange(
@@ -132,8 +132,8 @@ const CustomSelectField = <T extends { id: any; value: string }>({
         >
           {multiple && (
             <MenuItem
-              key="select-all"
-              value="select-all"
+              key={0}
+              value={0}
               sx={{
                 color: "#232836",
                 opacity: 0.9,
@@ -187,7 +187,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
                 opacity: 0.9,
                 transition: "0.5s ease",
                 margin: 1,
-                width: "98.5%",
+                width: multiple ? "98.5%" : "none",
                 ...sx,
                 "&.Mui-selected": {
                   backgroundColor: !multiple ? "primary.dark" : "none",
