@@ -1,8 +1,8 @@
 import { ErrorResponse, ErrorMessage } from "@/core/api";
 import BaseAuthRepository from "../../domain/repositories/base-auth-repository";
 import { BaseAuthDataSource } from "../datasources/auth-datasource";
-import UserInterface from "../../domain/interfaces/user-interface";
 import AuthInterface from "../../domain/interfaces/auth-interface";
+import { AccountInterface } from "../../domain/interfaces/account-interface";
 
 class AuthRepository extends BaseAuthRepository {
     constructor(private baseAuthDataSource: BaseAuthDataSource) {
@@ -19,7 +19,7 @@ class AuthRepository extends BaseAuthRepository {
         }
     }
 
-    override async getMe(): Promise<UserInterface> {
+    override async getMe(): Promise<AccountInterface> {
         try {
             const result = await this.baseAuthDataSource.getMe();
             return result;

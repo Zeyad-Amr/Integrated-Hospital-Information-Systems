@@ -11,6 +11,7 @@ import AlertService from "@/core/shared/utils/alert-service";
 //* Initial State
 const initialState: AuthState = {
     me: UserEntity.defaultValue(),
+    permssions: [],
     authData: AuthDataEntity.defaultValue(),
     loading: false,
     error: "",
@@ -48,12 +49,12 @@ const authSlice = createSlice({
         builder.addCase(login.fulfilled, (state, _action) => {
             state.loading = false;
             state.error = "";
-            AlertService.showAlert( 'تم تسجيل الدخول بنجاح' , 'success');
+            AlertService.showAlert('تم تسجيل الدخول بنجاح', 'success');
         });
         builder.addCase(login.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
-            AlertService.showAlert( `${state.error}` , 'error');
+            AlertService.showAlert(`${state.error}`, 'error');
         });
 
         //* get me 
@@ -63,13 +64,14 @@ const authSlice = createSlice({
         });
         builder.addCase(getMe.fulfilled, (state, action) => {
             state.loading = false;
-            state.me = action.payload;
+            state.me = action.payload.user;
+            state.permssions = action.payload.permissions;
             state.error = "";
         });
         builder.addCase(getMe.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
-            AlertService.showAlert( `${state.error}` , 'error');
+            AlertService.showAlert(`${state.error}`, 'error');
         });
 
 
