@@ -4,15 +4,18 @@ import { AssignFeatures, CreateSubdepartmentDto } from "./dto/create-subdepartme
 import { UpdateSubdepartmentDto } from "./dto/update-subdepartment.dto";
 import { RoomRepo } from "src/room/room.repo";
 import { SpecializationRepo } from "src/specialization/specialization.repo";
-import { Prisma } from "@prisma/client";
+import { Prisma, SubDepartment } from "@prisma/client";
+import { PrismaGenericRepo } from "src/shared/services/prisma-client/prisma-generic.repo";
 
 @Injectable()
-export class SubDepartmentRepo {
-    constructor(private prisma: PrismaService, private roomRepo: RoomRepo, private specializationRepo: SpecializationRepo) { }
+export class SubDepartmentRepo extends PrismaGenericRepo<SubDepartment> {
+    constructor(private prismaService: PrismaService, private roomRepo: RoomRepo, private specializationRepo: SpecializationRepo) {
+        super('subDepartment', prismaService);
+    }
+
 
     async create(body: CreateSubdepartmentDto) {
         try {
-
             // check room existence
             await this.roomRepo.findOne(body.roomId);
 
@@ -21,7 +24,7 @@ export class SubDepartmentRepo {
 
             // check department existence
             if (body.departmentId) {
-                const department = await this.prisma.department.findUnique({
+                const department = await this.prismaService.department.findUnique({
                     where: {
                         id: body.departmentId
                     }
@@ -31,7 +34,7 @@ export class SubDepartmentRepo {
                 }
             }
 
-            const res = await this.prisma.subDepartment.create({
+            const res = await this.prismaService.subDepartment.create({
                 data: {
                     name: body.name,
                     departmentId: body.departmentId ? body.departmentId : null,
@@ -45,24 +48,10 @@ export class SubDepartmentRepo {
         }
     }
 
-    async findAll() {
-        try {
-            return await this.prisma.subDepartment.findMany({
-                include: {
-                    Department: true,
-                    features: true,
-                    specialization: true,
-                    room: true
-                }
-            });
-        } catch (error) {
-            throw error;
-        }
-    }
 
     async findOne(id: number) {
         try {
-            const res = await this.prisma.subDepartment.findUnique({
+            const res = await this.prismaService.subDepartment.findUnique({
                 where: {
                     id
                 },
@@ -82,9 +71,9 @@ export class SubDepartmentRepo {
         }
     }
 
-    async update(id: number, body: UpdateSubdepartmentDto) {
+    async updateSub(id: number, body: UpdateSubdepartmentDto) {
         try {
-            return await this.prisma.subDepartment.update({
+            return await this.prismaService.subDepartment.update({
                 where: {
                     id
                 },
@@ -114,7 +103,7 @@ export class SubDepartmentRepo {
 
     async remove(id: number) {
         try {
-            return await this.prisma.subDepartment.delete({
+            return await this.prismaService.subDepartment.delete({
                 where: {
                     id
                 }
@@ -140,7 +129,7 @@ export class SubDepartmentRepo {
                     });
                 }
 
-                await this.prisma.permissions.createMany({
+                await this.prismaService.permissions.createMany({
                     data: featuresToAdd, skipDuplicates: true
                 });
             }
@@ -160,7 +149,7 @@ export class SubDepartmentRepo {
                     });
                 }
 
-                await this.prisma.permissions.deleteMany({
+                await this.prismaService.permissions.deleteMany({
                     where: {
                         OR: featuresToRemove
                     }

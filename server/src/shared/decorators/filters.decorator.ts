@@ -29,7 +29,7 @@ export const FilteringParams = createParamDecorator(
     const req: Request = ctx.switchToHttp().getRequest();
     let filters = req.query.filters;
     console.log(filters);
-    
+
     if (!filters) {
       return null;
     }
@@ -43,12 +43,20 @@ export const FilteringParams = createParamDecorator(
     filters.forEach((filter) => {
       try {
         filter = filter as string;
-        const { property, rule, value } = getFilterProperties(filter);
+        let { property, rule, value } = getFilterProperties(filter);
+        let val: any;
+        const valueInt = +value;
+        if (!isNaN(valueInt)) {
+          val = valueInt;
+        }
+        else {
+          val = value;
+        }
         if (!data.includes(property))
           throw new BadRequestException(`Invalid filter property: ${property}`);
         if (!Object.values(FilterRule).includes(rule as FilterRule))
           throw new BadRequestException(`Invalid filter rule: ${rule}`);
-        filtersArray.push({ property, rule, value });
+        filtersArray.push({ property, rule, value: val });
       } catch (error) {
         throw error;
       }
