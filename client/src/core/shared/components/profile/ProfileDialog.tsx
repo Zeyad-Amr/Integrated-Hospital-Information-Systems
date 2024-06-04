@@ -1,11 +1,20 @@
 import React, { useState } from "react";
-import { Box, Popper, Typography } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
+import {
+  Box,
+  FormControl,
+  FormControlLabel,
+  Popper,
+  Radio,
+  RadioGroup,
+  Typography,
+} from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import { useRouter } from "next/navigation";
 import { SessionStorage } from "../../utils/session-storage";
 import ConfirmationDialog from "../ConfirmationDialog";
+import { AuthState } from "@/modules/auth/presentation/controllers/types";
+import { useAppSelector } from "@/core/state/store";
 
 const ProfileDialog = ({
   popperRef,
@@ -21,6 +30,8 @@ const ProfileDialog = ({
     useState<boolean>(false);
   const open = Boolean(anchorEl);
   const id = open ? "simple-popper" : undefined;
+
+  const authState: AuthState = useAppSelector((state: any) => state.auth);
   return (
     <>
       <Popper
@@ -53,7 +64,7 @@ const ProfileDialog = ({
                 display: "flex",
                 justifyContent: "space-evenly",
                 width: "100%",
-                margin: "0.5rem 0 1rem 0",
+                margin: "0.5rem 0 0.5rem 0",
               }}
             >
               {/* اهلاً */}
@@ -61,8 +72,58 @@ const ProfileDialog = ({
                 {name.length > 15 ? name.substring(0, 15) + "..." : name}
               </Typography>
             </Box>
-
             <Box
+              sx={{
+                width: "100%",
+                height: "1px",
+                backgroundColor: "primary.light",
+                margin: "0.5rem 0",
+              }}
+            />
+            <Box
+              sx={{
+                width: "100%",
+                paddingVertical: "1rem",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "0.8rem",
+                  fontWeight: "bold",
+                  marginVertical: "0.3rem",
+                  color: "primary.darker",
+                }}
+              >
+                الحسابات
+              </Typography>
+              <FormControl>
+                <RadioGroup
+                  aria-label="department"
+                  name="department"
+                  defaultValue={
+                    authState.permssions.length > 0
+                      ? authState.permssions[0].subDepartment.id
+                      : ""
+                  }
+                >
+                  {authState.permssions.map((permission: any) => {
+                    return (
+                      <FormControlLabel
+                        key={permission.subDepartment.id}
+                        value={permission.subDepartment.id}
+                        control={<Radio />}
+                        label={permission.subDepartment.name}
+                        sx={{
+                          fontSize: "0.1rem",
+                        }}
+                      />
+                    );
+                  })}
+                </RadioGroup>
+              </FormControl>
+            </Box>
+
+            {/* <Box
               sx={{
                 width: "100%",
                 display: "flex",
@@ -85,7 +146,7 @@ const ProfileDialog = ({
               >
                 حسابي
               </Typography>
-            </Box>
+            </Box> */}
             <Box
               onClick={() => {
                 setShowConfirmationDialog(true);

@@ -1,13 +1,13 @@
 import AuthDataModel from '../models/auth-data-model';
 import { ApiClient, Endpoints } from "@/core/api";
-import UserModel from '../models/user-model';
 import AuthInterface from '../../domain/interfaces/auth-interface';
-import UserInterface from '../../domain/interfaces/user-interface';
 import { SessionStorage, SessionStorageKeys } from '@/core/shared/utils/session-storage';
+import { AccountInterface } from '../../domain/interfaces/account-interface';
+import AccountModel from '../models/account-model';
 
 abstract class BaseAuthDataSource {
     abstract login(authData: AuthInterface): Promise<boolean>;
-    abstract getMe(): Promise<UserInterface>;
+    abstract getMe(): Promise<AccountInterface>;
 }
 
 class AuthDataSource extends BaseAuthDataSource {
@@ -27,10 +27,10 @@ class AuthDataSource extends BaseAuthDataSource {
         }
     }
 
-    override async getMe(): Promise<UserInterface> {
+    override async getMe(): Promise<AccountInterface> {
         try {
             const response = await this.apiClient.get(Endpoints.user.me);
-            const user = UserModel.fromJson(response.data);
+            const user = AccountModel.fromJson(response.data);
             return user;
         } catch (error) {
             throw error;

@@ -2,7 +2,7 @@ import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import { Box, Button, Typography } from "@mui/material";
 import ProfileDialog from "./ProfileDialog";
 import { useEffect, useRef, useState } from "react";
-
+import ArrowDropDownCircleRoundedIcon from "@mui/icons-material/ArrowDropDownCircleRounded";
 const ProfileIcon = (props: any) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const popperRef = useRef<HTMLDivElement>(null);
@@ -65,6 +65,13 @@ const ProfileIcon = (props: any) => {
             {props.pos}
           </Typography>
         </Box>
+        <ArrowDropDownCircleRoundedIcon
+          sx={{
+            color: "primary.darker",
+            fontSize: "1.5rem",
+            marginLeft: "1rem",
+          }}
+        />
       </Button>
       <ProfileDialog
         popperRef={popperRef}
