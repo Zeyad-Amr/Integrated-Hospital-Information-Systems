@@ -44,6 +44,7 @@ const CustomSelectField = <T extends { id: string | number; value: string }>({
 }: SelectFieldProps<T>) => {
   const [selectAll, setSelectAll] = useState(false);
 
+  //* To know if selected all case applied or not
   useEffect(() => {
     if (Array.isArray(value) && value.length === options.length) {
       setSelectAll(true);
@@ -52,6 +53,7 @@ const CustomSelectField = <T extends { id: string | number; value: string }>({
     }
   }, [value, options]);
 
+  //* Handle change of any checkbox including select all checkbox in all cases ( single or multiple checkboxes )
   const handleSelectChange = (event: SelectChangeEvent<T>) => {
     const newValue = event.target.value as any;
     if (multiple && newValue && newValue.includes(0)) {
@@ -65,6 +67,33 @@ const CustomSelectField = <T extends { id: string | number; value: string }>({
       );
     } else {
       onChange(event, null);
+    }
+  };
+
+  //* Handling appearance of multiple items in input field
+  const handleApearanceOfSelectedItems = (
+    selectedItems: unknown[],
+    itemsNumber: number = 4
+  ) => {
+    if (selectedItems.length > itemsNumber) {
+      let items = [];
+      for (let index = 0; index < itemsNumber; index++) {
+        items.push(
+          options.find((option) => option.id === selectedItems[index])?.value
+        );
+      }
+      return (
+        <span>
+          {items.join(", ")}
+          <span style={{ color: "gray", fontSize: "12px", opacity: "0.9" }}>
+            ...{selectedItems.length - items.length}more
+          </span>{" "}
+        </span>
+      );
+    } else {
+      return selectedItems
+        .map((val) => options.find((option) => option.id === val)?.value)
+        .join(", ");
     }
   };
 
@@ -111,11 +140,7 @@ const CustomSelectField = <T extends { id: string | number; value: string }>({
           displayEmpty
           renderValue={(selected: unknown) => {
             if (Array.isArray(selected)) {
-              return selected
-                .map(
-                  (val) => options.find((option) => option.id === val)?.value
-                )
-                .join(", ");
+              return handleApearanceOfSelectedItems(selected, 1);
             }
             const selectedOption = options.find(
               (option) => option.id === selected
