@@ -8,12 +8,12 @@ export default class PersonModel {
             secondName: entity.secondName,
             thirdName: entity.thirdName,
             fourthName: entity.fourthName,
-            SSN: entity.SSN,
-            verificationMethodId: entity.verificationMethod,
-            genderId: entity.gender,
+            SSN: entity.SSN != '' ? entity.SSN : undefined,
+            verificationMethodId: entity.verificationMethod != 0 ? entity.verificationMethod : undefined,
+            genderId: entity.gender != 0 ? entity.gender : undefined,
             birthDate: entity.birthDate ? new Date(entity.birthDate) : undefined,
-            phone: entity?.phone ? '+2' + entity?.phone : '',
-            governateId: entity.governate,
+            phone: entity?.phone ? '+2' + entity?.phone : undefined,
+            governateId: entity.governate != 0 ? entity.governate : undefined,
             address: entity.address
         };
     }

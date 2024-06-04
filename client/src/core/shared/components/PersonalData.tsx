@@ -186,11 +186,10 @@ const PersonalData = ({
   if (ssn.length === 14 && searchSSN) {
     const getPersonUseCase = sl.get<GetPersonUseCase>(ServiceKeys.GetPersonUseCase);
 
-    const mergeSSNData = (res: any) => {
+    const mergeSSNData = () => {
       const extractedData = extractSSNData(ssn);
       if (extractedData) {
         const updatedValues = {
-          ...PersonEntity.handleFormValues(res),
           SSN: ssn,
           gender: extractedData.gender,
           birthDate: extractedData.birthdate,
@@ -206,12 +205,12 @@ const PersonalData = ({
         if (!allValuesUndefined(res)) {
           setValues((prev) => ({ ...prev, ...PersonEntity.handleFormValues(res) }));
         } else {
-          mergeSSNData(res);
+          mergeSSNData();
         }
       },
       (err: any) => {
         console.log("not find user by SSN Error", err);
-        mergeSSNData({});
+        mergeSSNData();
       }
     );
   }
