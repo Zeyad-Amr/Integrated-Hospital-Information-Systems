@@ -52,12 +52,14 @@ const ProfileDialog = ({
               sx={{
                 display: "flex",
                 justifyContent: "space-evenly",
-                width: "70%",
+                width: "100%",
                 margin: "0.5rem 0 1rem 0",
               }}
             >
-              اهلاً
-              <Typography sx={{ fontWeight: "bold" }}>{name}</Typography>
+              {/* اهلاً */}
+              <Typography sx={{ fontWeight: "bold" }}>
+                {name.length > 15 ? name.substring(0, 15) + "..." : name}
+              </Typography>
             </Box>
 
             <Box
