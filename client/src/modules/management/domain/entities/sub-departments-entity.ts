@@ -1,9 +1,9 @@
 import { Yup } from "@/core/shared/utils/validation";
-import { SubDepartmentsInterface } from "../interfaces/sub-departments-interface";
+import { SubDepartmentInterface } from "../interfaces/sub-departments-interface";
 
 export default class SubDepartmentsEntity {
   //* --------------------- Methods ---------------------
-  static defaultValue(): SubDepartmentsInterface {
+  static defaultValue(): SubDepartmentInterface {
     return {
       id: "",
       name: "",

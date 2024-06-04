@@ -29,13 +29,7 @@ class SpecializationDataSource extends BaseSpecializationDataSource {
 
     override async getAllSpecializations(filters: FilterQuery[]): Promise<PaginatedList<SpecializationInterface>> {
         const response = await this.apiClient.get(Endpoints.specialization.list, { filters: filters });
-        // TODO: Remove this line after the API is fixed
-        response.data = {
-            items: response.data,
-            total: response.data.length,
-            page: 1,
-            size: 10
-        }
+
         console.log(response.data);
         return PaginatedListModel.fromJson<SpecializationInterface>(response.data, response.data.items.map((item: any) => SpecializationModel.fromJson(item)), filters);
     }

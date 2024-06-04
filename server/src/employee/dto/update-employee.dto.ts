@@ -27,7 +27,7 @@ export class AuthUpdateDto {
   @MinLength(5)
   username: string;
 
-  
+
   @ApiProperty({
     type: String,
     description: 'new password of the user',
@@ -74,7 +74,7 @@ export class UpdateEmployeeDto {
   })
   @IsArray()
   @IsInt({ each: true })
-  suDepartmentIds: number[];
+  subDepartmentIds: number[];
 
   @ApiProperty({
     type: String,

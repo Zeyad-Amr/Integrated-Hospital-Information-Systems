@@ -1,7 +1,7 @@
 import { PrismaGenericRepo } from '../shared/services/prisma-client/prisma-generic.repo';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../shared/services/prisma-client/prisma.service';
-import { Employee,  Prisma } from '@prisma/client';
+import { Employee, Prisma } from '@prisma/client';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { Pagination } from 'src/shared/decorators/pagination.decorator';
@@ -21,15 +21,15 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
     creatorId: string,
   ): Promise<Employee> {
     try {
-      const { auth, person, roleId, shiftId,suDepartmentIds } = item;
+      const { auth, person, roleId, shiftId, subDepartmentIds } = item;
       const { verificationMethodId, genderId, governateId, ...personData } = person
       const employee = await this.prismaService.employee.create({
         data: {
           role: { connect: { id: roleId } },
           shift: { connect: { id: shiftId } },
           auth: { create: { ...auth } },
-          subdepartments:{
-            connect:suDepartmentIds.map((id)=>({id}))
+          subdepartments: {
+            connect: subDepartmentIds.map((id) => ({ id }))
           },
           person: {
             connectOrCreate: {
@@ -59,15 +59,15 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
 
   async update(id: string, item: UpdateEmployeeDto): Promise<any> {
     try {
-      const { roleId, shiftId,suDepartmentIds,  personalData, auth } = item;
+      const { roleId, shiftId, subDepartmentIds, personalData, auth } = item;
 
       const employee = await this.prismaService.employee.update({
         where: { id },
         data: {
           role: { connect: { id: roleId } },
           shift: { connect: { id: shiftId } },
-          subdepartments:{
-            connect:suDepartmentIds.map((id)=>({id}))
+          subdepartments: {
+            connect: subDepartmentIds.map((id) => ({ id }))
           },
           person: {
             update: {
@@ -130,7 +130,7 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
         email: true,
       },
     },
-    subdepartments:true,
+    subdepartments: true,
     role: true,
     shift: true,
   };

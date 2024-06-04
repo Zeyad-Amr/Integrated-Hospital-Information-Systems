@@ -2,14 +2,20 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/shared/services/prisma-client/prisma.service";
 import { CreateSpecializationDto } from "./dto/create-specialization.dto";
 import { UpdateSpecializationDto } from "./dto/update-specialization.dto";
+import { PrismaGenericRepo } from "src/shared/services/prisma-client/prisma-generic.repo";
+import { Prisma } from "@prisma/client";
 
 @Injectable()
-export class SpecializationRepo {
-    constructor(private primsa: PrismaService) { }
+export class SpecializationRepo extends PrismaGenericRepo<SpecializationRepo> {
+    constructor(private primsaService: PrismaService) {
+        super('specialization', primsaService);
+    }
 
-    async create(specialization: CreateSpecializationDto) {
+
+
+    async createSpecialization(specialization: CreateSpecializationDto) {
         try {
-            return await this.primsa.specialization.create({
+            return await this.primsaService.specialization.create({
                 data: {
                     name: specialization.name,
                     description: specialization.description
@@ -20,21 +26,9 @@ export class SpecializationRepo {
         }
     }
 
-    async findAll() {
-        try {
-            return await this.primsa.specialization.findMany({
-                include: {
-                    SubDepartment: true
-                }
-            });
-        } catch (error) {
-            throw error;
-        }
-    }
-
     async findOne(id: number) {
         try {
-            const res = await this.primsa.specialization.findUnique({
+            const res = await this.primsaService.specialization.findUnique({
                 where: {
                     id: id
                 },
@@ -51,9 +45,9 @@ export class SpecializationRepo {
         }
     }
 
-    async update(id: number, specialization: UpdateSpecializationDto) {
+    async updateSpecialization(id: number, specialization: UpdateSpecializationDto) {
         try {
-            return await this.primsa.specialization.update({
+            return await this.primsaService.specialization.update({
                 where: {
                     id
                 },
@@ -69,7 +63,7 @@ export class SpecializationRepo {
 
     async remove(id: number) {
         try {
-            return await this.primsa.specialization.delete({
+            return await this.primsaService.specialization.delete({
                 where: {
                     id
                 }

@@ -3,7 +3,7 @@ import { updateSubDepartmentAssignFeatures, createSubDepartment, deleteSubDepart
 import { SubDepartmentsState } from "../types";
 import { ErrorResponse, PaginatedListModel } from "@/core/api";
 import SubDepartmentsEntity from "@/modules/management/domain/entities/sub-departments-entity";
-import { SubDepartmentsInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
+import { SubDepartmentInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
 import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
@@ -28,10 +28,10 @@ const subDepartmentsSlice = createSlice({
         clearSubDepartmentsList(state) {
             state.subDepartments = initialState.subDepartments;
         },
-        setCurrentSubDepartment(state, action: { payload: SubDepartmentsInterface, type: string }) {
+        setCurrentSubDepartment(state, action: { payload: SubDepartmentInterface, type: string }) {
             state.currentSubDepartment = action.payload;
         },
-        setSubDepartmentsList(state, action: { payload: SubDepartmentsInterface[], type: string }) {
+        setSubDepartmentsList(state, action: { payload: SubDepartmentInterface[], type: string }) {
             state.subDepartments.items = action.payload;
         },
         setLoading(state, action: { payload: boolean, type: string }) {

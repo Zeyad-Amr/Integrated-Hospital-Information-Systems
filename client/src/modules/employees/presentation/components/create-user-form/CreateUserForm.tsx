@@ -38,7 +38,7 @@ import {
 import PersonalData from "@/core/shared/components/PersonalData";
 import { getSubDepartmentsList } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
 import { SubDepartmentsState } from "@/modules/management/presentation/controllers/types";
-import { SubDepartmentsInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
+import { SubDepartmentInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
 
 interface CreateUserFormProps {
   employeeData?: EmployeeInterface;
@@ -97,7 +97,7 @@ const CreateUserForm = ({
         ...employeeState.currentEmployee,
         shiftId: values.shiftId,
         roleId: values.roleId,
-        suDepartmentIds: values.suDepartmentIds,
+        subDepartmentIds: values.subDepartmentIds,
       })
     );
   };
@@ -275,7 +275,7 @@ const CreateUserForm = ({
                   id: employeeData?.id,
                   shiftId: employeeData?.shiftId as number | string,
                   roleId: employeeData?.roleId as number | string,
-                  suDepartmentIds: employeeData?.suDepartmentIds ?? [],
+                  subDepartmentIds: employeeData?.subDepartmentIds ?? [],
                 }
               : EmployeeEntity.defaultValue()
           }
@@ -326,16 +326,16 @@ const CreateUserForm = ({
                   <CustomSelectField
                     multiple
                     isRequired
-                    name="suDepartmentIds"
+                    name="subDepartmentIds"
                     label="القسم الفرعي"
-                    value={values.suDepartmentIds}
+                    value={values.subDepartmentIds}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={errors.suDepartmentIds}
-                    touched={touched.suDepartmentIds}
+                    error={errors.subDepartmentIds}
+                    touched={touched.subDepartmentIds}
                     width="100%"
                     options={subDepartmentsState?.subDepartments.items.map(
-                      (subdepartmentEl: SubDepartmentsInterface) => {
+                      (subdepartmentEl: SubDepartmentInterface) => {
                         return {
                           id: subdepartmentEl.id,
                           value: subdepartmentEl.name,

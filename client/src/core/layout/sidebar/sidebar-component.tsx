@@ -88,7 +88,7 @@ const SidebarComponent = () => {
         }
         activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
         text="المرضى"
-        path="/dashboard/visits/add"
+        path="/dashboard/visits"
       >
         <SidebarSubmenuItem text="إضافة مريض" path="/dashboard/visits/add" />
         <SidebarSubmenuItem

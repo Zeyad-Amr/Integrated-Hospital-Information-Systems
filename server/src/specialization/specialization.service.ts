@@ -2,21 +2,36 @@ import { Injectable } from '@nestjs/common';
 import { CreateSpecializationDto } from './dto/create-specialization.dto';
 import { UpdateSpecializationDto } from './dto/update-specialization.dto';
 import { SpecializationRepo } from './specialization.repo';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class SpecializationService {
   constructor(private specializationRepo: SpecializationRepo) { }
   create(createSpecializationDto: CreateSpecializationDto) {
     try {
-      return this.specializationRepo.create(createSpecializationDto);
+      return this.specializationRepo.createSpecialization(createSpecializationDto);
     } catch (error) {
       throw error;
     }
   }
+  include: Prisma.SpecializationInclude = {
+    SubDepartment: true
+  }
 
-  findAll() {
+  findAll(
+    pagination,
+    sort,
+    filters,
+  ) {
     try {
-      return this.specializationRepo.findAll();
+      return this.specializationRepo.getAll(
+        {
+          include: this.include,
+          filters,
+          sort,
+          paginationParams: pagination
+        }
+      );
     } catch (error) {
       throw error;
     }
@@ -32,7 +47,7 @@ export class SpecializationService {
 
   update(id: string, updateSpecializationDto: UpdateSpecializationDto) {
     try {
-      return this.specializationRepo.update(+id, updateSpecializationDto);
+      return this.specializationRepo.updateSpecialization(+id, updateSpecializationDto);
     } catch (error) {
       throw error;
     }

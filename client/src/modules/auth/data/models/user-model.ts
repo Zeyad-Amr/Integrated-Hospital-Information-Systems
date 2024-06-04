@@ -10,7 +10,7 @@ export default class UserModel {
         return {
             roleId: entity.roleId,
             shiftId: entity.shiftId,
-            suDepartmentIds: entity.suDepartmentIds,
+            subDepartmentIds: entity.subDepartmentIds,
             person: entity.person ? PersonModel.toJson(entity.person) : null,
             auth: entity.auth ? AuthDataModel.toJson(entity.auth) : null,
         };
@@ -22,7 +22,7 @@ export default class UserModel {
             id: json.id,
             roleId: json.roleId,
             shiftId: json.shiftId,
-            suDepartmentIds: json?.subdepartments?.map((suDepartmentId : ExtendedSubDepartmentsInterface) => suDepartmentId?.id),
+            subDepartmentIds: json?.subdepartments?.map((suDepartmentId : ExtendedSubDepartmentsInterface) => suDepartmentId?.id),
             createdAt: json.createdAt,
             updatedAt: json.updatedAt,
             person: PersonModel.fromJson(json.person),

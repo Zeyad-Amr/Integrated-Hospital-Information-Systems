@@ -1,10 +1,10 @@
 import UserInterface from "@/modules/auth/domain/interfaces/user-interface";
-import { SubDepartmentsInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
+import { SubDepartmentInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
 
 export default interface EmployeeInterface extends UserInterface {
 
 }
 
-export interface ExtendedSubDepartmentsInterface extends SubDepartmentsInterface {
-    employeeId: string | number;
-  }
+export interface ExtendedSubDepartmentsInterface extends SubDepartmentInterface {
+  employeeId: string | number;
+}

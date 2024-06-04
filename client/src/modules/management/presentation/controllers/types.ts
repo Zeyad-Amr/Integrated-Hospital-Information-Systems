@@ -2,7 +2,7 @@ import { PaginatedList } from "@/core/api";
 import PermissionInterface from "../../domain/interfaces/permission-interface";
 import RoomInterface from "../../domain/interfaces/room-interface";
 import SpecializationInterface from "../../domain/interfaces/specialization -interface";
-import { SubDepartmentsInterface } from "../../domain/interfaces/sub-departments-interface";
+import { SubDepartmentInterface } from "../../domain/interfaces/sub-departments-interface";
 
 // Define the initial state using that type
 export interface RoomState {
@@ -21,8 +21,8 @@ export interface SpecializationState {
     error: string;
 }
 export interface SubDepartmentsState {
-    subDepartments: PaginatedList<SubDepartmentsInterface>;
-    currentSubDepartment: SubDepartmentsInterface;
+    subDepartments: PaginatedList<SubDepartmentInterface>;
+    currentSubDepartment: SubDepartmentInterface;
     isFetched: boolean;
     loading: boolean;
     error: string;

@@ -5,6 +5,10 @@ import { UpdateRoomDto } from './dto/update-room.dto';
 import { handleError } from 'src/shared/http-error';
 import { ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/decorators/public.decorator';
+import { Pagination, PaginationParams } from 'src/shared/decorators/pagination.decorator';
+import { Sorting, SortingParams } from 'src/shared/decorators/order.decorator';
+import { Filter, FilteringParams } from 'src/shared/decorators/filters.decorator';
+import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
 
 @ApiTags('Room')
 @Public()
@@ -21,10 +25,23 @@ export class RoomController {
     }
   }
 
+  @CustomGetAllParamDecorator()
   @Get()
-  findAll() {
+  findAll(
+    @PaginationParams() pagination: Pagination,
+    @SortingParams(["name"]) sort?: Sorting,
+    @FilteringParams([
+      "name",
+      "id",
+    ])
+    filters?: Array<Filter>,
+  ) {
     try {
-      return this.roomService.findAll();
+      return this.roomService.findAll(
+        pagination,
+        sort,
+        filters,
+      );
     } catch (error) {
       throw handleError(error);
     }
