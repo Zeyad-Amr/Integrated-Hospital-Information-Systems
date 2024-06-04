@@ -3,7 +3,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { InputLabel, SelectChangeEvent } from "@mui/material";
-import { ReactNode } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Checkbox from "@mui/material/Checkbox";
@@ -36,15 +36,37 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   touched,
   value,
   options = [],
-  // defaultValue = { id: 0, value: "" },
   isRequired = false,
   width,
   sx,
   multiple = false,
   hideLabel = true,
 }: SelectFieldProps<T>) => {
-  // Create a new array with the default value added to the beginning
-  const updatedOptions = [...options];
+  const [selectAll, setSelectAll] = useState(false);
+
+  useEffect(() => {
+    if (Array.isArray(value) && value.length === options.length) {
+      setSelectAll(true);
+    } else {
+      setSelectAll(false);
+    }
+  }, [value, options]);
+
+  const handleSelectChange = (event: SelectChangeEvent<T>) => {
+    const newValue = event.target.value as any;
+    if (newValue.includes("select-all")) {
+      const allIds = options.map((option) => option.id);
+      setSelectAll(!selectAll);
+      onChange(
+        {
+          target: { name, value: selectAll ? [] : allIds },
+        } as unknown as SelectChangeEvent<T>,
+        null
+      );
+    } else {
+      onChange(event, null);
+    }
+  };
 
   return (
     <Box
@@ -77,9 +99,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
         <Select
           multiple={multiple ?? false}
           label={label}
-          onChange={(event: SelectChangeEvent<T>, child: ReactNode) => {
-            onChange(event, child);
-          }}
+          onChange={handleSelectChange}
           onBlur={onBlur}
           sx={{
             backgroundColor: "#fff",
@@ -90,16 +110,6 @@ const CustomSelectField = <T extends { id: any; value: string }>({
           error={error && touched ? true : false}
           displayEmpty
           renderValue={(selected: unknown) => {
-            // if (
-            //   !selected ||
-            //   (Array.isArray(selected) && selected.length === 0)
-            // ) {
-            //   return (
-            //     <span style={{ color: "gray", opacity: "0.6" }}>
-            //       اختر عنصر من القائمة
-            //     </span>
-            //   );
-            // }
             if (Array.isArray(selected)) {
               return selected
                 .map(
@@ -120,24 +130,21 @@ const CustomSelectField = <T extends { id: any; value: string }>({
             },
           }}
         >
-          {updatedOptions?.map((option) => (
+          {multiple && (
             <MenuItem
-              key={option.id}
-              value={option.id}
+              key="select-all"
+              value="select-all"
               sx={{
-                // backgroundColor : "#232836",
                 color: "#232836",
-                opacity: !multiple ? 0.6 : 0.9,
-                transitionDuration: "0.5s ease",
+                opacity: 0.9,
+                transition: "0.5s ease",
                 margin: 1,
                 ...sx,
-                // selected background color
                 "&.Mui-selected": {
                   backgroundColor: !multiple ? "primary.dark" : "none",
                   color: !multiple ? "#fff" : "#232836",
                   opacity: 0.9,
                 },
-                // hover background color
                 "&:hover": {
                   opacity: !multiple ? 0.6 : 0.9,
                   color: "#232836",
@@ -157,22 +164,59 @@ const CustomSelectField = <T extends { id: any; value: string }>({
                   width: "100%",
                 }}
               >
-                <ListItemText primary={option.value} />
-                {multiple && (
-                  <Checkbox
-                    checked={
-                      Array.isArray(value) && value.indexOf(option.id) > -1
-                    }
-                    sx={{
-                      marginRight: 1,
-                      "&.Mui-checked": {
-                        // backgroundColor: "#fff",
-                        color: "primary.dark",
-                      },
-                    }}
-                  />
-                )}
+                <ListItemText primary="Select All" />
+                <Checkbox
+                  checked={selectAll}
+                  sx={{
+                    marginRight: 1,
+                    "&.Mui-checked": {
+                      color: "primary.dark",
+                    },
+                  }}
+                />
               </Box>
+            </MenuItem>
+          )}
+
+          {options.map((option) => (
+            <MenuItem
+              key={option.id}
+              value={option.id}
+              sx={{
+                color: "#232836",
+                opacity: 0.9,
+                transition: "0.5s ease",
+                margin: 1,
+                width: "98.5%",
+                ...sx,
+                "&.Mui-selected": {
+                  backgroundColor: !multiple ? "primary.dark" : "none",
+                  color: !multiple ? "#fff" : "#232836",
+                  opacity: 0.9,
+                },
+                "&:hover": {
+                  opacity: !multiple ? 0.6 : 0.9,
+                  color: "#232836",
+                },
+                "&.Mui-selected:hover": {
+                  opacity: 0.9,
+                  backgroundColor: !multiple ? "primary.dark" : "none",
+                  color: !multiple ? "#fff" : "#232836",
+                },
+              }}
+            >
+              <ListItemText primary={option.value} />
+              {multiple && (
+                <Checkbox
+                  checked={Array.isArray(value) && value.includes(option.id)}
+                  sx={{
+                    marginRight: 1,
+                    "&.Mui-checked": {
+                      color: "primary.dark",
+                    },
+                  }}
+                />
+              )}
             </MenuItem>
           ))}
         </Select>
