@@ -73,7 +73,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   //* Handling appearance of multiple items in input field
   const handleApearanceOfSelectedItems = (
     selectedItems: unknown[],
-    itemsNumber: number = 4
+    itemsNumber: number = 1
   ) => {
     if (selectedItems.length > itemsNumber) {
       let items = [];
@@ -83,11 +83,33 @@ const CustomSelectField = <T extends { id: any; value: string }>({
         );
       }
       return (
-        <span>
-          {items.join(", ")}
-          <span style={{ color: "gray", fontSize: "12px", opacity: "0.9" }}>
-            ...{selectedItems.length - items.length}more
-          </span>{" "}
+        <span style={{ display: "flex", alignItems: "center" }}>
+          <span
+            style={{
+              color: "#061540",
+              fontSize: "15px",
+              // opacity: "0.9",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            {selectedItems.length - items.length}+
+          </span>
+          {items.map((item: any, index: number) => (
+            <span
+              key={index}
+              style={{
+                backgroundColor: "#061540",
+                borderRadius: "4rem",
+                color: "#fff",
+                padding: "0.4rem 1rem",
+                fontSize: "10px",
+                margin: "0rem 0.5rem",
+              }}
+            >
+              {item}
+            </span>
+          ))}
         </span>
       );
     } else {
