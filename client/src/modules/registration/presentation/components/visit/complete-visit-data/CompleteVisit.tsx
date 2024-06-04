@@ -21,7 +21,7 @@ import { CompleteVisitInterface } from "@/modules/registration/domain/interfaces
 interface CompleteVisitPropsInterface {
   showCompletePatientDialog: boolean;
   setShowCompletePatientDialog: Dispatch<SetStateAction<boolean>>;
-  anonymousPatientData?: VisitInterface;
+  anonymousPatientData: VisitInterface;
 }
 
 const CompleteVisit = ({
@@ -64,6 +64,7 @@ const CompleteVisit = ({
       dispatch(updateVisit(combinedValues)).then((res: any) => {
         if (res) {
           patientData.current = undefined;
+          setShowCompletePatientDialog(false)
         }
       });
     }

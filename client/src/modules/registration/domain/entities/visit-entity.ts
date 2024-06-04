@@ -151,7 +151,7 @@ export default class VisitEntity {
             verificationMethod: Yup.number()
                 .when(["verificationMethod"],
                     (values, schema) => coditionCallback(values, schema, "طريقة التحقق مطلوبة", state.lookups.lookups.identityTypes.map((e) => e.id))),
-            gender: Yup.number().required("الجنس مطلوب"),
+            gender: Yup.number().required("الجنس مطلوب").oneOf(state.lookups.lookups.genderTypes.map((e) => e.id), "الجنس مطلوب"),
             birthDate: Yup.string()
                 .when([],
                     (values, schema) => coditionCallback(values, schema, "التاريخ مطلوب")),
