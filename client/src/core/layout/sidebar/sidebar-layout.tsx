@@ -68,7 +68,7 @@ const SidebarLayout = (props: any) => {
         >
           <Box
             sx={{
-              width: "85%",
+              width: "95%",
               margin: "1.5rem auto",
               display: "flex",
               justifyContent: "space-between",
@@ -81,6 +81,7 @@ const SidebarLayout = (props: any) => {
                   fontSize: "1.5rem",
                   fontWeight: "bold",
                   color: "primary.darker",
+                  marginLeft: "3rem",
                 }}
               >
                 {props.pageTitle}
