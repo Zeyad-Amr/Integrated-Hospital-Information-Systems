@@ -16,8 +16,6 @@ export class AuthService {
     private jwtService: JwtService,
   ) { }
 
-
-
   async login(loginDto: LoginDto) {
     try {
       const errInvalidCredentials = 'Invalid username or password';
@@ -39,7 +37,7 @@ export class AuthService {
       });
 
       const perm = await this.authRepo.getUserPermissions(user.username);
-      delete perm.password
+      delete perm.password;
       return { access_token: token, user: perm };
     } catch (error) {
       throw error;
@@ -68,7 +66,9 @@ export class AuthService {
   async findOne(username: string) {
     try {
       const user = await this.authRepo.getByUsername(username);
-      return user;
+      const perm = await this.authRepo.getUserPermissions(user.username);
+      delete perm.password;
+      return { user: perm, permissions: perm.employee.role.Permissions };
     } catch (error) {
       throw error;
     }
