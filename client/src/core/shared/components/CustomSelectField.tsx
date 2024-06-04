@@ -6,10 +6,12 @@ import { InputLabel, SelectChangeEvent } from "@mui/material";
 import { ReactNode } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Checkbox from "@mui/material/Checkbox";
+import ListItemText from "@mui/material/ListItemText";
 import { FormikErrors, FormikTouched } from "formik";
 
 export interface SelectFieldProps<T> {
-  onChange: (event: SelectChangeEvent<T>, child: ReactNode) => void;
+  onChange: (event: SelectChangeEvent<T> | unknown, child: ReactNode) => void;
   onBlur: (event: React.FocusEvent<{ value: unknown }>) => void;
   name: string;
   label: string;
@@ -25,7 +27,6 @@ export interface SelectFieldProps<T> {
   sx?: any;
 }
 
-
 const CustomSelectField = <T extends { id: any; value: string }>({
   onChange,
   onBlur,
@@ -35,7 +36,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   touched,
   value,
   options = [],
-  defaultValue = { id: 0, value: "" },
+  // defaultValue = { id: 0, value: "" },
   isRequired = false,
   width,
   sx,
@@ -43,7 +44,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   hideLabel = true,
 }: SelectFieldProps<T>) => {
   // Create a new array with the default value added to the beginning
-  const updatedOptions = [defaultValue, ...options];
+  const updatedOptions = [...options];
 
   return (
     <Box
@@ -61,7 +62,6 @@ const CustomSelectField = <T extends { id: any; value: string }>({
             flexGrow: 1,
             fontSize: "0.9rem !important",
             margin: "0rem 0.5rem",
-
           }}
         >
           {label} {isRequired && <span style={{ color: "#FF5630" }}>*</span>}
@@ -79,17 +79,39 @@ const CustomSelectField = <T extends { id: any; value: string }>({
           label={label}
           onChange={(event: SelectChangeEvent<T>, child: ReactNode) => {
             onChange(event, child);
-            
           }}
           onBlur={onBlur}
           sx={{
-            backgroundColor: "#fff ",
+            backgroundColor: "#fff",
             height: "3.5rem",
           }}
           value={multiple ? (Array.isArray(value) ? value : []) : value}
           name={name}
           error={error && touched ? true : false}
-          hidden={hideLabel}
+          displayEmpty
+          renderValue={(selected: unknown) => {
+            // if (
+            //   !selected ||
+            //   (Array.isArray(selected) && selected.length === 0)
+            // ) {
+            //   return (
+            //     <span style={{ color: "gray", opacity: "0.6" }}>
+            //       اختر عنصر من القائمة
+            //     </span>
+            //   );
+            // }
+            if (Array.isArray(selected)) {
+              return selected
+                .map(
+                  (val) => options.find((option) => option.id === val)?.value
+                )
+                .join(", ");
+            }
+            const selectedOption = options.find(
+              (option) => option.id === selected
+            );
+            return selectedOption ? selectedOption.value : "";
+          }}
           MenuProps={{
             PaperProps: {
               style: {
@@ -98,34 +120,59 @@ const CustomSelectField = <T extends { id: any; value: string }>({
             },
           }}
         >
-          {updatedOptions?.map((option: { id: any; value: string }) => (
+          {updatedOptions?.map((option) => (
             <MenuItem
               key={option.id}
               value={option.id}
               sx={{
                 // backgroundColor : "#232836",
-                opacity: 0.8,
                 color: "#232836",
+                opacity: !multiple ? 0.6 : 0.9,
                 transitionDuration: "0.5s ease",
                 margin: 1,
                 ...sx,
                 // selected background color
                 "&.Mui-selected": {
-                  // backgroundColor: "#232836",
-                  // color: "white",
-                  // margin: 1,
-                  // borderRadius: 25,
+                  backgroundColor: !multiple ? "primary.dark" : "none",
+                  color: !multiple ? "#fff" : "#232836",
+                  opacity: 0.9,
                 },
                 // hover background color
                 "&:hover": {
-                  // backgroundColor: "green",
-                  // color: "white",
-                  // margin: 1,
-                  // borderRadius: 25,
+                  opacity: !multiple ? 0.6 : 0.9,
+                  color: "#232836",
+                },
+                "&.Mui-selected:hover": {
+                  opacity: 0.9,
+                  backgroundColor: !multiple ? "primary.dark" : "none",
+                  color: !multiple ? "#fff" : "#232836",
                 },
               }}
             >
-              {option.value}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <ListItemText primary={option.value} />
+                {multiple && (
+                  <Checkbox
+                    checked={
+                      Array.isArray(value) && value.indexOf(option.id) > -1
+                    }
+                    sx={{
+                      marginRight: 1,
+                      "&.Mui-checked": {
+                        // backgroundColor: "#fff",
+                        color: "primary.dark",
+                      },
+                    }}
+                  />
+                )}
+              </Box>
             </MenuItem>
           ))}
         </Select>
