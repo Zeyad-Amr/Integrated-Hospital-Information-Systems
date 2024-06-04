@@ -16,7 +16,7 @@ export default class EmployeeModel {
     return {
       roleId: entity.roleId,
       shiftId: entity.shiftId,
-      suDepartmentIds: entity.suDepartmentIds,
+      subDepartmentIds: entity.subDepartmentIds,
       personalData: entity.person ? PersonModel.toJson(entity.person) : null,
       auth: entity.auth ? AuthDataModel.toJson(entity.auth) : null,
     };
@@ -33,7 +33,7 @@ export default class EmployeeModel {
       id: baseModel.id,
       roleId: baseModel.roleId,
       shiftId: baseModel.shiftId,
-      suDepartmentIds: baseModel.suDepartmentIds,
+      subDepartmentIds: baseModel.subDepartmentIds,
       createdAt: baseModel.createdAt,
       updatedAt: baseModel.updatedAt,
       person: baseModel.person,

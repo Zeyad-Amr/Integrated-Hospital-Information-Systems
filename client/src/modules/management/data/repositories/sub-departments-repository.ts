@@ -1,6 +1,6 @@
 import { ErrorResponse, ErrorMessage, FilterQuery, PaginatedList } from "@/core/api";
 import { BaseSubDepartmentsDataSource } from "../datasources/sub-departments-datasource";
-import { SubDepartmentsAssignFeaturesInterface, SubDepartmentsInterface } from "../../domain/interfaces/sub-departments-interface";
+import { SubDepartmentAssignFeaturesInterface, SubDepartmentInterface } from "../../domain/interfaces/sub-departments-interface";
 import BaseSubDepartmentsRepository from "../../domain/repositories/base-sub-departments-repository";
 
 class SubDepartmentsRepository extends BaseSubDepartmentsRepository {
@@ -8,7 +8,7 @@ class SubDepartmentsRepository extends BaseSubDepartmentsRepository {
         super();
     }
 
-    override async createSubDepartment(subDepartment: SubDepartmentsInterface): Promise<boolean> {
+    override async createSubDepartment(subDepartment: SubDepartmentInterface): Promise<boolean> {
         try {
             await this.baseSubDepartmentsDataSource.createSubDepartment(subDepartment);
             return true;
@@ -20,7 +20,7 @@ class SubDepartmentsRepository extends BaseSubDepartmentsRepository {
         }
     }
 
-    override async updateSubDepartment(subDepartment: SubDepartmentsInterface): Promise<boolean> {
+    override async updateSubDepartment(subDepartment: SubDepartmentInterface): Promise<boolean> {
         try {
             await this.baseSubDepartmentsDataSource.updateSubDepartment(subDepartment);
             return true;
@@ -30,7 +30,7 @@ class SubDepartmentsRepository extends BaseSubDepartmentsRepository {
         }
     }
 
-    override async updateSubDepartmentAssignFeature(assignFeatures: SubDepartmentsAssignFeaturesInterface): Promise<boolean> {
+    override async updateSubDepartmentAssignFeature(assignFeatures: SubDepartmentAssignFeaturesInterface): Promise<boolean> {
         try {
             await this.baseSubDepartmentsDataSource.updateSubDepartmentAssignFeature(assignFeatures);
             return true;
@@ -40,7 +40,7 @@ class SubDepartmentsRepository extends BaseSubDepartmentsRepository {
         }
     }
 
-    override async getAllSubDepartments(filters: FilterQuery[]): Promise<PaginatedList<SubDepartmentsInterface>> {
+    override async getAllSubDepartments(filters: FilterQuery[]): Promise<PaginatedList<SubDepartmentInterface>> {
         try {
             const result = await this.baseSubDepartmentsDataSource.getAllSubDepartments(filters);
             console.log(result, "getAllSubDepartments");
@@ -51,7 +51,7 @@ class SubDepartmentsRepository extends BaseSubDepartmentsRepository {
         }
     }
 
-    override async getSubDepartmentById(id: string): Promise<SubDepartmentsInterface> {
+    override async getSubDepartmentById(id: string): Promise<SubDepartmentInterface> {
         try {
             const result = await this.baseSubDepartmentsDataSource.getSubDepartmentById(id);
             return result;

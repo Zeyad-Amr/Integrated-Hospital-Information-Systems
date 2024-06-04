@@ -7,7 +7,7 @@ export default class UserEntity {
       id: "",
       roleId: undefined,
       shiftId: undefined,
-      suDepartmentIds: undefined,
+      subDepartmentIds: undefined,
       createdAt: undefined,
       updatedAt: undefined,
       person: undefined,
@@ -20,7 +20,7 @@ export default class UserEntity {
       .shape({
         roleId: Yup.string().required("الوظيفة مطلوبة"),
         shiftId: Yup.string().required("موعد العمل مطلوب"),
-        suDepartmentIds: Yup.array()
+        subDepartmentIds: Yup.array()
           .of(
             Yup.mixed().test(
               "is-string-or-number",

@@ -19,7 +19,7 @@ import {
   SpecializationState,
   SubDepartmentsState,
 } from "../../controllers/types";
-import { SubDepartmentsInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
+import { SubDepartmentInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
 import PermissionsForm from "./PermissionsForm";
 import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
 import { getPermissionsList } from "../../controllers/thunks/permissions-thunks";
@@ -95,7 +95,7 @@ const SubDepartmentsTable = () => {
     useState<boolean>(false);
   const [showPermissionsForm, setShowPermissionsForm] = useState(false);
   const [subDepartmentData, setSubDepartmentData] =
-    useState<SubDepartmentsInterface>();
+    useState<SubDepartmentInterface>();
   const [showConfirmationDialog, setShowConfirmationDialog] =
     useState<boolean>(false);
 
@@ -178,7 +178,7 @@ const SubDepartmentsTable = () => {
         resetControls={subDepartmentsState?.subDepartments.isInitial}
         totalItems={subDepartmentsState?.subDepartments.total}
         data={subDepartmentsState?.subDepartments.items?.map(
-          (item: SubDepartmentsInterface) => {
+          (item: SubDepartmentInterface) => {
             return {
               name: item.name ?? "",
               department: getNameOfItemWithItsId(

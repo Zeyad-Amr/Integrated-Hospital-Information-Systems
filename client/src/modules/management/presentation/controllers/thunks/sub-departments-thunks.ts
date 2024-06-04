@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { sl, ServiceKeys } from "@/core/service-locator";
 import GetAllSubDepartmentsUseCase from "@/modules/management/domain/usecases/sub-departments/get-all-sub-departments-usecase";
-import { SubDepartmentsInterface, SubDepartmentsAssignFeaturesInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
+import { SubDepartmentInterface, SubDepartmentAssignFeaturesInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
 import CreateSubDepartmentUseCase from "@/modules/management/domain/usecases/sub-departments/create-sub-department-usecase";
 import UpdateSubDepartmentUseCase from "@/modules/management/domain/usecases/sub-departments/update-sub-department-usecase";
 import DeleteSubDepartmentUseCase from "@/modules/management/domain/usecases/sub-departments/delete-sub-department-usecase";
@@ -35,7 +35,7 @@ export const getSubDepartmentsList = createAsyncThunk(
 //* Create SubDepartment
 export const createSubDepartment = createAsyncThunk(
   "subdepartment/create",
-  async (data: SubDepartmentsInterface, thunkApi) => {
+  async (data: SubDepartmentInterface, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
       console.log("Thunk", data);
@@ -56,7 +56,7 @@ export const createSubDepartment = createAsyncThunk(
 //* Update SubDepartment
 export const updateSubDepartment = createAsyncThunk(
   "subdepartment/update",
-  async (data: SubDepartmentsInterface, thunkApi) => {
+  async (data: SubDepartmentInterface, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
       const result = await sl
@@ -76,7 +76,7 @@ export const updateSubDepartment = createAsyncThunk(
 //* Update SubDepartment assignfeatures
 export const updateSubDepartmentAssignFeatures = createAsyncThunk(
   "subdepartment/update/assignfeatures",
-  async (data: SubDepartmentsAssignFeaturesInterface, thunkApi) => {
+  async (data: SubDepartmentAssignFeaturesInterface, thunkApi) => {
     const { rejectWithValue, dispatch } = thunkApi;
     try {
       const result = await sl
