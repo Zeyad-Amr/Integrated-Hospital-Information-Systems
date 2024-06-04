@@ -27,7 +27,7 @@ export interface SelectFieldProps<T> {
   sx?: any;
 }
 
-const CustomSelectField = <T extends { id: string | number; value: string }>({
+const CustomSelectField = <T extends { id: any; value: string }>({
   onChange,
   onBlur,
   name,
