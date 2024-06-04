@@ -37,6 +37,7 @@ const visitSlice = createSlice({
             state.loading = false;
             state.error = "";
             state.visits.items.push(action.payload);
+            state.visits = PaginatedListModel.resetPaginatedList(state.visits)
             AlertService.showAlert('تم اضافة زيارة مريض بنجاح', 'success');
             console.log('state.visits', state.visits);
         });
@@ -54,6 +55,7 @@ const visitSlice = createSlice({
         builder.addCase(updateVisit.fulfilled, (state, _action) => {
             state.loading = false;
             AlertService.showAlert('تم تحديث بيانات زيارة مريض بنجاح', 'success');
+            state.visits = PaginatedListModel.resetPaginatedList(state.visits)
             state.error = "";
         });
         builder.addCase(updateVisit.rejected, (state, action) => {
@@ -70,6 +72,7 @@ const visitSlice = createSlice({
         builder.addCase(getAnonymousVisits.fulfilled, (state, action) => {
             state.loading = false;
             state.visits = action.payload;
+            state.visits = PaginatedListModel.updatePaginatedList(state.visits, action.payload);
             state.error = "";
         });
         builder.addCase(getAnonymousVisits.rejected, (state, action) => {
