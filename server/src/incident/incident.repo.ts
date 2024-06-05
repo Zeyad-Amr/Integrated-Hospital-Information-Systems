@@ -37,7 +37,7 @@ export class IncidentRepo extends PrismaGenericRepo<
         companion: {
           include: {
             person: true,
-            kinshipId: true
+            kinship: true,
           }
         }
       }
