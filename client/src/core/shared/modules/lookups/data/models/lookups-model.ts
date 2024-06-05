@@ -1,4 +1,5 @@
 import { LookupsInterface } from '../../domain/interfaces/lookups-interface';
+import SubDepartmentsModel from '@/modules/management/data/models/sub-departments';
 
 export default class LookupsModel {
 
@@ -27,27 +28,24 @@ export default class LookupsModel {
                 };
             }
             ),
-            features: json.features || [
-                {
-                    "id": 1,
-                    "value": "Nerve test",
-                    "subDepartmentId": 1,
-                },
-                {
-                    "id": 2,
-                    "value": "Cardiology test",
-                    "subDepartmentId": 1,
-                },
-                {
-                    "id": 3,
-                    "value": "Brain MRI test",
-                    "subDepartmentId": 4,
-                }
-            ],
-        };
+            features: (json.features || []).map((feature: any) => {
+                return {
+                    id: feature.id,
+                    value: feature.name,
+                    code: feature.code,
+                    subDepartment: SubDepartmentsModel.fromJson(feature.subDepartment),
+                };
+            }),
+        } as LookupsInterface;
     }
 
 
 }
+
+// id?: string | number;
+//   name: string;
+//   roomId: string | number;
+//   specializationId: string | number;
+//   departmentId: string | number;
 
 
