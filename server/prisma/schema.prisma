@@ -49,6 +49,7 @@ model Patient {
 
   medicalRecords MedicalRecord[]
   visits         Visit[]
+  diagnosis      Diagnosis[]
 }
 
 model Companion {
@@ -87,6 +88,7 @@ model Employee {
 
   subdepartments SubDepartment[]
   visitsCreated  Visit[]
+  diagnosis      Diagnosis[]
 }
 
 model User {
@@ -181,9 +183,12 @@ model Visit {
 
   medicalRecord MedicalRecord?
   transfers     Transfer[]
+  triageAx      TriageAx?
 
-  incident   Incident? @relation(fields: [incidentId], references: [id])
-  incidentId String?
+  incident      Incident?       @relation(fields: [incidentId], references: [id])
+  incidentId    String?
+  diagnosis     Diagnosis[]
+  primarySurvey PrimarySurvey[]
 }
 
 model Incident {
@@ -265,23 +270,63 @@ model MedicalRecord {
   patientId String?
 }
 
+model Diagnosis {
+  id          String @id @default(uuid())
+  description String
+  icdCode     String
+  type        String //(provisional,final) 
+
+  visit     Visit    @relation(fields: [visitCode], references: [code])
+  visitCode String
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId String
+  author    Employee @relation(fields: [authorId], references: [id])
+  authorId  String
+}
+
+model TriageAx {
+  id                   String      @id @default(uuid())
+  painScore            Float?
+  consciousnessLevel   LOC?        @relation(fields: [consciousnessLevelId], references: [id])
+  consciousnessLevelId Int?
+  triage               TriageType? @relation(fields: [triageId], references: [id])
+  triageId             Int?
+
+  visit     Visit  @relation(fields: [visitCode], references: [code])
+  visitCode String @unique
+}
+
 model Vitals {
-  id        String @id @default(uuid())
-  temp      Float?
-  PR        Float? //pulse rate
-  RR        Float? //respiratory rate
-  painScore Float?
-  SBP       Float? //systolic blood pressure
-  DBP       Float? //diastolic blood pressure
-  SpO2      Float?
-  CVP       Float?
-  GCS       Float?
+  id   String @id @default(uuid())
+  temp Float?
+  PR   Float? //pulse rate
+  RR   Float? //respiratory rate
+  SBP  Float? //systolic blood pressure
+  DBP  Float? //diastolic blood pressure
+  SpO2 Float?
+  CVP  Float?
+  GCS  Float?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   medicalRecord  MedicalRecord @relation(fields: [medcalRecordId], references: [id])
   medcalRecordId String
+}
+
+model PrimarySurvey {
+  id          String @id @default(uuid())
+  airway      String
+  breathing   String
+  circulation String
+  disability  String
+  exposure    String
+
+  createdAt DateTime
+  updatedAt DateTime
+
+  visit     Visit   @relation(fields: [visitCode], references: [code])
+  visitCode String
 }
 
 model Transfer {
@@ -392,6 +437,7 @@ model TriageType {
   id            Int             @id @default(autoincrement())
   value         String          @unique
   MedicalRecord MedicalRecord[]
+  triageAx      TriageAx[]
 }
 
 // enum ConsciousnessLevel {
@@ -404,6 +450,7 @@ model LOC {
   id            Int             @id @default(autoincrement())
   value         String          @unique
   MedicalRecord MedicalRecord[]
+  triageAx      TriageAx[]
 }
 
 // enum Comorbidity {
