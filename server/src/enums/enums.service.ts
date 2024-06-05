@@ -13,33 +13,33 @@ export class EnumsService {
 
   async findAll() {
     const enums = await this.prismaService.$transaction(async (tx) => {
-      const identityTypes = await tx.identityType.findMany();
-      const genderTypes = await tx.genderType.findMany();
-      const kinshipTypes = await tx.kinshipType.findMany();
-      const roleTypes = await tx.roleType.findMany();
-      const shiftTypes = await tx.shiftType.findMany();
+      const identityType = await tx.identityType.findMany();
+      const genderType = await tx.genderType.findMany();
+      const kinshipType = await tx.kinshipType.findMany();
+      const roleType = await tx.roleType.findMany();
+      const shiftType = await tx.shiftType.findMany();
       const cameFromOptions = await tx.cameFromOptions.findMany();
-      const attendantRoles = await tx.attendantRole.findMany();
-      const triageTypes = await tx.triageType.findMany();
-      const LOCs = await tx.lOC.findMany();
+      const attendantRole = await tx.attendantRole.findMany();
+      const triageType = await tx.triageType.findMany();
+      const LOC = await tx.lOC.findMany();
       const comorbidities = await tx.comorbidity.findMany();
-      const governates = await tx.governate.findMany();
-      const departments = await tx.department.findMany();
+      const governate = await tx.governate.findMany();
+      const department = await tx.department.findMany();
       const features = await tx.feature.findMany();
 
       return {
-        identityTypes,
-        genderTypes,
-        kinshipTypes,
-        roleTypes,
-        shiftTypes,
+        identityType,
+        genderType,
+        kinshipType,
+        roleType,
+        shiftType,
         cameFromOptions,
-        attendantRoles,
-        triageTypes,
-        LOCs,
+        attendantRole,
+        triageType,
+        LOC,
         comorbidities,
-        governates,
-        departments,
+        governate,
+        department,
         features,
       };
     });

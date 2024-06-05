@@ -143,7 +143,7 @@ model Room {
 model Feature {
   id              Int            @id @default(autoincrement())
   name            String
-  featureCode     String?
+  code            String?
   subDepartment   SubDepartment? @relation(fields: [subDepartmentId], references: [id])
   subDepartmentId Int?
   Permissions     Permissions[]
