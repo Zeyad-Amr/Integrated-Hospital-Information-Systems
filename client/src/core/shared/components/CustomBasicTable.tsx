@@ -82,6 +82,7 @@ const CustomBasicTable = <T,>({
         <TableBody>
           {data.map((item) => (
             <TableRow
+              sx={{ cursor : "pointer" }}
               key={(item as any).id}
               onClick={() => onRowClick && onRowClick(item)}
               data-row={JSON.stringify(item)}

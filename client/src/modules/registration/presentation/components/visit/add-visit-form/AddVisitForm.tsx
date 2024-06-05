@@ -1,6 +1,6 @@
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { Button, Box, Typography } from "@mui/material";
-import { Formik } from "formik";
+import { Formik, FormikProps } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
@@ -95,6 +95,13 @@ const AddVisitForm = () => {
     submitAdditionalData();
   };
 
+  //* Formik refs
+  const formikRefPatient =
+    useRef<FormikProps<PersonInterface & { sequenceNumber: string }>>(null);
+  const formikRefCompanion = useRef<FormikProps<CompanionInterface>>(null);
+  const formikRefAdditionalData =
+    useRef<FormikProps<AdditionalDataInterface>>(null);
+
   useEffect(() => {
     if (
       patientData.current &&
@@ -102,10 +109,16 @@ const AddVisitForm = () => {
       additionalData.current
     ) {
       if (combinedValues) {
-        dispatch(createVisit(combinedValues)).then(() => {
-          patientData.current = undefined;
-          companionData.current = undefined;
-          additionalData.current = undefined;
+        dispatch(createVisit(combinedValues)).then((res) => {
+          if (res?.meta?.requestStatus == "fulfilled") {
+            patientData.current = undefined;
+            companionData.current = undefined;
+            additionalData.current = undefined;
+            // Reset forms after successful submission
+          if (formikRefPatient.current) formikRefPatient.current.resetForm();
+          if (formikRefCompanion.current) formikRefCompanion.current.resetForm();
+          if (formikRefAdditionalData.current) formikRefAdditionalData.current.resetForm();
+          }
         });
         console.log(combinedValues);
       }
@@ -123,6 +136,7 @@ const AddVisitForm = () => {
       >
         {/* //* Start Patient form ********************* */}
         <Formik
+          innerRef={formikRefPatient}
           initialValues={{ sequenceNumber: "", ...PersonEntity.defaultValue() }}
           onSubmit={(values) => {
             console.log(values);
@@ -203,6 +217,7 @@ const AddVisitForm = () => {
           setExpanded={setAdditionalDataExpanded}
         >
           <AdditionalData
+            innerFormRef={formikRefAdditionalData}
             initialValues={AdditionalDataEntity.defaultValue()}
             refSubmitButton={refSubmitAdditionalData}
             onSubmit={(values) => {
@@ -224,6 +239,7 @@ const AddVisitForm = () => {
         >
           <Box>
             <CompanionForm
+              innerFormRef={formikRefCompanion}
               initialValues={VisitEntity.companionDefaultValue()}
               onSubmit={(values) => {
                 setCompanionDataExpanded(true);

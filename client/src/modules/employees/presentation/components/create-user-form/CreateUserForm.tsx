@@ -31,10 +31,6 @@ import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import { EmployeeState } from "../../controllers/types";
 import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
-import {
-  RoleTypeInterface,
-  ShiftTypeInterface,
-} from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 import PersonalData from "@/core/shared/components/PersonalData";
 import { getSubDepartmentsList } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
 import { SubDepartmentsState } from "@/modules/management/presentation/controllers/types";
