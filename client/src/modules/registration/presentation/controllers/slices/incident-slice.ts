@@ -1,7 +1,7 @@
 import IncidentEntity from "@/modules/registration/domain/entities/incident-entity";
 import { IncidentsState } from "../types";
 import { createSlice } from "@reduxjs/toolkit";
-import { createIncident, getAllIncidents } from "../thunks/incident-thunk";
+import { createIncident, getAllIncidents, updateIncidentPatient } from "../thunks/incident-thunk";
 import { ErrorResponse, PaginatedListModel } from "@/core/api";
 import AlertService from "@/core/shared/utils/alert-service";
 
@@ -53,6 +53,23 @@ const incidentSlice = createSlice({
             state.error = "";
         });
         builder.addCase(getAllIncidents.rejected, (state, action) => {
+            state.loading = false;
+            state.error = (action.payload as ErrorResponse).message;
+            AlertService.showAlert(`${state.error}`, 'error');
+        });
+
+         //* Update Visit
+         builder.addCase(updateIncidentPatient.pending, (state, _action) => {
+            state.loading = true;
+            state.error = "";
+        });
+        builder.addCase(updateIncidentPatient.fulfilled, (state, _action) => {
+            state.loading = false;
+            AlertService.showAlert('تم تحديث بيانات زيارة مريض بنجاح', 'success');
+            state.incidents = PaginatedListModel.resetPaginatedList(state.incidents)
+            state.error = "";
+        });
+        builder.addCase(updateIncidentPatient.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
             AlertService.showAlert(`${state.error}`, 'error');
