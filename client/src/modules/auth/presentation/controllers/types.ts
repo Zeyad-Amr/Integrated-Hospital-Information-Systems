@@ -6,6 +6,7 @@ import UserInterface from "../../domain/interfaces/user-interface";
 export interface AuthState {
     me: UserInterface;
     permssions: AccountSubDepartmentPermissionInterface[];
+    currentPermission: AccountSubDepartmentPermissionInterface;
     authData: AuthInterface;
     loading: boolean;
     error: string;

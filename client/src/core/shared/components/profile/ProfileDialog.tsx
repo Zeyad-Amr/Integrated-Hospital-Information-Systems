@@ -14,7 +14,9 @@ import { useRouter } from "next/navigation";
 import { SessionStorage } from "../../utils/session-storage";
 import ConfirmationDialog from "../ConfirmationDialog";
 import { AuthState } from "@/modules/auth/presentation/controllers/types";
-import { useAppSelector } from "@/core/state/store";
+import { useAppDispatch, useAppSelector } from "@/core/state/store";
+import { AccountSubDepartmentPermissionInterface } from "@/modules/auth/domain/interfaces/account-interface";
+import { setCurrentAccountSubDepartmentPermissions } from "@/modules/auth/presentation/controllers/slices/auth-slice";
 
 const ProfileDialog = ({
   popperRef,
@@ -25,6 +27,7 @@ const ProfileDialog = ({
   name: string;
   anchorEl: any;
 }) => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const [showConfirmationDialog, setShowConfirmationDialog] =
     useState<boolean>(false);
@@ -32,6 +35,7 @@ const ProfileDialog = ({
   const id = open ? "simple-popper" : undefined;
 
   const authState: AuthState = useAppSelector((state: any) => state.auth);
+
   return (
     <>
       <Popper
@@ -100,25 +104,30 @@ const ProfileDialog = ({
                 <RadioGroup
                   aria-label="department"
                   name="department"
-                  defaultValue={
-                    authState.permssions.length > 0
-                      ? authState.permssions[0].subDepartment.id
-                      : ""
-                  }
-                >
-                  {authState.permssions.map((permission: any) => {
-                    return (
-                      <FormControlLabel
-                        key={permission.subDepartment.id}
-                        value={permission.subDepartment.id}
-                        control={<Radio />}
-                        label={permission.subDepartment.name}
-                        sx={{
-                          fontSize: "0.1rem",
-                        }}
-                      />
+                  value={authState.currentPermission.subDepartment.id}
+                  onChange={(e) => {
+                    dispatch(
+                      setCurrentAccountSubDepartmentPermissions(
+                        (e.target as HTMLInputElement).value
+                      )
                     );
-                  })}
+                  }}
+                >
+                  {authState.permssions.map(
+                    (permission: AccountSubDepartmentPermissionInterface) => {
+                      return (
+                        <FormControlLabel
+                          key={permission.subDepartment.id}
+                          value={permission.subDepartment.id}
+                          control={<Radio />}
+                          label={permission.subDepartment.name}
+                          sx={{
+                            fontSize: "0.1rem",
+                          }}
+                        />
+                      );
+                    }
+                  )}
                 </RadioGroup>
               </FormControl>
             </Box>
