@@ -25,7 +25,11 @@ export class EnumsService {
       const comorbidities = await tx.comorbidity.findMany();
       const governate = await tx.governate.findMany();
       const department = await tx.department.findMany();
-      const features = await tx.feature.findMany();
+      const features = await tx.feature.findMany({
+        include: {
+          subDepartment: true,
+        },
+      });
 
       return {
         identityType,
