@@ -11,7 +11,7 @@ export interface VisitsState {
 }
 
 export interface IncidentState {
-    incidents: IncidentInterface[];
+    incidents: PaginatedList<IncidentInterface>;
     currentIncident: IncidentInterface;
     loading: boolean;
     error: string;

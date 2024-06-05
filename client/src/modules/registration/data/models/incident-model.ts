@@ -2,6 +2,8 @@ import { allValuesUndefined } from '@/core/shared/utils/object-operations';
 import PersonModel from '../../../../core/shared/modules/person/data/models/person-model';
 import IncidentInterface from '../../domain/interfaces/incident-interface';
 import AdditionalDataModel from './additional-data-model';
+import CompanionModel from './companion-model';
+import VisitModel from './visit-model';
 
 export default class IncidentModel {
 
@@ -19,10 +21,10 @@ export default class IncidentModel {
     // //* --------------------- Deserialization: Create a model from JSON data ---------------------
     static fromJson(json: any): IncidentInterface {
         return {
-            numOfPatients: json.numberOfPatients,
-            additionalInfo: AdditionalDataModel.fromJson(json.additionalInfo),
-            companions: json.companions,
-
+            numOfPatients: json.numberOfIncompletedVisits.toString(),
+            additionalInfo: AdditionalDataModel.fromJson(json.AdditionalInformation),
+            companions: (json.CompanionsOnIncidents || []).map((companion: any) => CompanionModel.fromJson(companion.companion)),
+            visits: json.visits.map((visit: any) => VisitModel.fromJson(visit)),
         };
     }
 }

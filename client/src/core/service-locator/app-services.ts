@@ -70,6 +70,7 @@ import UpdatePermissionUseCase from "@/modules/management/domain/usecases/permis
 import GetAllPermissionsUseCase from "@/modules/management/domain/usecases/permissions/get-all-permissions-usecase";
 import GetPermissionUseCase from "@/modules/management/domain/usecases/permissions/get-permission-by-Id-usecase";
 import UpdateSubDepartmentAssignFeaturesUseCase from "@/modules/management/domain/usecases/sub-departments/update-sub-department-assign-features-usecase";
+import GetAllIncidentsUseCase from "@/modules/registration/domain/usecases/incident/get-all-incidents-usecase";
 
 
 class AppServicesLocator {
@@ -248,6 +249,9 @@ class AppServicesLocator {
 
 
         sl.registerFactory<CreateIncidentUseCase>(ServiceKeys.CreateIncidentUseCase, () => new CreateIncidentUseCase(
+            sl.get<BaseIncidentRepository>(ServiceKeys.IncidentRepository)
+        ));
+        sl.registerFactory<GetAllIncidentsUseCase>(ServiceKeys.GetAllIncidentsUseCase, () => new GetAllIncidentsUseCase(
             sl.get<BaseIncidentRepository>(ServiceKeys.IncidentRepository)
         ));
         sl.registerFactory<CreateVisitUseCase>(ServiceKeys.CreateVisitUseCase, () => new CreateVisitUseCase(

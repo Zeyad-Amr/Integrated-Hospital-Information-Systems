@@ -8,6 +8,7 @@ export default class IncidentEntity {
             numOfPatients: "",
             additionalInfo: undefined,
             companions: undefined,
+            visits: undefined
         }
     }
 

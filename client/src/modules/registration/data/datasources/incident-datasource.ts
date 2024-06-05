@@ -1,11 +1,10 @@
-import { ApiClient, Endpoints } from "@/core/api";
+import { ApiClient, Endpoints, FilterQuery, PaginatedList, PaginatedListModel } from "@/core/api";
 import IncidentModel from "../models/incident-model";
 import IncidentInterface from "../../domain/interfaces/incident-interface";
 
 abstract class BaseIncidentDataSource {
     abstract createIncident(incident: IncidentInterface): Promise<IncidentInterface>;
-    // abstract getAllIncidents(): Promise<IncidentInterface[]>;
-    // abstract getIncidentById(incidentcode: string): Promise<IncidentInterface>;
+    abstract getAllIncidents(filters: FilterQuery[]): Promise<PaginatedList<IncidentInterface>>;
 }
 
 class IncidentDataSource extends BaseIncidentDataSource {
@@ -19,19 +18,13 @@ class IncidentDataSource extends BaseIncidentDataSource {
         return response.data;
     }
 
-    // TODO
-    // override async getAllIncidents(): Promise<IncidentInterface[]> {
-    //     const response = await this.apiClient.get(Endpoints.incident.list, { filters: [FilterQuery.isNull('patientId')] });
-    //     console.log(response.data.items);
-    //     return response.data.items.map((item: any) => IncidentModel.fromJson(item));
-    // }
 
-    // override async getIncidentById(incidentcode: string): Promise<IncidentInterface> {
-    //     const response = await this.apiClient.get(Endpoints.incident.details, {
-    //         pathVariables: { incidentcode: incidentcode },
-    //     });
-    //     return IncidentModel.fromJson(response.data);
-    // }
+    override async getAllIncidents(filters: FilterQuery[]): Promise<PaginatedList<IncidentInterface>> {
+        console.log("getAllIncidents DS:", filters);
+        const response = await this.apiClient.get(Endpoints.visit.list, { filters: filters });
+        console.log(response.data.items);
+        return PaginatedListModel.fromJson<IncidentInterface>(response.data, response.data.items.map((item: any) => IncidentModel.fromJson(item)), filters);
+    }
 
 }
 
