@@ -82,14 +82,7 @@ export default class CompleteVisitEntity {
             state.lookups.lookups.identityTypes.map((e) => e.id)
           )
         ),
-        gender: Yup.number().when(["SSN"], (values, schema) =>
-          coditionCallback(
-            values,
-            schema,
-            "الجنس مطلوب",
-            state.lookups.lookups.genderTypes.map((e) => e.id)
-          )
-        ),
+        gender: Yup.number().required("الجنس مطلوب").oneOf(state.lookups.lookups.genderTypes.map((e) => e.id), "الجنس مطلوب"),
         birthDate: Yup.string().when(["SSN"], (values, schema) =>
           coditionCallback(values, schema, "التاريخ مطلوب")
         ),

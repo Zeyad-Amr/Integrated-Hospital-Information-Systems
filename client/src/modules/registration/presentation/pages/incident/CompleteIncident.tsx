@@ -41,6 +41,7 @@ const CompleteIncident = ({
     useState<PersonInterface>();
   const [selectedPatientVisitCode, setSelectedPatientVisitCode] =
     useState<string>("");
+  
 
   //* buttons useRef
   const refSubmitPatient: any = useRef(null);
@@ -106,8 +107,8 @@ const CompleteIncident = ({
     // Sort the array based on the patient's data existence
     return sortedArray.sort((a, b) => {
       // Check if patient data is null
-      const aIsNull = a.patient === null;
-      const bIsNull = b.patient === null;
+      const aIsNull = a.patient === null || a.patient === undefined;
+      const bIsNull = b.patient === null || b.patient === undefined;
 
       // Patients with null data come first
       if (aIsNull && !bIsNull) return -1;
@@ -255,7 +256,7 @@ const CompleteIncident = ({
                     width: "1rem",
                     height: "1rem",
                     backgroundColor:
-                      visit.patient === null ? "error.main" : "warning.main",
+                      visit.patient === null || visit.patient === undefined ? "error.main" : "warning.main",
                     marginRight: "1rem",
                   }}
                 ></Box>
