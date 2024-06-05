@@ -43,6 +43,7 @@ const IncidentTable = () => {
           onClick={() => {
             refIdValue.current = item ?? "";
             // setShawDialog("block");
+            console.log(item);
           }}
         >
           استكمال بيانات
@@ -62,6 +63,9 @@ const IncidentTable = () => {
         totalItems={state.incidents.total}
         data={tableData}
         headerItems={header}
+        onRowClick={(row) => {
+          console.log(row);
+        }}
       />
 
       {/* <CompleteIncident
