@@ -7,28 +7,28 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TableCellProps,
   SxProps,
   TableRowProps,
 } from "@mui/material";
+import { HeaderItem } from "./CustomDataTable";
 
-export interface HeaderItem {
-  id: string;
-  label: string;
-  minWidth?: number;
-  maxWidth?: number;
-  tableCellProps?: TableCellProps;
-  format?: (value: number) => string;
-  onClick?: () => void;
-  isIcon?: boolean;
-  icon?: React.ReactNode;
-  component?: React.ReactNode;
-  sortable?: boolean;
-  filterable?: boolean;
-  searchable?: boolean;
-  cellSx?: SxProps;
-  showBorder?: boolean;
-}
+// export interface HeaderItem {
+//   id: string;
+//   label: string;
+//   minWidth?: number;
+//   maxWidth?: number;
+//   tableCellProps?: TableCellProps;
+//   format?: (value: number) => string;
+//   onClick?: () => void;
+//   isIcon?: boolean;
+//   icon?: React.ReactNode;
+//   component?: React.ReactNode;
+//   sortable?: boolean;
+//   filterable?: boolean;
+//   searchable?: boolean;
+//   cellSx?: SxProps;
+//   showBorder?: boolean;
+// }
 
 interface Props<T> {
   data: T[];
@@ -82,17 +82,17 @@ const CustomBasicTable = <T,>({
         <TableBody>
           {data.map((item) => (
             <TableRow
-              sx={{ cursor : "pointer" }}
+              sx={{ cursor: "pointer" }}
               key={(item as any).id}
               onClick={() => onRowClick && onRowClick(item)}
               data-row={JSON.stringify(item)}
               hover={hover}
               {...rowProps}
             >
-              {headerItem.map((headerItem) =>
-                {console.log(headerItem);
-                
-                  return headerItem.isIcon ? (
+              {headerItem.map((headerItem) => {
+                console.log(headerItem);
+
+                return headerItem.isIcon ? (
                   <TableCell
                     key={headerItem.id}
                     {...headerItem.tableCellProps}
@@ -116,8 +116,8 @@ const CustomBasicTable = <T,>({
                   >
                     {(item as any)[headerItem.id]}
                   </TableCell>
-                )}
-              )}
+                );
+              })}
             </TableRow>
           ))}
         </TableBody>

@@ -113,6 +113,7 @@ export const data = [
 export const header: HeaderItem[] = [
   {
     id: "SSN",
+    key: "SSN",
     label: "رقم الهوية",
     minWidth: 50,
     maxWidth: 50,
@@ -123,6 +124,7 @@ export const header: HeaderItem[] = [
   },
   {
     id: "name",
+    key: "name",
     label: "الاسم",
     minWidth: 100,
     maxWidth: 100,
@@ -133,6 +135,7 @@ export const header: HeaderItem[] = [
   },
   {
     id: "phone",
+    key: "phone",
     label: "رقم الهاتف",
     minWidth: 50,
     maxWidth: 50,
@@ -144,6 +147,7 @@ export const header: HeaderItem[] = [
 
   {
     id: "createdAt",
+    key: "createdAt",
     label: "التاريخ",
     minWidth: 100,
     maxWidth: 100,
@@ -155,6 +159,7 @@ export const header: HeaderItem[] = [
 
   {
     id: "roleName",
+    key: "roleName",
     label: "الوظيفة",
     minWidth: 100,
     maxWidth: 100,
@@ -183,6 +188,7 @@ export const header: HeaderItem[] = [
   },
   {
     id: "shiftName",
+    key: "shiftName",
     label: "الوردية",
     minWidth: 100,
     maxWidth: 100,
@@ -207,6 +213,7 @@ export const header: HeaderItem[] = [
   },
   {
     id: "update",
+    key: "update",
     label: "",
     isComponent: true,
     minWidth: 100,

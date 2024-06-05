@@ -22,6 +22,7 @@ import { FilterQuery } from "@/core/api";
 const SpecializationsTableHeader: HeaderItem[] = [
   {
     id: "name",
+    key: "name",
     label: "الأســـم",
     minWidth: 50,
     maxWidth: 50,
@@ -33,6 +34,7 @@ const SpecializationsTableHeader: HeaderItem[] = [
   },
   {
     id: "description",
+    key: "description",
     label: "الــوصف",
     minWidth: 50,
     maxWidth: 50,
@@ -44,6 +46,7 @@ const SpecializationsTableHeader: HeaderItem[] = [
   },
   {
     id: "update",
+    key: "update",
     label: "",
     isComponent: true,
     minWidth: 100,
