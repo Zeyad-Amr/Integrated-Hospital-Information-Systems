@@ -34,7 +34,28 @@ export class AuthRepo extends PrismaGenericRepo<User> {
 
   async getUserPermissions(username: string) {
     try {
-      return await this.prismaService.user.findUnique({
+      // Get user subdepartments
+      const userSubdepartments = await this.prismaService.user.findUnique({
+        where: { username: username },
+        include: {
+          employee: {
+            select: {
+              subdepartments: {
+                select: {
+                  id: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      const subDepartmentIds = userSubdepartments.employee.subdepartments.map(
+        (sd) => sd.id,
+      );
+
+      // Get user permissions
+      const userPermissions = await this.prismaService.user.findUnique({
         where: { username: username },
         include: {
           employee: {
@@ -49,6 +70,15 @@ export class AuthRepo extends PrismaGenericRepo<User> {
                         },
                       },
                     },
+                    where: {
+                      feature: {
+                        subDepartment: {
+                          id: {
+                            in: subDepartmentIds,
+                          },
+                        },
+                      },
+                    },
                   },
                 },
               },
@@ -56,7 +86,13 @@ export class AuthRepo extends PrismaGenericRepo<User> {
           },
         },
       });
-    } catch (error) { }
+
+      return userPermissions;
+    } catch (error) {
+      throw new Error(
+        `Failed to get permissions for user ${username}: ${error.message}`,
+      );
+    }
   }
 
   async update(

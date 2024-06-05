@@ -22,11 +22,25 @@ export default class UserModel {
             id: json.id,
             roleId: json.roleId,
             shiftId: json.shiftId,
-            subDepartmentIds: json?.subdepartments?.map((suDepartmentId : ExtendedSubDepartmentsInterface) => suDepartmentId?.id),
+            subDepartmentIds: json?.subdepartments?.map((suDepartmentId: ExtendedSubDepartmentsInterface) => suDepartmentId?.id),
             createdAt: json.createdAt,
             updatedAt: json.updatedAt,
             person: PersonModel.fromJson(json.person),
             auth: AuthDataModel.fromJson(json.auth),
         };
+    }
+
+    static fromGetMeJson(json: any): UserInterface {
+        return {
+            id: json.employee.id,
+            roleId: json.employee.roleId,
+            shiftId: json.employee.shiftId,
+            subDepartmentIds: json?.employee.subdepartments?.map((suDepartmentId: ExtendedSubDepartmentsInterface) => suDepartmentId?.id),
+            createdAt: json.employee.createdAt,
+            updatedAt: json.employee.updatedAt,
+            person: PersonModel.fromJson(json.employee.person),
+            auth: AuthDataModel.fromJson(json),
+        };
+
     }
 }
