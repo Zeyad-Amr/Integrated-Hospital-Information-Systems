@@ -10,8 +10,8 @@ export interface VisitsState {
     error: string;
 }
 
-export interface IncidentState {
-    incidents: IncidentInterface[];
+export interface IncidentsState {
+    incidents: PaginatedList<IncidentInterface>;
     currentIncident: IncidentInterface;
     loading: boolean;
     error: string;
