@@ -5,9 +5,9 @@ export default class UserEntity {
   static defaultValue(): UserInterface {
     return {
       id: "",
-      roleId: undefined,
-      shiftId: undefined,
-      subDepartmentIds: undefined,
+      roleId: 0,
+      shiftId: 0,
+      subDepartmentIds: [],
       createdAt: undefined,
       updatedAt: undefined,
       person: undefined,
@@ -18,8 +18,8 @@ export default class UserEntity {
   static getSchema(): Yup.ObjectSchema<any> {
     return Yup.object()
       .shape({
-        roleId: Yup.string().required("الوظيفة مطلوبة"),
-        shiftId: Yup.string().required("موعد العمل مطلوب"),
+        roleId: Yup.number().required("الوظيفة مطلوبة"),
+        shiftId: Yup.number().required("موعد العمل مطلوب"),
         subDepartmentIds: Yup.array()
           .of(
             Yup.mixed().test(
