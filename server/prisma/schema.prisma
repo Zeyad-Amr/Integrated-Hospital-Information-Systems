@@ -24,7 +24,7 @@ model Person {
   SSN                  String?       @unique
   verificationMethod   IdentityType? @relation(fields: [verificationMethodId], references: [id])
   verificationMethodId Int?
-  gender               GenderType   @relation(fields: [genderId], references: [id])
+  gender               GenderType    @relation(fields: [genderId], references: [id])
   genderId             Int
   governate            Governate?    @relation(fields: [governateId], references: [id])
   governateId          Int?
@@ -86,8 +86,7 @@ model Employee {
   createdEmployees  Employee[] @relation("CreatedBy")
 
   subdepartments SubDepartment[]
-  visitsCreated Visit[]
-
+  visitsCreated  Visit[]
 }
 
 model User {
@@ -103,7 +102,7 @@ model User {
 }
 
 model Department {
-  id               Int            @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @unique
 
   SubDepartments SubDepartment[]
@@ -111,19 +110,19 @@ model Department {
 
 model SubDepartment {
   id               Int            @id @default(autoincrement())
-  name             String @unique
+  name             String         @unique
   roomId           Int
   room             Room           @relation(fields: [roomId], references: [id])
   specializationId Int
   specialization   Specialization @relation(fields: [specializationId], references: [id])
   features         Feature[]
 
-  transferFrom Transfer[] @relation("fromSubDepartment")
-  transferTo Transfer[]   @relation("toSubDepartment")
+  transferFrom Transfer[]    @relation("fromSubDepartment")
+  transferTo   Transfer[]    @relation("toSubDepartment")
   Department   Department?   @relation(fields: [departmentId], references: [id])
   departmentId Int?
-  employee   Employee?   @relation(fields: [employeeId], references: [id])
-  employeeId String?
+  employee     Employee?     @relation(fields: [employeeId], references: [id])
+  employeeId   String?
   Permissions  Permissions[]
 }
 
@@ -144,6 +143,7 @@ model Room {
 model Feature {
   id              Int            @id @default(autoincrement())
   name            String
+  featureCode     String?
   subDepartment   SubDepartment? @relation(fields: [subDepartmentId], references: [id])
   subDepartmentId Int?
   Permissions     Permissions[]
@@ -155,7 +155,7 @@ model Permissions {
   featureId       Int
   role            RoleType      @relation(fields: [roleTypeId], references: [id])
   roleTypeId      Int
-  subDepartment   SubDepartment @relation(fields: [subDepartmentId], references: [id],onDelete: Cascade)
+  subDepartment   SubDepartment @relation(fields: [subDepartmentId], references: [id], onDelete: Cascade)
   subDepartmentId Int
 
   @@unique([featureId, roleTypeId, subDepartmentId], map: "FeatureRoleSubDepartment")
@@ -285,11 +285,11 @@ model Vitals {
 }
 
 model Transfer {
-  id   String @id @default(uuid())
+  id String @id @default(uuid())
 
-  fromSubDep SubDepartment @relation("fromSubDepartment",fields: [fromSubDepId],references: [id])
+  fromSubDep   SubDepartment @relation("fromSubDepartment", fields: [fromSubDepId], references: [id])
   fromSubDepId Int
-  toSubDep SubDepartment @relation("toSubDepartment",fields: [toSubDepId],references: [id])
+  toSubDep     SubDepartment @relation("toSubDepartment", fields: [toSubDepId], references: [id])
   toSubDepId   Int
 
   createdAt DateTime @default(now())

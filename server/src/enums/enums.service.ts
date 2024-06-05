@@ -5,9 +5,7 @@ import { PrismaService } from 'src/shared/services/prisma-client/prisma.service'
 
 @Injectable()
 export class EnumsService {
-  constructor(
-    private prismaService: PrismaService
-  ) { }
+  constructor(private prismaService: PrismaService) { }
 
   create(createEnumDto: CreateEnumDto) {
     return 'This action adds a new enum';
@@ -15,42 +13,36 @@ export class EnumsService {
 
   async findAll() {
     const enums = await this.prismaService.$transaction(async (tx) => {
-
-      const identityType = await tx.identityType.findMany()
-      const genderType = await tx.genderType.findMany()
-      const kinshipType = await tx.kinshipType.findMany()
-      const roleType = await tx.roleType.findMany()
-      const shiftType = await tx.shiftType.findMany()
-      const cameFromOptions = await tx.cameFromOptions.findMany()
-      const attendantRole = await tx.attendantRole.findMany()
-      const triageType = await tx.triageType.findMany()
-      const LOC = await tx.lOC.findMany()
-      const comorbidities = await tx.comorbidity.findMany()
-      const governate = await tx.governate.findMany()
-      const department = await tx.department.findMany()
-      const subDepartment = await tx.subDepartment.findMany()
-      const specialization = await tx.specialization.findMany()
-      const room = await tx.room.findMany()
+      const identityTypes = await tx.identityType.findMany();
+      const genderTypes = await tx.genderType.findMany();
+      const kinshipTypes = await tx.kinshipType.findMany();
+      const roleTypes = await tx.roleType.findMany();
+      const shiftTypes = await tx.shiftType.findMany();
+      const cameFromOptions = await tx.cameFromOptions.findMany();
+      const attendantRoles = await tx.attendantRole.findMany();
+      const triageTypes = await tx.triageType.findMany();
+      const LOCs = await tx.lOC.findMany();
+      const comorbidities = await tx.comorbidity.findMany();
+      const governates = await tx.governate.findMany();
+      const departments = await tx.department.findMany();
+      const features = await tx.feature.findMany();
 
       return {
-        identityType,
-        genderType,
-        kinshipType,
-        roleType,
-        shiftType,
+        identityTypes,
+        genderTypes,
+        kinshipTypes,
+        roleTypes,
+        shiftTypes,
         cameFromOptions,
-        attendantRole,
-        triageType,
-        LOC,
+        attendantRoles,
+        triageTypes,
+        LOCs,
         comorbidities,
-        governate,
-        department,
-        subDepartment,
-        specialization,
-        room,
-      }
-
-    })
+        governates,
+        departments,
+        features,
+      };
+    });
     return { enums };
   }
 
