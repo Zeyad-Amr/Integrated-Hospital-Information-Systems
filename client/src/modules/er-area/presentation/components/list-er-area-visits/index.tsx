@@ -15,7 +15,7 @@ const ERVisitsTable = () => {
   const [tableData, setTableData] = useState<any[]>([]);
 
   useEffect(() => {
-    let eventSource = new EventSource(Endpoints.base + "streaming/event");
+    let eventSource = new EventSource(Endpoints.base + Endpoints.erArea.streaming);
     eventSource.onmessage = (ev) => {
       let data_json = JSON.parse(ev.data).items;
       setStreamedData(data_json);

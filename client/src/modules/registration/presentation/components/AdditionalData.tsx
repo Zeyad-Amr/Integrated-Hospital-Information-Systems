@@ -8,13 +8,13 @@ import { useAppSelector } from "@/core/state/store";
 import { AdditionalDataInterface } from "@/modules/registration/domain/interfaces/additional-data-interface";
 import AdditionalDataEntity from "@/modules/registration/domain/entities/additional-data-entity";
 
-
 interface AdditionalDataProps {
   initialValues: AdditionalDataInterface;
   onSubmit: (values: AdditionalDataInterface) => void;
   refSubmitButton: React.MutableRefObject<null>;
   display?: string;
   isResetForm?: boolean;
+  innerFormRef?: any;
 }
 
 const AdditionalData = ({
@@ -22,20 +22,19 @@ const AdditionalData = ({
   onSubmit,
   refSubmitButton,
   display,
-  isResetForm = false
+  isResetForm = false,
+  innerFormRef,
 }: AdditionalDataProps) => {
-
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
-
 
   const handleKeyDown = (id: string, key: number, value: any) => {
     let x: number = parseInt(id[id.length - 1]);
     if (key !== 18 && key !== 16) {
       x < 4 && key !== 8
         ? ((document.getElementById(`amb-car-${x}`) as HTMLInputElement).value =
-          "")
+            "")
         : null;
       x = parseInt(id[id.length - 1]) + 1;
       if (parseInt(id[id.length - 1]) <= 4) {
@@ -54,8 +53,8 @@ const AdditionalData = ({
         setTimeout(() => {
           x <= 4 && x >= 1
             ? (
-              document.getElementById(`amb-car-${x}`) as HTMLInputElement
-            ).focus()
+                document.getElementById(`amb-car-${x}`) as HTMLInputElement
+              ).focus()
             : null;
         }, 10);
       }
@@ -64,6 +63,7 @@ const AdditionalData = ({
 
   return (
     <Formik
+      innerRef={innerFormRef}
       initialValues={{
         comeFrom: initialValues.comeFrom,
         attendantName: initialValues.attendantName,
@@ -80,7 +80,7 @@ const AdditionalData = ({
       }}
       validationSchema={AdditionalDataEntity.getSchema()}
       onSubmit={(values, { resetForm }) => {
-        onSubmit(values)
+        onSubmit(values);
         if (isResetForm) {
           resetForm();
         }
@@ -275,10 +275,10 @@ const AdditionalData = ({
                         onKeyDown: (e: any) =>
                           isNaN(e.key)
                             ? handleKeyDown(
-                              e.target.id,
-                              e.keyCode,
-                              e.target.value
-                            )
+                                e.target.id,
+                                e.keyCode,
+                                e.target.value
+                              )
                             : e.preventDefault(),
                         id: "amb-car-1",
                         type: "text",
@@ -302,10 +302,10 @@ const AdditionalData = ({
                         onKeyDown: (e: any) =>
                           isNaN(e.key)
                             ? handleKeyDown(
-                              e.target.id,
-                              e.keyCode,
-                              e.target.value
-                            )
+                                e.target.id,
+                                e.keyCode,
+                                e.target.value
+                              )
                             : e.preventDefault(),
 
                         id: "amb-car-2",
@@ -328,10 +328,10 @@ const AdditionalData = ({
                         onKeyDown: (e: any) =>
                           isNaN(e.key)
                             ? handleKeyDown(
-                              e.target.id,
-                              e.keyCode,
-                              e.target.value
-                            )
+                                e.target.id,
+                                e.keyCode,
+                                e.target.value
+                              )
                             : e.preventDefault(),
                         id: "amb-car-3",
                         type: "text",
@@ -355,10 +355,10 @@ const AdditionalData = ({
                         onKeyDown: (e: any) =>
                           !isNaN(e.key) || e.key === "Backspace"
                             ? handleKeyDown(
-                              e.target.id,
-                              e.keyCode,
-                              e.target.value
-                            )
+                                e.target.id,
+                                e.keyCode,
+                                e.target.value
+                              )
                             : e.preventDefault(),
                         id: "amb-car-4",
                         type: "number",
@@ -459,9 +459,8 @@ const AdditionalData = ({
             ></Button>
           </Box>
         </Box>
-      )
-      }
-    </Formik >
+      )}
+    </Formik>
   );
 };
 
