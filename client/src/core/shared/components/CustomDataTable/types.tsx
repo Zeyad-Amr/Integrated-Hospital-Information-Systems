@@ -38,6 +38,7 @@ interface CustomDataTableProps<T> {
  */
 interface HeaderItem {
   id: string;
+  key: string;
   label: string;
   minWidth?: number;
   maxWidth?: number;
@@ -53,6 +54,9 @@ interface HeaderItem {
   filterOptions?: FilterOption[];
   isCustomFilter?: boolean;
   display?: boolean;
+  icon?: React.ReactNode;
+  cellSx?: SxProps;
+  showBorder?: boolean;
 }
 
 /**

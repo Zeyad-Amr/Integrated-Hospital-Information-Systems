@@ -1,5 +1,4 @@
-import { HeaderItem } from "@/core/shared/components/CustomBasicTable";
-
+import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
 export interface DataItem {
   id: any;
@@ -13,7 +12,6 @@ export interface DataItem {
 }
 
 export const data = [
-
   {
     code: "202312251",
     sequenceNumber: 55,
@@ -42,54 +40,55 @@ export const data = [
         phone: null,
         governate: null,
         address: null,
-        type: "PATIENT"
-      }
+        type: "PATIENT",
+      },
     },
-    transfers: []
+    transfers: [],
   },
-
 ];
 
 export const header: HeaderItem[] = [
   {
     id: "sequenceNumber",
+    key: "sequenceNumber",
     label: "رقم التردد",
     minWidth: 50,
     tableCellProps: { align: "center" },
     showBorder: true,
-
   },
   {
     id: "id",
+    key: "id",
     label: "رقم المريض",
     minWidth: 50,
     tableCellProps: { align: "center" },
   },
   {
     id: "name",
+    key: "name",
     label: "اسم المريض",
     minWidth: 100,
     tableCellProps: { align: "center" },
   },
   {
     id: "date",
+    key: "date",
     label: "تاريخ الحجز",
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
   },
   {
     id: "time",
+    key: "time",
     label: "وقت الحجز",
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
   },
   {
     id: "watingTime",
+    key: "watingTime",
     label: `وقت الانتظار (hh:mm)`,
     minWidth: 100,
     tableCellProps: { align: "center" },
   },
-
-
-
 ];

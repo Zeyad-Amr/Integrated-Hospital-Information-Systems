@@ -157,7 +157,7 @@ const CustomDataTable = <T,>({
                     .map((headerItems) =>
                       headerItems.isIcon ? (
                         <TableCell
-                          key={headerItems.id}
+                          key={headerItems.key}
                           {...headerItems.tableCellProps}
                           sx={{
                             paddingY: rowPaddingY,
@@ -179,7 +179,7 @@ const CustomDataTable = <T,>({
                         </TableCell>
                       ) : headerItems.isComponent ? (
                         <TableCell
-                          key={headerItems.id}
+                          key={headerItems.key}
                           {...headerItems.tableCellProps}
                           sx={{
                             paddingY: rowPaddingY,
@@ -201,12 +201,12 @@ const CustomDataTable = <T,>({
                               maxWidth: "100%", // Ensure text doesn't overflow TableCell
                             }}
                           >
-                            {(item as any)[headerItems.id]}
+                            {(item as any)[headerItems.key]}
                           </Typography>
                         </TableCell>
                       ) : (
                         <TableCell
-                          key={headerItems.id}
+                          key={headerItems.key}
                           {...headerItems.tableCellProps}
                           sx={{
                             minWidth: headerItems.minWidth,
@@ -220,9 +220,9 @@ const CustomDataTable = <T,>({
                           <Tooltip
                             enterDelay={1000}
                             title={
-                              typeof (item as any)[headerItems.id] === "object"
-                                ? (item as any)[headerItems.id].value
-                                : (item as any)[headerItems.id]
+                              typeof (item as any)[headerItems.key] === "object"
+                                ? (item as any)[headerItems.key].value
+                                : (item as any)[headerItems.key]
                             }
                           >
                             <Typography
@@ -233,19 +233,20 @@ const CustomDataTable = <T,>({
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
                                 direction: !utilsFunctions.startsWithArabic(
-                                  typeof (item as any)[headerItems.id] ===
+                                  typeof (item as any)[headerItems.key] ===
                                     "object"
-                                    ? (item as any)[headerItems.id].value
-                                    : (item as any)[headerItems.id]
+                                    ? (item as any)[headerItems.key].value
+                                    : (item as any)[headerItems.key]
                                 )
                                   ? "rtl"
                                   : "ltr",
                                 maxWidth: "100%", // Ensure text doesn't overflow TableCell
                               }}
                             >
-                              {typeof (item as any)[headerItems.id] === "object"
-                                ? (item as any)[headerItems.id].value
-                                : (item as any)[headerItems.id]}
+                              {typeof (item as any)[headerItems.key] ===
+                              "object"
+                                ? (item as any)[headerItems.key].value
+                                : (item as any)[headerItems.key]}
                             </Typography>
                           </Tooltip>
                         </TableCell>

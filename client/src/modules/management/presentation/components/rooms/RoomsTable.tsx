@@ -22,6 +22,7 @@ import { FilterQuery } from "@/core/api";
 const roomsTableHeader: HeaderItem[] = [
   {
     id: "name",
+    key: "name",
     label: "الأســـم",
     minWidth: 50,
     maxWidth: 50,
@@ -33,6 +34,7 @@ const roomsTableHeader: HeaderItem[] = [
   },
   {
     id: "location",
+    key: "location",
     label: "الموقع",
     minWidth: 50,
     maxWidth: 50,
@@ -44,6 +46,7 @@ const roomsTableHeader: HeaderItem[] = [
   },
   {
     id: "update",
+    key: "update",
     label: "",
     isComponent: true,
     minWidth: 100,

@@ -32,6 +32,7 @@ import { LookupsState } from "@/core/shared/modules/lookups/presentation/control
 const SubDepartmentsTableHeader: HeaderItem[] = [
   {
     id: "name",
+    key: "name",
     label: "الأســـم",
     minWidth: 50,
     maxWidth: 50,
@@ -43,6 +44,7 @@ const SubDepartmentsTableHeader: HeaderItem[] = [
   },
   {
     id: "department",
+    key: "department",
     label: "القســـم",
     minWidth: 50,
     maxWidth: 50,
@@ -54,6 +56,7 @@ const SubDepartmentsTableHeader: HeaderItem[] = [
   },
   {
     id: "room",
+    key: "room",
     label: "الغـــرفة",
     minWidth: 50,
     maxWidth: 50,
@@ -65,6 +68,7 @@ const SubDepartmentsTableHeader: HeaderItem[] = [
   },
   {
     id: "specialization",
+    key: "specialization",
     label: "التخصص",
     minWidth: 50,
     maxWidth: 50,
@@ -76,6 +80,7 @@ const SubDepartmentsTableHeader: HeaderItem[] = [
   },
   {
     id: "update",
+    key: "update",
     label: "",
     isComponent: true,
     minWidth: 100,
