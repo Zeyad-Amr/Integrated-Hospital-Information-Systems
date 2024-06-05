@@ -268,6 +268,7 @@ const AddIncidentForm = () => {
       </CustomAccordion>
 
       <PrimaryButton
+        sx={{ margin : "2rem 0rem 1rem 0rem" }}
         id="confirm-btn"
         title="حفـــظ"
         type="button"
