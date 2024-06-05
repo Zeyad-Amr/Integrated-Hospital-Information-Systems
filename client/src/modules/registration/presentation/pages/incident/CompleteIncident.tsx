@@ -1,17 +1,14 @@
 import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
-import Dialog from "@/core/shared/components/Dialog";
 import PersonalData from "@/core/shared/components/PersonalData";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
 import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
 import CompleteVisitEntity from "@/modules/registration/domain/entities/complete-visit-entity";
-import VisitEntity from "@/modules/registration/domain/entities/visit-entity";
 import { Button, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik, FormikProps } from "formik";
 import React, {
   Dispatch,
-  MutableRefObject,
   SetStateAction,
   useEffect,
   useRef,
@@ -26,7 +23,7 @@ interface CompleteIncidentPropsInterface {
 
 interface CompleteIncidentDataInterface {
   visitCode: string;
-  patient: PersonInterface;
+  patient: PersonInterface | null;
 }
 
 const CompleteIncident = ({
@@ -35,11 +32,17 @@ const CompleteIncident = ({
   incidentData,
 }: CompleteIncidentPropsInterface) => {
   //* useState
-  const [combinedValues, setCombinedValues] = useState<any>(); //* Total value ( submit object )
-  const [selectedPatientData, setSelectedPatientData] = useState<PersonInterface>(); 
-  const [selectedPatientVisitCode, setSelectedPatientVisitCode] = useState<string>("");
-
-  const [totalPatientsList, setTotalPatientsList] = useState<CompleteIncidentDataInterface[]>([
+  const [combinedValues, setCombinedValues] = useState<{
+    visitCode: string;
+    patient: PersonInterface;
+  }>(); //* Total value ( submit object )
+  const [selectedPatientData, setSelectedPatientData] =
+    useState<PersonInterface>();
+  const [selectedPatientVisitCode, setSelectedPatientVisitCode] =
+    useState<string>("");
+  const [totalPatientsList, setTotalPatientsList] = useState<
+    CompleteIncidentDataInterface[]
+  >([
     {
       visitCode: "256498",
       patient: {
@@ -150,23 +153,38 @@ const CompleteIncident = ({
   //* Handle Patient Submit
   const handlePatientSubmit = (values: PersonInterface) => {
     patientData.current = values;
-    setCombinedValues({ patient: values });
+    setCombinedValues({
+      patient: values,
+      visitCode: selectedPatientVisitCode,
+    });
   };
 
   //* apply patient with visitcode ( switching between patients  )
   useEffect(() => {
+    debugger
     if (selectedPatientVisitCode) {
-        const selectedPatient = totalPatientsList.find((patient) => patient.visitCode == selectedPatientVisitCode)
-        setSelectedPatientData(selectedPatient?.patient)
+      const selectedPatient = totalPatientsList.find(
+        (patient) => patient.visitCode == selectedPatientVisitCode
+      );
+      selectedPatient?.patient && setSelectedPatientData(selectedPatient?.patient);
     }
   }, [selectedPatientVisitCode]);
 
   //* apply initial patient with visitcode ( initial patient )
   useEffect(() => {
-    const selectedPatient = totalPatientsList[0]
-    setSelectedPatientVisitCode(selectedPatient.visitCode)
-    setSelectedPatientData(selectedPatient?.patient)
+    const selectedPatient = totalPatientsList[0];
+    setSelectedPatientVisitCode(selectedPatient.visitCode);
+    selectedPatient?.patient && setSelectedPatientData(selectedPatient?.patient);
   }, []);
+
+  //* Dispatch Update visit
+  useEffect(() => {
+    if (patientData.current) {
+      if (combinedValues) {
+        console.log(combinedValues);
+      }
+    }
+  }, [combinedValues]);
 
   const arraySort = (array: any[]) => {
     let emptyArray = [];
@@ -200,9 +218,11 @@ const CompleteIncident = ({
         sx={{
           backgroundColor: "primary.darker",
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
           alignItems: "center",
           padding: ".5rem 2rem",
+          borderRadius : "10px",
+          marginTop : "-0.3rem"
         }}
       >
         <Grid
@@ -284,8 +304,13 @@ const CompleteIncident = ({
                 justifyContent: "flex-start",
                 transition: "0.2s ease-in-out",
                 backgroundColor:
-                patientEl.visitCode == selectedPatientVisitCode ? "primary.main" : "#dddddd99",
-                color: patientEl.visitCode == selectedPatientVisitCode ? "white" : "black",
+                  patientEl.visitCode == selectedPatientVisitCode
+                    ? "primary.main"
+                    : "#dddddd99",
+                color:
+                  patientEl.visitCode == selectedPatientVisitCode
+                    ? "white"
+                    : "black",
                 borderRadius: "15px",
                 marginBottom: "1rem",
                 cursor: "pointer",
@@ -318,8 +343,12 @@ const CompleteIncident = ({
                 }}
               >
                 <Typography sx={{ fontWeight: "600" }}>
-                  {patientEl.patient.firstName ? patientEl.patient.firstName : "مريض"}{' '}
-                  {patientEl.patient.secondName ? patientEl.patient.secondName : "جديد"}
+                  {patientEl?.patient?.firstName
+                    ? patientEl?.patient?.firstName
+                    : "مريض"}{" "}
+                  {patientEl?.patient?.secondName
+                    ? patientEl?.patient?.secondName
+                    : "جديد"}
                 </Typography>
                 <Typography>{patientEl.visitCode}</Typography>
               </Box>
@@ -328,30 +357,36 @@ const CompleteIncident = ({
         </Box>
 
         {/* Left Section ( Update patient data form )  */}
-        <Box sx={{ width: "75%", overflow: "scroll", padding: "2rem" }}>
-          <Formik
-            enableReinitialize
-            innerRef={formikRefPatient}
-            initialValues={ selectedPatientData ?? PersonEntity.defaultValue()}
-            onSubmit={(values) => {
-              console.log(values);
-              handlePatientSubmit(values);
-            }}
-            validationSchema={CompleteVisitEntity.getPatientSchema()}
-            key={selectedPatientVisitCode}
-          >
-            {({ handleSubmit }) => (
-              <Box component="form" onSubmit={handleSubmit} noValidate>
-                <PersonalData />
-                <Button
-                  type="submit"
-                  sx={{ display: "none" }}
-                  ref={refSubmitPatient}
-                ></Button>
-              </Box>
-            )}
-          </Formik>
-
+        <Box
+          sx={{
+            width: "75%",
+            overflowY: "scroll",
+            padding: "2rem 2rem 0rem 2rem",
+          }}
+        >
+          {PersonEntity && (
+            <Formik
+              enableReinitialize
+              innerRef={formikRefPatient}
+              initialValues={selectedPatientData ?? PersonEntity.defaultValue()}
+              onSubmit={(values) => {
+                console.log(values);
+                handlePatientSubmit(values);
+              }}
+              validationSchema={CompleteVisitEntity.getPatientSchema()}
+            >
+              {({ handleSubmit }) => (
+                <Box component="form" onSubmit={handleSubmit} noValidate>
+                  <PersonalData />
+                  <Button
+                    type="submit"
+                    sx={{ display: "none" }}
+                    ref={refSubmitPatient}
+                  ></Button>
+                </Box>
+              )}
+            </Formik>
+          )}
           {/* Submit Button */}
           <Box
             sx={{
@@ -359,7 +394,6 @@ const CompleteIncident = ({
               justifyContent: "flex-start",
               alignItems: "center",
               height: "4rem",
-              marginTop: "1.5rem",
             }}
           >
             <PrimaryButton
