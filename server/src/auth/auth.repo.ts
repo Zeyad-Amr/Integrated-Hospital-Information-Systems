@@ -9,15 +9,22 @@ export class AuthRepo extends PrismaGenericRepo<User> {
     super('user', prismaService);
   }
 
-  async getByUsername(
-    username: string,
-  ) {
+  async getByUsername(username: string) {
     try {
       const user = await this.prismaService.user.findUnique({
         where: {
           username,
         },
-        include: { employee: { include: { person: true, subdepartments: true, role: true, shift: true } } },
+        include: {
+          employee: {
+            include: {
+              person: true,
+              subdepartments: true,
+              role: true,
+              shift: true,
+            },
+          },
+        },
       });
       return user;
     } catch (error) {
@@ -27,29 +34,29 @@ export class AuthRepo extends PrismaGenericRepo<User> {
 
   async getUserPermissions(username: string) {
     try {
-      return await this.prismaService.user.findUnique(
-        {
-          where: { username: username }, include: {
-            employee: {
-              include: {
-                role: {
-                  include: {
-                    Permissions: {
-                      include: {
-                        feature: true,
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
+      return await this.prismaService.user.findUnique({
+        where: { username: username },
+        include: {
+          employee: {
+            include: {
+              role: {
+                include: {
+                  Permissions: {
+                    include: {
+                      feature: {
+                        include: {
+                          subDepartment: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
-      )
-
-    } catch (error) {
-
-    }
+      });
+    } catch (error) { }
   }
 
   async update(

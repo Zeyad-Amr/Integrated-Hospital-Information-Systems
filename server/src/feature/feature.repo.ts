@@ -1,24 +1,27 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { PrismaService } from "src/shared/services/prisma-client/prisma.service";
-import { CreateFeatureDto } from "./dto/create-feature.dto";
-import { SubDepartmentRepo } from "src/subdepartment/subdepartment.repo";
-import { UpdateFeatureDto } from "./dto/update-feature.dto";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'src/shared/services/prisma-client/prisma.service';
+import { CreateFeatureDto } from './dto/create-feature.dto';
+import { SubDepartmentRepo } from 'src/subdepartment/subdepartment.repo';
+import { UpdateFeatureDto } from './dto/update-feature.dto';
 
 @Injectable()
 export class FeatureRepo {
-    constructor(private prisma: PrismaService, private subdepartment: SubDepartmentRepo) { }
+    constructor(
+        private prisma: PrismaService,
+        private subdepartment: SubDepartmentRepo,
+    ) { }
     async create(feature: CreateFeatureDto) {
         try {
-
             // check subdepartment existence
             if (feature.subDepartmentId) {
-                const subDepartment = await this.subdepartment.findOne(feature.subDepartmentId);
+                await this.subdepartment.findOne(feature.subDepartmentId);
             }
             return await this.prisma.feature.create({
                 data: {
                     name: feature.name,
-                    subDepartmentId: feature.subDepartmentId
-                }
+                    code: feature.code,
+                    subDepartmentId: feature.subDepartmentId,
+                },
             });
         } catch (error) {
             throw error;
@@ -27,12 +30,7 @@ export class FeatureRepo {
 
     async findAll() {
         try {
-            return await this.prisma.feature.findMany({
-                include: {
-                    subDepartment: true,
-                    Permissions: true
-                }
-            });
+            return await this.prisma.feature.findMany({});
         } catch (error) {
             throw error;
         }
@@ -42,15 +40,15 @@ export class FeatureRepo {
         try {
             const res = await this.prisma.feature.findUnique({
                 where: {
-                    id
+                    id,
                 },
                 include: {
                     subDepartment: true,
-                    Permissions: true
-                }
+                    Permissions: true,
+                },
             });
             if (!res) {
-                throw new NotFoundException("Feature not found");
+                throw new NotFoundException('Feature not found');
             }
             return res;
         } catch (error) {
@@ -62,12 +60,13 @@ export class FeatureRepo {
         try {
             return await this.prisma.feature.update({
                 where: {
-                    id
+                    id,
                 },
                 data: {
                     name: feature.name,
-                    subDepartmentId: feature.subDepartmentId
-                }
+                    code: feature.code,
+                    subDepartmentId: feature.subDepartmentId,
+                },
             });
         } catch (error) {
             throw error;
@@ -78,12 +77,11 @@ export class FeatureRepo {
         try {
             return await this.prisma.feature.delete({
                 where: {
-                    id
-                }
+                    id,
+                },
             });
         } catch (error) {
             throw error;
         }
     }
-
 }
