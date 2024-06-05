@@ -31,7 +31,7 @@ export class IncidentRepo extends PrismaGenericRepo<
 
   private includeObj: Prisma.IncidentInclude = {
     // Car: { select: { firstChar: true, secondChar: true, thirdChar: true } }
-    visits: { select: { code: true, patient: true, creator: true } },
+    visits: { select: { code: true, patient: {include:{person:{include:{gender:true,governate:true,verificationMethod:true}}}}, creator: true } },
     CompanionsOnIncidents: {
       select: {
         companion: {
