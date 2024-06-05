@@ -161,20 +161,21 @@ const CompleteIncident = ({
 
   //* apply patient with visitcode ( switching between patients  )
   useEffect(() => {
-    debugger
     if (selectedPatientVisitCode) {
       const selectedPatient = totalPatientsList.find(
         (patient) => patient.visitCode == selectedPatientVisitCode
       );
-      selectedPatient?.patient && setSelectedPatientData(selectedPatient?.patient);
+      selectedPatient?.patient &&
+        setSelectedPatientData(selectedPatient?.patient);
     }
   }, [selectedPatientVisitCode]);
 
   //* apply initial patient with visitcode ( initial patient )
   useEffect(() => {
-    const selectedPatient = totalPatientsList[0];
+    const selectedPatient = sortingTotalPatient(totalPatientsList)[0];
     setSelectedPatientVisitCode(selectedPatient.visitCode);
-    selectedPatient?.patient && setSelectedPatientData(selectedPatient?.patient);
+    selectedPatient?.patient &&
+      setSelectedPatientData(selectedPatient?.patient);
   }, []);
 
   //* Dispatch Update visit
@@ -186,24 +187,20 @@ const CompleteIncident = ({
     }
   }, [combinedValues]);
 
-  const arraySort = (array: any[]) => {
-    let emptyArray = [];
-    let NCArray = [];
-    let CArray = [];
+  const sortingTotalPatient = (array: CompleteIncidentDataInterface[]) => {
+    // Sort the array based on the patient's data existence
+    return array.sort((a, b) => {
+      // Check if patient data is null
+      const aIsNull = a.patient === null;
+      const bIsNull = b.patient === null;
 
-    let sortedArray = [];
+      // Patients with null data come first
+      if (aIsNull && !bIsNull) return -1;
+      if (!aIsNull && bIsNull) return 1;
 
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].status === "empty") {
-        emptyArray.push(array[i]);
-      } else if (array[i].status === "notCompleted") {
-        NCArray.push(array[i]);
-      } else {
-        CArray.push(array[i]);
-      }
-    }
-    sortedArray = emptyArray.concat(NCArray, CArray);
-    return sortedArray;
+      // Otherwise, maintain the original order
+      return 0;
+    });
   };
 
   return (
@@ -221,8 +218,8 @@ const CompleteIncident = ({
           justifyContent: "flex-start",
           alignItems: "center",
           padding: ".5rem 2rem",
-          borderRadius : "10px",
-          marginTop : "-0.3rem"
+          borderRadius: "10px",
+          marginTop: "-0.3rem",
         }}
       >
         <Grid
@@ -293,67 +290,67 @@ const CompleteIncident = ({
             overflowY: "scroll",
           }}
         >
-          {totalPatientsList.map((patientEl: CompleteIncidentDataInterface) => (
-            <Box
-              key={patientEl.visitCode}
-              id={patientEl.visitCode}
-              sx={{
-                display: "flex",
-                padding: "1rem 2rem",
-                alignItems: "center",
-                justifyContent: "flex-start",
-                transition: "0.2s ease-in-out",
-                backgroundColor:
-                  patientEl.visitCode == selectedPatientVisitCode
-                    ? "primary.main"
-                    : "#dddddd99",
-                color:
-                  patientEl.visitCode == selectedPatientVisitCode
-                    ? "white"
-                    : "black",
-                borderRadius: "15px",
-                marginBottom: "1rem",
-                cursor: "pointer",
-              }}
-              onClick={() => setSelectedPatientVisitCode(patientEl.visitCode)}
-            >
-              {/* status indication */}
-              {/* <Box
-                sx={{
-                  pointerEvents: "none",
-                  borderRadius: "50%",
-                  width: "1rem",
-                  height: "1rem",
-                  backgroundColor:
-                  patientEl.status === "completed"
-                      ? "success.main"
-                      : patient.status === "notCompleted"
-                      ? "warning.main"
-                      : "error.main",
-                  marginRight: "1rem",
-                }}
-              ></Box> */}
-
-              {/* patient data */}
+          {sortingTotalPatient(totalPatientsList).map(
+            (patientEl: CompleteIncidentDataInterface) => (
               <Box
+                key={patientEl.visitCode}
+                id={patientEl.visitCode}
                 sx={{
                   display: "flex",
-                  flexDirection: "column",
-                  pointerEvents: "none",
+                  padding: "1rem 2rem",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                  transition: "0.2s ease-in-out",
+                  backgroundColor:
+                    patientEl.visitCode == selectedPatientVisitCode
+                      ? "primary.main"
+                      : "#dddddd99",
+                  color:
+                    patientEl.visitCode == selectedPatientVisitCode
+                      ? "white"
+                      : "black",
+                  borderRadius: "15px",
+                  marginBottom: "1rem",
+                  cursor: "pointer",
                 }}
+                onClick={() => setSelectedPatientVisitCode(patientEl.visitCode)}
               >
-                <Typography sx={{ fontWeight: "600" }}>
-                  {patientEl?.patient?.firstName
-                    ? patientEl?.patient?.firstName
-                    : "مريض"}{" "}
-                  {patientEl?.patient?.secondName
-                    ? patientEl?.patient?.secondName
-                    : "جديد"}
-                </Typography>
-                <Typography>{patientEl.visitCode}</Typography>
+                {/* status indication */}
+                <Box
+                  sx={{
+                    pointerEvents: "none",
+                    borderRadius: "50%",
+                    width: "1rem",
+                    height: "1rem",
+                    backgroundColor:
+                      patientEl.patient === null
+                        ? "error.main"
+                        : "warning.main",
+                    marginRight: "1rem",
+                  }}
+                ></Box>
+
+                {/* patient data */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    pointerEvents: "none",
+                  }}
+                >
+                  <Typography sx={{ fontWeight: "600" }}>
+                    {patientEl?.patient?.firstName
+                      ? patientEl?.patient?.firstName
+                      : "مريض"}{" "}
+                    {patientEl?.patient?.secondName
+                      ? patientEl?.patient?.secondName
+                      : "جديد"}
+                  </Typography>
+                  <Typography>{patientEl.visitCode}</Typography>
+                </Box>
               </Box>
-            </Box>
-          ))}
+            )
+          )}
         </Box>
 
         {/* Left Section ( Update patient data form )  */}
