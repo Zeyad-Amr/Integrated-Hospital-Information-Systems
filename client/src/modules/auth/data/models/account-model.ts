@@ -1,4 +1,4 @@
-import { AccountInterface } from '../../domain/interfaces/account-interface';
+import { AccountInterface, AccountSubDepartmentPermissionInterface } from '../../domain/interfaces/account-interface';
 import UserModel from './user-model';
 
 export default class AccountModel {
@@ -8,58 +8,40 @@ export default class AccountModel {
     //* --------------------- Deserialization: Create a model from JSON data ---------------------
     static fromJson(json: any): AccountInterface {
         return {
-            user: UserModel.fromJson(json),
-            permissions: [
-                {
-                    subDepartment: {
-                        id: 1,
-                        name: "Registration",
-                        roomId: 1,
-                        specializationId: 1,
-                        departmentId: 1,
-
-                    },
-                    permissions: [
-                        {
-                            id: 1,
-                            value: "feature",
-                            subDepartmentId: 1,
-                        },
-                    ],
-                },
-                {
-                    subDepartment: {
-                        id: 2,
-                        name: "Triage",
-                        roomId: 2,
-                        specializationId: 2,
-                        departmentId: 2,
-                    },
-                    permissions: [
-                        {
-                            id: 2,
-                            value: "feature",
-                            subDepartmentId: 2,
-                        },
-                    ],
-                },
-                {
-                    subDepartment: {
-                        id: 3,
-                        name: "Examination",
-                        roomId: 3,
-                        specializationId: 3,
-                        departmentId: 3,
-                    },
-                    permissions: [
-                        {
-                            id: 3,
-                            value: "feature",
-                            subDepartmentId: 3,
-                        },
-                    ],
-                }
-            ],
+            user: UserModel.fromGetMeJson(json.user),
+            permissions: this.handlePermissions(json.permissions)
         };
+    }
+
+    //* --------------------- Methods ---------------------
+
+    static handlePermissions = (permissions: any): AccountSubDepartmentPermissionInterface[] => {
+
+
+        const permissionsMap = new Map();
+        permissions.forEach((permission: any) => {
+            const subDepartmentId = permission.subDepartmentId;
+            if (permissionsMap.has(subDepartmentId)) {
+                permissionsMap.get(subDepartmentId).push(permission.feature);
+            } else {
+                permissionsMap.set(subDepartmentId, [permission.feature]);
+            }
+        });
+
+        const accountPermissions: AccountSubDepartmentPermissionInterface[] = [];
+        permissionsMap.forEach((permissions: any, subDepartmentId: any) => {
+            accountPermissions.push({
+                subDepartment: {
+                    id: subDepartmentId,
+                    name: permissions[0].subDepartment.name,
+                    roomId: permissions[0].subDepartment.roomId,
+                    specializationId: permissions[0].subDepartment.specializationId,
+                    departmentId: permissions[0].subDepartment.departmentId,
+                },
+                permissions: permissions,
+            });
+        });
+
+        return accountPermissions;
     }
 }

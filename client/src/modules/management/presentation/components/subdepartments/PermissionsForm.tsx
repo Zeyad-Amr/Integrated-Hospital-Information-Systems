@@ -185,7 +185,7 @@ const PermissionsForm = ({
                     options={lookupsState.lookups.features
                       .filter(
                         (feature: FeatureInterface) =>
-                          feature.subDepartmentId === subDepartmentData?.id
+                          feature.subDepartment.id == subDepartmentData?.id
                       )
                       .map((feature: FeatureInterface) => {
                         return {
