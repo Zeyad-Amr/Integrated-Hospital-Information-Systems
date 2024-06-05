@@ -61,8 +61,8 @@ const CompleteVisit = ({
 
   useEffect(() => {
     if (patientData.current && combinedValues) {
-      dispatch(updateVisit(combinedValues)).then((res: any) => {
-        if (res) {
+      dispatch(updateVisit(combinedValues)).then((res) => {
+        if (res.meta.requestStatus == "fulfilled") {
           patientData.current = undefined;
           setShowCompletePatientDialog(false)
         }
