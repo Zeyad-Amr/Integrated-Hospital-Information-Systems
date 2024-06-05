@@ -7,7 +7,7 @@ import CompleteVisitEntity from "@/modules/registration/domain/entities/complete
 import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
 import { Button, Box, Typography } from "@mui/material";
 import { Formik } from "formik";
-import { updateVisit } from "../../../controllers/thunks/visits-thunks";
+import { updateVisitPatient } from "../../../controllers/thunks/visits-thunks";
 import React, {
   Dispatch,
   SetStateAction,
@@ -61,7 +61,7 @@ const CompleteVisit = ({
 
   useEffect(() => {
     if (patientData.current && combinedValues) {
-      dispatch(updateVisit(combinedValues)).then((res) => {
+      dispatch(updateVisitPatient(combinedValues)).then((res) => {
         if (res.meta.requestStatus == "fulfilled") {
           patientData.current = undefined;
           setShowCompletePatientDialog(false)

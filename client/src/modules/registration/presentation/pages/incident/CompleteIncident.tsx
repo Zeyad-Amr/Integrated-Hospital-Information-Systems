@@ -17,8 +17,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { updateVisit } from "../../controllers/thunks/visits-thunks";
-import { getAllIncidents } from "../../controllers/thunks/incident-thunk";
+import { updateIncidentPatient } from "../../controllers/thunks/incident-thunk";
 
 interface CompleteIncidentPropsInterface {
   isOpenDialog: boolean;
@@ -92,10 +91,9 @@ const CompleteIncident = ({
   //* Dispatch Update visit
   useEffect(() => {
     if (patientData.current && combinedValues) {
-      dispatch(updateVisit(combinedValues)).then((res) => {
+      dispatch(updateIncidentPatient(combinedValues)).then((res) => {
         if (res.meta.requestStatus == "fulfilled") {
           patientData.current = undefined;
-          dispatch(getAllIncidents([]))
         }
       });
     }
