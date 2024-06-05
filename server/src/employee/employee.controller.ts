@@ -78,6 +78,7 @@ export class EmployeeController {
       'roleId',
       'createdAt',
       'updatedAt',
+      'person.fullName'
     ]) sort?: Sorting,
     @FilteringParams([
       'shiftId',
