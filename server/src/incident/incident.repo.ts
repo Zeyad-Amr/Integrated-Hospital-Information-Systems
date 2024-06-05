@@ -33,6 +33,7 @@ export class IncidentRepo extends PrismaGenericRepo<
     // Car: { select: { firstChar: true, secondChar: true, thirdChar: true } }
     visits: { select: { code: true, patient: true, creator: true } },
     CompanionsOnIncidents: { select: { companion: true } },
+    AdditionalInformation: true,
   };
 
   async createIncident(incidentDto: CreateIncidentDto, creatorId: string) {
