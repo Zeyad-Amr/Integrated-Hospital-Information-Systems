@@ -67,7 +67,7 @@ export class AuthService {
     try {
       const user = await this.authRepo.getByUsername(username);
       const perm = await this.authRepo.getUserPermissions(user.username);
-      delete perm.password;
+      delete user.password;
       return { user: user, permissions: perm.employee.role.Permissions };
     } catch (error) {
       throw error;
