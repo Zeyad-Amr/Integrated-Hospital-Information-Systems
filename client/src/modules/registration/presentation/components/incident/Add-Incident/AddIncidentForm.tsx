@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import SecondaryButton from "@/core/shared/components/btns/SecondaryButton";
-import { Formik } from "formik";
+import { Formik, FormikProps } from "formik";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import { Button } from "@mui/material";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
@@ -34,9 +34,6 @@ const AddIncidentForm = () => {
   const [companionsArray, setCompanionsArray] = useState<{}[]>([]);
 
   const [combinedValues, setCombinedValues] = useState<IncidentInterface>();
-
-  // companion form Ref
-  const formRef = useRef(null);
 
   //* buttons useRef
   const refSubmitNumOfPatients: any = useRef(null);
@@ -78,6 +75,7 @@ const AddIncidentForm = () => {
       setCompanionsArray((previous) => [...previous, values]);
       setEditing(false);
     }
+    if (formikRefCompanion.current) formikRefCompanion.current.resetForm();
   };
 
   //* Handle Submit all Forms
@@ -91,6 +89,11 @@ const AddIncidentForm = () => {
       companions: companionsArray,
     }));
   };
+
+    //* Formik refs
+    const formikRefNoPatients = useRef<FormikProps<{numOfPatients : string}>>(null);
+    const formikRefAdditionalData = useRef<FormikProps<AdditionalDataInterface>>(null);
+    const formikRefCompanion = useRef<FormikProps<CompanionInterface>>(null);
 
   //* Handle Number of Patients Submit
   const handleNumOfPatientsSubmit = (values: { numOfPatients: string }) => {
@@ -113,10 +116,16 @@ const AddIncidentForm = () => {
   useEffect(() => {
     if (numOfPatients.current && additionalData.current) {
       if (combinedValues) {
-        dispatch(createIncident(combinedValues)).then(() => {
-          numOfPatients.current = undefined;
-          additionalData.current = undefined;
-          setCompanionsArray([]);
+        dispatch(createIncident(combinedValues)).then((res) => {
+          if (res.meta.requestStatus == "fulfilled") {
+            numOfPatients.current = undefined;
+            additionalData.current = undefined;
+            setCompanionsArray([]);
+          // Reset forms after successful submission
+          if (formikRefAdditionalData.current) formikRefAdditionalData.current.resetForm();
+          if (formikRefCompanion.current) formikRefCompanion.current.resetForm();
+          if (formikRefNoPatients.current) formikRefNoPatients.current.resetForm();
+          }
         });
         console.log(combinedValues);
       }
@@ -128,6 +137,7 @@ const AddIncidentForm = () => {
       <AlertDialog openAlert={openAlert} setOpenAlert={setOpenAlert} />
 
       <Formik
+        innerRef={formikRefNoPatients}
         enableReinitialize
         initialValues={{
           numOfPatients: "",
@@ -186,6 +196,7 @@ const AddIncidentForm = () => {
         isClosable={false}
       >
         <AdditionalData
+          innerFormRef={formikRefAdditionalData}
           initialValues={AdditionalDataEntity.defaultValue()}
           onSubmit={(values) => {
             console.log(values);
@@ -208,7 +219,6 @@ const AddIncidentForm = () => {
           {/* //* Start Companion Form */}
           <Box sx={{ width: "75%" }}>
             <CompanionForm
-              isResetForm
               initialValues={VisitEntity.companionDefaultValue()}
               validationSchema={VisitEntity.getCompanionSchema(true)}
               onSubmit={(values) => {
@@ -216,7 +226,7 @@ const AddIncidentForm = () => {
               }}
               refSubmitButton={refSubmitCompanion}
               searchSSN={searchSSN}
-              innerFormRef={formRef}
+              innerFormRef={formikRefCompanion}
               // newValues={companionFormValues}
             />
             <SecondaryButton
@@ -247,7 +257,7 @@ const AddIncidentForm = () => {
             >
               <CompanionList
                 companionsArray={companionsArray}
-                companionFormRef={formRef}
+                companionFormRef={formikRefCompanion}
                 setSearchSSN={setSearchSSN}
                 setEditing={setEditing}
                 setIndex={setIndex}
