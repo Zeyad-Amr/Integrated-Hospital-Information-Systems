@@ -1,12 +1,12 @@
 import IncidentEntity from "@/modules/registration/domain/entities/incident-entity";
-import { IncidentState } from "../types";
+import { IncidentsState } from "../types";
 import { createSlice } from "@reduxjs/toolkit";
 import { createIncident, getAllIncidents } from "../thunks/incident-thunk";
 import { ErrorResponse, PaginatedListModel } from "@/core/api";
 import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
-const initialState: IncidentState = {
+const initialState: IncidentsState = {
     incidents: PaginatedListModel.default(),
     currentIncident: IncidentEntity.defaultValue(),
     loading: false,
@@ -14,7 +14,7 @@ const initialState: IncidentState = {
 };
 
 const incidentSlice = createSlice({
-    name: "incident",
+    name: "incidents",
     initialState,
     reducers: {
         setLoading(state, action: { payload: boolean, type: string }) {

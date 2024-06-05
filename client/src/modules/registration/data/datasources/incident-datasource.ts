@@ -21,7 +21,7 @@ class IncidentDataSource extends BaseIncidentDataSource {
 
     override async getAllIncidents(filters: FilterQuery[]): Promise<PaginatedList<IncidentInterface>> {
         console.log("getAllIncidents DS:", filters);
-        const response = await this.apiClient.get(Endpoints.visit.list, { filters: filters });
+        const response = await this.apiClient.get(Endpoints.incident.list, { filters: filters });
         console.log(response.data.items);
         return PaginatedListModel.fromJson<IncidentInterface>(response.data, response.data.items.map((item: any) => IncidentModel.fromJson(item)), filters);
     }

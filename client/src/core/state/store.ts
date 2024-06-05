@@ -9,12 +9,14 @@ import rooms from "@/modules/management/presentation/controllers/slices/room-sli
 import specializations from "@/modules/management/presentation/controllers/slices/specialization-slice";
 import permissions from "@/modules/management/presentation/controllers/slices/permissions-slice";
 import subDepartments from "@/modules/management/presentation/controllers/slices/sub-departments-slice";
+import incidents from "@/modules/registration/presentation/controllers/slices/incident-slice";
 
 const store = configureStore({
     reducer: {
         employees: employees,
         auth: auth,
         visits: registration,
+        incidents,
         lookups: lookups,
         rooms,
         specializations,

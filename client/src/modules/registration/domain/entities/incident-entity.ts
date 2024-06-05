@@ -5,10 +5,14 @@ export default class IncidentEntity {
 
     static defaultValue(): IncidentInterface {
         return {
-            numOfPatients: "",
+            numberOfVisits: "",
+            numberOfIncompletedVisits: "",
             additionalInfo: undefined,
             companions: undefined,
-            visits: undefined
+            visits: undefined,
+            createdAt: undefined,
+            updatedAt: undefined,
+
         }
     }
 
