@@ -14,7 +14,7 @@ interface CompanionFormProps {
   validationSchema: Yup.ObjectSchema<any>;
   isResetForm?: boolean;
   searchSSN?: boolean;
-  innerFormRef?: React.MutableRefObject<null>;
+  innerFormRef?: any;
 }
 
 export default function CompanionForm({

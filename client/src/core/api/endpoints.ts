@@ -25,6 +25,9 @@ const Endpoints = {
         list: '/incident',
         details: '/incident/:id',
     },
+    erArea: {
+        streaming: '/streaming/event',
+    },
     lookups: {
         list: '/enums',
     },

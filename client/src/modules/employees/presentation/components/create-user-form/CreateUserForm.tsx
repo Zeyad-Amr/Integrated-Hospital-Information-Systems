@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 import Button from "@mui/material/Button";
-import { Formik } from "formik";
+import { Formik, FormikProps } from "formik";
 import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import { Grid } from "@mui/material";
@@ -31,10 +31,6 @@ import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import { EmployeeState } from "../../controllers/types";
 import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
-import {
-  RoleTypeInterface,
-  ShiftTypeInterface,
-} from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 import PersonalData from "@/core/shared/components/PersonalData";
 import { getSubDepartmentsList } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
 import { SubDepartmentsState } from "@/modules/management/presentation/controllers/types";
@@ -119,6 +115,11 @@ const CreateUserForm = ({
     }
   };
 
+  //* Formik refs
+  const formikRefPerson = useRef<FormikProps<PersonInterface>>(null);
+  const formikRefAuth = useRef<FormikProps<AuthInterface>>(null);
+  const formikRefEmployee = useRef<FormikProps<EmployeeInterface>>(null);
+
   //* Dispatch when all forms are valid
   useEffect(() => {
     if (personValid && authValid && employeeValid) {
@@ -133,8 +134,13 @@ const CreateUserForm = ({
         : createEmployee(employeePayload);
 
       dispatch(action).then((res) => {
-        if (res && employeeData && setShowEditEmployeeDialog) {
+        if (res.meta.requestStatus == "fulfilled" && employeeData && setShowEditEmployeeDialog) {
           setShowEditEmployeeDialog(false);
+        } else if (res.meta.requestStatus == "fulfilled") {
+          // Reset forms after successful submission
+          if (formikRefPerson.current) formikRefPerson.current.resetForm();
+          if (formikRefAuth.current) formikRefAuth.current.resetForm();
+          if (formikRefEmployee.current) formikRefEmployee.current.resetForm();
         }
       });
     }
@@ -157,6 +163,7 @@ const CreateUserForm = ({
         isClosable={false}
       >
         <Formik
+          innerRef={formikRefPerson}
           initialValues={employeeData?.person ?? PersonEntity.defaultValue()}
           onSubmit={onSubmitPerson}
           validationSchema={PersonEntity.getSchema()}
@@ -183,6 +190,7 @@ const CreateUserForm = ({
         isClosable={false}
       >
         <Formik
+          innerRef={formikRefAuth}
           initialValues={employeeData?.auth ?? AuthDataEntity.defaultValue()}
           validationSchema={AuthDataEntity.getSchema()}
           onSubmit={(values) => {
@@ -269,6 +277,7 @@ const CreateUserForm = ({
         isClosable={false}
       >
         <Formik
+          innerRef={formikRefEmployee}
           initialValues={
             employeeData
               ? {
@@ -295,7 +304,7 @@ const CreateUserForm = ({
             <Box component="form" onSubmit={handleSubmit} noValidate>
               <Grid container columns={12} spacing={2}>
                 <Grid item lg={3} md={3} sm={12} xs={12}>
-                  <CustomSelectField<RoleTypeInterface>
+                  <CustomSelectField
                     isRequired
                     name="roleId"
                     label="الوظيفة"
@@ -309,7 +318,7 @@ const CreateUserForm = ({
                   />
                 </Grid>
                 <Grid item lg={3} md={3} sm={12} xs={12}>
-                  <CustomSelectField<ShiftTypeInterface>
+                  <CustomSelectField
                     isRequired
                     name="shiftId"
                     label="موعد العمل"
