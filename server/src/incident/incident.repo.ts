@@ -32,7 +32,23 @@ export class IncidentRepo extends PrismaGenericRepo<
   private includeObj: Prisma.IncidentInclude = {
     // Car: { select: { firstChar: true, secondChar: true, thirdChar: true } }
     visits: { select: { code: true, patient: true, creator: true } },
-    CompanionsOnIncidents: { select: { companion: true } },
+    CompanionsOnIncidents: {
+      select: {
+        companion: {
+          include: {
+            person: true,
+            kinship: true,
+          }
+        }
+      }
+    },
+    AdditionalInformation: {
+      include: {
+        Car: true,
+        Attendant: true,
+        cameFrom: true,
+      }
+    },
   };
 
   async createIncident(incidentDto: CreateIncidentDto, creatorId: string) {

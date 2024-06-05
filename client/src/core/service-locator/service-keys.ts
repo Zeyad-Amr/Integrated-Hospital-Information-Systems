@@ -78,6 +78,7 @@ enum ServiceKeys {
     CreateTriageAXUseCase = 'CreateTriageAXUseCase',
 
     CreateIncidentUseCase = 'CreateIncidentUseCase',
+    GetAllIncidentsUseCase = 'GetAllIncidentsUseCase',
 
     GetAllDepartmentsUseCase = 'GetAllDepartmentsUseCase',
 

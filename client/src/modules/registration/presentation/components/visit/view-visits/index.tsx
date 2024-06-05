@@ -22,14 +22,12 @@ const VisitsTable = () => {
     useState<boolean>(false);
 
   //* data that in the state
-  const apiData: VisitInterface[] = state.visits.items;
-  console.log("apiDataaaa", apiData);
 
   let tableData: AnonymizedVisit[] = [];
-  apiData.forEach((item: VisitInterface) => {
+  state.visits.items.forEach((item: VisitInterface) => {
     tableData.push({
-      sequenceNumber: item?.sequenceNumber ?? "",
-      code: item?.code ?? "",
+      sequenceNumber: item?.sequenceNumber ?? "لا يوجد",
+      code: item?.code ?? "لا يوجد",
       companionName: item?.companion
         ? item.companion?.firstName +
           " " +
@@ -44,7 +42,7 @@ const VisitsTable = () => {
         ? new Date(item?.createdAt).toLocaleDateString() +
           " " +
           new Date(item?.createdAt).toLocaleTimeString()
-        : "",
+        : "لا يوجد",
 
       update: (
         <Button

@@ -1,38 +1,49 @@
 import CustomDataTable from "@/core/shared/components/CustomDataTable/CustomDataTable";
 import { Box, Button } from "@mui/material";
-import { DataItem, IncidentType, data, header } from "./data";
+import { IncidentVisit, header } from "./data";
 import { useRef } from "react";
 import { FilterQuery } from "@/core/api";
+import { IncidentsState } from "../../../controllers/types";
+import { useAppDispatch, useAppSelector } from "@/core/state/store";
+import { getAllIncidents } from "../../../controllers/thunks/incident-thunk";
+import IncidentInterface from "@/modules/registration/domain/interfaces/incident-interface";
 
 const IncidentTable = () => {
+  const state: IncidentsState = useAppSelector((state: any) => state.incidents);
+  const dispatch = useAppDispatch();
+
   // useRef
-  const refIdValue = useRef("");
+  const refIdValue = useRef<IncidentInterface>();
 
   // useState
   // const [showDialog, setShawDialog] = useState("none");
 
   //* data that in the state
-  const apiData: any[] = data;
-  let tableData: DataItem[] = [];
-  apiData.forEach((item) => {
+  let tableData: IncidentVisit[] = [];
+
+  state.incidents.items.forEach((item: IncidentInterface) => {
     tableData.push({
-      numberOfPatients: item.numberOfPatients,
-      uncompletedPatients: item.numberOfIncompletedVisits,
-      type: IncidentType[item.type as keyof typeof IncidentType],
-      date: item.createdAt.split("T")[0],
-      time: new Date(item.createdAt).toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }),
+      comeFrom: (item?.additionalInfo?.comeFrom ?? "لا يوجد").toString(),
+
+      injuryLocation: item?.additionalInfo?.place ?? "لا يوجد",
+      injuryCause: item?.additionalInfo?.reason ?? "لا يوجد",
+      numberOfIncompletedVisits: item?.numberOfIncompletedVisits ?? "لا يوجد",
+      numberOfVisits: item?.numberOfVisits ?? "لا يوجد",
+      createdAt: item?.createdAt
+        ? new Date(item?.createdAt).toLocaleDateString() +
+          " " +
+          new Date(item?.createdAt).toLocaleTimeString()
+        : "لا يوجد",
+
       update: (
         <Button
-          color="primary"
-          variant="contained"
+          color="info"
+          variant="outlined"
           fullWidth
           onClick={() => {
-            refIdValue.current = item.id;
+            refIdValue.current = item ?? "";
             // setShawDialog("block");
+            console.log(item);
           }}
         >
           استكمال بيانات
@@ -46,10 +57,15 @@ const IncidentTable = () => {
       <CustomDataTable
         fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
+          dispatch(getAllIncidents(filters));
         }}
-        totalItems={apiData.length}
+        initSortedColumn={{ columnId: "createdAt", isAscending: false }}
+        totalItems={state.incidents.total}
         data={tableData}
         headerItems={header}
+        onRowClick={(row) => {
+          console.log(row);
+        }}
       />
 
       {/* <CompleteIncident
