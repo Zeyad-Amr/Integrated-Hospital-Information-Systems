@@ -4,6 +4,9 @@ import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
 import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
 import CompleteVisitEntity from "@/modules/registration/domain/entities/complete-visit-entity";
+import { CompleteVisitInterface } from "@/modules/registration/domain/interfaces/complete-visit-interface";
+import IncidentInterface from "@/modules/registration/domain/interfaces/incident-interface";
+import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
 import { Button, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik, FormikProps } from "formik";
@@ -18,12 +21,7 @@ import React, {
 interface CompleteIncidentPropsInterface {
   isOpenDialog: boolean;
   setIsOpenDialog: Dispatch<SetStateAction<boolean>>;
-  incidentData: CompleteIncidentDataInterface[];
-}
-
-interface CompleteIncidentDataInterface {
-  visitCode: string;
-  patient: PersonInterface | null;
+  incidentData: IncidentInterface;
 }
 
 const CompleteIncident = ({
@@ -40,99 +38,7 @@ const CompleteIncident = ({
     useState<PersonInterface>();
   const [selectedPatientVisitCode, setSelectedPatientVisitCode] =
     useState<string>("");
-  const [totalPatientsList, setTotalPatientsList] = useState<
-    CompleteIncidentDataInterface[]
-  >([
-    {
-      visitCode: "256498",
-      patient: {
-        id: "1",
-        firstName: "احمد",
-        secondName: "طلعت",
-        thirdName: "محمد",
-        fourthName: "ابراهيم",
-        SSN: "11111122235222",
-        phone: "01211035528",
-        gender: 1,
-        governate: 1,
-        birthDate: "2000-12-12",
-        address: "حلولي",
-        verificationMethod: 1,
-      },
-    },
-    {
-      visitCode: "262584",
-      patient: {
-        id: "2",
-        firstName: "",
-        secondName: "",
-        thirdName: "",
-        fourthName: "",
-        SSN: "",
-        phone: "",
-        gender: 0,
-        governate: 0,
-        birthDate: "",
-        address: "",
-        verificationMethod: 0,
-      },
-    },
-    {
-      visitCode: "221478",
-      patient: {
-        id: "3",
-        firstName: "نور",
-        secondName: "فؤاد",
-        thirdName: "",
-        fourthName: "",
-        SSN: "",
-        phone: "",
-        gender: 0,
-        governate: 0,
-        birthDate: "",
-        address: "",
-        verificationMethod: 0,
-      },
-    },
-    {
-      visitCode: "595855",
-      patient: null,
-    },
-    {
-      visitCode: "156498",
-      patient: {
-        id: "5",
-        firstName: "احمد",
-        secondName: "مروان",
-        thirdName: "محمد",
-        fourthName: "ابراهيم",
-        SSN: "11111122235222",
-        phone: "01211035528",
-        gender: 2,
-        governate: 2,
-        birthDate: "2000-12-12",
-        address: "حلولي",
-        verificationMethod: 1,
-      },
-    },
-    {
-      visitCode: "285724",
-      patient: {
-        id: "6",
-        firstName: "",
-        secondName: "",
-        thirdName: "",
-        fourthName: "",
-        SSN: "",
-        phone: "",
-        gender: 0,
-        governate: 0,
-        birthDate: "",
-        address: "",
-        verificationMethod: 1,
-      },
-    },
-  ]);
+
 
   //* buttons useRef
   const refSubmitPatient: any = useRef(null);
@@ -162,20 +68,22 @@ const CompleteIncident = ({
   //* apply patient with visitcode ( switching between patients  )
   useEffect(() => {
     if (selectedPatientVisitCode) {
-      const selectedPatient = totalPatientsList.find(
-        (patient) => patient.visitCode == selectedPatientVisitCode
+      const selectedVisit = incidentData?.visits?.find(
+        (visit) => visit.code == selectedPatientVisitCode
       );
-      selectedPatient?.patient &&
-        setSelectedPatientData(selectedPatient?.patient);
+      selectedVisit?.patient &&
+        setSelectedPatientData(selectedVisit?.patient);
     }
   }, [selectedPatientVisitCode]);
 
   //* apply initial patient with visitcode ( initial patient )
   useEffect(() => {
-    const selectedPatient = sortingTotalPatient(totalPatientsList)[0];
-    setSelectedPatientVisitCode(selectedPatient.visitCode);
-    selectedPatient?.patient &&
-      setSelectedPatientData(selectedPatient?.patient);
+    if (incidentData && incidentData.visits) {
+        const selectedVisit = sortingTotalVisits(incidentData.visits)[0];
+        selectedVisit && selectedVisit.code && setSelectedPatientVisitCode(selectedVisit.code);
+        selectedVisit?.patient &&
+          setSelectedPatientData(selectedVisit?.patient);
+    }
   }, []);
 
   //* Dispatch Update visit
@@ -187,17 +95,20 @@ const CompleteIncident = ({
     }
   }, [combinedValues]);
 
-  const sortingTotalPatient = (array: CompleteIncidentDataInterface[]) => {
+  const sortingTotalVisits = (array: VisitInterface[]) => {
+    // Create a copy of the array to avoid modifying the original
+    const sortedArray = [...array];
+  
     // Sort the array based on the patient's data existence
-    return array.sort((a, b) => {
+    return sortedArray.sort((a, b) => {
       // Check if patient data is null
       const aIsNull = a.patient === null;
       const bIsNull = b.patient === null;
-
+  
       // Patients with null data come first
       if (aIsNull && !bIsNull) return -1;
       if (!aIsNull && bIsNull) return 1;
-
+  
       // Otherwise, maintain the original order
       return 0;
     });
@@ -205,7 +116,7 @@ const CompleteIncident = ({
 
   return (
     <CustomizedDialog
-      open={true}
+      open={isOpenDialog}
       setOpen={setIsOpenDialog}
       maxWidth={"lg"}
       title="استكمال بيانات الحادث"
@@ -236,7 +147,7 @@ const CompleteIncident = ({
           >
             <Typography>عدد المرضى :</Typography>
             <Typography sx={{ fontWeight: "600" }}>
-              &nbsp;{totalPatientsList.length}
+              { ' ' + incidentData?.numberOfVisits}
             </Typography>
           </Grid>
           <Grid
@@ -290,11 +201,11 @@ const CompleteIncident = ({
             overflowY: "scroll",
           }}
         >
-          {sortingTotalPatient(totalPatientsList).map(
-            (patientEl: CompleteIncidentDataInterface) => (
+          { incidentData.visits && sortingTotalVisits(incidentData.visits).map(
+            (visit) => (
               <Box
-                key={patientEl.visitCode}
-                id={patientEl.visitCode}
+                key={visit.code}
+                id={visit.code}
                 sx={{
                   display: "flex",
                   padding: "1rem 2rem",
@@ -302,18 +213,22 @@ const CompleteIncident = ({
                   justifyContent: "flex-start",
                   transition: "0.2s ease-in-out",
                   backgroundColor:
-                    patientEl.visitCode == selectedPatientVisitCode
+                  visit.code == selectedPatientVisitCode
                       ? "primary.main"
                       : "#dddddd99",
                   color:
-                    patientEl.visitCode == selectedPatientVisitCode
+                  visit.code == selectedPatientVisitCode
                       ? "white"
                       : "black",
                   borderRadius: "15px",
                   marginBottom: "1rem",
                   cursor: "pointer",
                 }}
-                onClick={() => setSelectedPatientVisitCode(patientEl.visitCode)}
+                onClick={() => {
+                if (visit.code) {
+                 setSelectedPatientVisitCode(visit.code)
+                }
+                }}
               >
                 {/* status indication */}
                 <Box
@@ -323,7 +238,7 @@ const CompleteIncident = ({
                     width: "1rem",
                     height: "1rem",
                     backgroundColor:
-                      patientEl.patient === null
+                    visit.patient === null
                         ? "error.main"
                         : "warning.main",
                     marginRight: "1rem",
@@ -339,14 +254,14 @@ const CompleteIncident = ({
                   }}
                 >
                   <Typography sx={{ fontWeight: "600" }}>
-                    {patientEl?.patient?.firstName
-                      ? patientEl?.patient?.firstName
+                    {visit?.patient?.firstName
+                      ? visit?.patient?.firstName
                       : "مريض"}{" "}
-                    {patientEl?.patient?.secondName
-                      ? patientEl?.patient?.secondName
+                    {visit?.patient?.secondName
+                      ? visit?.patient?.secondName
                       : "جديد"}
                   </Typography>
-                  <Typography>{patientEl.visitCode}</Typography>
+                  <Typography>{visit?.code}</Typography>
                 </Box>
               </Box>
             )
