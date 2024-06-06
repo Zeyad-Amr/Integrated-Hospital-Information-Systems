@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
     createVisit,
-    updateVisit,
+    updateVisitPatient,
     getAnonymousVisits,
     getVisitByCode,
 } from "../thunks/visits-thunks";
@@ -48,17 +48,17 @@ const visitSlice = createSlice({
         });
 
         //* Update Visit
-        builder.addCase(updateVisit.pending, (state, _action) => {
+        builder.addCase(updateVisitPatient.pending, (state, _action) => {
             state.loading = true;
             state.error = "";
         });
-        builder.addCase(updateVisit.fulfilled, (state, _action) => {
+        builder.addCase(updateVisitPatient.fulfilled, (state, _action) => {
             state.loading = false;
             AlertService.showAlert('تم تحديث بيانات زيارة مريض بنجاح', 'success');
             state.visits = PaginatedListModel.resetPaginatedList(state.visits)
             state.error = "";
         });
-        builder.addCase(updateVisit.rejected, (state, action) => {
+        builder.addCase(updateVisitPatient.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
             AlertService.showAlert(`${state.error}`, 'error');
