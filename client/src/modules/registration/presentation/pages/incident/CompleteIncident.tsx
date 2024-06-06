@@ -37,8 +37,8 @@ const CompleteIncident = ({
     visitCode: string;
     patient: PersonInterface;
   }>(); //* Total value (submit object)
-  const [selectedPatientData, setSelectedPatientData] =
-    useState<PersonInterface>();
+  // const [selectedPatientData, setSelectedPatientData] =
+  //   useState<PersonInterface>();
   const [selectedPatientVisitCode, setSelectedPatientVisitCode] =
     useState<string>("");
 
@@ -67,35 +67,35 @@ const CompleteIncident = ({
     });
   };
 
-  //* apply patient with visitcode (switching between patients)
+  //* Apply patient with visit code
   useEffect(() => {
-    if (selectedPatientVisitCode) {
+    const applyPatientData = (visitCode: string) => {
       const selectedVisit = incidentData?.visits?.find(
-        (visit) => visit.code === selectedPatientVisitCode
+        (visit) => visit.code === visitCode
       );
       const selectedPatientData = getProcessedPatientData(selectedVisit);
-      selectedPatientData && setSelectedPatientData(selectedPatientData);
-    }
-  }, [selectedPatientVisitCode]);
-
-  //* apply initial patient with visitcode (initial patient)
-  useEffect(() => {
-    if (incidentData && incidentData.visits) {
-      const selectedVisit = sortingTotalVisits(incidentData.visits)[0];
-      if (selectedVisit?.code) {
-        setSelectedPatientVisitCode(selectedVisit.code);
+      if (selectedPatientData && formikRefPatient.current) {
+        formikRefPatient.current.setValues(selectedPatientData);
       }
-      const selectedPatientData = getProcessedPatientData(selectedVisit);
-      selectedPatientData && setSelectedPatientData(selectedPatientData);
+    };
+
+    if (incidentData && incidentData.visits) {
+      if (!selectedPatientVisitCode) {
+        const initialVisit = sortingTotalVisits(incidentData.visits)[17];
+        if (initialVisit?.code) {
+          setSelectedPatientVisitCode(initialVisit.code);
+          applyPatientData(initialVisit.code);
+        }
+      } else {
+        applyPatientData(selectedPatientVisitCode);
+      }
     }
-  }, [incidentData]);
+  }, [selectedPatientVisitCode, incidentData]);
 
   //* convert null and undefiend values in patient object to main values
   const getProcessedPatientData = (visit?: VisitInterface): PersonInterface => {
-    if (visit?.patient) {
-      return CompleteVisitEntity.handleNullFormValues(
-        PersonEntity.handleFormValues(visit.patient)
-      );
+    if (visit && visit?.patient) {
+      return PersonEntity.handleFormValues(visit.patient)
     }
     return PersonEntity.handleFormValues({});
   };
@@ -112,7 +112,6 @@ const CompleteIncident = ({
   }, [combinedValues, dispatch]);
 
   const sortingTotalVisits = (array: VisitInterface[]) => {
-    // Create a copy of the array to avoid modifying the original
     const sortedArray = [...array];
 
     // Sort the array based on the patient's data existence
@@ -306,11 +305,9 @@ const CompleteIncident = ({
           {PersonEntity && (
             <Formik
               enableReinitialize
-              key={selectedPatientData?.id ?? "new-patient"} // Ensure form is reinitialized
               innerRef={formikRefPatient}
-              initialValues={selectedPatientData ?? PersonEntity.defaultValue()}
+              initialValues={PersonEntity.defaultValue()}
               onSubmit={(values) => {
-                console.log(values);
                 handlePatientSubmit(values);
               }}
               validationSchema={CompleteVisitEntity.getPatientSchema()}
