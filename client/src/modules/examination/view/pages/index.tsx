@@ -1,9 +1,9 @@
 import React from 'react'
 
-const VisitsDashboardPage = () => {
+const  ClinicVisitsPage = () => {
   return (
-    <div>VisitsDashboardPage</div>
+    <div>ClinicVisitsPage</div>
   )
 }
 
-export default VisitsDashboardPage
+export default ClinicVisitsPage
