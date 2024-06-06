@@ -37,10 +37,9 @@ const CompleteIncident = ({
     visitCode: string;
     patient: PersonInterface;
   }>(); //* Total value (submit object)
-  const [selectedPatientData, setSelectedPatientData] =
-    useState<PersonInterface>();
   const [selectedPatientVisitCode, setSelectedPatientVisitCode] =
     useState<string>("");
+  const [incidentDataState, setIncidentDataState] = useState<IncidentInterface>();
 
   //* buttons useRef
   const refSubmitPatient: any = useRef(null);
@@ -67,35 +66,41 @@ const CompleteIncident = ({
     });
   };
 
-  //* apply patient with visitcode (switching between patients)
+  //* Apply patient with visit code
   useEffect(() => {
-    if (selectedPatientVisitCode) {
-      const selectedVisit = incidentData?.visits?.find(
-        (visit) => visit.code === selectedPatientVisitCode
+    const applyPatientData = (visitCode: string) => {
+      const selectedVisit = incidentDataState?.visits?.find(
+        (visit) => visit.code === visitCode
       );
       const selectedPatientData = getProcessedPatientData(selectedVisit);
-      selectedPatientData && setSelectedPatientData(selectedPatientData);
-    }
-  }, [selectedPatientVisitCode]);
-
-  //* apply initial patient with visitcode (initial patient)
-  useEffect(() => {
-    if (incidentData && incidentData.visits) {
-      const selectedVisit = sortingTotalVisits(incidentData.visits)[0];
-      if (selectedVisit?.code) {
-        setSelectedPatientVisitCode(selectedVisit.code);
+      if (selectedPatientData && formikRefPatient.current) {
+        formikRefPatient.current.setValues(selectedPatientData);
       }
-      const selectedPatientData = getProcessedPatientData(selectedVisit);
-      selectedPatientData && setSelectedPatientData(selectedPatientData);
+    };
+
+    if (incidentDataState && incidentDataState.visits) {
+      if (!selectedPatientVisitCode) {
+        const initialVisit = sortingTotalVisits(incidentDataState.visits)[0];
+        if (initialVisit?.code) {
+          setSelectedPatientVisitCode(initialVisit.code);
+          applyPatientData(initialVisit.code);
+        }
+      } else {
+        applyPatientData(selectedPatientVisitCode);
+      }
     }
-  }, [incidentData]);
+  }, [selectedPatientVisitCode, incidentDataState]);
+
+ //* set props values to manage in state  
+  useEffect(() => {
+    setIncidentDataState(incidentData)
+  }, [incidentData])
+  
 
   //* convert null and undefiend values in patient object to main values
   const getProcessedPatientData = (visit?: VisitInterface): PersonInterface => {
-    if (visit?.patient) {
-      return CompleteVisitEntity.handleNullFormValues(
-        PersonEntity.handleFormValues(visit.patient)
-      );
+    if (visit && visit?.patient) {
+      return PersonEntity.handleFormValues(visit.patient)
     }
     return PersonEntity.handleFormValues({});
   };
@@ -105,14 +110,25 @@ const CompleteIncident = ({
     if (patientData.current && combinedValues) {
       dispatch(updateIncidentPatient(combinedValues)).then((res) => {
         if (res.meta.requestStatus == "fulfilled") {
+          setIncidentDataState((prevState) => {
+            if (!prevState) return prevState;
+            const updatedVisits = prevState.visits?.map((visit) => {
+              if (visit.code == selectedPatientVisitCode) {
+                return { ...visit, patient: patientData.current };
+              }
+              return visit;
+            });
+            return { ...prevState, visits: updatedVisits };
+          });
+          
           patientData.current = undefined;
+
         }
       });
     }
   }, [combinedValues, dispatch]);
 
   const sortingTotalVisits = (array: VisitInterface[]) => {
-    // Create a copy of the array to avoid modifying the original
     const sortedArray = [...array];
 
     // Sort the array based on the patient's data existence
@@ -121,9 +137,9 @@ const CompleteIncident = ({
       const aIsNull = a.patient === null || a.patient === undefined;
       const bIsNull = b.patient === null || b.patient === undefined;
 
-      // Patients with null data come first
-      if (aIsNull && !bIsNull) return -1;
-      if (!aIsNull && bIsNull) return 1;
+      // Patients with not null data come first
+      if (aIsNull && !bIsNull) return 1;
+      if (!aIsNull && bIsNull) return -1;
 
       // Otherwise, maintain the original order
       return 0;
@@ -163,7 +179,7 @@ const CompleteIncident = ({
           >
             <Typography>عدد المرضى :</Typography>
             <Typography sx={{ fontWeight: "600" }}>
-              {incidentData?.numberOfVisits}
+              {incidentDataState?.numberOfVisits}
             </Typography>
           </Grid>
           <Grid
@@ -176,7 +192,7 @@ const CompleteIncident = ({
           >
             <Typography>قادم من :</Typography>
             <Typography sx={{ fontWeight: "600" }}>
-              {incidentData?.additionalInfo?.comeFrom ?? "لا يوجد"}
+              {incidentDataState?.additionalInfo?.comeFrom ?? "لا يوجد"}
             </Typography>
           </Grid>
           <Grid
@@ -189,7 +205,7 @@ const CompleteIncident = ({
           >
             <Typography>المسعف :</Typography>
             <Typography sx={{ fontWeight: "600" }}>
-              {incidentData?.additionalInfo?.attendantName ?? "لا يوجد"}
+              {incidentDataState?.additionalInfo?.attendantName ?? "لا يوجد"}
             </Typography>
           </Grid>
           <Grid
@@ -202,17 +218,18 @@ const CompleteIncident = ({
           >
             <Typography>سيارة الاسعاف :</Typography>
             <Typography sx={{ fontWeight: "600" }}>
-              {incidentData?.additionalInfo?.carNum &&
-              incidentData?.additionalInfo?.firstChar &&
-              incidentData?.additionalInfo?.secondChar &&
-              incidentData?.additionalInfo?.thirdChar
-                ? incidentData?.additionalInfo?.carNum +
+              {incidentDataState?.additionalInfo?.carNum &&
+              incidentDataState?.additionalInfo?.firstChar &&
+              incidentDataState?.additionalInfo?.secondChar &&
+              incidentDataState?.additionalInfo?.thirdChar
+                ? 
+                  incidentDataState?.additionalInfo?.firstChar +
                   " " +
-                  incidentData?.additionalInfo?.firstChar +
+                  incidentDataState?.additionalInfo?.secondChar +
                   " " +
-                  incidentData?.additionalInfo?.secondChar +
+                  incidentDataState?.additionalInfo?.thirdChar +
                   " " +
-                  incidentData?.additionalInfo?.thirdChar
+                  incidentDataState?.additionalInfo?.carNum
                 : "لا يوجد"}
             </Typography>
           </Grid>
@@ -232,8 +249,8 @@ const CompleteIncident = ({
             overflowY: "scroll",
           }}
         >
-          {incidentData.visits &&
-            sortingTotalVisits(incidentData.visits).map((visit) => (
+          {incidentDataState?.visits &&
+            sortingTotalVisits(incidentDataState.visits).map((visit) => (
               <Box
                 key={visit.code}
                 id={visit.code}
@@ -250,6 +267,7 @@ const CompleteIncident = ({
                   color:
                     visit.code == selectedPatientVisitCode ? "white" : "black",
                   borderRadius: "15px",
+                  borderLeft : `2px solid ${visit.patient?.gender == 1 ? "aqua" : visit.patient?.gender == 2 ? "pink" : "none"   } `,
                   marginBottom: "1rem",
                   cursor: "pointer",
                 }}
@@ -268,7 +286,7 @@ const CompleteIncident = ({
                     height: "1rem",
                     backgroundColor:
                       visit.patient === null || visit.patient === undefined
-                        ? "error.main"
+                        ? "error.main" : visit.patient.SSN ? "success.main"
                         : "warning.main",
                     marginRight: "1rem",
                   }}
@@ -306,11 +324,9 @@ const CompleteIncident = ({
           {PersonEntity && (
             <Formik
               enableReinitialize
-              key={selectedPatientData?.id ?? "new-patient"} // Ensure form is reinitialized
               innerRef={formikRefPatient}
-              initialValues={selectedPatientData ?? PersonEntity.defaultValue()}
+              initialValues={PersonEntity.defaultValue()}
               onSubmit={(values) => {
-                console.log(values);
                 handlePatientSubmit(values);
               }}
               validationSchema={CompleteVisitEntity.getPatientSchema()}
