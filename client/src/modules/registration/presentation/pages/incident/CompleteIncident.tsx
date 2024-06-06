@@ -137,7 +137,7 @@ const CompleteIncident = ({
       const aIsNull = a.patient === null || a.patient === undefined;
       const bIsNull = b.patient === null || b.patient === undefined;
 
-      // Patients with null data come first
+      // Patients with not null data come first
       if (aIsNull && !bIsNull) return 1;
       if (!aIsNull && bIsNull) return -1;
 
@@ -222,13 +222,14 @@ const CompleteIncident = ({
               incidentDataState?.additionalInfo?.firstChar &&
               incidentDataState?.additionalInfo?.secondChar &&
               incidentDataState?.additionalInfo?.thirdChar
-                ? incidentDataState?.additionalInfo?.carNum +
-                  " " +
+                ? 
                   incidentDataState?.additionalInfo?.firstChar +
                   " " +
                   incidentDataState?.additionalInfo?.secondChar +
                   " " +
-                  incidentDataState?.additionalInfo?.thirdChar
+                  incidentDataState?.additionalInfo?.thirdChar +
+                  " " +
+                  incidentDataState?.additionalInfo?.carNum
                 : "لا يوجد"}
             </Typography>
           </Grid>
@@ -284,7 +285,7 @@ const CompleteIncident = ({
                     height: "1rem",
                     backgroundColor:
                       visit.patient === null || visit.patient === undefined
-                        ? "error.main"
+                        ? "error.main" : visit.patient.SSN ? "success.main"
                         : "warning.main",
                     marginRight: "1rem",
                   }}
