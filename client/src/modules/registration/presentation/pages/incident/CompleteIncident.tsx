@@ -1,369 +1,338 @@
-// TODO: Fix the code below
-// import Dialog from "@/core/shared/components/Dialog";
-// import PersonalData, {
-//   PersonalDataValues,
-// } from "@/core/shared/components/PersonalData";
-// import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
-// import { Grid, Typography } from "@mui/material";
-// import { Box } from "@mui/system";
-// import React, { useEffect, useRef, useState } from "react";
+import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
+import PersonalData from "@/core/shared/components/PersonalData";
+import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
+import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
+import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
+import { useAppDispatch } from "@/core/state/store";
+import CompleteVisitEntity from "@/modules/registration/domain/entities/complete-visit-entity";
+import IncidentInterface from "@/modules/registration/domain/interfaces/incident-interface";
+import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
+import { Button, Grid, Typography } from "@mui/material";
+import { Box } from "@mui/system";
+import { Formik, FormikProps } from "formik";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { updateIncidentPatient } from "../../controllers/thunks/incident-thunk";
 
-// interface incidentData {
-//   id: string;
-//   visitCode: string;
-//   firstName: string;
-//   secondName: string;
-//   thirdName: string;
-//   forthName: string;
-//   email: string;
-//   SSN: string;
-//   phone: string;
-//   gender: string;
-//   governate: string;
-//   birthDate: string;
-//   address: string;
-//   verificationMethod: string;
-//   status: string;
-// }
+interface CompleteIncidentPropsInterface {
+  isOpenDialog: boolean;
+  setIsOpenDialog: Dispatch<SetStateAction<boolean>>;
+  incidentData: IncidentInterface;
+}
 
-// const CompleteIncident = (props: any) => {
-//   const [intialValues, setIntialValues] = useState<incidentData>({
-//     visitCode: "",
-//     id: "",
-//     firstName: "",
-//     secondName: "",
-//     thirdName: "",
-//     forthName: "",
-//     email: "",
-//     SSN: "",
-//     phone: "",
-//     gender: "",
-//     governate: "",
-//     birthDate: "",
-//     address: "",
-//     verificationMethod: "",
-//     status: "",
-//   });
+const CompleteIncident = ({
+  isOpenDialog,
+  setIsOpenDialog,
+  incidentData,
+}: CompleteIncidentPropsInterface) => {
+  const dispatch = useAppDispatch();
 
-//   const [submitFlag, setSubmitFlag] = useState<boolean>(false);
+  //* useState
+  const [combinedValues, setCombinedValues] = useState<{
+    visitCode: string;
+    patient: PersonInterface;
+  }>(); //* Total value ( submit object )
+  const [selectedPatientData, setSelectedPatientData] =
+    useState<PersonInterface>();
+  const [selectedPatientVisitCode, setSelectedPatientVisitCode] =
+    useState<string>("");
+  
 
-//   const handlePersonSubmission = (values: PersonalDataValues) => {
-//     console.log(selectedId);
-//     console.log({
-//       id: selectedId,
-//       data: values,
-//     });
-//   };
+  //* buttons useRef
+  const refSubmitPatient: any = useRef(null);
 
-//   const [patients, setPatients] = useState<incidentData[]>([
-//     {
-//       id: "1",
-//       visitCode:'256498',
-//       firstName: "احمد",
-//       secondName: "طلعت",
-//       thirdName: "محمد",
-//       forthName: "ابراهيم",
-//       email: "mail@mail.com",
-//       SSN: "11111122235222",
-//       phone: "01211035528",
-//       gender: "1",
-//       governate: "1",
-//       birthDate: "2000-12-12",
-//       address: "حلولي",
-//       verificationMethod: "1",
-//       status: "completed",
-//     },
-//     {
-//       id: "2",
-//       visitCode:'262584',
-//       firstName: "",
-//       secondName: "",
-//       thirdName: "",
-//       forthName: "",
-//       email: "",
-//       SSN: "",
-//       phone: "",
-//       gender: "",
-//       governate: "",
-//       birthDate: "",
-//       address: "",
-//       verificationMethod: "",
-//       status: "empty",
-//     },
-//     {
-//       id: "3",
-//       visitCode:'221478',
-//       firstName: "نور",
-//       secondName: "فؤاد",
-//       thirdName: "",
-//       forthName: "",
-//       email: "",
-//       SSN: "",
-//       phone: "",
-//       gender: "",
-//       governate: "",
-//       birthDate: "",
-//       address: "",
-//       verificationMethod: "",
-//       status: "notCompleted",
-//     },
-//     {
-//       id: "4",
-//       visitCode:'595855',
-//       firstName: "",
-//       secondName: "",
-//       thirdName: "",
-//       forthName: "",
-//       email: "",
-//       SSN: "",
-//       phone: "",
-//       gender: "",
-//       governate: "",
-//       birthDate: "",
-//       address: "",
-//       verificationMethod: "",
-//       status: "empty",
-//     },
-//     {
-//       id: "5",
-//       visitCode:'156498',
-//       firstName: "احمد",
-//       secondName: "مروان",
-//       thirdName: "محمد",
-//       forthName: "ابراهيم",
-//       email: "mail@mail.com",
-//       SSN: "11111122235222",
-//       phone: "01211035528",
-//       gender: "1",
-//       governate: "1",
-//       birthDate: "2000-12-12",
-//       address: "حلولي",
-//       verificationMethod: "1",
-//       status: "completed",
-//     },
-//     {
-//       id: "6",
-//       visitCode:'285724',
-//       firstName: "",
-//       secondName: "",
-//       thirdName: "",
-//       forthName: "",
-//       email: "",
-//       SSN: "",
-//       phone: "",
-//       gender: "",
-//       governate: "",
-//       birthDate: "",
-//       address: "",
-//       verificationMethod: "",
-//       status: "empty",
-//     },
-//     {
-//       id: "7",
-//       visitCode:'215524',
-//       firstName: "هاني",
-//       secondName: "نسيم",
-//       thirdName: "",
-//       forthName: "",
-//       email: "",
-//       SSN: "",
-//       phone: "",
-//       gender: "",
-//       governate: "",
-//       birthDate: "",
-//       address: "",
-//       verificationMethod: "",
-//       status: "notCompleted",
-//     },
-//   ]);
+  //* Form data refrence
+  const patientData = useRef<PersonInterface>();
 
-//   const [selectedId, setSelectedId] = useState<string>("");
+  //* Submit functions
+  const submitPatient = () => {
+    if (refSubmitPatient.current) {
+      refSubmitPatient.current.click();
+    }
+  };
 
-//   const checkFirstRender = useRef(true);
-//   const checkFirstRender2 = useRef(true);
-//   useEffect(() => {
-//     if (checkFirstRender.current) {
-//       checkFirstRender.current = false;
-//     } else if (checkFirstRender2.current) {
-//       checkFirstRender2.current = false;
-//     } else {
-//       setIntialValues(patients[parseInt(selectedId) - 1]);
-//     }
-//   }, [intialValues, patients, selectedId]);
+  //* Formik refs
+  const formikRefPatient = useRef<FormikProps<PersonInterface>>(null);
 
-//   interface patientData {
-//     firstName: string;
-//     secondName: string;
-//     thirdName: string;
-//     forthName: string;
-//     email: string;
-//     SSN: string;
-//     phone: string;
-//     gender: string;
-//     governate: string;
-//     birthDate: null | string;
-//     address: string;
-//     verificationMethod: string;
-//     status: string;
-//   }
+  //* Handle Patient Submit
+  const handlePatientSubmit = (values: PersonInterface) => {
+    patientData.current = values;
+    setCombinedValues({
+      patient: values,
+      visitCode: selectedPatientVisitCode,
+    });
+  };
 
-//   const arraySort = (array: patientData[]) => {
-//     let emptyArray: patientData[] = [];
-//     let NCArray: patientData[] = [];
-//     let CArray: patientData[] = [];
+  //* apply patient with visitcode ( switching between patients  )
+  useEffect(() => {
+    if (selectedPatientVisitCode) {
+      const selectedVisit = incidentData?.visits?.find(
+        (visit) => visit.code == selectedPatientVisitCode
+      );
+      selectedVisit?.patient && setSelectedPatientData(selectedVisit?.patient);
+    }
+  }, [selectedPatientVisitCode]);
 
-//     let sortedArray: patientData[] = [];
+  //* apply initial patient with visitcode ( initial patient )
+  useEffect(() => {
+    if (incidentData && incidentData.visits) {
+      const selectedVisit = sortingTotalVisits(incidentData.visits)[0];
+      selectedVisit &&
+        selectedVisit.code &&
+        setSelectedPatientVisitCode(selectedVisit.code);
+      selectedVisit?.patient && setSelectedPatientData(selectedVisit?.patient);
+    }
+  }, []);
 
-//     for (let i = 0; i < array.length; i++) {
-//       if (array[i].status === "empty") {
-//         emptyArray.push(array[i]);
-//       } else if (array[i].status === "notCompleted") {
-//         NCArray.push(array[i]);
-//       } else {
-//         CArray.push(array[i]);
-//       }
-//     }
-//     sortedArray = emptyArray.concat(NCArray, CArray);
-//     return sortedArray;
-//   };
+  //* Dispatch Update visit
+  useEffect(() => {
+    if (patientData.current && combinedValues) {
+      dispatch(updateIncidentPatient(combinedValues)).then((res) => {
+        if (res.meta.requestStatus == "fulfilled") {
+          patientData.current = undefined;
+        }
+      });
+    }
+  }, [combinedValues]);
 
-//   return (
-//     <Dialog
-//       display={props.display}
-//       DialogStateController={props.DialogStateController}
-//       title="استكمال بيانات الحادث"
-//     >
-//       <Box
-//         sx={{
-//           backgroundColor: "primary.darker",
-//           display: "flex",
-//           justifyContent: "space-between",
-//           alignItems: "center",
-//           padding: ".5rem 2rem",
-//         }}
-//       >
-//         <Grid
-//           container
-//           sx={{ color: "white", padding: "0.5rem", alignItems: "center" }}
-//         >
-//           <Grid
-//             item
-//             lg={3}
-//             md={3}
-//             sm={6}
-//             xs={12}
-//             sx={{ display: "flex", justifyContent: "center" }}
-//           >
-//             <Typography>عدد المرضى :</Typography>
-//             <Typography sx={{ fontWeight: "600" }}>
-//               &nbsp;{patients.length}
-//             </Typography>
-//           </Grid>
-//           <Grid
-//             item
-//             lg={3}
-//             md={3}
-//             sm={6}
-//             xs={12}
-//             sx={{ display: "flex", justifyContent: "center" }}
-//           >
-//             <Typography>قادم من :</Typography>
-//             <Typography sx={{ fontWeight: "600" }}>&nbsp;حادث</Typography>
-//           </Grid>
-//           <Grid
-//             item
-//             lg={3}
-//             md={3}
-//             sm={6}
-//             xs={12}
-//             sx={{ display: "flex", justifyContent: "center" }}
-//           >
-//             <Typography>المسعف :</Typography>
-//             <Typography sx={{ fontWeight: "600" }}>
-//               &nbsp;محمد ابراهيم
-//             </Typography>
-//           </Grid>
-//           <Grid
-//             item
-//             lg={3}
-//             md={3}
-//             sm={6}
-//             xs={12}
-//             sx={{ display: "flex", justifyContent: "center" }}
-//           >
-//             <Typography>سيارة الاسعاف :</Typography>
-//             <Typography sx={{ fontWeight: "600" }}>&nbsp;س و م 23</Typography>
-//           </Grid>
-//         </Grid>
-//       </Box>
-//       <Box
-//         sx={{ display: "flex", width: "100%", height: "80%", padding: "1rem" }}
-//       >
-//         <Box
-//           sx={{
-//             backgroundColor: "#eee",
-//             width: "25%",
-//             height: "100%",
-//             borderRadius: "15px",
-//             padding: "1rem",
-//             overflow: "auto",
-//           }}
-//         >
-//           {arraySort(patients).map((patient: any) => (
-//             <Box
-//               key={patient.id}
-//               id={patient.id}
-//               sx={{
-//                 display: "flex",
-//                 padding: "1rem 2rem",
-//                 alignItems: "center",
-//                 justifyContent: "flex-start",
-//                 transition: "0.2s ease-in-out",
-//                 backgroundColor:
-//                   patient.id === selectedId ? "primary.main" : "#dddddd99",
-//                 color: patient.id === selectedId ? "white" : "black",
-//                 borderRadius: "15px",
-//                 marginBottom: "1rem",
-//                 cursor: "pointer",
-//               }}
-//               onClick={(e: any) => setSelectedId(e.target.id)}
-//             >
-//               <Box
-//                 sx={{
-//                   pointerEvents: "none",
-//                   borderRadius: "50%",
-//                   width: "1rem",
-//                   height: "1rem",
-//                   backgroundColor:
-//                     patient.status === "completed"
-//                       ? "success.main"
-//                       : patient.status === "notCompleted"
-//                         ? "warning.main"
-//                         : "error.main",
-//                   marginRight: "1rem",
-//                 }}
-//               ></Box>
-//               <Box sx={{display:'flex',flexDirection:'column', pointerEvents: "none" }}>
-//                 <Typography sx={{ fontWeight: '600'}}>
-//                   {patient.firstName ? patient.firstName : "مريض"}&nbsp;
-//                   {patient.secondName ? patient.secondName : "جديد"}
-//                 </Typography>
-//                 <Typography>{patient.visitCode}</Typography>
-//               </Box>
-//             </Box>
-//           ))}
-//         </Box>
-//         <Box sx={{ width: "75%", overflow: "scroll", padding: "2rem" }}>
-//           <PersonalData
-//             initialValues={intialValues}
-//             onSubmit={handlePersonSubmission}
-//             isSubmitted={submitFlag}
-//           />
-//           <PrimaryButton title="حفــظ" onClick={setSubmitFlag} />
-//         </Box>
-//       </Box>
-//     </Dialog>
-//   );
-// };
+  const sortingTotalVisits = (array: VisitInterface[]) => {
+    // Create a copy of the array to avoid modifying the original
+    const sortedArray = [...array];
 
-// export default CompleteIncident;
+    // Sort the array based on the patient's data existence
+    return sortedArray.sort((a, b) => {
+      // Check if patient data is null
+      const aIsNull = a.patient === null || a.patient === undefined;
+      const bIsNull = b.patient === null || b.patient === undefined;
+
+      // Patients with null data come first
+      if (aIsNull && !bIsNull) return -1;
+      if (!aIsNull && bIsNull) return 1;
+
+      // Otherwise, maintain the original order
+      return 0;
+    });
+  };
+
+  return (
+    <CustomizedDialog
+      open={isOpenDialog}
+      setOpen={setIsOpenDialog}
+      maxWidth={"lg"}
+      title="استكمال بيانات الحادث"
+    >
+      {/* Additional data section ( Header data )   */}
+      <Box
+        sx={{
+          backgroundColor: "primary.darker",
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          padding: ".5rem 2rem",
+          borderRadius: "10px",
+          marginTop: "-0.3rem",
+        }}
+      >
+        <Grid
+          container
+          sx={{ color: "white", padding: "0.5rem", alignItems: "center" }}
+        >
+          <Grid
+            item
+            lg={3}
+            md={3}
+            sm={6}
+            xs={12}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
+            <Typography>عدد المرضى :</Typography>
+            <Typography sx={{ fontWeight: "600" }}>
+              {incidentData?.numberOfVisits}
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            md={3}
+            sm={6}
+            xs={12}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
+            <Typography>قادم من :</Typography>
+            <Typography sx={{ fontWeight: "600" }}>
+              {incidentData?.additionalInfo?.comeFrom ?? "لا يوجد"}
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            md={3}
+            sm={6}
+            xs={12}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
+            <Typography>المسعف :</Typography>
+            <Typography sx={{ fontWeight: "600" }}>
+              {incidentData?.additionalInfo?.attendantName ?? "لا يوجد"}
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            md={3}
+            sm={6}
+            xs={12}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
+            <Typography>سيارة الاسعاف : </Typography>
+            <Typography sx={{ fontWeight: "600" }}>
+              {incidentData?.additionalInfo?.carNum &&
+              incidentData?.additionalInfo?.firstChar &&
+              incidentData?.additionalInfo?.secondChar &&
+              incidentData?.additionalInfo?.thirdChar
+                ? incidentData?.additionalInfo?.carNum +
+                  " " +
+                  incidentData?.additionalInfo?.firstChar +
+                  " " +
+                  incidentData?.additionalInfo?.secondChar +
+                  " " +
+                  incidentData?.additionalInfo?.thirdChar
+                : "لا يوجد"}
+            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
+
+      {/*  Main Section  */}
+      <Box sx={{ display: "flex", width: "100%", padding: "1rem" }}>
+        {/* Right Section ( List of patients )  */}
+        <Box
+          sx={{
+            backgroundColor: "#eee",
+            width: "25%",
+            borderRadius: "15px",
+            padding: "1rem",
+            height: "64vh",
+            overflowY: "scroll",
+          }}
+        >
+          {incidentData.visits &&
+            sortingTotalVisits(incidentData.visits).map((visit) => (
+              <Box
+                key={visit.code}
+                id={visit.code}
+                sx={{
+                  display: "flex",
+                  padding: "1rem 2rem",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                  transition: "0.2s ease-in-out",
+                  backgroundColor:
+                    visit.code == selectedPatientVisitCode
+                      ? "primary.main"
+                      : "#dddddd99",
+                  color:
+                    visit.code == selectedPatientVisitCode ? "white" : "black",
+                  borderRadius: "15px",
+                  marginBottom: "1rem",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  if (visit.code) {
+                    setSelectedPatientVisitCode(visit.code);
+                  }
+                }}
+              >
+                {/* status indication */}
+                <Box
+                  sx={{
+                    pointerEvents: "none",
+                    borderRadius: "50%",
+                    width: "1rem",
+                    height: "1rem",
+                    backgroundColor:
+                      visit.patient === null || visit.patient === undefined ? "error.main" : "warning.main",
+                    marginRight: "1rem",
+                  }}
+                ></Box>
+
+                {/* patient data */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    pointerEvents: "none",
+                  }}
+                >
+                  <Typography sx={{ fontWeight: "600" }}>
+                    {visit?.patient?.firstName
+                      ? visit?.patient?.firstName
+                      : "مريض"}{" "}
+                    {visit?.patient?.secondName
+                      ? visit?.patient?.secondName
+                      : "جديد"}
+                  </Typography>
+                  <Typography>{visit?.code}</Typography>
+                </Box>
+              </Box>
+            ))}
+        </Box>
+
+        {/* Left Section ( Update patient data form )  */}
+        <Box
+          sx={{
+            width: "75%",
+            overflowY: "scroll",
+            padding: "2rem 2rem 0rem 2rem",
+          }}
+        >
+          {PersonEntity && (
+            <Formik
+              enableReinitialize
+              innerRef={formikRefPatient}
+              initialValues={selectedPatientData ?? PersonEntity.defaultValue()}
+              onSubmit={(values) => {
+                console.log(values);
+                handlePatientSubmit(values);
+              }}
+              validationSchema={CompleteVisitEntity.getPatientSchema()}
+            >
+              {({ handleSubmit }) => (
+                <Box component="form" onSubmit={handleSubmit} noValidate>
+                  <PersonalData />
+                  <Button
+                    type="submit"
+                    sx={{ display: "none" }}
+                    ref={refSubmitPatient}
+                  ></Button>
+                </Box>
+              )}
+            </Formik>
+          )}
+          {/* Submit Button */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              height: "4rem",
+            }}
+          >
+            <PrimaryButton
+              title="تأكيــد"
+              type="button"
+              onClick={() => submitPatient()}
+            />
+          </Box>
+        </Box>
+      </Box>
+    </CustomizedDialog>
+  );
+};
+
+export default CompleteIncident;

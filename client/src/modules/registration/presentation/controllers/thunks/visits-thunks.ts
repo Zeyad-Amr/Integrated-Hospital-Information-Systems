@@ -29,8 +29,8 @@ export const createVisit = createAsyncThunk(
 );
 
 //* Update Visit
-export const updateVisit = createAsyncThunk(
-    "registration/update",
+export const updateVisitPatient = createAsyncThunk(
+    "registration/visit/update",
     async (data: CompleteVisitInterface, thunkApi) => {
         const { rejectWithValue } = thunkApi;
         try {
