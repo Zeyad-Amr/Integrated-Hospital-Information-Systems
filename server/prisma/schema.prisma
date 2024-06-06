@@ -14,6 +14,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ================================
+// Identity and Personal Information
+// ================================
 model Person {
   id                   String        @id @default(uuid())
   firstName            String?
@@ -37,34 +40,37 @@ model Person {
   companion Companion?
 }
 
-model Patient {
-  id            String        @id @default(uuid())
-  comorbidities Comorbidity[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  person   Person @relation(fields: [personId], references: [id])
-  personId String @unique
-
-  medicalRecords MedicalRecord[]
-  visits         Visit[]
-  diagnosis      Diagnosis[]
+model IdentityType {
+  id     Int      @id @default(autoincrement())
+  value  String   @unique
+  Person Person[]
 }
 
-model Companion {
-  id        String       @id @default(uuid())
-  kinship   KinshipType? @relation(fields: [kinshipId], references: [id])
-  kinshipId Int?
+model GenderType {
+  id     Int      @id @default(autoincrement())
+  value  String   @unique
+  Person Person[]
+}
+
+model Governate {
+  id     Int      @id @default(autoincrement())
+  value  String   @unique
+  Person Person[]
+}
+
+// ================================
+// Authentication and Authorization
+// ================================
+model User {
+  username String  @id
+  password String
+  email    String? @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  person   Person @relation(fields: [personId], references: [id])
-  personId String @unique
-
-  visits                Visit[]
-  CompanionsOnIncidents CompanionsOnIncidents[]
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  employeeId String   @unique
 }
 
 model Employee {
@@ -86,86 +92,327 @@ model Employee {
   createdById       String?
   createdEmployees  Employee[] @relation("CreatedBy")
 
-  subdepartments SubDepartment[]
-  visitsCreated  Visit[]
-  diagnosis      Diagnosis[]
+  subdepartments               SubDepartment[]
+  visitsCreated                Visit[]
+  diagnosis                    Diagnosis[]
+  medicalProblem               MedicalProblem[]
+  allergy                      Allergy[]
+  medication                   Medication[]
+  prescription                 Prescription[]
+  consultationRequestsSent     ConsultationRequest[] @relation("requester")
+  consultationRequestsReceived ConsultationRequest[] @relation("consultant")
+  surgery                      Surgery[]
+  vitals                       Vitals[]
+  primarySurvey                PrimarySurvey[]
 }
 
-model User {
-  username String  @id
-  password String
-  email    String? @unique
+model RoleType {
+  id          Int           @id @default(autoincrement())
+  value       String        @unique
+  Employee    Employee[]
+  Permissions Permissions[]
+}
+
+model ShiftType {
+  id       Int        @id @default(autoincrement())
+  value    String     @unique
+  Employee Employee[]
+}
+
+// ================================
+// Medical Information
+// ================================
+model Patient {
+  id String @id @default(uuid())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
-  employeeId String   @unique
+  person   Person @relation(fields: [personId], references: [id])
+  personId String @unique
+
+  vitals              Vitals[]
+  visits              Visit[]
+  diagnosis           Diagnosis[]
+  medicalProblems     MedicalProblem[]
+  allergies           Allergy[]
+  medications         Medication[]
+  prescriptions       Prescription[]
+  surgery             Surgery[]
+  labTests            LabTest[]
+  images              Image[]
+  consultationRequest ConsultationRequest[]
+  // Referral        Referral[]
 }
 
-model Department {
-  id   Int    @id @default(autoincrement())
-  name String @unique
+model Companion {
+  id        String       @id @default(uuid())
+  kinship   KinshipType? @relation(fields: [kinshipId], references: [id])
+  kinshipId Int?
 
-  SubDepartments SubDepartment[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  person   Person @relation(fields: [personId], references: [id])
+  personId String @unique
+
+  visits                Visit[]
+  CompanionsOnIncidents CompanionsOnIncidents[]
 }
 
-model SubDepartment {
-  id               Int            @id @default(autoincrement())
-  name             String         @unique
-  roomId           Int
-  room             Room           @relation(fields: [roomId], references: [id])
-  specializationId Int
-  specialization   Specialization @relation(fields: [specializationId], references: [id])
-  features         Feature[]
+model Surgery {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  place       String?
 
-  transferFrom Transfer[]    @relation("fromSubDepartment")
-  transferTo   Transfer[]    @relation("toSubDepartment")
-  Department   Department?   @relation(fields: [departmentId], references: [id])
-  departmentId Int?
-  employee     Employee?     @relation(fields: [employeeId], references: [id])
-  employeeId   String?
-  Permissions  Permissions[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId String
+  visit     Visit    @relation(fields: [visitCode], references: [code])
+  visitCode String
+  author    Employee @relation(fields: [authorId], references: [id])
+  authorId  String
 }
 
-model Specialization {
-  id            Int             @id @default(autoincrement())
-  name          String
-  description   String?
-  SubDepartment SubDepartment[]
+model Diagnosis {
+  id          String  @id @default(uuid())
+  name        String?
+  description String?
+  icdCode     String?
+  type        String? //(provisional,final) 
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  visit     Visit    @relation(fields: [visitCode], references: [code])
+  visitCode String
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId String
+  author    Employee @relation(fields: [authorId], references: [id])
+  authorId  String
 }
 
-model Room {
-  id            Int             @id @default(autoincrement())
-  name          String
-  location      String?
-  SubDepartment SubDepartment[]
+model MedicalProblem {
+  id          String    @id @default(uuid())
+  name        String
+  beginDate   DateTime?
+  endDate     DateTime?
+  verfication String?
+  comments    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  patient     Patient  @relation(fields: [patientId], references: [id])
+  patientId   String
+  referedBy   Employee @relation(fields: [referedById], references: [id])
+  referedById String
 }
 
-model Feature {
-  id              Int            @id @default(autoincrement())
-  name            String
-  code            String?
-  subDepartment   SubDepartment? @relation(fields: [subDepartmentId], references: [id])
-  subDepartmentId Int?
-  Permissions     Permissions[]
+model Allergy {
+  id          String    @id @default(uuid())
+  name        String
+  beginDate   DateTime?
+  endDate     DateTime?
+  reaction    String?
+  severity    String?
+  occurrence  String?
+  verfication String?
+  comments    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  patient     Patient  @relation(fields: [patientId], references: [id])
+  patientId   String
+  referedBy   Employee @relation(fields: [referedById], references: [id])
+  referedById String
 }
 
-model Permissions {
-  id              Int           @id @default(autoincrement())
-  feature         Feature       @relation(fields: [featureId], references: [id])
-  featureId       Int
-  role            RoleType      @relation(fields: [roleTypeId], references: [id])
-  roleTypeId      Int
-  subDepartment   SubDepartment @relation(fields: [subDepartmentId], references: [id], onDelete: Cascade)
-  subDepartmentId Int
+model Medication {
+  id                String    @id @default(uuid())
+  drugName          String
+  beginDate         DateTime
+  endDate           DateTime?
+  medicationUsage   String?
+  dosageInstruction String?
+  comments          String?
 
-  @@unique([featureId, roleTypeId, subDepartmentId], map: "FeatureRoleSubDepartment")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  referedBy   Employee @relation(fields: [referedById], references: [id])
+  referedById String
+
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
 }
 
+model Prescription {
+  id                  String   @id @default(uuid())
+  drugName            String
+  beginDate           DateTime
+  quantity            Int
+  medicineUnit        String?
+  dosage              String
+  refills             String?
+  substitutionAllowed Boolean
+  notes               String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author   Employee @relation(fields: [authorId], references: [id])
+  authorId String
+
+  patient   Patient @relation(fields: [patientId], references: [id])
+  patientId String
+  visit     Visit   @relation(fields: [visitCode], references: [code])
+  visitCode String  @unique
+}
+
+model TriageAx {
+  id                   String      @id @default(uuid())
+  painScore            Float?
+  consciousnessLevel   LOC?        @relation(fields: [consciousnessLevelId], references: [id])
+  consciousnessLevelId Int?
+  triage               TriageType? @relation(fields: [triageId], references: [id])
+  triageId             Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  visit     Visit  @relation(fields: [visitCode], references: [code])
+  visitCode String @unique
+}
+
+model Vitals {
+  id     String @id @default(uuid())
+  temp   Float?
+  PR     Float?
+  RR     Float?
+  weight Float?
+  height Float?
+  SBP    Float?
+  DBP    Float?
+  SpO2   Float?
+  CVP    Float?
+  GCS    Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId String
+  visit     Visit    @relation(fields: [visitCode], references: [code])
+  visitCode String
+  author    Employee @relation(fields: [authorId], references: [id])
+  authorId  String
+}
+
+model PrimarySurvey {
+  id          String @id @default(uuid())
+  airway      String
+  breathing   String
+  circulation String
+  disability  String
+  exposure    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  visit     Visit    @relation(fields: [visitCode], references: [code])
+  visitCode String   @unique
+  author    Employee @relation(fields: [authorId], references: [id])
+  authorId  String
+}
+
+model Image {
+  id   String  @id @default(uuid())
+  name String
+  url  String?
+
+  patient   Patient @relation(fields: [patientId], references: [id])
+  patientId String
+  visit     Visit   @relation(fields: [visitCode], references: [code])
+  visitCode String
+}
+
+model LabTest {
+  id   String  @id @default(uuid())
+  name String
+  url  String?
+
+  patient   Patient @relation(fields: [patientId], references: [id])
+  patientId String
+  visit     Visit   @relation(fields: [visitCode], references: [code])
+  visitCode String
+}
+
+model ConsultationRequest {
+  id                 String             @id @default(uuid())
+  requestDate        DateTime           @default(now())
+  status             ConsultationStatus @default(PENDING)
+  notes              String?
+  reason             String?
+  clinicalData       String? //the requester filled this
+  consultationReport String? //the consultant filled this
+  recommendations    String? //the consultant filled this
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  patient      Patient  @relation(fields: [patientId], references: [id])
+  patientId    String
+  requester    Employee @relation("requester", fields: [requesterId], references: [id])
+  requesterId  String
+  consultant   Employee @relation("consultant", fields: [consultantId], references: [id])
+  consultantId String
+  visit        Visit?   @relation(fields: [visitId], references: [code])
+  visitId      String?
+}
+
+model KinshipType {
+  id        Int         @id @default(autoincrement())
+  value     String      @unique
+  Companion Companion[]
+}
+
+model TriageType {
+  id       Int        @id @default(autoincrement())
+  value    String     @unique
+  triageAx TriageAx[]
+}
+
+model LOC {
+  id       Int        @id @default(autoincrement())
+  value    String     @unique
+  triageAx TriageAx[]
+}
+
+enum ConsultationReason {
+  OPINION_RECOMMENDATION_ONLY
+  CO_MANAGEMENT
+  TRANSFER_FOR_MANAGEMENT
+}
+
+enum ConsultationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  COMPLETED
+}
+
+// ================================
+// Visit related models
+// ================================
 model Visit {
-  code           String @id
+  code           String  @id
   sequenceNumber Int?
+  mainComplaint  String?
 
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt
@@ -181,14 +428,19 @@ model Visit {
   companion   Companion? @relation(fields: [companionId], references: [id])
   companionId String?
 
-  medicalRecord MedicalRecord?
-  transfers     Transfer[]
-  triageAx      TriageAx?
+  incident   Incident? @relation(fields: [incidentId], references: [id])
+  incidentId String?
 
-  incident      Incident?       @relation(fields: [incidentId], references: [id])
-  incidentId    String?
-  diagnosis     Diagnosis[]
-  primarySurvey PrimarySurvey[]
+  transfers           Transfer[]
+  triageAx            TriageAx?
+  vitals              Vitals[]
+  diagnosis           Diagnosis[]
+  primarySurveys      PrimarySurvey?
+  surgeries           Surgery[]
+  labTests            LabTest[]
+  images              Image[]
+  prescription        Prescription[]
+  consultationRequest ConsultationRequest[]
 }
 
 model Incident {
@@ -251,84 +503,6 @@ model VisitAdditionalInformation {
   Visit          Visit[]
 }
 
-model MedicalRecord {
-  id                   String      @id @default(uuid())
-  mainComplaint        String?
-  consciousnessLevel   LOC?        @relation(fields: [consciousnessLevelId], references: [id])
-  consciousnessLevelId Int?
-  triage               TriageType? @relation(fields: [triageId], references: [id])
-  triageId             Int?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  visit     Visit  @relation(fields: [visitCode], references: [code])
-  visitCode String @unique
-
-  vitals    Vitals[]
-  Patient   Patient? @relation(fields: [patientId], references: [id])
-  patientId String?
-}
-
-model Diagnosis {
-  id          String @id @default(uuid())
-  description String
-  icdCode     String
-  type        String //(provisional,final) 
-
-  visit     Visit    @relation(fields: [visitCode], references: [code])
-  visitCode String
-  patient   Patient  @relation(fields: [patientId], references: [id])
-  patientId String
-  author    Employee @relation(fields: [authorId], references: [id])
-  authorId  String
-}
-
-model TriageAx {
-  id                   String      @id @default(uuid())
-  painScore            Float?
-  consciousnessLevel   LOC?        @relation(fields: [consciousnessLevelId], references: [id])
-  consciousnessLevelId Int?
-  triage               TriageType? @relation(fields: [triageId], references: [id])
-  triageId             Int?
-
-  visit     Visit  @relation(fields: [visitCode], references: [code])
-  visitCode String @unique
-}
-
-model Vitals {
-  id   String @id @default(uuid())
-  temp Float?
-  PR   Float? //pulse rate
-  RR   Float? //respiratory rate
-  SBP  Float? //systolic blood pressure
-  DBP  Float? //diastolic blood pressure
-  SpO2 Float?
-  CVP  Float?
-  GCS  Float?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  medicalRecord  MedicalRecord @relation(fields: [medcalRecordId], references: [id])
-  medcalRecordId String
-}
-
-model PrimarySurvey {
-  id          String @id @default(uuid())
-  airway      String
-  breathing   String
-  circulation String
-  disability  String
-  exposure    String
-
-  createdAt DateTime
-  updatedAt DateTime
-
-  visit     Visit   @relation(fields: [visitCode], references: [code])
-  visitCode String
-}
-
 model Transfer {
   id String @id @default(uuid())
 
@@ -344,145 +518,104 @@ model Transfer {
   visitCode String
 }
 
-// enum IdentityEnum {
-//   NATIONALIDCARD
-//   PASSPORT
-// }
-model IdentityType {
-  id     Int      @id @default(autoincrement())
-  value  String   @unique
-  Person Person[]
-}
-
-// enum GenderEnum {
-//   MALE
-//   FEMALE
-// }
-model GenderType {
-  id     Int      @id @default(autoincrement())
-  value  String   @unique
-  Person Person[]
-}
-
-// enum KinshipEnum {
-//   BROTHER
-//   SISTER
-//   FATHER
-//   MOTHER
-//   COUSIN
-//   AUNT
-//   OTHER
-// }
-model KinshipType {
-  id        Int         @id @default(autoincrement())
-  value     String      @unique
-  Companion Companion[]
-}
-
-// enum RoleEnum {
-//   ADMIN
-//   EMPLOYEE
-//   DOCTOR
-//   NURSE
-// }
-model RoleType {
-  id          Int           @id @default(autoincrement())
-  value       String        @unique
-  Employee    Employee[]
-  Permissions Permissions[]
-}
-
-// enum ShiftEnum {
-//   MORNING8
-//   AFTERNOON8
-//   NIGHT8
-//   MORNING12
-//   NIGHT12
-//   LONG
-// }
-model ShiftType {
-  id       Int        @id @default(autoincrement())
-  value    String     @unique
-  Employee Employee[]
-}
-
-// enum CameFromOptions {
-//   HOME
-//   ACCIDENT
-//   PRISONER
-// }
 model CameFromOptions {
   id                         Int                          @id @default(autoincrement())
   value                      String                       @unique
   VisitAdditionalInformation VisitAdditionalInformation[]
 }
 
-// enum AttendantRole {
-//   PARAMEDIC
-//   OFFICER
-// }
 model AttendantRole {
   id        Int         @id @default(autoincrement())
   value     String      @unique
   Attendant Attendant[]
 }
 
-// enum Triage {
-//   STANDARD
-//   IMMEDIATE
-//   CRITICAL
-//   URGENT
-// }
-model TriageType {
-  id            Int             @id @default(autoincrement())
-  value         String          @unique
-  MedicalRecord MedicalRecord[]
-  triageAx      TriageAx[]
+// ================================
+// Facilities and Infrastructure
+// ================================
+model Department {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  SubDepartments SubDepartment[]
 }
 
-// enum ConsciousnessLevel {
-//   ALERT
-//   VERBAL_RESPONSIVE
-//   PAIN_RESPONSIVE
-//   UNRESPONSIVE
-// }
-model LOC {
-  id            Int             @id @default(autoincrement())
-  value         String          @unique
-  MedicalRecord MedicalRecord[]
-  triageAx      TriageAx[]
+model SubDepartment {
+  id               Int            @id @default(autoincrement())
+  name             String         @unique
+  roomId           Int
+  room             Room           @relation(fields: [roomId], references: [id])
+  specializationId Int
+  specialization   Specialization @relation(fields: [specializationId], references: [id])
+  features         Feature[]
+
+  transferFrom Transfer[]    @relation("fromSubDepartment")
+  transferTo   Transfer[]    @relation("toSubDepartment")
+  Department   Department?   @relation(fields: [departmentId], references: [id])
+  departmentId Int?
+  employee     Employee?     @relation(fields: [employeeId], references: [id])
+  employeeId   String?
+  Permissions  Permissions[]
+  // referralsFrom Referral[]    @relation("ReferringSubDepartment")
+  // referralsTo   Referral[]    @relation("ReferredToSubDepartment")
 }
 
-// enum Comorbidity {
-//   HYPERTENSION
-//   DIABETES
-//   CARDIOVASCULAR_DISEASE
-//   OBESITY
-//   CHRONIC_RESPIRATORY_CONDITION
-//   IMMUNODEFICIENCY_DISORDER
-//   CHRONIC_KIDNEY_DISEASE
-//   LIVER_DISEASE
-//   CANCER
-//   AUTOIMMUNE_DISORDER
-//   NEUROLOGICAL_DISORDER
-//   GASTROINTESTINAL_DISORDER
-//   ENDOCRINE_DISORDER
-//   PSYCHIATRIC_DISORDER
-//   BONE_AND_JOINT_DISORDER
-//   INFECTIOUS_DISEASE
-//   HEMATOLOGICAL_DISORDER
-//   METABOLIC_SYNDROME
-//   SLEEP_APNEA
-//   SUBSTANCE_USE_DISORDER
-// }
+model Specialization {
+  id            Int             @id @default(autoincrement())
+  name          String
+  description   String?
+  SubDepartment SubDepartment[]
+}
+
+model Room {
+  id            Int             @id @default(autoincrement())
+  name          String
+  location      String?
+  SubDepartment SubDepartment[]
+}
+
+model Feature {
+  id              Int            @id @default(autoincrement())
+  name            String
+  code            String?
+  subDepartment   SubDepartment? @relation(fields: [subDepartmentId], references: [id])
+  subDepartmentId Int?
+  Permissions     Permissions[]
+}
+
+model Permissions {
+  id              Int           @id @default(autoincrement())
+  feature         Feature       @relation(fields: [featureId], references: [id])
+  featureId       Int
+  role            RoleType      @relation(fields: [roleTypeId], references: [id])
+  roleTypeId      Int
+  subDepartment   SubDepartment @relation(fields: [subDepartmentId], references: [id], onDelete: Cascade)
+  subDepartmentId Int
+
+  @@unique([featureId, roleTypeId, subDepartmentId], map: "FeatureRoleSubDepartment")
+}
+
+
+
 model Comorbidity {
-  id      Int       @id @default(autoincrement())
-  value   String    @unique
-  Patient Patient[]
+  id    Int    @id @default(autoincrement())
+  value String @unique
 }
 
-model Governate {
-  id     Int      @id @default(autoincrement())
-  value  String   @unique
-  Person Person[]
-}
+
+// model Referral {
+//   id           String   @id @default(uuid())
+//   patientId    String
+//   referralDate DateTime @default(now())
+//   reason       String
+//   notes        String
+//   status       String // Example values: "Pending", "Completed", "Cancelled"
+//   createdAt    DateTime @default(now())
+//   updatedAt    DateTime @updatedAt
+
+//   patient                   Patient       @relation(fields: [patientId], references: [id])
+//   referringSubDepartment    SubDepartment @relation("ReferringSubDepartment", fields: [referringSubDepartmentId], references: [id])
+//   referringSubDepartmentId  String
+//   referredToSubDepartment   SubDepartment @relation("ReferredToSubDepartment", fields: [referredToSubDepartmentId], references: [id])
+//   referredToSubDepartmentId String
+// }
