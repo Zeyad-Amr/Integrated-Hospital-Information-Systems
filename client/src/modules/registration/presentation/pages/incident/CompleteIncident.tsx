@@ -36,17 +36,16 @@ const CompleteIncident = ({
   const [combinedValues, setCombinedValues] = useState<{
     visitCode: string;
     patient: PersonInterface;
-  }>(); //* Total value ( submit object )
+  }>(); //* Total value (submit object)
   const [selectedPatientData, setSelectedPatientData] =
     useState<PersonInterface>();
   const [selectedPatientVisitCode, setSelectedPatientVisitCode] =
     useState<string>("");
-  
 
   //* buttons useRef
   const refSubmitPatient: any = useRef(null);
 
-  //* Form data refrence
+  //* Form data reference
   const patientData = useRef<PersonInterface>();
 
   //* Submit functions
@@ -68,26 +67,38 @@ const CompleteIncident = ({
     });
   };
 
-  //* apply patient with visitcode ( switching between patients  )
+  //* apply patient with visitcode (switching between patients)
   useEffect(() => {
     if (selectedPatientVisitCode) {
       const selectedVisit = incidentData?.visits?.find(
-        (visit) => visit.code == selectedPatientVisitCode
+        (visit) => visit.code === selectedPatientVisitCode
       );
-      selectedVisit?.patient && setSelectedPatientData(selectedVisit?.patient);
+      const selectedPatientData = getProcessedPatientData(selectedVisit);
+      selectedPatientData && setSelectedPatientData(selectedPatientData);
     }
   }, [selectedPatientVisitCode]);
 
-  //* apply initial patient with visitcode ( initial patient )
+  //* apply initial patient with visitcode (initial patient)
   useEffect(() => {
     if (incidentData && incidentData.visits) {
       const selectedVisit = sortingTotalVisits(incidentData.visits)[0];
-      selectedVisit &&
-        selectedVisit.code &&
+      if (selectedVisit?.code) {
         setSelectedPatientVisitCode(selectedVisit.code);
-      selectedVisit?.patient && setSelectedPatientData(selectedVisit?.patient);
+      }
+      const selectedPatientData = getProcessedPatientData(selectedVisit);
+      selectedPatientData && setSelectedPatientData(selectedPatientData);
     }
-  }, []);
+  }, [incidentData]);
+
+  //* convert null and undefiend values in patient object to main values
+  const getProcessedPatientData = (visit?: VisitInterface): PersonInterface => {
+    if (visit?.patient) {
+      return CompleteVisitEntity.handleNullFormValues(
+        PersonEntity.handleFormValues(visit.patient)
+      );
+    }
+    return PersonEntity.handleFormValues({});
+  };
 
   //* Dispatch Update visit
   useEffect(() => {
@@ -98,7 +109,7 @@ const CompleteIncident = ({
         }
       });
     }
-  }, [combinedValues]);
+  }, [combinedValues, dispatch]);
 
   const sortingTotalVisits = (array: VisitInterface[]) => {
     // Create a copy of the array to avoid modifying the original
@@ -126,7 +137,7 @@ const CompleteIncident = ({
       maxWidth={"lg"}
       title="استكمال بيانات الحادث"
     >
-      {/* Additional data section ( Header data )   */}
+      {/* Additional data section (Header data) */}
       <Box
         sx={{
           backgroundColor: "primary.darker",
@@ -189,7 +200,7 @@ const CompleteIncident = ({
             xs={12}
             sx={{ display: "flex", justifyContent: "center" }}
           >
-            <Typography>سيارة الاسعاف : </Typography>
+            <Typography>سيارة الاسعاف :</Typography>
             <Typography sx={{ fontWeight: "600" }}>
               {incidentData?.additionalInfo?.carNum &&
               incidentData?.additionalInfo?.firstChar &&
@@ -208,9 +219,9 @@ const CompleteIncident = ({
         </Grid>
       </Box>
 
-      {/*  Main Section  */}
+      {/* Main Section */}
       <Box sx={{ display: "flex", width: "100%", padding: "1rem" }}>
-        {/* Right Section ( List of patients )  */}
+        {/* Right Section (List of patients) */}
         <Box
           sx={{
             backgroundColor: "#eee",
@@ -256,7 +267,9 @@ const CompleteIncident = ({
                     width: "1rem",
                     height: "1rem",
                     backgroundColor:
-                      visit.patient === null || visit.patient === undefined ? "error.main" : "warning.main",
+                      visit.patient === null || visit.patient === undefined
+                        ? "error.main"
+                        : "warning.main",
                     marginRight: "1rem",
                   }}
                 ></Box>
@@ -270,12 +283,11 @@ const CompleteIncident = ({
                   }}
                 >
                   <Typography sx={{ fontWeight: "600" }}>
-                    {visit?.patient?.firstName
-                      ? visit?.patient?.firstName
-                      : "مريض"}{" "}
-                    {visit?.patient?.secondName
-                      ? visit?.patient?.secondName
-                      : "جديد"}
+                    {visit.patient?.firstName && visit.patient?.secondName
+                      ? `${visit.patient.firstName} ${visit.patient.secondName}`
+                      : visit.patient?.firstName
+                      ? visit.patient.firstName
+                      : "مريض جديد"}{" "}
                   </Typography>
                   <Typography>{visit?.code}</Typography>
                 </Box>
@@ -283,7 +295,7 @@ const CompleteIncident = ({
             ))}
         </Box>
 
-        {/* Left Section ( Update patient data form )  */}
+        {/* Left Section (Update patient data form) */}
         <Box
           sx={{
             width: "75%",
@@ -294,6 +306,7 @@ const CompleteIncident = ({
           {PersonEntity && (
             <Formik
               enableReinitialize
+              key={selectedPatientData?.id ?? "new-patient"} // Ensure form is reinitialized
               innerRef={formikRefPatient}
               initialValues={selectedPatientData ?? PersonEntity.defaultValue()}
               onSubmit={(values) => {

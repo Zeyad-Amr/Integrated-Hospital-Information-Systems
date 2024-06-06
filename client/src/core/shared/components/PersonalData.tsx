@@ -183,7 +183,7 @@ const PersonalData = ({
   useEffect(() => {
   const ssn = values?.SSN as string;
 
-  if (ssn.length === 14 && searchSSN) {
+  if ( ssn && ssn?.length === 14 && searchSSN) {
     const getPersonUseCase = sl.get<GetPersonUseCase>(ServiceKeys.GetPersonUseCase);
 
     const mergeSSNData = () => {
