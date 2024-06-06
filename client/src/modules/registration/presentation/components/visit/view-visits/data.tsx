@@ -12,6 +12,7 @@ export interface AnonymizedVisit {
 export const header: HeaderItem[] = [
   {
     id: "sequenceNumber",
+    key: "sequenceNumber",
     label: "رقم التردد",
     minWidth: 20,
     maxWidth: 50,
@@ -23,6 +24,7 @@ export const header: HeaderItem[] = [
   },
   {
     id: "code",
+    key: "code",
     label: "رقم المريض",
     minWidth: 50,
     tableCellProps: { align: "center" },
@@ -33,6 +35,7 @@ export const header: HeaderItem[] = [
   },
   {
     id: "companionName",
+    key: "companionName",
     label: "اسم المرافق",
     minWidth: 50,
     maxWidth: 70,
@@ -45,6 +48,7 @@ export const header: HeaderItem[] = [
   },
   {
     id: "companionSSN",
+    key: "companionSSN",
     label: "رقم هوية المرافق",
     minWidth: 50,
     maxWidth: 70,
@@ -57,6 +61,7 @@ export const header: HeaderItem[] = [
   },
   {
     id: "createdAt",
+    key: "createdAt",
     label: "تاريخ الحجز",
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
@@ -67,6 +72,7 @@ export const header: HeaderItem[] = [
   },
   {
     id: "update",
+    key: "update",
     label: "تعديل",
     isComponent: true,
     minWidth: 100,

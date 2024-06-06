@@ -7,11 +7,14 @@ import { ErrorResponse } from "@/core/api";
 import UserInterface from "@/modules/auth/domain/interfaces/user-interface";
 import AuthInterface from "@/modules/auth/domain/interfaces/auth-interface";
 import AlertService from "@/core/shared/utils/alert-service";
+import AccountSubDepartmentPermissionEntity from "@/modules/auth/domain/entities/account-entity";
+import { AccountSubDepartmentPermissionInterface } from "@/modules/auth/domain/interfaces/account-interface";
 
 //* Initial State
 const initialState: AuthState = {
     me: UserEntity.defaultValue(),
     permssions: [],
+    currentPermission: AccountSubDepartmentPermissionEntity.defaultValue(),
     authData: AuthDataEntity.defaultValue(),
     loading: false,
     error: "",
@@ -38,6 +41,16 @@ const authSlice = createSlice({
         },
         setMe(state, action: { payload: UserInterface, type: string }) {
             state.me = action.payload;
+        },
+        setCurrentAccountSubDepartmentPermissions(state, action: { payload: string, type: string }) {
+            console.log(action.payload);
+            const permission: AccountSubDepartmentPermissionInterface =
+                state.permssions.find(
+                    (permission: AccountSubDepartmentPermissionInterface) =>
+                        permission.subDepartment.id == action.payload
+                ) ?? AccountSubDepartmentPermissionEntity.defaultValue();
+            console.log(permission);
+            state.currentPermission = permission;
         }
     },
     extraReducers(builder) {
@@ -66,6 +79,7 @@ const authSlice = createSlice({
             state.loading = false;
             state.me = action.payload.user;
             state.permssions = action.payload.permissions;
+            state.currentPermission = action.payload.permissions.length > 0 ? action.payload.permissions[0] : AccountSubDepartmentPermissionEntity.defaultValue();
             state.error = "";
         });
         builder.addCase(getMe.rejected, (state, action) => {
@@ -84,6 +98,7 @@ export const {
     clearAuthData,
     clearMe,
     setAuthData,
-    setMe
+    setMe,
+    setCurrentAccountSubDepartmentPermissions
 } = authSlice.actions;
 export default authSlice.reducer;

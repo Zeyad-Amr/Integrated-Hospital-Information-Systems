@@ -4,6 +4,7 @@ import { CreateIncidentDto } from './dto/create-incident.dto';
 import {
   Attendant,
   Incident,
+  Patient,
   Person,
   Prisma,
   Visit,
@@ -18,7 +19,7 @@ import { isEmptyObject } from 'src/shared/util.functions.ts/general.utils';
 
 @Injectable()
 export class IncidentRepo extends PrismaGenericRepo<
-  Incident & { visits: Array<Visit & { patient: Person }> } & {
+  Incident & { visits: Array<Visit & { patient: Patient & { person: Person } }> } & {
     numberOfIncompletedVisits: number;
   }
 > {
@@ -31,7 +32,17 @@ export class IncidentRepo extends PrismaGenericRepo<
 
   private includeObj: Prisma.IncidentInclude = {
     // Car: { select: { firstChar: true, secondChar: true, thirdChar: true } }
-    visits: { select: { code: true, patient: true, creator: true } },
+    visits: {
+      select: {
+        code: true,
+        patient: {
+          include: {
+            person: true
+          }
+        },
+        creator: true
+      }
+    },
     CompanionsOnIncidents: {
       select: {
         companion: {
@@ -242,7 +253,7 @@ export class IncidentRepo extends PrismaGenericRepo<
       incidents.items.forEach((incident) => {
         incident.numberOfIncompletedVisits = 0;
         incident.visits.forEach((visit) => {
-          if (visit.patient == null) incident.numberOfIncompletedVisits++;
+          if (visit.patient == null || visit.patient?.person?.SSN == null) incident.numberOfIncompletedVisits++;
         });
       });
       return incidents;

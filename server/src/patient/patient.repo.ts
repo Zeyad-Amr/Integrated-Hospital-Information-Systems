@@ -31,24 +31,31 @@ export class PatientRepo extends PrismaGenericRepo<Patient> {
 
   async updateUncompleted(updatePatientDto: UpdatePatientDto) {
     try {
+      const { verificationMethodId, genderId, governateId, ...personData } = updatePatientDto.patient
       const visit = await this.prismaService.visit.update(
         {
           where: { code: updatePatientDto.visitCode },
           data: {
             patient: {
-              update: {
-                person: {
-                  update: {
-                    ...updatePatientDto.patient
+              upsert: {
+                create:{
+                  person:{
+                    create:{
+                      verificationMethod: verificationMethodId ? { connect: { id: verificationMethodId } } : undefined,
+                      governate: governateId ? { connect: { id: governateId } } : undefined,
+                      gender: genderId ? { connect: { id: genderId } } : undefined,
+                      ...personData
+                    }
                   }
-                }
-              }
-            },
-            companion: {
-              update: {
-                person: {
-                  update: {
-                    ...updatePatientDto.companion
+                },
+                update:{
+                  person: {
+                    update: {
+                      verificationMethod: verificationMethodId ? { connect: { id: verificationMethodId } } : undefined,
+                      governate: governateId ? { connect: { id: governateId } } : undefined,
+                      gender: genderId ? { connect: { id: genderId } } : undefined,
+                      ...personData
+                    }
                   }
                 }
               }

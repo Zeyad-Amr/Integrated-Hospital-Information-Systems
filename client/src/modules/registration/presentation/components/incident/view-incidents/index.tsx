@@ -1,22 +1,24 @@
 import CustomDataTable from "@/core/shared/components/CustomDataTable/CustomDataTable";
 import { Box, Button } from "@mui/material";
 import { IncidentVisit, header } from "./data";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { FilterQuery } from "@/core/api";
 import { IncidentsState } from "../../../controllers/types";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import { getAllIncidents } from "../../../controllers/thunks/incident-thunk";
 import IncidentInterface from "@/modules/registration/domain/interfaces/incident-interface";
+import CompleteIncident from "../../../pages/incident/CompleteIncident";
 
 const IncidentTable = () => {
   const state: IncidentsState = useAppSelector((state: any) => state.incidents);
   const dispatch = useAppDispatch();
 
   // useRef
-  const refIdValue = useRef<IncidentInterface>();
+  const refIncidentValue = useRef<IncidentInterface>();
 
   // useState
-  // const [showDialog, setShawDialog] = useState("none");
+  const [showCompleteIncidentDialog, setShowCompleteIncidentDialog] =
+    useState<boolean>(false);
 
   //* data that in the state
   let tableData: IncidentVisit[] = [];
@@ -41,8 +43,8 @@ const IncidentTable = () => {
           variant="outlined"
           fullWidth
           onClick={() => {
-            refIdValue.current = item ?? "";
-            // setShawDialog("block");
+            refIncidentValue.current = item ?? "";
+            setShowCompleteIncidentDialog(true)
             console.log(item);
           }}
         >
@@ -55,6 +57,7 @@ const IncidentTable = () => {
   return (
     <Box pt={3}>
       <CustomDataTable
+        resetControls={state.incidents.isInitial}
         fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
           dispatch(getAllIncidents(filters));
@@ -67,12 +70,13 @@ const IncidentTable = () => {
           console.log(row);
         }}
       />
-
-      {/* <CompleteIncident
-        display={showDialog}
-        DialogStateController={setShawDialog}
-        id={refIdValue.current}
-      /> */}
+      { refIncidentValue.current && (
+        <CompleteIncident
+          incidentData={refIncidentValue.current}
+          isOpenDialog={showCompleteIncidentDialog}
+          setIsOpenDialog={setShowCompleteIncidentDialog}
+        />
+      )}
     </Box>
   );
 };

@@ -11,7 +11,7 @@ export default class CompleteVisitEntity {
     for (const key in processedPatient) {
       if (processedPatient.hasOwnProperty(key)) {
         const value = processedPatient[key as keyof PersonInterface];
-        if (value === null) {
+        if (value === null || value === undefined) {
           if (typeof value === "string") {
             processedPatient[key as keyof PersonInterface] = "" as any;
           } else if (typeof value === "number") {
@@ -82,14 +82,7 @@ export default class CompleteVisitEntity {
             state.lookups.lookups.identityTypes.map((e) => e.id)
           )
         ),
-        gender: Yup.number().when(["SSN"], (values, schema) =>
-          coditionCallback(
-            values,
-            schema,
-            "الجنس مطلوب",
-            state.lookups.lookups.genderTypes.map((e) => e.id)
-          )
-        ),
+        gender: Yup.number().required("الجنس مطلوب").oneOf(state.lookups.lookups.genderTypes.map((e) => e.id), "الجنس مطلوب"),
         birthDate: Yup.string().when(["SSN"], (values, schema) =>
           coditionCallback(values, schema, "التاريخ مطلوب")
         ),

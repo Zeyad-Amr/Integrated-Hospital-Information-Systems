@@ -13,6 +13,7 @@ export interface IncidentVisit {
 export const header: HeaderItem[] = [
   {
     id: "AdditionalInformation.comeFrom",
+    key: "comeFrom",
     label: "مصدر الحالة",
     minWidth: 20,
     maxWidth: 50,
@@ -24,6 +25,7 @@ export const header: HeaderItem[] = [
   },
   {
     id: "AdditionalInformation.injuryLocation",
+    key: "injuryLocation",
     label: "موقع الإصابة",
     minWidth: 50,
     tableCellProps: { align: "center" },
@@ -34,6 +36,7 @@ export const header: HeaderItem[] = [
   },
   {
     id: "AdditionalInformation.injuryCause",
+    key: "injuryCause",
     label: "سبب الإصابة",
     minWidth: 50,
     maxWidth: 70,
@@ -46,6 +49,7 @@ export const header: HeaderItem[] = [
   },
   {
     id: "numberOfVisits",
+    key: "numberOfVisits",
     label: "عدد الزيارات",
     minWidth: 50,
     maxWidth: 70,
@@ -58,6 +62,7 @@ export const header: HeaderItem[] = [
   },
   {
     id: "numberOfIncompletedVisits",
+    key: "numberOfIncompletedVisits",
     label: "عدد الزيارات الغير مكتملة",
     minWidth: 50,
     maxWidth: 70,
@@ -71,6 +76,7 @@ export const header: HeaderItem[] = [
 
   {
     id: "createdAt",
+    key: "createdAt",
     label: "تاريخ الحجز",
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
@@ -81,6 +87,7 @@ export const header: HeaderItem[] = [
   },
   {
     id: "update",
+    key: "update",
     label: "تعديل",
     isComponent: true,
     minWidth: 100,
