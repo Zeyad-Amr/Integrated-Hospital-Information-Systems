@@ -11,7 +11,7 @@ export default class CompleteVisitEntity {
     for (const key in processedPatient) {
       if (processedPatient.hasOwnProperty(key)) {
         const value = processedPatient[key as keyof PersonInterface];
-        if (value === null) {
+        if (value === null || value === undefined) {
           if (typeof value === "string") {
             processedPatient[key as keyof PersonInterface] = "" as any;
           } else if (typeof value === "number") {
