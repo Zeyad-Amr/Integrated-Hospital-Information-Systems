@@ -242,7 +242,7 @@ export class IncidentRepo extends PrismaGenericRepo<
       incidents.items.forEach((incident) => {
         incident.numberOfIncompletedVisits = 0;
         incident.visits.forEach((visit) => {
-          if (visit.patient.SSN == null) incident.numberOfIncompletedVisits++;
+          if (visit.patient == null) incident.numberOfIncompletedVisits++;
         });
       });
       return incidents;

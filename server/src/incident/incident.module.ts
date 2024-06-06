@@ -16,4 +16,4 @@ import { PersonRepo } from 'src/person/person.repo';
     PersonRepo,
   ],
 })
-export class IncidentModule {}
+export class IncidentModule { }
