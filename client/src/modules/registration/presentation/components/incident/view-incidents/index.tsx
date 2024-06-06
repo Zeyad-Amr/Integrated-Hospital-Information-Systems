@@ -57,6 +57,7 @@ const IncidentTable = () => {
   return (
     <Box pt={3}>
       <CustomDataTable
+        resetControls={state.incidents.isInitial}
         fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
           dispatch(getAllIncidents(filters));

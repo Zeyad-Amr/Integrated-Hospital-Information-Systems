@@ -37,10 +37,9 @@ const CompleteIncident = ({
     visitCode: string;
     patient: PersonInterface;
   }>(); //* Total value (submit object)
-  // const [selectedPatientData, setSelectedPatientData] =
-  //   useState<PersonInterface>();
   const [selectedPatientVisitCode, setSelectedPatientVisitCode] =
     useState<string>("");
+  const [incidentDataState, setIncidentDataState] = useState<IncidentInterface>();
 
   //* buttons useRef
   const refSubmitPatient: any = useRef(null);
@@ -70,7 +69,7 @@ const CompleteIncident = ({
   //* Apply patient with visit code
   useEffect(() => {
     const applyPatientData = (visitCode: string) => {
-      const selectedVisit = incidentData?.visits?.find(
+      const selectedVisit = incidentDataState?.visits?.find(
         (visit) => visit.code === visitCode
       );
       const selectedPatientData = getProcessedPatientData(selectedVisit);
@@ -79,9 +78,9 @@ const CompleteIncident = ({
       }
     };
 
-    if (incidentData && incidentData.visits) {
+    if (incidentDataState && incidentDataState.visits) {
       if (!selectedPatientVisitCode) {
-        const initialVisit = sortingTotalVisits(incidentData.visits)[17];
+        const initialVisit = sortingTotalVisits(incidentDataState.visits)[0];
         if (initialVisit?.code) {
           setSelectedPatientVisitCode(initialVisit.code);
           applyPatientData(initialVisit.code);
@@ -90,7 +89,13 @@ const CompleteIncident = ({
         applyPatientData(selectedPatientVisitCode);
       }
     }
-  }, [selectedPatientVisitCode, incidentData]);
+  }, [selectedPatientVisitCode, incidentDataState]);
+
+ //* set props values to manage in state  
+  useEffect(() => {
+    setIncidentDataState(incidentData)
+  }, [incidentData])
+  
 
   //* convert null and undefiend values in patient object to main values
   const getProcessedPatientData = (visit?: VisitInterface): PersonInterface => {
@@ -105,7 +110,19 @@ const CompleteIncident = ({
     if (patientData.current && combinedValues) {
       dispatch(updateIncidentPatient(combinedValues)).then((res) => {
         if (res.meta.requestStatus == "fulfilled") {
+          setIncidentDataState((prevState) => {
+            if (!prevState) return prevState;
+            const updatedVisits = prevState.visits?.map((visit) => {
+              if (visit.code == selectedPatientVisitCode) {
+                return { ...visit, patient: patientData.current };
+              }
+              return visit;
+            });
+            return { ...prevState, visits: updatedVisits };
+          });
+          
           patientData.current = undefined;
+
         }
       });
     }
@@ -121,8 +138,8 @@ const CompleteIncident = ({
       const bIsNull = b.patient === null || b.patient === undefined;
 
       // Patients with null data come first
-      if (aIsNull && !bIsNull) return -1;
-      if (!aIsNull && bIsNull) return 1;
+      if (aIsNull && !bIsNull) return 1;
+      if (!aIsNull && bIsNull) return -1;
 
       // Otherwise, maintain the original order
       return 0;
@@ -162,7 +179,7 @@ const CompleteIncident = ({
           >
             <Typography>عدد المرضى :</Typography>
             <Typography sx={{ fontWeight: "600" }}>
-              {incidentData?.numberOfVisits}
+              {incidentDataState?.numberOfVisits}
             </Typography>
           </Grid>
           <Grid
@@ -175,7 +192,7 @@ const CompleteIncident = ({
           >
             <Typography>قادم من :</Typography>
             <Typography sx={{ fontWeight: "600" }}>
-              {incidentData?.additionalInfo?.comeFrom ?? "لا يوجد"}
+              {incidentDataState?.additionalInfo?.comeFrom ?? "لا يوجد"}
             </Typography>
           </Grid>
           <Grid
@@ -188,7 +205,7 @@ const CompleteIncident = ({
           >
             <Typography>المسعف :</Typography>
             <Typography sx={{ fontWeight: "600" }}>
-              {incidentData?.additionalInfo?.attendantName ?? "لا يوجد"}
+              {incidentDataState?.additionalInfo?.attendantName ?? "لا يوجد"}
             </Typography>
           </Grid>
           <Grid
@@ -201,17 +218,17 @@ const CompleteIncident = ({
           >
             <Typography>سيارة الاسعاف :</Typography>
             <Typography sx={{ fontWeight: "600" }}>
-              {incidentData?.additionalInfo?.carNum &&
-              incidentData?.additionalInfo?.firstChar &&
-              incidentData?.additionalInfo?.secondChar &&
-              incidentData?.additionalInfo?.thirdChar
-                ? incidentData?.additionalInfo?.carNum +
+              {incidentDataState?.additionalInfo?.carNum &&
+              incidentDataState?.additionalInfo?.firstChar &&
+              incidentDataState?.additionalInfo?.secondChar &&
+              incidentDataState?.additionalInfo?.thirdChar
+                ? incidentDataState?.additionalInfo?.carNum +
                   " " +
-                  incidentData?.additionalInfo?.firstChar +
+                  incidentDataState?.additionalInfo?.firstChar +
                   " " +
-                  incidentData?.additionalInfo?.secondChar +
+                  incidentDataState?.additionalInfo?.secondChar +
                   " " +
-                  incidentData?.additionalInfo?.thirdChar
+                  incidentDataState?.additionalInfo?.thirdChar
                 : "لا يوجد"}
             </Typography>
           </Grid>
@@ -231,8 +248,8 @@ const CompleteIncident = ({
             overflowY: "scroll",
           }}
         >
-          {incidentData.visits &&
-            sortingTotalVisits(incidentData.visits).map((visit) => (
+          {incidentDataState?.visits &&
+            sortingTotalVisits(incidentDataState.visits).map((visit) => (
               <Box
                 key={visit.code}
                 id={visit.code}
