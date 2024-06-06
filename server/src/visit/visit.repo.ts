@@ -279,44 +279,37 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
         select: { patientId: true },
       });
       let updatedVisit;
-      if (visit) {
-        updatedVisit = await this.prismaService.visit.update({
-          where: { code },
-          data: {
-            medicalRecord: {
-              create: {
-                mainComplaint: data.mainComplaint,
-                consciousnessLevel: data.LOCId
-                  ? { connect: { id: data.LOCId } }
-                  : undefined,
-                triage: data.triageTypeId
-                  ? { connect: { id: data.triageTypeId } }
-                  : undefined,
-                vitals: {
-                  create: {
-                    ...data.vitals,
-                  },
-                },
-                Patient: { connect: { id: visit.patientId } },
-              },
-            },
-            transfers: {
-              create: {
-                fromSubDepId: data.transferFromId,
-                toSubDepId: data.transferToId,
-              },
-            },
-            patient: {
-              update: {
-                comorbidities: {
-                  connect: this.connectIdsArr(data.comorbidityIds),
-                },
-              },
-            },
-          },
-          include: this.triageIncludes,
-        });
-      }
+      // if (visit) {
+        // updatedVisit = await this.prismaService.visit.update({
+        //   where: { code },
+        //   data: {
+        //     medicalRecord: {
+        //       create: {
+        //         mainComplaint: data.mainComplaint,
+        //         consciousnessLevel: data.LOCId
+        //           ? { connect: { id: data.LOCId } }
+        //           : undefined,
+        //         triage: data.triageTypeId
+        //           ? { connect: { id: data.triageTypeId } }
+        //           : undefined,
+        //         vitals: {
+        //           create: {
+        //             ...data.vitals,
+        //           },
+        //         },
+        //         Patient: { connect: { id: visit.patientId } },
+        //       },
+        //     },
+        //     transfers: {
+        //       create: {
+        //         fromSubDepId: data.transferFromId,
+        //         toSubDepId: data.transferToId,
+        //       },
+        //     },
+        //   },
+        //   include: this.triageIncludes,
+        // });
+      // }
       return updatedVisit;
     } catch (error) {
       throw error;
@@ -352,7 +345,6 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
         person: {
           include: { verificationMethod: true, gender: true, governate: true },
         },
-        comorbidities: true,
       },
     },
     companion: {
@@ -384,9 +376,6 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
 
   triageIncludes: Prisma.VisitInclude = {
     ...this.visitIncludes,
-    medicalRecord: {
-      include: { vitals: true, consciousnessLevel: true, triage: true },
-    },
     transfers: true,
   };
 }

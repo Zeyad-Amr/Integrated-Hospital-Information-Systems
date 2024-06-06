@@ -69,5 +69,5 @@ export class PatientRepo extends PrismaGenericRepo<Patient> {
     }
   }
 
-  patientInclude: Prisma.PatientInclude = { visits: true, person: true, medicalRecords: true }
+  patientInclude: Prisma.PatientInclude = { visits: true, person: true }
 }
