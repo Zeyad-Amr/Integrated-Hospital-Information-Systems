@@ -267,6 +267,7 @@ const CompleteIncident = ({
                   color:
                     visit.code == selectedPatientVisitCode ? "white" : "black",
                   borderRadius: "15px",
+                  borderLeft : `2px solid ${visit.patient?.gender == 1 ? "aqua" : visit.patient?.gender == 2 ? "pink" : "none"   } `,
                   marginBottom: "1rem",
                   cursor: "pointer",
                 }}
