@@ -126,6 +126,24 @@ const SidebarComponent = () => {
           path="/dashboard/departments/manage/subdepartments"
         />
       </SidebarMenuItem>
+      {/*  */}
+      <SidebarMenuItem
+        icon={
+          <ApartmentIcon sx={{ color: "primary.main", textAlign: "center" }} />
+        }
+        activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
+        text="غرفة الكشف"
+        path="/dashboard/clinic"
+      >
+        <SidebarSubmenuItem
+          text="الزيارات"
+          path="/dashboard/clinic/visits"
+        />
+        <SidebarSubmenuItem
+          text="الكشف"
+          path="/dashboard/clinic/examination"
+        />
+      </SidebarMenuItem>
     </Box>
   );
 };
