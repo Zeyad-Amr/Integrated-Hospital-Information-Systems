@@ -7,7 +7,7 @@ import MuiAccordionSummary, {
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import { ComponentType, useState } from "react";
+import { ComponentType, Dispatch, SetStateAction, useState } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CustomizedDialog from "./CustomizeDialog";
 import { CustomDataTable, HeaderItem } from "./CustomDataTable";
@@ -60,17 +60,25 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-interface AccordionComponentProps {
+interface AccordionComponentPropsInterface {
   title: string;
-  FormComponent: ComponentType<any>;
+  FormComponent: ComponentType<FormComponentPropsInterface>;
   tableHeader: HeaderItem[];
   tableList: any;
   getListThunk: (filters: FilterQuery[]) => any;
   deleteThunk: (id: string) => any;
   formDialogMaxWidth?: false | Breakpoint;
+  accordionWidth?: string;
+  accordionSx?: any;
 }
 
-export default function CustomizedExaminationAccordion({
+interface FormComponentPropsInterface {
+  isViewMode: boolean;
+  initialValues: any;
+  setShowFormDialog: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function ExaminationAccordion({
   title,
   FormComponent,
   tableList,
@@ -78,7 +86,9 @@ export default function CustomizedExaminationAccordion({
   getListThunk,
   deleteThunk,
   formDialogMaxWidth = "sm",
-}: AccordionComponentProps) {
+  accordionWidth = "100%",
+  accordionSx,
+}: AccordionComponentPropsInterface) {
   const [expandedAccordion, setExpandedAccordion] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [tableItemData, setTableItemData] = useState<any>();
@@ -108,6 +118,7 @@ export default function CustomizedExaminationAccordion({
       <Accordion
         expanded={expandedAccordion}
         onChange={() => setExpandedAccordion(!expandedAccordion)}
+        sx={{ width: accordionWidth, ...accordionSx }}
       >
         <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
           <Typography>{title}</Typography>
@@ -202,10 +213,10 @@ export default function CustomizedExaminationAccordion({
       >
         <FormComponent
           isViewMode={isViewMode}
-          isEdit={true} // will be removed ( now for testing )
-          propsIntialValues={tableItemData}
-          setshowRoomForm={setIsDialogOpen}
+          initialValues={tableItemData}
+          setShowFormDialog={setIsDialogOpen}
         />
+        {/* Convert from view mode to edit mode */}
         {isViewMode && (
           <PrimaryButton
             title={"تعديل العنصر"}
