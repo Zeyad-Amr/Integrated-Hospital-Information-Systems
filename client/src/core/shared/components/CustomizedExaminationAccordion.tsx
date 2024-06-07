@@ -13,10 +13,12 @@ import CustomizedDialog from "./CustomizeDialog";
 import { CustomDataTable, HeaderItem } from "./CustomDataTable";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { FilterQuery } from "@/core/api";
 import { useAppDispatch } from "@/core/state/store";
-import { Box } from "@mui/system";
+import { Box, Breakpoint } from "@mui/system";
 import ConfirmationDialog from "./ConfirmationDialog";
+import PrimaryButton from "./btns/PrimaryButton";
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -65,6 +67,7 @@ interface AccordionComponentProps {
   tableList: any;
   getListThunk: (filters: FilterQuery[]) => any;
   deleteThunk: (id: string) => any;
+  formDialogMaxWidth?: false | Breakpoint;
 }
 
 export default function CustomizedExaminationAccordion({
@@ -74,10 +77,12 @@ export default function CustomizedExaminationAccordion({
   tableHeader,
   getListThunk,
   deleteThunk,
+  formDialogMaxWidth = "sm",
 }: AccordionComponentProps) {
   const [expandedAccordion, setExpandedAccordion] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [tableItemData, setTableItemData] = useState<any>();
+  const [isViewMode, setIsViewMode] = useState<boolean>(false);
   const [showConfirmationDialog, setShowConfirmationDialog] =
     useState<boolean>(false);
   const dispatch = useAppDispatch();
@@ -114,6 +119,8 @@ export default function CustomizedExaminationAccordion({
             }}
             onClick={(event) => {
               event.stopPropagation();
+              setTableItemData(undefined);
+              setIsViewMode(false);
               setIsDialogOpen(true);
             }}
           />
@@ -138,17 +145,21 @@ export default function CustomizedExaminationAccordion({
                       color: "primary.dark",
                     }}
                   >
+                    <VisibilityIcon
+                      sx={{ cursor: "pointer" }}
+                      onClick={() => {
+                        setIsViewMode(true);
+                        setTableItemData(item);
+                        setIsDialogOpen(true);
+                      }}
+                    />
                     <EditRoundedIcon
                       sx={{ cursor: "pointer" }}
-                      // onClick={() => {
-                      //   setshowRoomForm(true);
-                      //   setIsEditRoomForm(true);
-                      //   setRoomData({
-                      //     id: item.id,
-                      //     name: item.name,
-                      //     location: item.location,
-                      //   });
-                      // }}
+                      onClick={() => {
+                        setIsViewMode(false);
+                        setTableItemData(item);
+                        setIsDialogOpen(true);
+                      }}
                     />
                     <DeleteRoundedIcon
                       sx={{ cursor: "pointer", color: "red" }}
@@ -166,24 +177,44 @@ export default function CustomizedExaminationAccordion({
           />
         </AccordionDetails>
       </Accordion>
+
+      {/* Delete Item */}
       <ConfirmationDialog
         confirmFunction={async () =>
           dispatch(deleteThunk(String(tableItemData?.id))).then(() => {
             setShowConfirmationDialog(false);
           })
         }
-        contentMessage="في حالة حذف العنصر لن تستطيع العود اليه مجددا, هل انت متأكد من حذف هذا العنصر "
+        contentMessage="في حالة حذف العنصر لن تستطيع العودة اليه مجددا, هل انت متأكد من حذف هذا العنصر ؟"
         open={showConfirmationDialog}
         setOpen={setShowConfirmationDialog}
         title="حذف عنصر"
       />
+
+      {/* Create, Edit, or View Item */}
       <CustomizedDialog
-        title="اضافة عنصر"
+        title={
+          isViewMode ? "عرض عنصر" : tableItemData ? "تعديل عنصر" : "اضافة عنصر"
+        }
         open={isDialogOpen}
         setOpen={setIsDialogOpen}
-        maxWidth={"md"}
+        maxWidth={formDialogMaxWidth}
       >
-        <FormComponent setshowRoomForm={setIsDialogOpen} />
+        <FormComponent
+          isViewMode={isViewMode}
+          isEdit={true} // will be removed ( now for testing )
+          propsIntialValues={tableItemData}
+          setshowRoomForm={setIsDialogOpen}
+        />
+        {isViewMode && (
+          <PrimaryButton
+            title={"تعديل العنصر"}
+            type="submit"
+            onClick={() => {
+              setIsViewMode(false);
+            }}
+          />
+        )}
       </CustomizedDialog>
     </>
   );
