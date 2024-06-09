@@ -28,7 +28,6 @@ export const FilteringParams = createParamDecorator(
   (data, ctx: ExecutionContext): Array<Filter> => {
     const req: Request = ctx.switchToHttp().getRequest();
     let filters = req.query.filters;
-    console.log(filters);
 
     if (!filters) {
       return null;

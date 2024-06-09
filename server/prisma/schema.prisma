@@ -200,7 +200,7 @@ model MedicalProblem {
   name        String
   beginDate   DateTime?
   endDate     DateTime?
-  verfication String?
+  verification String?
   comments    String?
 
   createdAt DateTime @default(now())
@@ -220,7 +220,7 @@ model Allergy {
   reaction    String?
   severity    String?
   occurrence  String?
-  verfication String?
+  verification String?
   comments    String?
 
   createdAt DateTime @default(now())
@@ -274,7 +274,7 @@ model Prescription {
   visitCode String  @unique
 }
 
-model TriageAx {
+model TriageAx { //Triage Assessment
   id                   String      @id @default(uuid())
   painScore            Float?
   consciousnessLevel   LOC?        @relation(fields: [consciousnessLevelId], references: [id])
