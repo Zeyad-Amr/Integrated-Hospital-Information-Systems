@@ -65,9 +65,6 @@ export class VisitController {
     description: 'this for visits with filters (not finished yet)',
   })
   @CustomGetAllParamDecorator()
-  @ApiQuery({ name: 'companionName', required: false })
-  @ApiQuery({ name: 'companionSSN', required: false })
-  @ApiQuery({ name: 'patientSSN', required: false })
   @Get()
   async findAll(
     @PaginationParams() paginationParams: Pagination,
@@ -81,9 +78,22 @@ export class VisitController {
       'incidentId',
       'patient.person.SSN',
       'companion.person.SSN',
+      'companion.person.fullName',
+
     ]) filters?: Array<Filter>,
-    @SortingParams(['createdAt', 'sequenceNumber', 'code']) sort?: Sorting,
-    @Query() customFilters?: { companionName: string ,companionSSN: string},
+    @SortingParams([
+      'code',
+      'createdAt',
+      'creatorId',
+      "sequenceNumber",
+      'companionId',
+      'patientId',
+      'incidentId',
+      'patient.person.SSN',
+      'companion.person.SSN',
+      'companion.person.fullName',
+    ]) sort?: Sorting,
+    @Query() customFilters?: {},
 
   ): Promise<PaginatedResource<Visit>> {
     try {

@@ -29,9 +29,13 @@ export class RoomController {
   @Get()
   findAll(
     @PaginationParams() pagination: Pagination,
-    @SortingParams(["name"]) sort?: Sorting,
+    @SortingParams([
+      "name",
+      "location"
+    ]) sort?: Sorting,
     @FilteringParams([
       "name",
+      "location",
       "id",
     ])
     filters?: Array<Filter>,

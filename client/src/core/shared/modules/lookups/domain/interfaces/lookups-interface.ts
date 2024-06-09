@@ -17,67 +17,67 @@ export interface LookupsInterface {
 }
 
 export interface IdentityTypeInterface {
-    id: number;
+    id: string;
     value: string;
 }
 
 export interface GenderTypeInterface {
-    id: number;
+    id: string;
     value: string;
 }
 
 export interface KinshipTypeInterface {
-    id: number;
+    id: string;
     value: string;
 }
 
 export interface RoleTypeInterface {
-    id: number;
+    id: string;
     value: string;
 }
 
 export interface ShiftTypeInterface {
-    id: number;
+    id: string;
     value: string;
 }
 
 export interface CameFromOptionsInterface {
-    id: number;
+    id: string;
     value: string;
 }
 
 export interface AttendantRoleInterface {
-    id: number;
+    id: string;
     value: string;
 }
 
 export interface TriageTypeInterface {
-    id: number;
+    id: string;
     value: string;
 }
 
 export interface LOCInterface {
-    id: number;
+    id: string;
     value: string;
 }
 
 export interface ComorbiditiesInterface {
-    id: number;
+    id: string;
     value: string;
 }
 
 export interface GovernateInterface {
-    id: number;
+    id: string;
     value: string;
 }
 
 export interface DepartmentInterface {
-    id: number;
+    id: string;
     value: string;
 }
 
 export interface FeatureInterface {
-    id: number;
+    id: string;
     value: string;
     subDepartment: SubDepartmentInterface;
 }

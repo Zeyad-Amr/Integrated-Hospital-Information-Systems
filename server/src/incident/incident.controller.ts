@@ -47,9 +47,35 @@ export class IncidentController {
   @Get()
   findAll(
     @PaginationParams() paginationParams: Pagination,
-    @FilteringParams(['isCompleted', 'createdAt', 'numberOfPatients'])
+    @FilteringParams([
+      'isCompleted',
+      'createdAt',
+      'numberOfPatients',
+      'numberOfIncompletedVisits',
+      'AdditionalInformation.injuryLocation',
+      'AdditionalInformation.injuryCause',
+      'AdditionalInformation.cameFromId',
+      'AdditionalInformation.Attendant.SSN',
+      'AdditionalInformation.Attendant.name',
+      'CompanionsOnIncidents.companion.SSN',
+      'CompanionsOnIncidents.companion.fullName',
+      'CompanionsOnIncidents.companion.phone',
+    ])
     filters?: Array<Filter>,
-    @SortingParams(['createdAt', 'sequenceNumber', 'code']) sort?: Sorting,
+    @SortingParams([
+      'isCompleted',
+      'createdAt',
+      'numberOfPatients',
+      'numberOfIncompletedVisits',
+      'AdditionalInformation.injuryLocation',
+      'AdditionalInformation.injuryCause',
+      'AdditionalInformation.cameFromId',
+      'AdditionalInformation.Attendant.SSN',
+      'AdditionalInformation.Attendant.name',
+      'CompanionsOnIncidents.companion.SSN',
+      'CompanionsOnIncidents.companion.fullName',
+      'CompanionsOnIncidents.companion.phone',
+    ]) sort?: Sorting,
   ) {
     try {
       return this.incidentService.findAll(paginationParams, filters, sort);

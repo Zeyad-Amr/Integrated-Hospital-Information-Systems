@@ -8,15 +8,15 @@ import { Sorting } from 'src/shared/decorators/order.decorator';
 import { Filter } from 'src/shared/decorators/filters.decorator';
 
 
-export interface CustomFilters { 
+export interface CustomFilters {
   roleId: number;
- 
+
   SSN: string;
 
   name: string;
- 
+
   email: string;
- 
+
   phone: string;
 }
 @Injectable()
@@ -49,7 +49,7 @@ export class EmployeeService {
     }
   }
 
-  async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>, customFilters?: CustomFilters) {
+  async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>) {
     try {
       return await this.employeeRepo.findAll(pagination, sort, filters, customFilters);
     } catch (error) {
