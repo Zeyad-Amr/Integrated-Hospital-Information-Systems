@@ -13,7 +13,7 @@
     "type-check": "tsc --noEmit",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "nest build && npx prisma migrate deploy && node initDB/app.js && node dist/main",
+    "start:prod": "node dist/main",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
