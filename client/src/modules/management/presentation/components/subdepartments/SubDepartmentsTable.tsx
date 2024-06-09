@@ -28,69 +28,7 @@ import AddModeratorIcon from "@mui/icons-material/AddModerator";
 import ConfirmationDialog from "@/core/shared/components/ConfirmationDialog";
 import { FilterQuery } from "@/core/api";
 import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
-
-const SubDepartmentsTableHeader: HeaderItem[] = [
-  {
-    id: "name",
-    key: "name",
-    label: "الأســـم",
-    minWidth: 50,
-    maxWidth: 50,
-    tableCellProps: { align: "right" },
-    sortable: true,
-    filterable: false,
-    searchable: true,
-    onClick: () => {},
-  },
-  {
-    id: "department",
-    key: "department",
-    label: "القســـم",
-    minWidth: 50,
-    maxWidth: 50,
-    tableCellProps: { align: "right" },
-    sortable: true,
-    filterable: false,
-    searchable: true,
-    onClick: () => {},
-  },
-  {
-    id: "room",
-    key: "room",
-    label: "الغـــرفة",
-    minWidth: 50,
-    maxWidth: 50,
-    tableCellProps: { align: "right" },
-    sortable: false,
-    filterable: false,
-    searchable: false,
-    onClick: () => {},
-  },
-  {
-    id: "specialization",
-    key: "specialization",
-    label: "التخصص",
-    minWidth: 50,
-    maxWidth: 50,
-    tableCellProps: { align: "right" },
-    sortable: false,
-    filterable: false,
-    searchable: false,
-    onClick: () => {},
-  },
-  {
-    id: "update",
-    key: "update",
-    label: "",
-    isComponent: true,
-    minWidth: 100,
-    tableCellProps: { align: "right" },
-    sortable: false,
-    filterable: false,
-    searchable: false,
-    onClick: () => {},
-  },
-];
+import { FilterOption } from "@/core/shared/components/CustomDataTable/types";
 
 const SubDepartmentsTable = () => {
   // use state
@@ -123,6 +61,91 @@ const SubDepartmentsTable = () => {
     dispatch(getSpecializationList([]));
     dispatch(getPermissionsList());
   }, []);
+
+  const SubDepartmentsTableHeader: HeaderItem[] = [
+    {
+      id: "name",
+      key: "name",
+      label: "الأســـم",
+      minWidth: 50,
+      maxWidth: 50,
+      tableCellProps: { align: "right" },
+      sortable: true,
+      filterable: false,
+      searchable: true,
+      onClick: () => {},
+    },
+    {
+      id: "departmentId",
+      key: "department",
+      label: "القســـم",
+      minWidth: 50,
+      maxWidth: 50,
+      tableCellProps: { align: "right" },
+      sortable: true,
+      filterable: true,
+      searchable: false,
+      filterOptions: lookupsState.lookups.departments.map(
+        (item) =>
+          ({
+            id: item.id.toString(),
+            value: item.value,
+          }) as FilterOption
+      ),
+
+      onClick: () => {},
+    },
+    {
+      id: "roomId",
+      key: "room",
+      label: "الغـــرفة",
+      minWidth: 50,
+      maxWidth: 50,
+      tableCellProps: { align: "right" },
+      sortable: true,
+      filterable: true,
+      searchable: false,
+      filterOptions: roomsState?.rooms.items.map(
+        (item) =>
+          ({
+            id: item.id?.toString(),
+            value: item.name,
+          }) as FilterOption
+      ),
+      onClick: () => {},
+    },
+    {
+      id: "specializationId",
+      key: "specialization",
+      label: "التخصص",
+      minWidth: 50,
+      maxWidth: 50,
+      tableCellProps: { align: "right" },
+      sortable: true,
+      filterable: true,
+      searchable: false,
+      filterOptions: specializationsState?.specializations.items.map(
+        (item) =>
+          ({
+            id: item.id?.toString(),
+            value: item.name,
+          }) as FilterOption
+      ),
+      onClick: () => {},
+    },
+    {
+      id: "update",
+      key: "update",
+      label: "",
+      isComponent: true,
+      minWidth: 100,
+      tableCellProps: { align: "right" },
+      sortable: false,
+      filterable: false,
+      searchable: false,
+      onClick: () => {},
+    },
+  ];
 
   // function to get name value of item using its id
   const getNameOfItemWithItsId = (id: string | number, listOfSearch: any) => {

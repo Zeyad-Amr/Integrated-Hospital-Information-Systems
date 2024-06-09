@@ -9,7 +9,6 @@ const CustomTableFilter = () => {
   const { filterColumns, setFilterColumns, data, columnHeader } =
     useTableContext();
 
-  //* ---------------------------------------- Handle Filter Popper
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const popperRef = useRef<HTMLDivElement>(null);
 
@@ -36,28 +35,17 @@ const CustomTableFilter = () => {
     };
   }, []);
 
-  //* ---------------------------------------- Get Filterable Columns
-
-  // get filterable columns
   const getFilterableColumns = (): HeaderItem[] => {
     return columnHeader.filter((column) => column.filterable);
   };
 
-  // get all unique values of the column in the data
-  // const getSelectedFilterOptions = (columnId: string): FilterOption[] => {
-  //   // filterColumns is the data that will be displayed in the filter
-  //   //
-  // };
-
-  // get FilterColumns
   const getFilterColumns = (): FilterColumn[] => {
-    // get filterable columns
     const filterColumns = getFilterableColumns();
 
     if (filterColumns.length === 0) {
       return [];
     }
-    // get filter columns
+
     const filterColumnsData: FilterColumn[] = filterColumns.map((column) => {
       return {
         columnId: column.id,
@@ -74,6 +62,7 @@ const CustomTableFilter = () => {
 
   useEffect(() => {
     const result: FilterColumn[] = getFilterColumns();
+    console.log(result);
     setFilterColumns(result);
   }, [data]);
 
@@ -81,27 +70,21 @@ const CustomTableFilter = () => {
     console.log(filterColumns);
   }, [filterColumns]);
 
-  //* ---------------------------------------- Handle Checking
   const handleCheck = (columnId: string, valueId: string) => {
-    // find the column by columnId
     const column: FilterColumn = filterColumns.filter(
       (column) => column.columnId === columnId
     )[0];
 
-    // Apply changes
     if (column) {
-      // if the valueId is already in the selectedValuesIds, remove it
       if (column.selectedValuesIds.includes(valueId)) {
         column.selectedValuesIds = column.selectedValuesIds.filter(
           (id) => id !== valueId
         );
       } else {
-        // if the valueId is not in the selectedValuesIds, add it
         column.selectedValuesIds.push(valueId);
       }
     }
 
-    // Update column in filterColumns
     const newFilterColumns = filterColumns.map((filterColumn) => {
       if (filterColumn.columnId === columnId) {
         return column;
@@ -113,14 +96,11 @@ const CustomTableFilter = () => {
   };
 
   const handleWholeColumnCheck = (columnId: string) => {
-    // find the column by columnId
     const column: FilterColumn = filterColumns.filter(
       (column) => column.columnId === columnId
     )[0];
 
-    // Apply changes
     if (column) {
-      // Check if all are checked, then uncheck all, else check all
       if (column.selectedValuesIds.length === column.values.length) {
         column.selectedValuesIds = [];
       } else {
@@ -128,7 +108,6 @@ const CustomTableFilter = () => {
       }
     }
 
-    // Update column in filterColumns
     const newFilterColumns = filterColumns.map((filterColumn) => {
       if (filterColumn.columnId === columnId) {
         return column;
@@ -136,11 +115,9 @@ const CustomTableFilter = () => {
       return filterColumn;
     });
 
-    // setFilterColumnsData(newFilterColumns);
     setFilterColumns(newFilterColumns);
   };
 
-  //////////////////////////////////////////////////
   return (
     <>
       <Button onClick={handleClick}>
