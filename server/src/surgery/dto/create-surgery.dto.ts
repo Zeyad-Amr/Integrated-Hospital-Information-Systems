@@ -15,7 +15,6 @@ export class CreateSurgeryDto implements Omit<Prisma.SurgeryCreateInput,'patient
         type: String,
         example: "Surgery to remove the appendix"
     })
-    @IsNotEmpty()
     @IsOptional()
     @IsString()
     description?: string;
@@ -24,7 +23,6 @@ export class CreateSurgeryDto implements Omit<Prisma.SurgeryCreateInput,'patient
         type: String,
         example: "Abdomen"
     })
-    @IsNotEmpty()
     @IsOptional()
     @IsString()
     place?: string;
