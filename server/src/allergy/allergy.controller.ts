@@ -60,8 +60,8 @@ export class AllergyController {
   @CustomGetAllParamDecorator()
   async findAll(
     @PaginationParams() paginationParams: Pagination,
-    @FilteringParams([]) filters?: Array<Filter>,
-    @SortingParams([]) sort?: Sorting,
+    @FilteringParams(['name']) filters?: Array<Filter>,
+    @SortingParams(['name']) sort?: Sorting,
   ) {
     try {
       return await this.vitalsService.findAll(paginationParams, filters, sort);

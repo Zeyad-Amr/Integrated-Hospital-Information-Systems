@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrimarySurveyController } from './primary-survey.controller';
-import { PrimarySurveyService } from './primary-survey.service';
+import { PrimarySurveyController } from '../primary-survey.controller';
+import { PrimarySurveyService } from '../primary-survey.service';
 
 describe('PrimarySurveyController', () => {
   let controller: PrimarySurveyController;
