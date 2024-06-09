@@ -93,7 +93,7 @@ export class VisitController {
       'companion.person.SSN',
       'companion.person.fullName',
     ]) sort?: Sorting,
-    @Query() customFilters?: {},
+    @Query() customFilters?: { companionName: string, companionSSN: string },
 
   ): Promise<PaginatedResource<Visit>> {
     try {

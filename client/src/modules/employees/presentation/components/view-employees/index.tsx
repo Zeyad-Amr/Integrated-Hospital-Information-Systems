@@ -1,5 +1,4 @@
 import CustomDataTable from "@/core/shared/components/CustomDataTable/CustomDataTable";
-import { DataItem } from "./data";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
@@ -20,6 +19,15 @@ import {
 } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 import { getSubDepartmentsList } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
 import { HeaderItem } from "@/core/shared/components/CustomDataTable";
+
+export interface DataItem {
+  SSN: string;
+  name: string;
+  phone: string;
+  createdAt: string;
+  roleName: string;
+  shiftName: string;
+}
 
 const EmployeesTable = () => {
   const dispatch = useAppDispatch();
