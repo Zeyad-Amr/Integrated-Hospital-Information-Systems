@@ -80,7 +80,7 @@ export class PrismaGenericRepo<T> {
 
   async update(
     id: string,
-    item: Omit<T, 'id' | 'createdAt'>,
+    item: Partial<Omit<T, 'id' | 'createdAt'>>,
   ): Promise<T | null> {
     try {
       const res = await this.prisma[this.modelName].update({

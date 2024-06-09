@@ -16,6 +16,18 @@ import { RoomModule } from './room/room.module';
 import { FeatureModule } from './feature/feature.module';
 import { PermissionModule } from './permission/permission.module';
 import { RoleModule } from './role/role.module';
+import { SurgeryModule } from './surgery/surgery.module';
+import { DiagnosisModule } from './diagnosis/diagnosis.module';
+import { MedicalProblemModule } from './medical-problem/medical-problem.module';
+import { AllergyModule } from './allergy/allergy.module';
+import { MedicationModule } from './medication/medication.module';
+import { PrescriptionModule } from './prescription/prescription.module';
+import { TriageAxModule } from './triage-ax/triage-ax.module';
+import { VitalsModule } from './vitals/vitals.module';
+import { PrimarySurveyModule } from './primary-survey/primary-survey.module';
+import { RadiologyImageModule } from './radiology-image/radiology-image.module';
+import { LabTestModule } from './lab-test/lab-test.module';
+import { ConsultationRequestModule } from './consultation-request/consultation-request.module';
 
 @Module({
   imports: [
@@ -35,6 +47,18 @@ import { RoleModule } from './role/role.module';
     FeatureModule,
     PermissionModule,
     RoleModule,
+    SurgeryModule,
+    DiagnosisModule,
+    MedicalProblemModule,
+    AllergyModule,
+    MedicationModule,
+    PrescriptionModule,
+    TriageAxModule,
+    VitalsModule,
+    PrimarySurveyModule,
+    RadiologyImageModule,
+    LabTestModule,
+    ConsultationRequestModule,
   ],
   controllers: [],
   providers: [
