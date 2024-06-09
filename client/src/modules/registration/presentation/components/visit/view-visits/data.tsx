@@ -43,7 +43,7 @@ export const header: HeaderItem[] = [
     sortable: false,
     filterable: false,
     searchable: true,
-    isCustomFilter: true,
+
     onClick: () => {},
   },
   {
@@ -56,7 +56,7 @@ export const header: HeaderItem[] = [
     sortable: false,
     filterable: false,
     searchable: true,
-    isCustomFilter: true,
+
     onClick: () => {},
   },
   {

@@ -49,7 +49,7 @@ export class EmployeeService {
     }
   }
 
-  async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>) {
+  async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>, customFilters?: CustomFilters) {
     try {
       return await this.employeeRepo.findAll(pagination, sort, filters, customFilters);
     } catch (error) {

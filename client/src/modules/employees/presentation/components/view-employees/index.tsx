@@ -52,7 +52,7 @@ const EmployeesTable = () => {
   const [employeeData, setEmployeeData] = useState<EmployeeInterface>();
   const header: HeaderItem[] = [
     {
-      id: "SSN",
+      id: "person.SSN",
       key: "SSN",
       label: "رقم الهوية",
       minWidth: 50,
@@ -63,7 +63,7 @@ const EmployeesTable = () => {
       filterable: false,
     },
     {
-      id: "name",
+      id: "person.fullName",
       key: "name",
       label: "الاسم",
       minWidth: 100,
@@ -74,7 +74,7 @@ const EmployeesTable = () => {
       filterable: false,
     },
     {
-      id: "phone",
+      id: "person.phone",
       key: "phone",
       label: "رقم الهاتف",
       minWidth: 50,
@@ -98,7 +98,7 @@ const EmployeesTable = () => {
     },
 
     {
-      id: "roleName",
+      id: "roleId",
       key: "roleName",
       label: "الوظيفة",
       minWidth: 100,
@@ -110,7 +110,7 @@ const EmployeesTable = () => {
       filterOptions: lookupsState.lookups.roleTypes,
     },
     {
-      id: "shiftName",
+      id: "shiftId",
       key: "shiftName",
       label: "الوردية",
       minWidth: 100,
