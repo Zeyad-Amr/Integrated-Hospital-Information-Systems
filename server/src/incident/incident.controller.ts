@@ -48,10 +48,8 @@ export class IncidentController {
   findAll(
     @PaginationParams() paginationParams: Pagination,
     @FilteringParams([
-      'isCompleted',
+
       'createdAt',
-      'numberOfPatients',
-      'numberOfIncompletedVisits',
       'AdditionalInformation.injuryLocation',
       'AdditionalInformation.injuryCause',
       'AdditionalInformation.cameFromId',

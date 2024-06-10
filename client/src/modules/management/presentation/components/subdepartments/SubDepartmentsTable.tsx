@@ -83,7 +83,7 @@ const SubDepartmentsTable = () => {
       maxWidth: 50,
       tableCellProps: { align: "right" },
       sortable: true,
-      filterable: true,
+      filterable: false,
       searchable: false,
       filterOptions: lookupsState.lookups.departments.map(
         (item) =>
@@ -103,7 +103,7 @@ const SubDepartmentsTable = () => {
       maxWidth: 50,
       tableCellProps: { align: "right" },
       sortable: true,
-      filterable: true,
+      filterable: false,
       searchable: false,
       filterOptions: roomsState?.rooms.items.map(
         (item) =>
@@ -122,7 +122,7 @@ const SubDepartmentsTable = () => {
       maxWidth: 50,
       tableCellProps: { align: "right" },
       sortable: true,
-      filterable: true,
+      filterable: false,
       searchable: false,
       filterOptions: specializationsState?.specializations.items.map(
         (item) =>

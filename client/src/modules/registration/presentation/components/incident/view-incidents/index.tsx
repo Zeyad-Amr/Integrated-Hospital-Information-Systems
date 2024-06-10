@@ -8,9 +8,14 @@ import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import { getAllIncidents } from "../../../controllers/thunks/incident-thunk";
 import IncidentInterface from "@/modules/registration/domain/interfaces/incident-interface";
 import CompleteIncident from "../../../pages/incident/CompleteIncident";
+import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
+import { CameFromOptionsInterface } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 
 const IncidentTable = () => {
   const state: IncidentsState = useAppSelector((state: any) => state.incidents);
+  const lookupsState: LookupsState = useAppSelector(
+    (state: any) => state.lookups
+  );
   const dispatch = useAppDispatch();
 
   // useRef
@@ -25,7 +30,11 @@ const IncidentTable = () => {
 
   state.incidents.items.forEach((item: IncidentInterface) => {
     tableData.push({
-      comeFrom: (item?.additionalInfo?.comeFrom ?? "لا يوجد").toString(),
+      comeFrom:
+        lookupsState?.lookups?.cameFromOptions?.find(
+          (el: CameFromOptionsInterface) =>
+            el.id === (item.additionalInfo?.comeFrom ?? "")
+        )?.value ?? "لا يوجد",
 
       injuryLocation: item?.additionalInfo?.place ?? "لا يوجد",
       injuryCause: item?.additionalInfo?.reason ?? "لا يوجد",
@@ -44,7 +53,7 @@ const IncidentTable = () => {
           fullWidth
           onClick={() => {
             refIncidentValue.current = item ?? "";
-            setShowCompleteIncidentDialog(true)
+            setShowCompleteIncidentDialog(true);
             console.log(item);
           }}
         >
@@ -70,7 +79,7 @@ const IncidentTable = () => {
           console.log(row);
         }}
       />
-      { refIncidentValue.current && (
+      {refIncidentValue.current && (
         <CompleteIncident
           incidentData={refIncidentValue.current}
           isOpenDialog={showCompleteIncidentDialog}

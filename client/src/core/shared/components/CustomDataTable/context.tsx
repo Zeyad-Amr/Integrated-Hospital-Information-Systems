@@ -80,30 +80,14 @@ export const TableProvider = (props: {
       let filters: FilterQuery[] = [];
 
       if (searchQuery.value && searchQuery.columnId) {
-        if (
-          columnHeader.find((item) => item.id === searchQuery.columnId)
-            ?.isCustomFilter === true
-        ) {
-          filters.push(
-            Filter.custom(`${searchQuery.columnId}=${searchQuery.value}`)
-          );
-        } else {
-          filters.push(Filter.like(searchQuery.columnId, searchQuery.value));
-        }
+        filters.push(Filter.like(searchQuery.columnId, searchQuery.value));
       }
 
       if (sortedColumn && sortedColumn.disableSort !== true) {
-        if (
-          columnHeader.find((item) => item.id === sortedColumn.columnId)
-            ?.isCustomFilter === true
-        ) {
-          // custom sort
+        if (sortedColumn.isAscending) {
+          filters.push(Filter.sortAscending(sortedColumn.columnId));
         } else {
-          if (sortedColumn.isAscending) {
-            filters.push(Filter.sortAscending(sortedColumn.columnId));
-          } else {
-            filters.push(Filter.sortDescending(sortedColumn.columnId));
-          }
+          filters.push(Filter.sortDescending(sortedColumn.columnId));
         }
       }
 

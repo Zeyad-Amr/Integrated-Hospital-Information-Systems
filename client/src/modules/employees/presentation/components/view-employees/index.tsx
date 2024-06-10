@@ -93,7 +93,7 @@ const EmployeesTable = () => {
       maxWidth: 100,
       tableCellProps: { align: "center", style: { direction: "ltr" } },
       sortable: true,
-      searchable: true,
+      searchable: false,
       filterable: false,
     },
 
@@ -106,7 +106,7 @@ const EmployeesTable = () => {
       tableCellProps: { align: "center", style: { direction: "ltr" } },
       sortable: true,
       searchable: false,
-      filterable: true,
+      filterable: false,
       filterOptions: lookupsState.lookups.roleTypes,
     },
     {
@@ -118,7 +118,7 @@ const EmployeesTable = () => {
       tableCellProps: { align: "center", style: { direction: "ltr" } },
       sortable: true,
       searchable: false,
-      filterable: true,
+      filterable: false,
       filterOptions: lookupsState.lookups.shiftTypes,
     },
     {
