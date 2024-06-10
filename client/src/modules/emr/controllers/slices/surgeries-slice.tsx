@@ -46,7 +46,6 @@ const surgeriesSlice = createSlice({
         });
         builder.addCase(getSurgeriesList?.fulfilled, (state, action) => {
             state.loading = false;
-            state.surgeries = action.payload;
             state.surgeries = PaginatedListModel.updatePaginatedList(state.surgeries, action.payload);
             state.error = "";
             console.log('getSurgeriesList', action.payload);

@@ -46,7 +46,6 @@ const allergiesSlice = createSlice({
         });
         builder.addCase(getAllergiesList?.fulfilled, (state, action) => {
             state.loading = false;
-            state.allergies = action.payload;
             state.allergies = PaginatedListModel.updatePaginatedList(state.allergies, action.payload);
             state.error = "";
             console.log('getAllergiesList', action.payload);

@@ -3,18 +3,17 @@ import { ExaminationFormComponentPropsInterface } from "@/core/shared/components
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { useAppDispatch } from "@/core/state/store";
 import {
-  createSurgery,
-  updateSurgery,
-} from "@/modules/emr/controllers/thunks/surgeries-thunk";
-import { SurgeriesInterface } from "@/modules/emr/interfaces/surgeries-interface";
-import SurgeriesModel from "@/modules/emr/models/surgeries-model";
+  createMedicalProblem,
+  updateMedicalProblem,
+} from "@/modules/emr/controllers/thunks/medical-problems-thunk";
+import { MedicalProblemsInterface } from "@/modules/emr/interfaces/medical-problems-interface";
+import MedicalProblemsModel from "@/modules/emr/models/medical-problems-model";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik } from "formik";
 import React from "react";
 
-const SurgeriesForm = ({
-  visitCode,
+const MedicalProblemsForm = ({
   patientId,
   initialValues,
   isViewMode,
@@ -25,19 +24,22 @@ const SurgeriesForm = ({
     <Formik
       initialValues={
         initialValues
-          ? (initialValues as SurgeriesInterface)
-          : SurgeriesModel.defaultValues()
+          ? ({
+              ...initialValues,
+              endDate: initialValues?.endDate?.split("T")[0],
+              beginDate: initialValues?.beginDate?.split("T")[0],
+            } as MedicalProblemsInterface)
+          : MedicalProblemsModel.defaultValues()
       }
       onSubmit={async (values) => {
         const submitObject = {
           ...values,
           patientId: "0bdfe596-d938-4214-9aed-a25c3ada56bf",
-          visitCode: "202405184",
         };
 
         const action = initialValues
-          ? updateSurgery(submitObject)
-          : createSurgery(submitObject);
+          ? updateMedicalProblem(submitObject)
+          : createMedicalProblem(submitObject);
 
         dispatch(action).then((res) => {
           if (res?.meta.requestStatus == "fulfilled") {
@@ -45,7 +47,7 @@ const SurgeriesForm = ({
           }
         });
       }}
-      validationSchema={SurgeriesModel.surgeriesFormValidations()}
+      validationSchema={MedicalProblemsModel.medicalProblemsFormValidations()}
     >
       {({
         values,
@@ -86,12 +88,11 @@ const SurgeriesForm = ({
               />
             </Grid>
           </Grid>
-
           <Grid container spacing={1}>
             <Grid
               item
-              lg={6}
-              md={6}
+              lg={4}
+              md={4}
               sm={12}
               xs={12}
               sx={{
@@ -101,13 +102,67 @@ const SurgeriesForm = ({
               }}
             >
               <CustomTextField
-                name="place"
-                label="الموضع"
-                value={values.place}
+                name="beginDate"
+                label="تاريخ البدء"
+                value={values.beginDate}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.place}
-                touched={touched.place}
+                error={errors.beginDate}
+                touched={touched.beginDate}
+                width="100%"
+                props={{
+                  type: "date",
+                  disabled: isViewMode,
+                }}
+              />
+            </Grid>
+            <Grid
+              item
+              lg={4}
+              md={4}
+              sm={12}
+              xs={12}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "flex-end",
+              }}
+            >
+              <CustomTextField
+                name="endDate"
+                label="تاريخ الانتهاء"
+                value={values.endDate}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.endDate}
+                touched={touched.endDate}
+                width="100%"
+                props={{
+                  type: "date",
+                  disabled: isViewMode,
+                }}
+              />
+            </Grid>
+            <Grid
+              item
+              lg={4}
+              md={4}
+              sm={12}
+              xs={12}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "flex-end",
+              }}
+            >
+              <CustomTextField
+                name="verification"
+                label="التحقق"
+                value={values.verification}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.verification}
+                touched={touched.verification}
                 width="100%"
                 props={{
                   type: "text",
@@ -115,10 +170,12 @@ const SurgeriesForm = ({
                 }}
               />
             </Grid>
+          </Grid>
+          <Grid container spacing={1}>
             <Grid
               item
-              lg={6}
-              md={6}
+              lg={12}
+              md={12}
               sm={12}
               xs={12}
               sx={{
@@ -128,13 +185,13 @@ const SurgeriesForm = ({
               }}
             >
               <CustomTextField
-                name="description"
-                label="الوصف"
-                value={values.description}
+                name="comments"
+                label="تعليقات"
+                value={values.comments}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.description}
-                touched={touched.description}
+                error={errors.comments}
+                touched={touched.comments}
                 width="100%"
                 props={{
                   type: "text",
@@ -156,4 +213,4 @@ const SurgeriesForm = ({
   );
 };
 
-export default SurgeriesForm;
+export default MedicalProblemsForm;
