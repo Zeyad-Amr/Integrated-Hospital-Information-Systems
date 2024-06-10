@@ -4,13 +4,13 @@ import React, {
   useEffect,
   useRef,
   useState,
-  useCallback,
 } from "react";
 import { FilterColumn, HeaderItem, SearchQuery, SortedColumn } from ".";
 import { isEqual } from "lodash";
 import { Filter, FilterQuery } from "@/core/api";
 import { initialPage, initialRowsPerPage } from "./CustomTablePagination";
 
+//* Define the type for TableContext
 interface TableContextType<T> {
   filterColumns: FilterColumn[];
   setFilterColumns: React.Dispatch<React.SetStateAction<FilterColumn[]>>;
@@ -26,10 +26,12 @@ interface TableContextType<T> {
   setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
+//* Create the TableContext
 const TableContext = createContext<TableContextType<any> | undefined>(
   undefined
 );
 
+//* Custom hook to use the TableContext
 export const useTableContext = <T,>() => {
   const context = useContext(TableContext);
   if (!context) {
@@ -38,6 +40,7 @@ export const useTableContext = <T,>() => {
   return context as TableContextType<T>;
 };
 
+//* TableProvider component to wrap your application and provide the context
 export const TableProvider = (props: {
   fetchData: (filters: FilterQuery[]) => void;
   initSortedColumn: SortedColumn;
@@ -49,6 +52,7 @@ export const TableProvider = (props: {
   const { fetchData, initSortedColumn, columnHeader, data, resetControls } =
     props;
 
+  //***************** Define the state values
   const [filterColumns, setFilterColumns] = useState<FilterColumn[]>([]);
   const [searchQuery, setSearchQuery] = useState<SearchQuery>({
     value: "",
@@ -59,93 +63,128 @@ export const TableProvider = (props: {
   const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
   const [reset, setReset] = useState(false);
 
-  const prevValues = useRef({
-    page,
-    rowsPerPage,
-    sortedColumn,
-    searchQuery,
-    filterColumns,
-  });
+  const prevPage = useRef(page);
+  const prevRowsPerPage = useRef(rowsPerPage);
+  const prevSortedColumn = useRef(sortedColumn);
+  const prevSearchQuery = useRef(searchQuery);
+  const prevFilterColumns = useRef(filterColumns);
 
   const initialRender = useRef(true);
 
-  const fetchDataHandler = useCallback(
-    (resetPage: boolean) => {
-      console.log(page);
-      console.log(rowsPerPage);
-      console.log(sortedColumn);
-      console.log(searchQuery);
-      console.log(filterColumns);
+  //***************** useEffect to apply filters initially on the first render
+  useEffect(() => {
+    if (reset !== true) {
+      console.log("resetControls useEffect:", resetControls);
+      applyFiltersHandler();
+      setReset(false);
+    }
+  }, [page, rowsPerPage, sortedColumn, searchQuery, filterColumns]);
 
-      let filters: FilterQuery[] = [];
+  //***************** reset all filters
+  const resetFilters = () => {
+    initialRender.current = true;
+    setFilterColumns([]);
+    setSearchQuery({ value: "" });
+    setSortedColumn(initSortedColumn);
+    setPage(initialPage);
+    setRowsPerPage(initialRowsPerPage);
+    setReset(true);
 
-      if (searchQuery.value && searchQuery.columnId) {
-        filters.push(Filter.like(searchQuery.columnId, searchQuery.value));
+    // Update the previous values
+    prevPage.current = page;
+    prevRowsPerPage.current = rowsPerPage;
+    prevSortedColumn.current = sortedColumn;
+    prevSearchQuery.current = searchQuery;
+    prevFilterColumns.current = filterColumns;
+  };
+
+  //***************** on resetFilters change, reset all filters
+  useEffect(() => {
+    console.log("resetControls:", resetControls);
+    if (resetControls === true) {
+      resetFilters();
+      fetchDataHandler(true);
+    }
+  }, [resetControls]);
+
+  //***************** Function to handle fetching data
+  const fetchDataHandler = (resetPage: boolean) => {
+    // Logic for handling Pagination
+    console.log(page);
+    console.log(rowsPerPage);
+
+    // Logic for handling Sorting
+    console.log(sortedColumn);
+
+    // Logic for handling Searching
+    console.log(searchQuery);
+
+    // Logic for handling Filtering
+    console.log(filterColumns);
+
+    // Apply filters
+    //* Create an array of filters
+    let filters: FilterQuery[] = [];
+
+    //* Search
+    if (searchQuery.value && searchQuery.columnId) {
+      filters.push(Filter.like(searchQuery.columnId, searchQuery.value));
+    }
+
+    //* Sorting
+    if (sortedColumn && sortedColumn.disableSort !== true) {
+      if (sortedColumn.isAscending) {
+        filters.push(Filter.sortAscending(sortedColumn.columnId));
+      } else {
+        filters.push(Filter.sortDescending(sortedColumn.columnId));
       }
+    }
 
-      if (sortedColumn && sortedColumn.disableSort !== true) {
-        if (sortedColumn.isAscending) {
-          filters.push(Filter.sortAscending(sortedColumn.columnId));
-        } else {
-          filters.push(Filter.sortDescending(sortedColumn.columnId));
+    //* reset page and size if any of the filters changed
+    if (resetPage) {
+      filters.push(
+        Filter.custom(`page=${initialPage + 1}&size=${initialRowsPerPage}`)
+      );
+      setPage(initialPage);
+      setRowsPerPage(initialRowsPerPage);
+    } else if (rowsPerPage) {
+      filters.push(Filter.custom(`page=${page + 1}&size=${rowsPerPage}`));
+    }
+
+    //* Option filters
+    // check if all options selected
+    const allOptionsSelected = filterColumns.every((column) => {
+      return column.selectedValuesIds.length === column.values.length;
+    });
+
+    if (filterColumns.length > 0 && !allOptionsSelected) {
+      filterColumns.forEach((column) => {
+        if (column.selectedValuesIds.length > 0) {
+          filters.push(Filter.anyOf(column.columnId, column.selectedValuesIds));
         }
-      }
-
-      if (resetPage) {
-        filters.push(
-          Filter.custom(`page=${initialPage + 1}&size=${initialRowsPerPage}`)
-        );
-        setPage(initialPage);
-        setRowsPerPage(initialRowsPerPage);
-      } else if (rowsPerPage) {
-        filters.push(Filter.custom(`page=${page + 1}&size=${rowsPerPage}`));
-      }
-
-      const allOptionsSelected = filterColumns.every((column) => {
-        return column.selectedValuesIds.length === column.values.length;
       });
+    }
 
-      if (filterColumns.length > 0 && !allOptionsSelected) {
-        filterColumns.forEach((column) => {
-          if (column.selectedValuesIds.length > 0) {
-            filters.push(
-              Filter.anyOf(column.columnId, column.selectedValuesIds)
-            );
-          }
-        });
-      }
+    //* Fetch data with the filters
+    fetchData(filters);
 
-      fetchData(filters);
+    // Set initialRender to false after the first render
+    if (initialRender.current) {
+      initialRender.current = false;
+    }
+  };
 
-      if (initialRender.current) {
-        initialRender.current = false;
-      }
-    },
-    [
-      page,
-      rowsPerPage,
-      sortedColumn,
-      searchQuery,
-      filterColumns,
-      columnHeader,
-      fetchData,
-    ]
-  );
-
-  const applyFiltersHandler = useCallback(() => {
-    const {
-      page: prevPage,
-      rowsPerPage: prevRowsPerPage,
-      sortedColumn: prevSortedColumn,
-      searchQuery: prevSearchQuery,
-      filterColumns: prevFilterColumns,
-    } = prevValues.current;
-
-    const pageChanged = prevPage !== page;
-    const rowsPerPageChanged = prevRowsPerPage !== rowsPerPage;
-    const sortedColumnChanged = prevSortedColumn !== sortedColumn;
-    const searchQueryChanged = !isEqual(prevSearchQuery, searchQuery);
-    const filterColumnsChanged = !isEqual(prevFilterColumns, filterColumns);
+  //***************** Function to apply filters
+  const applyFiltersHandler = () => {
+    // Check if any of the values have changed
+    const pageChanged = prevPage.current !== page;
+    const rowsPerPageChanged = prevRowsPerPage.current !== rowsPerPage;
+    const sortedColumnChanged = prevSortedColumn.current !== sortedColumn;
+    const searchQueryChanged = !isEqual(prevSearchQuery.current, searchQuery);
+    const filterColumnsChanged = !isEqual(
+      prevFilterColumns.current,
+      filterColumns
+    );
 
     console.log("pageChanged", pageChanged);
     console.log("rowsPerPageChanged", rowsPerPageChanged);
@@ -154,6 +193,14 @@ export const TableProvider = (props: {
     console.log("filterColumnsChanged", filterColumnsChanged);
     console.log("initialRender", initialRender.current);
 
+    // Update the previous values
+    prevPage.current = page;
+    prevRowsPerPage.current = rowsPerPage;
+    prevSortedColumn.current = sortedColumn;
+    prevSearchQuery.current = searchQuery;
+    prevFilterColumns.current = filterColumns;
+
+    // If any value has changed, apply filters
     if (
       pageChanged ||
       rowsPerPageChanged ||
@@ -166,61 +213,7 @@ export const TableProvider = (props: {
         sortedColumnChanged || searchQueryChanged || filterColumnsChanged
       );
     }
-
-    prevValues.current = {
-      page,
-      rowsPerPage,
-      sortedColumn,
-      searchQuery,
-      filterColumns,
-    };
-  }, [
-    page,
-    rowsPerPage,
-    sortedColumn,
-    searchQuery,
-    filterColumns,
-    fetchDataHandler,
-  ]);
-
-  useEffect(() => {
-    if (!reset) {
-      applyFiltersHandler();
-    }
-  }, [
-    page,
-    rowsPerPage,
-    sortedColumn,
-    searchQuery,
-    filterColumns,
-    reset,
-    applyFiltersHandler,
-  ]);
-
-  const resetFilters = useCallback(() => {
-    initialRender.current = true;
-    setFilterColumns([]);
-    setSearchQuery({ value: "" });
-    setSortedColumn(initSortedColumn);
-    setPage(initialPage);
-    setRowsPerPage(initialRowsPerPage);
-    setReset(true);
-
-    prevValues.current = {
-      page: initialPage,
-      rowsPerPage: initialRowsPerPage,
-      sortedColumn: initSortedColumn,
-      searchQuery: { value: "" },
-      filterColumns: [],
-    };
-  }, [initSortedColumn]);
-
-  useEffect(() => {
-    if (resetControls) {
-      resetFilters();
-      fetchDataHandler(true);
-    }
-  }, [resetControls, resetFilters, fetchDataHandler]);
+  };
 
   return (
     <TableContext.Provider

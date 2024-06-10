@@ -40,18 +40,16 @@ export class PaginatedListModel {
         };
     }
 
-    public static isInitialFilter(prevValue: boolean): boolean {
-        return prevValue === true ? false : prevValue;
-    }
 
-    public static updatePaginatedList<T>(prevValue: PaginatedList<T>, newValue: PaginatedList<T>): PaginatedList<T> {
+
+    public static updatePaginatedList<T>(_prevValue: PaginatedList<T>, newValue: PaginatedList<T>): PaginatedList<T> {
         return {
             total: newValue.total,
             items: newValue.items,
             filters: newValue.filters,
             page: newValue.page,
             size: newValue.size,
-            isInitial: this.isInitialFilter(prevValue.isInitial),
+            isInitial: false,
         }
     }
 

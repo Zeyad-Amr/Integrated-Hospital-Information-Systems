@@ -105,12 +105,22 @@ const CustomTableSearch = () => {
         sx={{ ml: 1, flex: 1 }}
         placeholder="بحـــث"
         onChange={(e) => {
-          // setSearchQuery({
-          //   columnId: searchOn?.columnId,
-          //   value: e.target.value,
-          // } as SearchQuery);
-
           search.current = e.target.value;
+        }}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            if (searchOn?.columnId) {
+              setSearchQuery({
+                columnId: searchOn?.columnId,
+                value: search.current,
+              } as SearchQuery);
+            } else {
+              AlertService.showAlert(
+                "اختر العمود الذي تريد البحث عنه",
+                "error"
+              );
+            }
+          }
         }}
       />
     </Box>

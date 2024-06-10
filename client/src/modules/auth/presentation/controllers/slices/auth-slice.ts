@@ -85,7 +85,7 @@ const authSlice = createSlice({
         builder.addCase(getMe.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
-            AlertService.showAlert(`${state.error}`, 'error');
+            // AlertService.showAlert(`${state.error}`, 'error');
         });
 
 
