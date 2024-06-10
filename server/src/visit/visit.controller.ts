@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Req, Patch, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Req, Patch, Query, Put } from '@nestjs/common';
 import { VisitService } from './visit.service';
 import { CreateVisitDto } from './dto/create-visit.dto';
 
@@ -26,6 +26,8 @@ import {
 import { SortingParams, Sorting } from 'src/shared/decorators/order.decorator';
 import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
 import { TriageAXDto } from './dto/triage-assessment.dto';
+import { Public } from 'src/shared/decorators/public.decorator';
+import { UpdateVisitStatus } from './dto/update-visit.dto';
 
 @ApiBearerAuth()
 @ApiTags('visit')
@@ -51,11 +53,12 @@ export class VisitController {
     description: 'This to add triage assessment to the visit with given code',
   })
   @ApiCreatedResponse({ description: 'triage assessment has been created successfully' })
+  @ApiOkResponse({ description: 'triage assessment has been updated successfully' })
   @ApiBadRequestResponse({ description: 'body has missed some data' })
   @Patch('triage/:visitCode')
-  async addTriageAX(@Body() triageAXDto: TriageAXDto, @Param('visitCode') visitCode: string) {
+  async addTriageAX(@Body() triageAXDto: TriageAXDto, @Param('visitCode') visitCode: string, @Req() req) {
     try {
-      return await this.visitService.addTriageAX(visitCode, triageAXDto);
+      return await this.visitService.addTriageAX(visitCode, triageAXDto, req.user.sub);
     } catch (error) {
       throw handleError(error);
     }
@@ -81,6 +84,7 @@ export class VisitController {
       'companion.person.fullName',
 
     ]) filters?: Array<Filter>,
+
     @SortingParams([
       'code',
       'createdAt',
@@ -121,11 +125,25 @@ export class VisitController {
   @ApiNotFoundResponse()
   @ApiCreatedResponse()
   @Get('all/er-area')
-  async findERAreaVisits() {
+  async findERAreaVisits(@Query('subdepartmentID') subdepartmentID: number) {
     try {
       return await this.visitService.findERAreaVisits();
     } catch (error) {
       throw handleError(error);
     }
   }
+
+  @ApiOperation({ description: 'This is to update the status of the visit' })
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  @Put(':visitCode/status')
+  async updateStatus(@Param('visitCode') visitCode: string, @Body() updateVisitDto: UpdateVisitStatus) {
+    try {
+      return await this.visitService.updateStatus(visitCode, updateVisitDto);
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
 }

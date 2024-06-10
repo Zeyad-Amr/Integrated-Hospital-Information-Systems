@@ -104,6 +104,7 @@ model Employee {
   surgery                      Surgery[]
   vitals                       Vitals[]
   primarySurvey                PrimarySurvey[]
+  Transfer                     Transfer[]
 }
 
 model RoleType {
@@ -196,12 +197,12 @@ model Diagnosis {
 }
 
 model MedicalProblem {
-  id          String    @id @default(uuid())
-  name        String
-  beginDate   DateTime?
-  endDate     DateTime?
+  id           String    @id @default(uuid())
+  name         String
+  beginDate    DateTime?
+  endDate      DateTime?
   verification String?
-  comments    String?
+  comments     String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -213,15 +214,15 @@ model MedicalProblem {
 }
 
 model Allergy {
-  id          String    @id @default(uuid())
-  name        String
-  beginDate   DateTime?
-  endDate     DateTime?
-  reaction    String?
-  severity    String?
-  occurrence  String?
+  id           String    @id @default(uuid())
+  name         String
+  beginDate    DateTime?
+  endDate      DateTime?
+  reaction     String?
+  severity     String?
+  occurrence   String?
   verification String?
-  comments    String?
+  comments     String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -274,7 +275,7 @@ model Prescription {
   visitCode String  @unique
 }
 
-model TriageAx { //Triage Assessment
+model TriageAx {
   id                   String      @id @default(uuid())
   painScore            Float?
   consciousnessLevel   LOC?        @relation(fields: [consciousnessLevelId], references: [id])
@@ -431,6 +432,8 @@ model Visit {
   incident   Incident? @relation(fields: [incidentId], references: [id])
   incidentId String?
 
+  status VisitStatus @default(CREATED)
+
   transfers           Transfer[]
   triageAx            TriageAx?
   vitals              Vitals[]
@@ -506,9 +509,9 @@ model VisitAdditionalInformation {
 model Transfer {
   id String @id @default(uuid())
 
-  fromSubDep   SubDepartment @relation("fromSubDepartment", fields: [fromSubDepId], references: [id])
-  fromSubDepId Int
-  toSubDep     SubDepartment @relation("toSubDepartment", fields: [toSubDepId], references: [id])
+  fromSubDep   SubDepartment? @relation("fromSubDepartment", fields: [fromSubDepId], references: [id])
+  fromSubDepId Int?
+  toSubDep     SubDepartment  @relation("toSubDepartment", fields: [toSubDepId], references: [id])
   toSubDepId   Int
 
   createdAt DateTime @default(now())
@@ -516,6 +519,9 @@ model Transfer {
 
   visit     Visit  @relation(fields: [visitCode], references: [code])
   visitCode String
+
+  createdBy   Employee? @relation(fields: [createdById], references: [id])
+  createdById String?
 }
 
 model CameFromOptions {
@@ -595,13 +601,19 @@ model Permissions {
   @@unique([featureId, roleTypeId, subDepartmentId], map: "FeatureRoleSubDepartment")
 }
 
-
-
 model Comorbidity {
   id    Int    @id @default(autoincrement())
   value String @unique
 }
 
+enum VisitStatus {
+  CREATED
+  BOOKED
+  ARRIVED
+  TRANSFERED
+  EXAMINED
+  ENDED
+}
 
 // model Referral {
 //   id           String   @id @default(uuid())
