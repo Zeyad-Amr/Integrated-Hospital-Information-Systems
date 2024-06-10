@@ -84,6 +84,13 @@ const Endpoints = {
         create: '/role',
         update: '/role/:id',
         delete: '/role/:id',
+    },
+    allergy: {
+        list: '/allergy',
+        details: '/allergy/:id',
+        create: '/allergy',
+        update: '/allergy/:id',
+        delete: '/allergy/:id',
     }
 };
 export default Endpoints;

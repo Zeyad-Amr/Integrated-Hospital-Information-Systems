@@ -62,7 +62,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 interface AccordionComponentPropsInterface {
   title: string;
-  FormComponent: ComponentType<FormComponentPropsInterface>;
+  FormComponent: ComponentType<ExaminationFormComponentPropsInterface>;
   tableHeader: HeaderItem[];
   tableList: any;
   getListThunk: (filters: FilterQuery[]) => any;
@@ -72,8 +72,10 @@ interface AccordionComponentPropsInterface {
   accordionSx?: any;
 }
 
-interface FormComponentPropsInterface {
+export interface ExaminationFormComponentPropsInterface {
   isViewMode: boolean;
+  patientId?: string;
+  visitCode?: string;
   initialValues: any;
   setShowFormDialog: Dispatch<SetStateAction<boolean>>;
 }
@@ -113,6 +115,23 @@ export default function ExaminationAccordion({
     },
   ];
 
+  // Function to check and format date properties
+  const formatDateProperties = (item: any) => {
+    const formattedItem: any = { ...item };
+    for (const key in formattedItem) {
+      if (formattedItem.hasOwnProperty(key)) {
+        const value = formattedItem[key];
+        if (value === null || value === undefined) {
+          formattedItem[key] = ""
+        }
+        if (typeof value === "string" && value.match(/^\d{4}-\d{2}-\d{2}T/)) {
+          formattedItem[key] = value.split("T")[0];
+        }
+      }
+    }
+    return formattedItem;
+  };
+
   return (
     <>
       <Accordion
@@ -138,14 +157,15 @@ export default function ExaminationAccordion({
         </AccordionSummary>
         <AccordionDetails>
           <CustomDataTable
-            fetchData={(filters: FilterQuery[]) => {
+            fetchData={(filters : FilterQuery[]) => {
               dispatch(getListThunk(filters));
             }}
             resetControls={tableList?.isInitial}
             totalItems={tableList?.total}
             data={tableList?.items?.map((item: any) => {
+              const formattedItem = formatDateProperties(item);
               return {
-                ...item,
+                ...formattedItem,
                 update: (
                   <Box
                     sx={{
@@ -160,7 +180,7 @@ export default function ExaminationAccordion({
                       sx={{ cursor: "pointer" }}
                       onClick={() => {
                         setIsViewMode(true);
-                        setTableItemData(item);
+                        setTableItemData(formattedItem);
                         setIsDialogOpen(true);
                       }}
                     />
@@ -168,14 +188,14 @@ export default function ExaminationAccordion({
                       sx={{ cursor: "pointer" }}
                       onClick={() => {
                         setIsViewMode(false);
-                        setTableItemData(item);
+                        setTableItemData(formattedItem);
                         setIsDialogOpen(true);
                       }}
                     />
                     <DeleteRoundedIcon
                       sx={{ cursor: "pointer", color: "red" }}
                       onClick={() => {
-                        setTableItemData(item);
+                        setTableItemData(formattedItem);
                         setShowConfirmationDialog(true);
                       }}
                     />
@@ -191,10 +211,14 @@ export default function ExaminationAccordion({
 
       {/* Delete Item */}
       <ConfirmationDialog
-        confirmFunction={async () =>
+        confirmFunction={async () => {
+          console.log(tableItemData?.id,'tableItemData?.id')
+          
           dispatch(deleteThunk(String(tableItemData?.id))).then(() => {
             setShowConfirmationDialog(false);
           })
+
+        }
         }
         contentMessage="في حالة حذف العنصر لن تستطيع العودة اليه مجددا, هل انت متأكد من حذف هذا العنصر ؟"
         open={showConfirmationDialog}
@@ -215,6 +239,8 @@ export default function ExaminationAccordion({
           isViewMode={isViewMode}
           initialValues={tableItemData}
           setShowFormDialog={setIsDialogOpen}
+          patientId={tableItemData?.patientId}
+          visitCode={tableItemData?.visitCode}
         />
         {/* Convert from view mode to edit mode */}
         {isViewMode && (
