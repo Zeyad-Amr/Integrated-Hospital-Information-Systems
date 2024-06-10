@@ -31,8 +31,8 @@ const SurgeriesForm = ({
       onSubmit={async (values) => {
         const submitObject = {
           ...values,
-          patientId: "0bdfe596-d938-4214-9aed-a25c3ada56bf",
-          visitCode: "202405184",
+          patientId: patientId,
+          visitCode:  visitCode,
         };
 
         const action = initialValues

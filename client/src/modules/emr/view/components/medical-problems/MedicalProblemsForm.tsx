@@ -34,7 +34,7 @@ const MedicalProblemsForm = ({
       onSubmit={async (values) => {
         const submitObject = {
           ...values,
-          patientId: "0bdfe596-d938-4214-9aed-a25c3ada56bf",
+          patientId: patientId,
         };
 
         const action = initialValues
