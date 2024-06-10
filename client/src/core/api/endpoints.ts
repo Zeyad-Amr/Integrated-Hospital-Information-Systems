@@ -91,6 +91,20 @@ const Endpoints = {
         create: '/allergy',
         update: '/allergy/:id',
         delete: '/allergy/:id',
+    },
+    surgery: {
+        list: '/surgery',
+        details: '/surgery/:id',
+        create: '/surgery',
+        update: '/surgery/:id',
+        delete: '/surgery/:id',
+    },
+    medicalProblem: {
+        list: '/medicalProblem',
+        details: '/medicalProblem/:id',
+        create: '/medicalProblem',
+        update: '/medicalProblem/:id',
+        delete: '/medicalProblem/:id',
     }
 };
 export default Endpoints;
