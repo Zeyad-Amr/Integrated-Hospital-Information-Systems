@@ -28,6 +28,7 @@ import { PrimarySurveyModule } from './primary-survey/primary-survey.module';
 import { RadiologyImageModule } from './radiology-image/radiology-image.module';
 import { LabTestModule } from './lab-test/lab-test.module';
 import { ConsultationRequestModule } from './consultation-request/consultation-request.module';
+import { TransferModule } from './transfer/transfer.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { ConsultationRequestModule } from './consultation-request/consultation-r
     RadiologyImageModule,
     LabTestModule,
     ConsultationRequestModule,
+    TransferModule,
   ],
   controllers: [],
   providers: [

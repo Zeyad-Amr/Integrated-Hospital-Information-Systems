@@ -8,6 +8,7 @@ import { Filter } from 'src/shared/decorators/filters.decorator';
 import { Sorting } from 'src/shared/decorators/order.decorator';
 import { TriageAXDto } from './dto/triage-assessment.dto';
 import { PrismaService } from 'src/shared/services/prisma-client/prisma.service';
+import { UpdateVisitStatus } from './dto/update-visit.dto';
 
 
 
@@ -101,13 +102,20 @@ export class VisitService {
     }
   }
 
-  async addTriageAX(code: string, data: TriageAXDto) {
+  async addTriageAX(code: string, data: TriageAXDto, employeeId: string) {
     try {
-      console.log(data);
 
-      return await this.visitRepo.addTriageAss(code, data)
+      return await this.visitRepo.addTriageAss(code, data, employeeId)
     } catch (error) {
       throw error
+    }
+  }
+
+  async updateStatus(visitCode: string, updateVisitDto: UpdateVisitStatus) {
+    try {
+      return await this.visitRepo.updateStatus(visitCode, updateVisitDto.status);
+    } catch (error) {
+      throw error;
     }
   }
 }
@@ -128,10 +136,12 @@ function getCustomFilters(customFilters: VisitCustomFilters) {
     whereConditions.push({
       companion: {
         person: {
-          SSN: {contains: customFilters.companionSSN}
+          SSN: { contains: customFilters.companionSSN }
         }
       }
     })
   }
   return whereConditions;
 }
+
+
