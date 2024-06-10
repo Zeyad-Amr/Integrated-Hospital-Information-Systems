@@ -157,6 +157,8 @@ export default function ExaminationAccordion({
         </AccordionSummary>
         <AccordionDetails>
           <CustomDataTable
+            showPagination={false}
+            showToolbar={false}
             fetchData={(filters: FilterQuery[]) => {
               dispatch(getListThunk(filters));
             }}

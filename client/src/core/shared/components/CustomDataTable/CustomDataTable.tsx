@@ -44,6 +44,8 @@ const CustomDataTable = <T,>({
         isAscending: true,
       },
   resetComponent = false,
+  showPagination = true,
+  showToolbar = true,
 }: CustomDataTableProps<T>) => {
   const filteredData = [...data];
 
@@ -66,9 +68,11 @@ const CustomDataTable = <T,>({
           ...sx,
         }}
       >
-        <Box sx={{ width: width }}>
-          <CustomTableToolbar />
-        </Box>
+        {showToolbar && (
+          <Box sx={{ width: width }}>
+            <CustomTableToolbar />
+          </Box>
+        )}
 
         <TableContainer
           component={Paper}
@@ -231,9 +235,11 @@ const CustomDataTable = <T,>({
             </TableBody>
           </Table>
         </TableContainer>
-        <Box sx={{ width: width }}>
-          <CustomTablePagination dataLength={totalItems} />
-        </Box>
+        {showPagination && (
+          <Box sx={{ width: width }}>
+            <CustomTablePagination dataLength={totalItems} />
+          </Box>
+        )}
       </Box>
     </TableProvider>
   );

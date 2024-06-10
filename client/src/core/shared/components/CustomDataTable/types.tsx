@@ -18,6 +18,8 @@ interface CustomDataTableProps<T> {
   rowPaddingY?: string;
   initSortedColumn?: SortedColumn;
   resetComponent?: boolean;
+  showPagination?: boolean;
+  showToolbar?: boolean;
 }
 
 /**
