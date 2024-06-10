@@ -38,8 +38,11 @@ export const updateAllergy = createAsyncThunk(
     const apiClient = new ApiClient();
     try {
       await apiClient.patch(
-        Endpoints.allergy.update + `${data.id}`,
-        AllergiesModel.toJson(data)
+        Endpoints.allergy.update,
+        AllergiesModel.toJson(data),
+        {
+          pathVariables: { id: data.id },
+        }
       );
       return true;
     } catch (error) {
@@ -77,11 +80,13 @@ export const getAllergiesList = createAsyncThunk(
 //*  Get Allergy Details
 export const getAllergyDetails = createAsyncThunk(
   "allergy/details",
-  async ( id: string | number, thunkApi) => {
+  async (id: string | number, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     const apiClient = new ApiClient();
     try {
-      const response = await apiClient.get(Endpoints.allergy.details + `${id}`);
+      const response = await apiClient.get(Endpoints.allergy.details, {
+        pathVariables: { id: id },
+      });
       return AllergiesModel.fromJson(response.data);
     } catch (error) {
       const errorResponse: ErrorResponse =
@@ -94,12 +99,13 @@ export const getAllergyDetails = createAsyncThunk(
 //*  Delete Allergy
 export const deleteAllergy = createAsyncThunk(
   "allergy/delete",
-  async ( id: string | number, thunkApi) => {
+  async (id: string | number, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     const apiClient = new ApiClient();
     try {
-        
-      await apiClient.delete(Endpoints.allergy.delete + `${id}`);
+      await apiClient.delete(Endpoints.allergy.delete, {
+        pathVariables: { id: id },
+      });
       return true;
     } catch (error) {
       const errorResponse: ErrorResponse =

@@ -121,6 +121,9 @@ export default function ExaminationAccordion({
     for (const key in formattedItem) {
       if (formattedItem.hasOwnProperty(key)) {
         const value = formattedItem[key];
+        if (value === null || value === undefined) {
+          formattedItem[key] = ""
+        }
         if (typeof value === "string" && value.match(/^\d{4}-\d{2}-\d{2}T/)) {
           formattedItem[key] = value.split("T")[0];
         }
@@ -154,8 +157,8 @@ export default function ExaminationAccordion({
         </AccordionSummary>
         <AccordionDetails>
           <CustomDataTable
-            fetchData={() => {
-              dispatch(getListThunk([]));
+            fetchData={(filters : FilterQuery[]) => {
+              dispatch(getListThunk(filters));
             }}
             resetControls={tableList?.isInitial}
             totalItems={tableList?.total}

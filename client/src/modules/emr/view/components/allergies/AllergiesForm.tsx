@@ -19,7 +19,7 @@ const AllergiesForm = ({
   isViewMode,
   setShowFormDialog,
 }: ExaminationFormComponentPropsInterface) => {
-  const dispatch = useAppDispatch();  
+  const dispatch = useAppDispatch();
   return (
     <Formik
       initialValues={
@@ -32,13 +32,15 @@ const AllergiesForm = ({
           : AllergiesModel.defaultValues()
       }
       onSubmit={async (values) => {
-        console.log(values);
+        const submitObject = {
+          ...values,
+          patientId: patientId,
+        };
+
         const action = initialValues
-          ? updateAllergy({
-              ...values,
-              patientId: "0bdfe596-d938-4214-9aed-a25c3ada56bf",
-            })
-          : createAllergy({ ...values, patientId: "0bdfe596-d938-4214-9aed-a25c3ada56bf" });
+          ? updateAllergy(submitObject)
+          : createAllergy(submitObject);
+
         dispatch(action).then((res) => {
           if (res?.meta.requestStatus == "fulfilled") {
             setShowFormDialog(false);
@@ -59,8 +61,8 @@ const AllergiesForm = ({
           <Grid container spacing={1}>
             <Grid
               item
-              lg={4}
-              md={4}
+              lg={12}
+              md={12}
               sm={12}
               xs={12}
               sx={{
@@ -85,6 +87,8 @@ const AllergiesForm = ({
                 }}
               />
             </Grid>
+          </Grid>
+          <Grid container spacing={1}>
             <Grid
               item
               lg={4}
@@ -98,7 +102,6 @@ const AllergiesForm = ({
               }}
             >
               <CustomTextField
-                isRequired
                 name="beginDate"
                 label="تاريخ البدء"
                 value={values.beginDate}
@@ -126,7 +129,6 @@ const AllergiesForm = ({
               }}
             >
               <CustomTextField
-                isRequired
                 name="endDate"
                 label="تاريخ الانتهاء"
                 value={values.endDate}
@@ -137,6 +139,33 @@ const AllergiesForm = ({
                 width="100%"
                 props={{
                   type: "date",
+                  disabled: isViewMode,
+                }}
+              />
+            </Grid>
+            <Grid
+              item
+              lg={4}
+              md={4}
+              sm={12}
+              xs={12}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "flex-end",
+              }}
+            >
+              <CustomTextField
+                name="severity"
+                label="شدة"
+                value={values.severity}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.severity}
+                touched={touched.severity}
+                width="100%"
+                props={{
+                  type: "text",
                   disabled: isViewMode,
                 }}
               />
@@ -157,7 +186,6 @@ const AllergiesForm = ({
               }}
             >
               <CustomTextField
-                isRequired
                 name="verification"
                 label="التحقق"
                 value={values.verification}
@@ -185,7 +213,6 @@ const AllergiesForm = ({
               }}
             >
               <CustomTextField
-                isRequired
                 name="occurrence"
                 label="حدوث"
                 value={values.occurrence}
@@ -213,7 +240,6 @@ const AllergiesForm = ({
               }}
             >
               <CustomTextField
-                isRequired
                 name="reaction"
                 label="رد الفعل"
                 value={values.reaction}
@@ -233,8 +259,8 @@ const AllergiesForm = ({
           <Grid container spacing={1}>
             <Grid
               item
-              lg={4}
-              md={4}
+              lg={12}
+              md={12}
               sm={12}
               xs={12}
               sx={{
@@ -244,35 +270,6 @@ const AllergiesForm = ({
               }}
             >
               <CustomTextField
-                isRequired
-                name="severity"
-                label="شدة"
-                value={values.severity}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.severity}
-                touched={touched.severity}
-                width="100%"
-                props={{
-                  type: "text",
-                  disabled: isViewMode,
-                }}
-              />
-            </Grid>
-            <Grid
-              item
-              lg={8}
-              md={8}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
-              <CustomTextField
-                isRequired
                 name="comments"
                 label="تعليقات"
                 value={values.comments}

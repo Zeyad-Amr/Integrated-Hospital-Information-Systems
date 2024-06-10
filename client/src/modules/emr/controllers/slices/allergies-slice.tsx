@@ -103,7 +103,7 @@ const allergiesSlice = createSlice({
             state.loading = false;
             state.error = "";
             state.allergies = PaginatedListModel.resetPaginatedList(state.allergies)
-            AlertService.showAlert('تم حذف غرفة بنجاح', 'success')
+            AlertService.showAlert('تم حذف حساسية بنجاح', 'success')
 
         });
         builder.addCase(deleteAllergy.rejected, (state, action) => {
