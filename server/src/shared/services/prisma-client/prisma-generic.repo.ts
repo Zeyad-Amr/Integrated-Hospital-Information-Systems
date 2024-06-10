@@ -44,7 +44,11 @@ export class PrismaGenericRepo<T> {
           select: args?.select,
         });
         return { count, data };
-      });
+      },
+        {
+          maxWait: 5000, // 5 seconds max wait to connect to prisma
+          timeout: 20000, // 20 seconds
+        });
 
       return {
         total: res.count,

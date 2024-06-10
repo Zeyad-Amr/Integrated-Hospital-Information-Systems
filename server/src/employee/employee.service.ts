@@ -8,15 +8,15 @@ import { Sorting } from 'src/shared/decorators/order.decorator';
 import { Filter } from 'src/shared/decorators/filters.decorator';
 
 
-export interface CustomFilters { 
+export interface CustomFilters {
   roleId: number;
- 
+
   SSN: string;
 
   name: string;
- 
+
   email: string;
- 
+
   phone: string;
 }
 @Injectable()

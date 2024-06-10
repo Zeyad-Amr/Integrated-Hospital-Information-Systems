@@ -29,10 +29,14 @@ export class SpecializationController {
   @Get()
   findAll(
     @PaginationParams() pagination: Pagination,
-    @SortingParams(['name']) sort?: Sorting,
+    @SortingParams([
+      'name',
+      'description'
+    ]) sort?: Sorting,
     @FilteringParams([
       'id',
       'name',
+      'description',
     ])
     filters?: Array<Filter>,
   ) {

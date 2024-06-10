@@ -52,7 +52,6 @@ interface HeaderItem {
   filterable?: boolean;
   searchable?: boolean;
   filterOptions?: FilterOption[];
-  isCustomFilter?: boolean;
   display?: boolean;
   icon?: React.ReactNode;
   cellSx?: SxProps;

@@ -66,10 +66,6 @@ export class EmployeeController {
   @ApiOperation({ summary: 'get all employees' })
   @ApiOkResponse({ description: 'get all employees' })
   @CustomGetAllParamDecorator()
-  @ApiQuery({ name: 'SSN', required: false })
-  @ApiQuery({ name: 'name', required: false })
-  @ApiQuery({ name: 'email', required: false })
-  @ApiQuery({ name: 'phone', required: false })
   async findAll(
     @Query() customFilters?: CustomFilters,
     @PaginationParams() pagination?: Pagination,
@@ -78,17 +74,22 @@ export class EmployeeController {
       'roleId',
       'createdAt',
       'updatedAt',
-      'person.fullName'
+      'person.fullName',
+      'person.SSN',
+      'person.phone',
     ]) sort?: Sorting,
     @FilteringParams([
       'shiftId',
       'roleId',
       'createdAt',
       'updatedAt',
+      'person.fullName',
+      'person.SSN',
+      'person.phone',
     ]) filters?: Array<Filter>,
   ) {
     try {
-      return await this.employeeService.findAll(pagination, sort, filters,customFilters);
+      return await this.employeeService.findAll(pagination, sort, filters, customFilters);
     } catch (error) {
       throw handleError(error);
     }

@@ -12,7 +12,7 @@ export interface IncidentVisit {
 
 export const header: HeaderItem[] = [
   {
-    id: "AdditionalInformation.comeFrom",
+    id: "AdditionalInformation.cameFromId",
     key: "comeFrom",
     label: "مصدر الحالة",
     minWidth: 20,
@@ -20,7 +20,7 @@ export const header: HeaderItem[] = [
     tableCellProps: { align: "center" },
     sortable: true,
     filterable: false,
-    searchable: false,
+    searchable: true,
     onClick: () => {},
   },
   {
@@ -44,11 +44,11 @@ export const header: HeaderItem[] = [
     sortable: false,
     filterable: false,
     searchable: true,
-    isCustomFilter: true,
+
     onClick: () => {},
   },
   {
-    id: "numberOfVisits",
+    id: "numberOfPatients",
     key: "numberOfVisits",
     label: "عدد الزيارات",
     minWidth: 50,
@@ -56,8 +56,8 @@ export const header: HeaderItem[] = [
     tableCellProps: { align: "center" },
     sortable: false,
     filterable: false,
-    searchable: true,
-    isCustomFilter: true,
+    searchable: false,
+
     onClick: () => {},
   },
   {
@@ -69,8 +69,8 @@ export const header: HeaderItem[] = [
     tableCellProps: { align: "center" },
     sortable: false,
     filterable: false,
-    searchable: true,
-    isCustomFilter: true,
+    searchable: false,
+
     onClick: () => {},
   },
 

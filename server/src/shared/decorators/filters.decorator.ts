@@ -43,14 +43,14 @@ export const FilteringParams = createParamDecorator(
       try {
         filter = filter as string;
         let { property, rule, value } = getFilterProperties(filter);
-        let val: any;
-        const valueInt = +value;
-        if (!isNaN(valueInt)) {
-          val = valueInt;
-        }
-        else {
-          val = value;
-        }
+        let val: any = value;
+        // const valueInt = +value;
+        // if (!isNaN(valueInt)) {
+        //   val = valueInt;
+        // }
+        // else {
+        //   val = value;
+        // }
         if (!data.includes(property))
           throw new BadRequestException(`Invalid filter property: ${property}`);
         if (!Object.values(FilterRule).includes(rule as FilterRule))
