@@ -1,32 +1,33 @@
 import { Yup } from "@/core/shared/utils/validation";
-import { MedicalProblemsInterface } from "../interfaces/medical-problems-interface";
+import { MedicationsInterface } from "../interfaces/medications-interface";
 
-export default class MedicalProblemsModel {
+export default class MedicationsModel {
   //*   Default form values
-  static defaultValues(): MedicalProblemsInterface {
+  static defaultValues(): MedicationsInterface {
     return {
-      name: "",
+      drugName: "",
       comments: "",
-      verification: "",
+      dosageInstruction: "",
+      medicationUsage: "",
       beginDate: null,
       endDate: null,
     };
   }
 
   //* Define validation schema using Yup
-  static medicalProblemsFormValidations(): Yup.ObjectSchema<any> {
+  static medicationsFormValidations(): Yup.ObjectSchema<any> {
     return Yup.object({
-      name: Yup.string()
-        .required("الاسم مطلوب")
+      drugName: Yup.string()
+        .required("اسم الدواء مطلوب")
         .min(3, "يجب أن يحتوي الاسم على الأقل على 3 أحرف")
         .max(45, "يجب أن يحتوي الاسم على الأكثر 45 حرف"),
-      beginDate: Yup.date().nullable().typeError("يجب أن يكون تاريخًا صالحًا"),
+      beginDate: Yup.date().nullable().typeError("يجب أن يكون تاريخًا صالحًا").required('تاريخ البدء مطلوب'),
       endDate: Yup.date().nullable().typeError("يجب أن يكون تاريخًا صالحًا"),
     });
   }
 
   // //* --------------------- Serialization: Convert the model to JSON ---------------------
-  static toJson(entity: MedicalProblemsInterface): any {
+  static toJson(entity: MedicationsInterface): any {
     const formatDateTime = (date: any) => {
       if (!date) return undefined;
       const parsedDate = new Date(date);
@@ -36,24 +37,26 @@ export default class MedicalProblemsModel {
 
     return {
       patientId: entity.patientId,
-      name: entity.name,
+      drugName: entity.drugName,
       beginDate: formatDateTime(entity.beginDate),
       endDate: formatDateTime(entity.endDate),
       comments: entity.comments,
-      verification: entity.verification,
+      medicationUsage: entity.medicationUsage,
+      dosageInstruction: entity.dosageInstruction,
     };
   }
 
   // //* --------------------- Deserialization: Create a model from JSON data ---------------------
-  static fromJson(json: any): MedicalProblemsInterface {
+  static fromJson(json: any): MedicationsInterface {
     return {
       id: json.id,
       patientId: json.patientId,
       beginDate: json.beginDate,
       endDate: json.endDate,
       comments: json.comments,
-      name: json.name,
-      verification: json.verification,
+      drugName: json.drugName,
+      dosageInstruction: json.dosageInstruction,
+      medicationUsage: json.medicationUsage,
     };
   }
 }

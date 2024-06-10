@@ -4,6 +4,7 @@ import { PaginatedList } from "@/core/api";
 import { AllergiesInterface } from "../interfaces/allergies-interface";
 import { SurgeriesInterface } from "../interfaces/surgeries-interface";
 import { MedicalProblemsInterface } from "../interfaces/medical-problems-interface";
+import { MedicationsInterface } from "../interfaces/medications-interface";
 
 export interface AllergiesState {
     allergies: PaginatedList<AllergiesInterface>;
@@ -22,6 +23,13 @@ export interface SurgeriesState {
 export interface MedicalProblemsState {
     medicalProblems: PaginatedList<MedicalProblemsInterface>;
     currentMedicalProblem: MedicalProblemsInterface;
+    isFetched: boolean;
+    loading: boolean;
+    error: string;
+}
+export interface MedicationsState {
+    medications: PaginatedList<MedicationsInterface>;
+    currentMedication: MedicationsInterface;
     isFetched: boolean;
     loading: boolean;
     error: string;
