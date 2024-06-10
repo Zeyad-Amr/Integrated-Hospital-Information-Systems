@@ -11,6 +11,7 @@ import permissions from "@/modules/management/presentation/controllers/slices/pe
 import subDepartments from "@/modules/management/presentation/controllers/slices/sub-departments-slice";
 import incidents from "@/modules/registration/presentation/controllers/slices/incident-slice";
 import allergies from "@/modules/emr/controllers/slices/allergies-slice";
+import surgeries from "@/modules/emr/controllers/slices/surgeries-slice";
 
 const store = configureStore({
     reducer: {
@@ -24,7 +25,8 @@ const store = configureStore({
         permissions,
         subDepartments,
         person,
-        allergies
+        allergies,
+        surgeries
     },
 });
 
