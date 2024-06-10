@@ -49,7 +49,6 @@ const incidentSlice = createSlice({
         builder.addCase(getAllIncidents.fulfilled, (state, action) => {
             state.loading = false;
             state.incidents = action.payload;
-            state.incidents = PaginatedListModel.updatePaginatedList(state.incidents, action.payload);
             state.error = "";
         });
         builder.addCase(getAllIncidents.rejected, (state, action) => {
@@ -58,8 +57,8 @@ const incidentSlice = createSlice({
             AlertService.showAlert(`${state.error}`, 'error');
         });
 
-         //* Update Visit
-         builder.addCase(updateIncidentPatient.pending, (state, _action) => {
+        //* Update Visit
+        builder.addCase(updateIncidentPatient.pending, (state, _action) => {
             state.loading = true;
             state.error = "";
         });

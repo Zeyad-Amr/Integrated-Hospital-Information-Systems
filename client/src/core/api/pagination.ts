@@ -6,7 +6,7 @@ export interface PaginatedList<T> {
     page: number;
     size: number;
     filters: FilterQuery[];
-    isInitial: boolean;
+    reset: boolean;
 }
 
 export interface PaginatedApiRequestParams {
@@ -24,7 +24,7 @@ export class PaginatedListModel {
             filters: filters,
             page: json.page,
             size: json.size,
-            isInitial: false,
+            reset: false,
         }
     }
 
@@ -36,23 +36,9 @@ export class PaginatedListModel {
             filters: [],
             page: 0,
             size: 0,
-            isInitial: false,
+            reset: false,
         };
     }
-
-
-
-    public static updatePaginatedList<T>(_prevValue: PaginatedList<T>, newValue: PaginatedList<T>): PaginatedList<T> {
-        return {
-            total: newValue.total,
-            items: newValue.items,
-            filters: newValue.filters,
-            page: newValue.page,
-            size: newValue.size,
-            isInitial: false,
-        }
-    }
-
 
     public static resetPaginatedList<T>(prevValue: PaginatedList<T>): PaginatedList<T> {
         return {
@@ -61,7 +47,7 @@ export class PaginatedListModel {
             filters: prevValue.filters,
             page: prevValue.page,
             size: prevValue.size,
-            isInitial: true,
+            reset: true,
         }
     }
 }

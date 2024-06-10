@@ -102,8 +102,8 @@ export default function ExaminationAccordion({
   const updatedTableHeader: HeaderItem[] = [
     ...tableHeader,
     {
+      filterKey: "update",
       id: "update",
-      key: "update",
       label: "",
       isComponent: true,
       minWidth: 100,
@@ -122,7 +122,7 @@ export default function ExaminationAccordion({
       if (formattedItem.hasOwnProperty(key)) {
         const value = formattedItem[key];
         if (value === null || value === undefined) {
-          formattedItem[key] = ""
+          formattedItem[key] = "";
         }
         if (typeof value === "string" && value.match(/^\d{4}-\d{2}-\d{2}T/)) {
           formattedItem[key] = value.split("T")[0];
@@ -157,10 +157,10 @@ export default function ExaminationAccordion({
         </AccordionSummary>
         <AccordionDetails>
           <CustomDataTable
-            fetchData={(filters : FilterQuery[]) => {
+            fetchData={(filters: FilterQuery[]) => {
               dispatch(getListThunk(filters));
             }}
-            resetControls={tableList?.isInitial}
+            resetComponent={tableList?.reset}
             totalItems={tableList?.total}
             data={tableList?.items?.map((item: any) => {
               const formattedItem = formatDateProperties(item);
@@ -212,14 +212,12 @@ export default function ExaminationAccordion({
       {/* Delete Item */}
       <ConfirmationDialog
         confirmFunction={async () => {
-          console.log(tableItemData?.id,'tableItemData?.id')
-          
+          console.log(tableItemData?.id, "tableItemData?.id");
+
           dispatch(deleteThunk(String(tableItemData?.id))).then(() => {
             setShowConfirmationDialog(false);
-          })
-
-        }
-        }
+          });
+        }}
         contentMessage="في حالة حذف العنصر لن تستطيع العودة اليه مجددا, هل انت متأكد من حذف هذا العنصر ؟"
         open={showConfirmationDialog}
         setOpen={setShowConfirmationDialog}

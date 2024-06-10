@@ -2,8 +2,8 @@ import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
 export const surgeriesHeaderTable: HeaderItem[] = [
   {
+    filterKey: "name",
     id: "name",
-    key: "name",
     label: "الاسم",
     minWidth: 100,
     maxWidth: 150,
@@ -13,8 +13,8 @@ export const surgeriesHeaderTable: HeaderItem[] = [
     filterable: false,
   },
   {
+    filterKey: "place",
     id: "place",
-    key: "place",
     label: "الموضع",
     minWidth: 100,
     maxWidth: 150,

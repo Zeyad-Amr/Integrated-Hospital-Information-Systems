@@ -64,8 +64,8 @@ const SubDepartmentsTable = () => {
 
   const SubDepartmentsTableHeader: HeaderItem[] = [
     {
+      filterKey: "name",
       id: "name",
-      key: "name",
       label: "الأســـم",
       minWidth: 50,
       maxWidth: 50,
@@ -76,8 +76,8 @@ const SubDepartmentsTable = () => {
       onClick: () => {},
     },
     {
-      id: "departmentId",
-      key: "department",
+      filterKey: "departmentId",
+      id: "department",
       label: "القســـم",
       minWidth: 50,
       maxWidth: 50,
@@ -96,8 +96,8 @@ const SubDepartmentsTable = () => {
       onClick: () => {},
     },
     {
-      id: "roomId",
-      key: "room",
+      filterKey: "roomId",
+      id: "room",
       label: "الغـــرفة",
       minWidth: 50,
       maxWidth: 50,
@@ -115,8 +115,8 @@ const SubDepartmentsTable = () => {
       onClick: () => {},
     },
     {
-      id: "specializationId",
-      key: "specialization",
+      filterKey: "specializationId",
+      id: "specialization",
       label: "التخصص",
       minWidth: 50,
       maxWidth: 50,
@@ -134,8 +134,8 @@ const SubDepartmentsTable = () => {
       onClick: () => {},
     },
     {
+      filterKey: "update",
       id: "update",
-      key: "update",
       label: "",
       isComponent: true,
       minWidth: 100,
@@ -203,7 +203,7 @@ const SubDepartmentsTable = () => {
           console.log(filters);
           dispatch(getSubDepartmentsList(filters));
         }}
-        resetControls={subDepartmentsState?.subDepartments.isInitial}
+        resetComponent={subDepartmentsState?.subDepartments.reset}
         totalItems={subDepartmentsState?.subDepartments.total}
         data={subDepartmentsState?.subDepartments.items?.map(
           (item: SubDepartmentInterface) => {

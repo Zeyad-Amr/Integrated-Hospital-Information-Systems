@@ -43,7 +43,7 @@ const CustomDataTable = <T,>({
         columnId: "",
         isAscending: true,
       },
-  resetControls = false,
+  resetComponent = false,
 }: CustomDataTableProps<T>) => {
   const filteredData = [...data];
 
@@ -53,7 +53,7 @@ const CustomDataTable = <T,>({
       fetchData={fetchData}
       columnHeader={headerItems}
       initSortedColumn={initSortedColumn}
-      resetControls={resetControls}
+      resetComponent={resetComponent}
     >
       <Box
         sx={{
@@ -133,7 +133,7 @@ const CustomDataTable = <T,>({
                     .map((headerItem) =>
                       headerItem.isIcon ? (
                         <TableCell
-                          key={headerItem.key}
+                          key={headerItem.id}
                           {...headerItem.tableCellProps}
                           sx={{
                             paddingY: rowPaddingY,
@@ -155,7 +155,7 @@ const CustomDataTable = <T,>({
                         </TableCell>
                       ) : headerItem.isComponent ? (
                         <TableCell
-                          key={headerItem.key}
+                          key={headerItem.id}
                           {...headerItem.tableCellProps}
                           sx={{
                             paddingY: rowPaddingY,
@@ -177,12 +177,12 @@ const CustomDataTable = <T,>({
                               maxWidth: "100%",
                             }}
                           >
-                            {item[headerItem.key]}
+                            {item[headerItem.id]}
                           </Typography>
                         </TableCell>
                       ) : (
                         <TableCell
-                          key={headerItem.key}
+                          key={headerItem.id}
                           {...headerItem.tableCellProps}
                           sx={{
                             minWidth: headerItem.minWidth,
@@ -196,9 +196,9 @@ const CustomDataTable = <T,>({
                           <Tooltip
                             enterDelay={1000}
                             title={
-                              typeof item[headerItem.key] === "object"
-                                ? item[headerItem.key].value
-                                : item[headerItem.key]
+                              typeof item[headerItem.id] === "object"
+                                ? item[headerItem.id].value
+                                : item[headerItem.id]
                             }
                           >
                             <Typography
@@ -209,18 +209,18 @@ const CustomDataTable = <T,>({
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
                                 direction: !utilsFunctions.startsWithArabic(
-                                  typeof item[headerItem.key] === "object"
-                                    ? item[headerItem.key].value
-                                    : item[headerItem.key]
+                                  typeof item[headerItem.id] === "object"
+                                    ? item[headerItem.id].value
+                                    : item[headerItem.id]
                                 )
                                   ? "rtl"
                                   : "ltr",
                                 maxWidth: "100%",
                               }}
                             >
-                              {typeof item[headerItem.key] === "object"
-                                ? item[headerItem.key].value
-                                : item[headerItem.key]}
+                              {typeof item[headerItem.id] === "object"
+                                ? item[headerItem.id].value
+                                : item[headerItem.id]}
                             </Typography>
                           </Tooltip>
                         </TableCell>

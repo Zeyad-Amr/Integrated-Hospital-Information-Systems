@@ -52,8 +52,8 @@ const EmployeesTable = () => {
   const [employeeData, setEmployeeData] = useState<EmployeeInterface>();
   const header: HeaderItem[] = [
     {
-      id: "person.SSN",
-      key: "SSN",
+      filterKey: "person.SSN",
+      id: "SSN",
       label: "رقم الهوية",
       minWidth: 50,
       maxWidth: 50,
@@ -63,8 +63,8 @@ const EmployeesTable = () => {
       filterable: false,
     },
     {
-      id: "person.fullName",
-      key: "name",
+      filterKey: "person.fullName",
+      id: "name",
       label: "الاسم",
       minWidth: 100,
       maxWidth: 100,
@@ -74,8 +74,8 @@ const EmployeesTable = () => {
       filterable: false,
     },
     {
-      id: "person.phone",
-      key: "phone",
+      filterKey: "person.phone",
+      id: "phone",
       label: "رقم الهاتف",
       minWidth: 50,
       maxWidth: 50,
@@ -86,8 +86,8 @@ const EmployeesTable = () => {
     },
 
     {
+      filterKey: "createdAt",
       id: "createdAt",
-      key: "createdAt",
       label: "التاريخ",
       minWidth: 100,
       maxWidth: 100,
@@ -98,8 +98,8 @@ const EmployeesTable = () => {
     },
 
     {
-      id: "roleId",
-      key: "roleName",
+      filterKey: "roleId",
+      id: "roleName",
       label: "الوظيفة",
       minWidth: 100,
       maxWidth: 100,
@@ -110,8 +110,8 @@ const EmployeesTable = () => {
       filterOptions: lookupsState.lookups.roleTypes,
     },
     {
-      id: "shiftId",
-      key: "shiftName",
+      filterKey: "shiftId",
+      id: "shiftName",
       label: "الوردية",
       minWidth: 100,
       maxWidth: 100,
@@ -122,8 +122,8 @@ const EmployeesTable = () => {
       filterOptions: lookupsState.lookups.shiftTypes,
     },
     {
+      filterKey: "update",
       id: "update",
-      key: "update",
       label: "",
       isComponent: true,
       minWidth: 100,
@@ -168,7 +168,7 @@ const EmployeesTable = () => {
           console.log(filters);
           dispatch(getEmployeeList(filters));
         }}
-        resetControls={employeeState.employees.isInitial}
+        resetComponent={employeeState.employees.reset}
         totalItems={employeeState.employees.total}
         data={employeeState.employees.items.map<DataItem>(
           (item: EmployeeInterface) => {

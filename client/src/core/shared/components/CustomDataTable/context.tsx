@@ -47,9 +47,9 @@ export const TableProvider = (props: {
   columnHeader: HeaderItem[];
   data: any[];
   children: React.ReactNode;
-  resetControls?: boolean;
+  resetComponent?: boolean;
 }) => {
-  const { fetchData, initSortedColumn, columnHeader, data, resetControls } =
+  const { fetchData, initSortedColumn, columnHeader, data, resetComponent } =
     props;
 
   //***************** Define the state values
@@ -74,7 +74,7 @@ export const TableProvider = (props: {
   //***************** useEffect to apply filters initially on the first render
   useEffect(() => {
     if (reset !== true) {
-      console.log("resetControls useEffect:", resetControls);
+      console.log("resetComponent useEffect:", resetComponent);
       applyFiltersHandler();
       setReset(false);
     }
@@ -100,12 +100,12 @@ export const TableProvider = (props: {
 
   //***************** on resetFilters change, reset all filters
   useEffect(() => {
-    console.log("resetControls:", resetControls);
-    if (resetControls === true) {
+    console.log("resetComponent:", resetComponent);
+    if (resetComponent === true) {
       resetFilters();
       fetchDataHandler(true);
     }
-  }, [resetControls]);
+  }, [resetComponent]);
 
   //***************** Function to handle fetching data
   const fetchDataHandler = (resetPage: boolean) => {

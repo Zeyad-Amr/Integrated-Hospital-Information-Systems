@@ -46,8 +46,7 @@ const specializationSlice = createSlice({
         });
         builder.addCase(getSpecializationList.fulfilled, (state, action) => {
             state.loading = false;
-
-            state.specializations = PaginatedListModel.updatePaginatedList(state.specializations, action.payload);
+            state.specializations = action.payload;
             state.error = "";
             console.log('getSpecializationList', action.payload);
         });

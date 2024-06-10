@@ -12,8 +12,8 @@ export interface IncidentVisit {
 
 export const header: HeaderItem[] = [
   {
-    id: "AdditionalInformation.cameFromId",
-    key: "comeFrom",
+    filterKey: "AdditionalInformation.cameFromId",
+    id: "comeFrom",
     label: "مصدر الحالة",
     minWidth: 20,
     maxWidth: 50,
@@ -24,8 +24,8 @@ export const header: HeaderItem[] = [
     onClick: () => {},
   },
   {
-    id: "AdditionalInformation.injuryLocation",
-    key: "injuryLocation",
+    filterKey: "AdditionalInformation.injuryLocation",
+    id: "injuryLocation",
     label: "موقع الإصابة",
     minWidth: 50,
     tableCellProps: { align: "center" },
@@ -35,8 +35,8 @@ export const header: HeaderItem[] = [
     onClick: () => {},
   },
   {
-    id: "AdditionalInformation.injuryCause",
-    key: "injuryCause",
+    filterKey: "AdditionalInformation.injuryCause",
+    id: "injuryCause",
     label: "سبب الإصابة",
     minWidth: 50,
     maxWidth: 70,
@@ -48,8 +48,8 @@ export const header: HeaderItem[] = [
     onClick: () => {},
   },
   {
-    id: "numberOfPatients",
-    key: "numberOfVisits",
+    filterKey: "numberOfPatients",
+    id: "numberOfVisits",
     label: "عدد الزيارات",
     minWidth: 50,
     maxWidth: 70,
@@ -61,8 +61,8 @@ export const header: HeaderItem[] = [
     onClick: () => {},
   },
   {
+    filterKey: "numberOfIncompletedVisits",
     id: "numberOfIncompletedVisits",
-    key: "numberOfIncompletedVisits",
     label: "عدد الزيارات الغير مكتملة",
     minWidth: 50,
     maxWidth: 70,
@@ -75,8 +75,8 @@ export const header: HeaderItem[] = [
   },
 
   {
+    filterKey: "createdAt",
     id: "createdAt",
-    key: "createdAt",
     label: "تاريخ الحجز",
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
@@ -86,8 +86,8 @@ export const header: HeaderItem[] = [
     onClick: () => {},
   },
   {
+    filterKey: "update",
     id: "update",
-    key: "update",
     label: "تعديل",
     isComponent: true,
     minWidth: 100,

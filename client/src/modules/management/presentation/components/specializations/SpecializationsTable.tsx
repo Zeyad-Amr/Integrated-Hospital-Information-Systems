@@ -21,8 +21,8 @@ import { FilterQuery } from "@/core/api";
 
 const SpecializationsTableHeader: HeaderItem[] = [
   {
+    filterKey: "name",
     id: "name",
-    key: "name",
     label: "الأســـم",
     minWidth: 50,
     maxWidth: 50,
@@ -33,8 +33,8 @@ const SpecializationsTableHeader: HeaderItem[] = [
     onClick: () => {},
   },
   {
+    filterKey: "description",
     id: "description",
-    key: "description",
     label: "الــوصف",
     minWidth: 50,
     maxWidth: 50,
@@ -45,8 +45,8 @@ const SpecializationsTableHeader: HeaderItem[] = [
     onClick: () => {},
   },
   {
+    filterKey: "update",
     id: "update",
-    key: "update",
     label: "",
     isComponent: true,
     minWidth: 100,
@@ -113,7 +113,7 @@ const SpecializationsTable = () => {
           console.log(filters);
           dispatch(getSpecializationList(filters));
         }}
-        resetControls={specializationState?.specializations.isInitial}
+        resetComponent={specializationState?.specializations.reset}
         totalItems={specializationState?.specializations.total}
         data={specializationState?.specializations.items.map(
           (item: SpecializationInterface) => {
