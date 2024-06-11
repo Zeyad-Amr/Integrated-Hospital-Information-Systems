@@ -9,21 +9,29 @@ export default class PrescriptionsModel {
       dosage: "",
       medicineUnit: "",
       notes: "",
-      quantity: null,
+      quantity: undefined,
       refills: "",
       beginDate: null,
-      substitutionAllowed: null,
+      substitutionAllowed: "",
     };
   }
 
-  //* Define validation schema using Yup
+  // Define validation schema using Yup
   static prescriptionsFormValidations(): Yup.ObjectSchema<any> {
     return Yup.object({
       drugName: Yup.string()
         .required("اسم الدواء مطلوب")
         .min(3, "يجب أن يحتوي الاسم على الأقل على 3 أحرف")
         .max(45, "يجب أن يحتوي الاسم على الأكثر 45 حرف"),
-      beginDate: Yup.date().nullable().typeError("يجب أن يكون تاريخًا صالحًا"),
+      beginDate: Yup.date()
+        .nullable()
+        .typeError("يجب أن يكون تاريخًا صالحًا")
+        .required("تاريخ البدء مطلوب"),
+      quantity: Yup.number()
+        .integer("يجب أن يكون الكمية عددًا صحيحًا")
+        .moreThan(0, "يجب أن تكون الكمية أكبر من 0")
+        .required("الكمية مطلوبة"),
+      dosage: Yup.string().required("الجرعة مطلوبة"),
     });
   }
 
@@ -38,14 +46,20 @@ export default class PrescriptionsModel {
 
     return {
       patientId: entity.patientId,
+      visitCode: entity.visitCode,
       drugName: entity.drugName,
       beginDate: formatDateTime(entity.beginDate),
       dosage: entity.dosage,
       medicineUnit: entity.medicineUnit,
       notes: entity.notes,
-      quantity: entity.quantity,
+      quantity: Number(entity.quantity),
       refills: entity.refills,
-      substitutionAllowed: entity.substitutionAllowed,
+      substitutionAllowed:
+        entity.substitutionAllowed == "2"
+          ? true
+          : entity.substitutionAllowed == "1"
+          ? false
+          : undefined,
     };
   }
 
@@ -62,7 +76,7 @@ export default class PrescriptionsModel {
       notes: json.notes,
       quantity: json.quantity,
       refills: json.refills,
-      substitutionAllowed: json.substitutionAllowed,
+      substitutionAllowed: json.substitutionAllowed ? "2" : "1" ,
     };
   }
 }

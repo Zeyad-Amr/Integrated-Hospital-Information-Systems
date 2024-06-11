@@ -1,6 +1,6 @@
 import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
-export const allergiesHeaderTable: HeaderItem[] = [
+export const prescriptionsHeaderTable: HeaderItem[] = [
   {
     filterKey: "drugName",
     id: "drugName",

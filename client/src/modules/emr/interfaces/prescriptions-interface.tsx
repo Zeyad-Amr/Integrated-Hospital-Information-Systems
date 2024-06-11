@@ -4,10 +4,10 @@ export interface PrescriptionsInterface {
     visitCode? : string;
     drugName : string;
     beginDate : Date | null;
-    quantity : number | null;
+    quantity : number | null | undefined;
     medicineUnit : string;
     dosage : string;
     refills : string;
-    substitutionAllowed : boolean | null;
+    substitutionAllowed : string;
     notes : string;
 }

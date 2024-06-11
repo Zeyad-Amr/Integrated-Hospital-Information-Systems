@@ -14,6 +14,7 @@ import allergies from "@/modules/emr/controllers/slices/allergies-slice";
 import surgeries from "@/modules/emr/controllers/slices/surgeries-slice";
 import medicalProblems from "@/modules/emr/controllers/slices/medical-problems-slice";
 import medications from "@/modules/emr/controllers/slices/medications-slice";
+import prescriptions from "@/modules/emr/controllers/slices/prescriptions-slice";
 
 const store = configureStore({
     reducer: {
@@ -30,7 +31,8 @@ const store = configureStore({
         allergies,
         surgeries,
         medicalProblems,
-        medications
+        medications,
+        prescriptions
     },
 });
 
