@@ -10,15 +10,8 @@ import {
 import EventSource from "eventsource";
 import { CustomDataTable } from "@/core/shared/components/CustomDataTable";
 import { Button } from "@mui/material";
+import { VisitStatus } from "@/modules/registration/domain/entities/visit-entity";
 
-enum VisitStatus {
-  CREATED,
-  BOOKED,
-  ARRIVED,
-  TRANSFERED,
-  EXAMINED,
-  ENDED,
-}
 const ERVisitsTable = () => {
   // useRef
   const refPatientData = useRef("");
@@ -54,6 +47,7 @@ const ERVisitsTable = () => {
       let data_json = JSON.parse(ev.data).items;
       setStreamedData(data_json);
     };
+
   }, []);
 
   const timePassed = (startDate: string | number | Date) => {
