@@ -21,7 +21,7 @@ export class CompanionDto extends CreatePersonDto {
 export class VisitDto {
   @ApiProperty({ type: Number, example: 55, required: true })
   @IsInt()
-  @IsNotEmpty()
+  @IsOptional()
   sequenceNumber: number;
 
   @ApiProperty({
