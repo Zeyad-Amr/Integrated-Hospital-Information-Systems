@@ -9,6 +9,7 @@ import {
 } from "@/core/shared/utils/session-storage";
 import EventSource from "eventsource";
 import { CustomDataTable } from "@/core/shared/components/CustomDataTable";
+import { Button } from "@mui/material";
 
 const ERVisitsTable = () => {
   // useRef
@@ -30,7 +31,9 @@ const ERVisitsTable = () => {
     }
 
     let eventSource = new EventSource(
-      Endpoints.base + Endpoints.erArea.streaming,
+      Endpoints.base +
+        Endpoints.erArea.streaming +
+        "?filters=status:like:BOOKED",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -137,6 +140,21 @@ const ERVisitsTable = () => {
             {timePassed(item?.createdAt)}
           </Box>
         ),
+        assessment: (
+          <Button
+            color="info"
+            variant="outlined"
+            fullWidth
+            onClick={() => {
+              console.log(item);
+              // refPatientData.current = item ?? "";
+              // console.log(refPatientData.current);
+              // if (refPatientData.current) setShawDialog(true);
+            }}
+          >
+            التقييم
+          </Button>
+        ),
       });
     });
 
@@ -160,10 +178,10 @@ const ERVisitsTable = () => {
         headerItems={header}
         stickyHeader={true}
         boxShadow={5}
-        onRowClick={(row: any) => {
-          console.log(row);
-          refPatientData.current = row;
-          setShawDialog(true);
+        onRowClick={(item) => {
+          refPatientData.current = item;
+          console.log(refPatientData.current);
+          if (refPatientData.current) setShawDialog(true);
         }}
       />
 

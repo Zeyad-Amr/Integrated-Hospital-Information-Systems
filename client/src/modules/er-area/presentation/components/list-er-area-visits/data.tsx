@@ -9,6 +9,7 @@ export interface DataItem {
   watingTime: any;
   age?: any;
   gender?: string;
+  assessment?: any;
 }
 
 export const header: HeaderItem[] = [
@@ -55,5 +56,17 @@ export const header: HeaderItem[] = [
     minWidth: 100,
     isComponent: true,
     tableCellProps: { align: "center" },
+  },
+  {
+    filterKey: "assessment",
+    id: "assessment",
+    label: "",
+    isComponent: true,
+    minWidth: 100,
+    tableCellProps: { align: "center" },
+    sortable: false,
+    filterable: false,
+    searchable: false,
+    onClick: () => {},
   },
 ];
