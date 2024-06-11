@@ -8,7 +8,6 @@ import { handleError } from 'src/shared/http-error';
 
 @ApiBearerAuth()
 @ApiTags('transfer')
-@Public()
 @Controller('transfer')
 export class TransferController {
   constructor(private readonly transferService: TransferService) { }
@@ -21,7 +20,7 @@ export class TransferController {
   @Post()
   async create(@Body() createTransferDto: CreateTransferDto, @Req() req) {
     try {
-      return await this.transferService.create(createTransferDto, req.sub.user)
+      return await this.transferService.create(createTransferDto, req.user.sub)
     } catch (error) {
       throw handleError(error);
     }
