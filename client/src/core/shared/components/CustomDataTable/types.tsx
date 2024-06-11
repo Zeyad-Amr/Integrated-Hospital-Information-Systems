@@ -20,6 +20,7 @@ interface CustomDataTableProps<T> {
   resetComponent?: boolean;
   showPagination?: boolean;
   showToolbar?: boolean;
+  noDataMessage?: string;
 }
 
 /**

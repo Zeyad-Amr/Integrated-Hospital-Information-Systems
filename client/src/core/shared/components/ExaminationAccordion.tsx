@@ -164,6 +164,9 @@ export default function ExaminationAccordion({
             }}
             resetComponent={tableList?.reset}
             totalItems={tableList?.total}
+            noDataMessage={
+              "لا يوجد أي بيانات، اضغط على زر الإضافة لإضافة عنصر جديد"
+            }
             data={tableList?.items?.map((item: any) => {
               const formattedItem = formatDateProperties(item);
               return {

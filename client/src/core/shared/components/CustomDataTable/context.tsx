@@ -48,9 +48,16 @@ export const TableProvider = (props: {
   data: any[];
   children: React.ReactNode;
   resetComponent?: boolean;
+  showPagination?: boolean;
 }) => {
-  const { fetchData, initSortedColumn, columnHeader, data, resetComponent } =
-    props;
+  const {
+    fetchData,
+    initSortedColumn,
+    columnHeader,
+    data,
+    resetComponent,
+    showPagination,
+  } = props;
 
   //***************** Define the state values
   const [filterColumns, setFilterColumns] = useState<FilterColumn[]>([]);
@@ -70,6 +77,14 @@ export const TableProvider = (props: {
   const prevFilterColumns = useRef(filterColumns);
 
   const initialRender = useRef(true);
+
+  const _getFilterKey = (columnId: string): string => {
+    const column = columnHeader.find((header) => header.id === columnId);
+    if (column) {
+      return column.filterKey;
+    }
+    return "";
+  };
 
   //***************** useEffect to apply filters initially on the first render
   useEffect(() => {
@@ -128,27 +143,35 @@ export const TableProvider = (props: {
 
     //* Search
     if (searchQuery.value && searchQuery.columnId) {
-      filters.push(Filter.like(searchQuery.columnId, searchQuery.value));
+      filters.push(
+        Filter.like(_getFilterKey(searchQuery.columnId), searchQuery.value)
+      );
     }
 
     //* Sorting
     if (sortedColumn && sortedColumn.disableSort !== true) {
       if (sortedColumn.isAscending) {
-        filters.push(Filter.sortAscending(sortedColumn.columnId));
+        filters.push(
+          Filter.sortAscending(_getFilterKey(sortedColumn.columnId))
+        );
       } else {
-        filters.push(Filter.sortDescending(sortedColumn.columnId));
+        filters.push(
+          Filter.sortDescending(_getFilterKey(sortedColumn.columnId))
+        );
       }
     }
 
     //* reset page and size if any of the filters changed
-    if (resetPage) {
-      filters.push(
-        Filter.custom(`page=${initialPage + 1}&size=${initialRowsPerPage}`)
-      );
-      setPage(initialPage);
-      setRowsPerPage(initialRowsPerPage);
-    } else if (rowsPerPage) {
-      filters.push(Filter.custom(`page=${page + 1}&size=${rowsPerPage}`));
+    if (showPagination) {
+      if (resetPage) {
+        filters.push(
+          Filter.custom(`page=${initialPage + 1}&size=${initialRowsPerPage}`)
+        );
+        setPage(initialPage);
+        setRowsPerPage(initialRowsPerPage);
+      } else if (rowsPerPage) {
+        filters.push(Filter.custom(`page=${page + 1}&size=${rowsPerPage}`));
+      }
     }
 
     //* Option filters
@@ -160,7 +183,12 @@ export const TableProvider = (props: {
     if (filterColumns.length > 0 && !allOptionsSelected) {
       filterColumns.forEach((column) => {
         if (column.selectedValuesIds.length > 0) {
-          filters.push(Filter.anyOf(column.columnId, column.selectedValuesIds));
+          filters.push(
+            Filter.anyOf(
+              _getFilterKey(column.columnId),
+              column.selectedValuesIds
+            )
+          );
         }
       });
     }

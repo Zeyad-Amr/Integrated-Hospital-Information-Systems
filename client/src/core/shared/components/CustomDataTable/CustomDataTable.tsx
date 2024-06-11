@@ -33,22 +33,16 @@ const CustomDataTable = <T,>({
   variantBackground = true,
   rowHeight = "1rem",
   rowPaddingY = "0.1rem",
-  initSortedColumn = headerItems.filter((item) => item.searchable).length > 0
-    ? {
-        isAscending: true,
-        columnId: headerItems.filter((item) => item.searchable)[0].id,
-      }
-    : {
-        disableSort: true,
-        columnId: "",
-        isAscending: true,
-      },
+  initSortedColumn = {
+    disableSort: true,
+    columnId: "",
+    isAscending: true,
+  },
   resetComponent = false,
   showPagination = true,
   showToolbar = true,
+  noDataMessage = "لا توجد بيانات",
 }: CustomDataTableProps<T>) => {
-  const filteredData = [...data];
-
   return (
     <TableProvider
       data={data}
@@ -56,6 +50,7 @@ const CustomDataTable = <T,>({
       columnHeader={headerItems}
       initSortedColumn={initSortedColumn}
       resetComponent={resetComponent}
+      showPagination={showPagination}
     >
       <Box
         sx={{
@@ -114,96 +109,63 @@ const CustomDataTable = <T,>({
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredData.map((item: any, index: number) => (
-                <TableRow
-                  key={item.id}
-                  onClick={() => onRowClick && onRowClick(item)}
-                  hover={hover}
-                  sx={{
-                    backgroundColor:
-                      variantBackground && index % 2 === 0
-                        ? "white"
-                        : "#f5f5f5",
-                    "&:hover": {
-                      backgroundColor: "#f0f0f0",
-                    },
-                  }}
-                >
-                  {headerItems
-                    .filter(
-                      (item) =>
-                        item.display === undefined || item.display === true
-                    )
-                    .map((headerItem) =>
-                      headerItem.isIcon ? (
-                        <TableCell
-                          key={headerItem.id}
-                          {...headerItem.tableCellProps}
-                          sx={{
-                            paddingY: rowPaddingY,
-                            minWidth: headerItem.minWidth,
-                            maxWidth: headerItem.maxWidth,
-                            height: rowHeight,
-                          }}
-                        >
-                          <Box
+              {data.length > 0 ? (
+                data.map((item: any, index: number) => (
+                  <TableRow
+                    key={item.id}
+                    onClick={() => onRowClick && onRowClick(item)}
+                    hover={hover}
+                    sx={{
+                      backgroundColor:
+                        variantBackground && index % 2 === 0
+                          ? "white"
+                          : "#f5f5f5",
+                      "&:hover": {
+                        backgroundColor: "#f0f0f0",
+                      },
+                    }}
+                  >
+                    {headerItems
+                      .filter(
+                        (item) =>
+                          item.display === undefined || item.display === true
+                      )
+                      .map((headerItem) =>
+                        headerItem.isIcon ? (
+                          <TableCell
+                            key={headerItem.id}
+                            {...headerItem.tableCellProps}
                             sx={{
+                              paddingY: rowPaddingY,
+                              minWidth: headerItem.minWidth,
+                              maxWidth: headerItem.maxWidth,
                               height: rowHeight,
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
                             }}
                           >
-                            {item.icon}
-                          </Box>
-                        </TableCell>
-                      ) : headerItem.isComponent ? (
-                        <TableCell
-                          key={headerItem.id}
-                          {...headerItem.tableCellProps}
-                          sx={{
-                            paddingY: rowPaddingY,
-                            minWidth: headerItem.minWidth,
-                            maxWidth: headerItem.maxWidth,
-                            height: rowHeight,
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}
-                        >
-                          <Typography
+                            <Box
+                              sx={{
+                                height: rowHeight,
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                            >
+                              {item.icon}
+                            </Box>
+                          </TableCell>
+                        ) : headerItem.isComponent ? (
+                          <TableCell
+                            key={headerItem.id}
+                            {...headerItem.tableCellProps}
                             sx={{
-                              fontSize: "0.8rem",
-                              textAlign: "center",
-                              lineHeight: rowHeight,
+                              paddingY: rowPaddingY,
+                              minWidth: headerItem.minWidth,
+                              maxWidth: headerItem.maxWidth,
+                              height: rowHeight,
+                              whiteSpace: "nowrap",
                               overflow: "hidden",
                               textOverflow: "ellipsis",
-                              maxWidth: "100%",
                             }}
-                          >
-                            {item[headerItem.id]}
-                          </Typography>
-                        </TableCell>
-                      ) : (
-                        <TableCell
-                          key={headerItem.id}
-                          {...headerItem.tableCellProps}
-                          sx={{
-                            minWidth: headerItem.minWidth,
-                            maxWidth: headerItem.maxWidth,
-                            height: rowHeight,
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}
-                        >
-                          <Tooltip
-                            enterDelay={1000}
-                            title={
-                              typeof item[headerItem.id] === "object"
-                                ? item[headerItem.id].value
-                                : item[headerItem.id]
-                            }
                           >
                             <Typography
                               sx={{
@@ -212,26 +174,69 @@ const CustomDataTable = <T,>({
                                 lineHeight: rowHeight,
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
-                                direction: !utilsFunctions.startsWithArabic(
-                                  typeof item[headerItem.id] === "object"
-                                    ? item[headerItem.id].value
-                                    : item[headerItem.id]
-                                )
-                                  ? "rtl"
-                                  : "ltr",
                                 maxWidth: "100%",
                               }}
                             >
-                              {typeof item[headerItem.id] === "object"
-                                ? item[headerItem.id].value
-                                : item[headerItem.id]}
+                              {item[headerItem.id]}
                             </Typography>
-                          </Tooltip>
-                        </TableCell>
-                      )
-                    )}
+                          </TableCell>
+                        ) : (
+                          <TableCell
+                            key={headerItem.id}
+                            {...headerItem.tableCellProps}
+                            sx={{
+                              minWidth: headerItem.minWidth,
+                              maxWidth: headerItem.maxWidth,
+                              height: rowHeight,
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            <Tooltip
+                              enterDelay={1000}
+                              title={
+                                typeof item[headerItem.id] === "object"
+                                  ? item[headerItem.id].value
+                                  : item[headerItem.id]
+                              }
+                            >
+                              <Typography
+                                sx={{
+                                  fontSize: "0.8rem",
+                                  textAlign: "center",
+                                  lineHeight: rowHeight,
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                  direction: !utilsFunctions.startsWithArabic(
+                                    typeof item[headerItem.id] === "object"
+                                      ? item[headerItem.id].value
+                                      : item[headerItem.id]
+                                  )
+                                    ? "rtl"
+                                    : "ltr",
+                                  maxWidth: "100%",
+                                }}
+                              >
+                                {typeof item[headerItem.id] === "object"
+                                  ? item[headerItem.id].value
+                                  : item[headerItem.id]}
+                              </Typography>
+                            </Tooltip>
+                          </TableCell>
+                        )
+                      )}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={headerItems.length}>
+                    <Typography sx={{ textAlign: "center" }}>
+                      {noDataMessage}
+                    </Typography>
+                  </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </TableContainer>
