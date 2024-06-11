@@ -42,6 +42,7 @@ const CustomDataTable = <T,>({
   showPagination = true,
   showToolbar = true,
   noDataMessage = "لا توجد بيانات",
+  rowProps,
 }: CustomDataTableProps<T>) => {
   return (
     <TableProvider
@@ -113,6 +114,7 @@ const CustomDataTable = <T,>({
                 data.map((item: any, index: number) => (
                   <TableRow
                     key={item.id}
+                    data-row={JSON.stringify(item)}
                     onClick={() => onRowClick && onRowClick(item)}
                     hover={hover}
                     sx={{
@@ -124,6 +126,7 @@ const CustomDataTable = <T,>({
                         backgroundColor: "#f0f0f0",
                       },
                     }}
+                    {...rowProps}
                   >
                     {headerItems
                       .filter(

@@ -1,5 +1,5 @@
 import { FilterQuery } from "@/core/api";
-import { SxProps, TableCellProps } from "@mui/material";
+import { SxProps, TableCellProps, TableRowProps } from "@mui/material";
 
 interface CustomDataTableProps<T> {
   fetchData: (filters: FilterQuery[]) => void;
@@ -21,6 +21,7 @@ interface CustomDataTableProps<T> {
   showPagination?: boolean;
   showToolbar?: boolean;
   noDataMessage?: string;
+  rowProps?: TableRowProps;
 }
 
 /**

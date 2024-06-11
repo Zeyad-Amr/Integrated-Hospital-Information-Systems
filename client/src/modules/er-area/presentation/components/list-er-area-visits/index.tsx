@@ -1,14 +1,14 @@
 import { DataItem, header } from "./data";
 import { Box } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
-import CustomBasicTable from "@/core/shared/components/CustomBasicTable";
 import ErAreaForm from "../er-area-form/ErAreaForm";
-import { Endpoints } from "@/core/api";
+import { Endpoints, FilterQuery } from "@/core/api";
 import {
   SessionStorage,
   SessionStorageKeys,
 } from "@/core/shared/utils/session-storage";
 import EventSource from "eventsource";
+import { CustomDataTable } from "@/core/shared/components/CustomDataTable";
 
 const ERVisitsTable = () => {
   // useRef
@@ -24,7 +24,7 @@ const ERVisitsTable = () => {
     const token: string =
       SessionStorage.getDataByKey(SessionStorageKeys.token) ?? "";
 
-      // Close the previous EventSource connection if it exists
+    // Close the previous EventSource connection if it exists
     if (eventSourceRef.current) {
       eventSourceRef.current.close();
     }
@@ -146,14 +146,25 @@ const ERVisitsTable = () => {
   return (
     <Box
       sx={{
-        p: 3,
+        pt: 3,
       }}
     >
-      <CustomBasicTable
+      <CustomDataTable
+        fetchData={(filters: FilterQuery[]) => {
+          console.log(filters);
+        }}
+        totalItems={tableData.length}
+        showPagination={false}
+        showToolbar={false}
         data={tableData}
-        headerItem={header}
+        headerItems={header}
         stickyHeader={true}
         boxShadow={5}
+        // onRowClick={(row: any) => {
+        //   console.log(row);
+        //   refPatientData.current = row;
+        //   setShawDialog(true);
+        // }}
         rowProps={{
           onDoubleClick: (event) => {
             refPatientData.current =
@@ -165,6 +176,7 @@ const ERVisitsTable = () => {
           },
         }}
       />
+
       <ErAreaForm
         openDialog={showDialog}
         setOpenDialog={setShawDialog}
