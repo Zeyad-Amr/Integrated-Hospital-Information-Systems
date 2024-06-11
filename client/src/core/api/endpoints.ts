@@ -126,6 +126,13 @@ const Endpoints = {
         create: '/diagnosis',
         update: '/diagnosis/:id',
         delete: '/diagnosis/:id',
-    }
+    },
+    vitals: {
+        list: '/vitals',
+        details: '/vitals/:id',
+        create: '/vitals',
+        update: '/vitals/:id',
+        delete: '/vitals/:id',
+    },
 };
 export default Endpoints;
