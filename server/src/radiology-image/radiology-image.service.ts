@@ -1,26 +1,63 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRadiologyImageDto } from './dto/create-radiology-image.dto';
 import { UpdateRadiologyImageDto } from './dto/update-radiology-image.dto';
+import { RadiologyImageRepo } from './radiology-image.repo';
+import { Pagination } from 'src/shared/decorators/pagination.decorator';
+import { Filter } from 'src/shared/decorators/filters.decorator';
+import { Sorting } from 'src/shared/decorators/order.decorator';
 
 @Injectable()
 export class RadiologyImageService {
-  create(createRadiologyImageDto: CreateRadiologyImageDto) {
-    return 'This action adds a new radiologyImage';
+  constructor(private radiologyImageRepo: RadiologyImageRepo) {}
+
+  async create(createRadiologyImageDto: CreateRadiologyImageDto, creatorId: string) {
+    try {
+      const radiologyImage = await this.radiologyImageRepo.addRadiologyImage(createRadiologyImageDto, creatorId);
+      return radiologyImage;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all radiologyImage`;
+  async findAll(
+    paginationParams: Pagination,
+    filters?: Array<Filter>,
+    sort?: Sorting,) {
+    try {
+      const radiologyImage = await this.radiologyImageRepo.getAll({paginationParams,
+        filters,
+        sort,
+        include: this.radiologyImageRepo.includeObj});
+      return radiologyImage;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} radiologyImage`;
+ async findOne(id: string) {
+    try {
+      const radiologyImage = await this.radiologyImageRepo.getByID(id);
+      return radiologyImage;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  update(id: number, updateRadiologyImageDto: UpdateRadiologyImageDto) {
-    return `This action updates a #${id} radiologyImage`;
+  async update(id: string, updateRadiologyImageDto: UpdateRadiologyImageDto) {
+    try {
+      const radiologyImage = await this.radiologyImageRepo.update(id,updateRadiologyImageDto);
+      return radiologyImage;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} radiologyImage`;
+  async remove(id: string) {
+    try {
+      const radiologyImage = await this.radiologyImageRepo.delete(id);
+      return radiologyImage;
+    } catch (error) {
+      throw error;
+    }
   }
 }
