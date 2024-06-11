@@ -9,7 +9,6 @@ export class SubdepartmentService {
   constructor(private subdepartmentRepo: SubDepartmentRepo) { }
   IncludeObj: Prisma.SubDepartmentInclude = {
     Department: true,
-    features: true,
     specialization: true,
     room: true
   }

@@ -57,7 +57,6 @@ export class SubDepartmentRepo extends PrismaGenericRepo<SubDepartment> {
                 },
                 include: {
                     Department: true,
-                    features: true,
                     specialization: true,
                     room: true
                 }
