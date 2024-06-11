@@ -15,6 +15,7 @@ import { PersonRepo } from 'src/person/person.repo';
 import { PrismaGenericRepo } from 'src/shared/services/prisma-client/prisma-generic.repo';
 import { isEmptyObject } from 'src/shared/util.functions.ts/general.utils';
 import { TriageAXDto } from './dto/triage-assessment.dto';
+import { UpdateVisitDto } from './dto/update-visit.dto';
 
 @Injectable()
 export class VisitRepo extends PrismaGenericRepo<Visit> {
@@ -292,65 +293,14 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
     }
   }
 
-  async addTriageAss(code: string, data: TriageAXDto, employeeId: string) {
+  async updateVisit(code: string, data: UpdateVisitDto) {
     try {
-      const visit = await this.prismaService.visit.findUnique({
-        where: {
-          code,
-        },
-        select: { patientId: true },
-      });
-      let updatedVisit;
-      // if (visit) {
-      // updatedVisit = await this.prismaService.visit.update({
-      //   where: { code },
-      //   data: {
-      //     medicalRecord: {
-      //       create: {
-      //         mainComplaint: data.mainComplaint,
-      //         consciousnessLevel: data.LOCId
-      //           ? { connect: { id: data.LOCId } }
-      //           : undefined,
-      //         triage: data.triageTypeId
-      //           ? { connect: { id: data.triageTypeId } }
-      //           : undefined,
-      //         vitals: {
-      //           create: {
-      //             ...data.vitals,
-      //           },
-      //         },
-      //         Patient: { connect: { id: visit.patientId } },
-      //       },
-      //     },
-      //     transfers: {
-      //       create: {
-      //         fromSubDepId: data.transferFromId,
-      //         toSubDepId: data.transferToId,
-      //       },
-      //     },
-      //   },
-      //   include: this.triageIncludes,
-      // });
-      // }
-
-      if (data.transfer) {
-        await this.prismaService.transfer.create({
-          data: {
-            toSubDepId: data.transfer.toSubDepId,
-            visitCode: code,
-            transferDate: data.transfer.transferDate ? new Date(data.transfer.transferDate) : new Date(),
-            createdById: employeeId,
-          },
-        });
-      }
       await this.prismaService.visit.update({
         where: { code },
-        data: {
-          status: VisitStatus.TRANSFERED,
-        },
+        data,
       });
 
-      return { message: 'Triage Assessment added successfully' };
+      return { message: 'Visit updated successfully' };
     } catch (error) {
       throw error;
     }

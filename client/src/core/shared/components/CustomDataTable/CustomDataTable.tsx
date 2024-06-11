@@ -34,6 +34,7 @@ const CustomDataTable = <T,>({
   variantBackground = true,
   rowHeight = "1rem",
   rowPaddingY = "0.1rem",
+  rowProps,
   initSortedColumn = {
     disableSort: true,
     columnId: "",
@@ -128,6 +129,7 @@ const CustomDataTable = <T,>({
                         backgroundColor: "#f0f0f0",
                       },
                     }}
+                    {...rowProps}
                   >
                     {headerItems
                       .filter(
