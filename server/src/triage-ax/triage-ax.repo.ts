@@ -12,13 +12,23 @@ export class TriageAxRepo extends PrismaGenericRepo<TriageAx> {
 
   async addTriageAx(data: CreateTriageAxDto, creatorId: string) {
     try {
-        const {  visitCode, ...triageAxData } = data;
+        const {  visitCode,LOCId,triageTypeId, ...triageAxData } = data;
         const triageAx = await this.prismaService.triageAx.create({
             data: {
                 visit: {
                     connect: {
                         code: visitCode
                     }
+                },
+                consciousnessLevel:{
+                  connect:{
+                    id:LOCId
+                  }
+                },
+                triage:{
+                  connect:{
+                    id:triageTypeId
+                  }
                 },
                 ...triageAxData
             }
