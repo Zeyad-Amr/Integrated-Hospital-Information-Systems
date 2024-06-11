@@ -7,7 +7,7 @@ export default class AuthDataModel {
         return {
             username: entity.username,
             password: entity.password,
-            email: entity.email,
+            email: entity.email == '' ? undefined : entity.email,
         };
     }
 
@@ -16,7 +16,7 @@ export default class AuthDataModel {
         return {
             username: json.username,
             password: json.password,
-            email: json.email,
+            email: json.email ?? '',
         };
     }
 }
