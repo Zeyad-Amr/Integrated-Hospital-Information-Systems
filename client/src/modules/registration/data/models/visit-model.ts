@@ -4,6 +4,7 @@ import VisitInterface from '../../domain/interfaces/visit-interface';
 import AdditionalDataModel from './additional-data-model';
 import CompanionModel from './companion-model';
 import { CompleteVisitInterface } from '../../domain/interfaces/complete-visit-interface';
+import TransferDataModel from './transfer-data-model';
 
 export default class VisitModel {
 
@@ -16,6 +17,7 @@ export default class VisitModel {
                 sequenceNumber: entity.sequenceNumber,
             },
             additionalInfo: entity.additionalInfo && !allValuesUndefined(entity.additionalInfo) ? AdditionalDataModel.toJson(entity.additionalInfo) : undefined,
+            transfer: entity.transfer && !allValuesUndefined(entity.transfer) ? TransferDataModel.toJson(entity.transfer) : undefined,
         }
     }
 
@@ -37,6 +39,7 @@ export default class VisitModel {
             patient: json.patientId == null && json.patient == null ? undefined : PersonModel.fromJson(json.patient.person),
             companion: json.companionId == null && json.companion == null ? undefined : CompanionModel.fromJson(json.companion),
             additionalInfo: json.AdditionalInformation == null ? undefined : AdditionalDataModel.fromJson(json.AdditionalInformation),
+            transfer: json.transfer == null ? undefined : TransferDataModel.fromJson(json.transfer),
         };
     }
 }
