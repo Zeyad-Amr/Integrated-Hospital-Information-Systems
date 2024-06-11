@@ -21,8 +21,8 @@ import { FilterQuery } from "@/core/api";
 
 const roomsTableHeader: HeaderItem[] = [
   {
+    filterKey: "name",
     id: "name",
-    key: "name",
     label: "الأســـم",
     minWidth: 50,
     maxWidth: 50,
@@ -33,8 +33,8 @@ const roomsTableHeader: HeaderItem[] = [
     onClick: () => {},
   },
   {
+    filterKey: "location",
     id: "location",
-    key: "location",
     label: "الموقع",
     minWidth: 50,
     maxWidth: 50,
@@ -45,8 +45,8 @@ const roomsTableHeader: HeaderItem[] = [
     onClick: () => {},
   },
   {
+    filterKey: "update",
     id: "update",
-    key: "update",
     label: "",
     isComponent: true,
     minWidth: 100,
@@ -54,7 +54,6 @@ const roomsTableHeader: HeaderItem[] = [
     sortable: false,
     filterable: false,
     searchable: false,
-
     onClick: () => {},
   },
 ];
@@ -109,7 +108,7 @@ const RoomsTable = () => {
           console.log(filters);
           dispatch(getRoomList(filters));
         }}
-        resetControls={roomState?.rooms.isInitial}
+        resetComponent={roomState?.rooms.reset}
         totalItems={roomState?.rooms.total}
         data={roomState?.rooms.items?.map((item: RoomInterface) => {
           return {

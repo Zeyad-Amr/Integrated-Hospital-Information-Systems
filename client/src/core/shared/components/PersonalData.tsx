@@ -22,6 +22,7 @@ import { green } from "@mui/material/colors";
 import Fab from "@mui/material/Fab";
 import CheckIcon from "@mui/icons-material/Check";
 import PrimaryButton from "./btns/PrimaryButton";
+import OCR from "./ocr/OCR";
 // import { getPerson } from "@/core/shared/modules/person/presentation/controllers/thunks/person-thunk";
 interface PersonalDataProps {
   //   initialValues?: PersonInterface;
@@ -104,9 +105,9 @@ const PersonalData = ({
 
   const fileInputRef = useRef<any>();
   const selectFile = () => {
-    setShawDialog("block");
+    setShawDialog(true);
   };
-  const [showDialog, setShawDialog] = useState("none");
+  const [showDialog, setShawDialog] = useState<boolean>(false);
   const [sub, setSub] = useState(true);
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [selectedBack, setSelectedBack] = useState<any>(null);
@@ -149,7 +150,7 @@ const PersonalData = ({
           };
           setInitialValues(updatedValues);
           setTimeout(() => {
-            setShawDialog("none");
+            setShawDialog(false);
           }, 2000);
         },
         (err: any) => {
@@ -181,45 +182,48 @@ const PersonalData = ({
   } = useFormikContext<PersonInterface>()
 
   useEffect(() => {
-  const ssn = values?.SSN as string;
+    const ssn = values?.SSN as string;
 
-  if ( ssn && ssn?.length === 14 && searchSSN) {
-    const getPersonUseCase = sl.get<GetPersonUseCase>(ServiceKeys.GetPersonUseCase);
+    if (ssn && ssn?.length === 14 && searchSSN) {
+      const getPersonUseCase = sl.get<GetPersonUseCase>(ServiceKeys.GetPersonUseCase);
 
-    const mergeSSNData = () => {
-      const extractedData = extractSSNData(ssn);
-      if (extractedData) {
-        const updatedValues = {
-          SSN: ssn,
-          gender: extractedData.gender,
-          birthDate: extractedData.birthdate,
-          verificationMethod: 1,
-        };
-        setValues((prev) => ({ ...prev, ...updatedValues }));
-      }
-    };
+      const mergeSSNData = () => {
+        const extractedData = extractSSNData(ssn);
+        if (extractedData) {
+          const updatedValues = {
+            SSN: ssn,
+            gender: extractedData.gender,
+            birthDate: extractedData.birthdate,
+            verificationMethod: 1,
+          };
+          setValues((prev) => ({ ...prev, ...updatedValues }));
+        }
+      };
 
-    getPersonUseCase.call(ssn).then(
-      (res: any) => {
-        console.log(res, 'res');
-        if (!allValuesUndefined(res)) {
-          setValues((prev) => ({ ...prev, ...PersonEntity.handleFormValues(res) }));
-        } else {
+      getPersonUseCase.call(ssn).then(
+        (res: any) => {
+          console.log(res, 'res');
+          if (!allValuesUndefined(res)) {
+            setValues((prev) => ({ ...prev, ...PersonEntity.handleFormValues(res) }));
+          } else {
+            mergeSSNData();
+          }
+        },
+        (err: any) => {
+          console.log("not find user by SSN Error", err);
           mergeSSNData();
         }
-      },
-      (err: any) => {
-        console.log("not find user by SSN Error", err);
-        mergeSSNData();
-      }
-    );
-  }
-}, [values.SSN, searchSSN]);
+      );
+    }
+  }, [values.SSN, searchSSN]);
 
 
   return (
 
     <>
+      {showDialog ? <OCR OCRStateController={setShawDialog} /> : null}
+      {/* 
+      
       <Dialog
         title="صورة الهوية"
         display={showDialog}
@@ -288,7 +292,7 @@ const PersonalData = ({
                     }}
                     loading="lazy"
                   />
-                  {/*  */}
+                 
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Box sx={{ m: 1, position: "relative" }}>
                       <Fab
@@ -312,7 +316,7 @@ const PersonalData = ({
                       )}
                     </Box>
                   </Box>
-                  {/*  */}
+                  
                 </>
               ) : null}
             </Box>
@@ -402,6 +406,7 @@ const PersonalData = ({
           </Grid>
         </Grid>
       </Dialog>
+      */}
 
       <Box component="form" onSubmit={handleSubmit} noValidate>
         <Grid container columns={12} spacing={2}>

@@ -1,5 +1,4 @@
 import CustomDataTable from "@/core/shared/components/CustomDataTable/CustomDataTable";
-import { DataItem, header } from "./data";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
@@ -19,6 +18,16 @@ import {
   ShiftTypeInterface,
 } from "@/core/shared/modules/lookups/domain/interfaces/lookups-interface";
 import { getSubDepartmentsList } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
+import { HeaderItem } from "@/core/shared/components/CustomDataTable";
+
+export interface DataItem {
+  SSN: string;
+  name: string;
+  phone: string;
+  createdAt: string;
+  roleName: string;
+  shiftName: string;
+}
 
 const EmployeesTable = () => {
   const dispatch = useAppDispatch();
@@ -41,6 +50,90 @@ const EmployeesTable = () => {
   const [showEditEmployeeDialog, setShowEditEmployeeDialog] =
     useState<boolean>(false);
   const [employeeData, setEmployeeData] = useState<EmployeeInterface>();
+  const header: HeaderItem[] = [
+    {
+      filterKey: "person.SSN",
+      id: "SSN",
+      label: "رقم الهوية",
+      minWidth: 50,
+      maxWidth: 50,
+      tableCellProps: { align: "center" },
+      sortable: true,
+      searchable: true,
+      filterable: false,
+    },
+    {
+      filterKey: "person.fullName",
+      id: "name",
+      label: "الاسم",
+      minWidth: 100,
+      maxWidth: 100,
+      tableCellProps: { align: "center" },
+      sortable: true,
+      searchable: true,
+      filterable: false,
+    },
+    {
+      filterKey: "person.phone",
+      id: "phone",
+      label: "رقم الهاتف",
+      minWidth: 50,
+      maxWidth: 50,
+      tableCellProps: { align: "center", style: { direction: "ltr" } },
+      sortable: true,
+      searchable: true,
+      filterable: false,
+    },
+
+    {
+      filterKey: "createdAt",
+      id: "createdAt",
+      label: "التاريخ",
+      minWidth: 100,
+      maxWidth: 100,
+      tableCellProps: { align: "center", style: { direction: "ltr" } },
+      sortable: true,
+      searchable: false,
+      filterable: false,
+    },
+
+    {
+      filterKey: "roleId",
+      id: "roleName",
+      label: "الوظيفة",
+      minWidth: 100,
+      maxWidth: 100,
+      tableCellProps: { align: "center", style: { direction: "ltr" } },
+      sortable: true,
+      searchable: false,
+      filterable: false,
+      filterOptions: lookupsState.lookups.roleTypes,
+    },
+    {
+      filterKey: "shiftId",
+      id: "shiftName",
+      label: "الوردية",
+      minWidth: 100,
+      maxWidth: 100,
+      tableCellProps: { align: "center", style: { direction: "ltr" } },
+      sortable: true,
+      searchable: false,
+      filterable: false,
+      filterOptions: lookupsState.lookups.shiftTypes,
+    },
+    {
+      filterKey: "update",
+      id: "update",
+      label: "",
+      isComponent: true,
+      minWidth: 100,
+      tableCellProps: { align: "right" },
+      sortable: false,
+      filterable: false,
+      searchable: false,
+      onClick: () => {},
+    },
+  ];
 
   return (
     <Box
@@ -75,7 +168,7 @@ const EmployeesTable = () => {
           console.log(filters);
           dispatch(getEmployeeList(filters));
         }}
-        resetControls={employeeState.employees.isInitial}
+        resetComponent={employeeState.employees.reset}
         totalItems={employeeState.employees.total}
         data={employeeState.employees.items.map<DataItem>(
           (item: EmployeeInterface) => {

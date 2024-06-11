@@ -28,7 +28,12 @@ export class SubdepartmentController {
   @CustomGetAllParamDecorator()
   @Get()
   findAll(@PaginationParams() pagination: Pagination,
-    @SortingParams(['name']) sort?: Sorting,
+    @SortingParams([
+      'name',
+      "roomId",
+      "specializationId",
+      "departmentId",
+    ]) sort?: Sorting,
     @FilteringParams([
       "name",
       "roomId",

@@ -59,7 +59,7 @@ const employeeSlice = createSlice({
         builder.addCase(getEmployeeList.fulfilled, (state, action) => {
             state.loading = false;
             state.error = "";
-            state.employees = PaginatedListModel.updatePaginatedList(state.employees, action.payload);
+            state.employees = action.payload;
             console.log('Employees List', action.payload);
         });
         builder.addCase(getEmployeeList.rejected, (state, action) => {

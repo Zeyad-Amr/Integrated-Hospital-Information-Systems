@@ -1,4 +1,4 @@
-import { Controller, Sse } from '@nestjs/common';
+import { Controller, Query, Sse } from '@nestjs/common';
 import { StreamingService } from './streaming.service';
 import { Observable, defer, map, repeat } from 'rxjs';
 import { Public } from 'src/shared/decorators/public.decorator';
@@ -11,7 +11,7 @@ export class StreamingController {
 
   @Public()
   @Sse('event') // server sent emitter
-  async sendEvent(): Promise<Observable<MessageEvent>> {
+  async sendEvent(@Query('subdepartmentId') subdepartmentID): Promise<Observable<MessageEvent>> {
     return defer(() => this.streamingService.getERareaVisits()).pipe(
       repeat({
         delay: 1000,

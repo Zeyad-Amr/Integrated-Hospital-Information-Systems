@@ -11,31 +11,12 @@ import {
   Typography,
   Tooltip,
 } from "@mui/material";
-import CustomTableTollbar from "./CustomTableToolbar";
+import CustomTableToolbar from "./CustomTableToolbar";
 import CustomColumnSort from "./CustomColumnSort";
 import utilsFunctions from "../../utils/functions";
 import CustomTablePagination from "./CustomTablePagination";
 import { TableProvider } from "./context";
 import { CustomDataTableProps } from "./types";
-
-/**
- * @param {fetchData} - The function to apply the query to the data.
- * @param {T[]} data - The array of data items to be rendered.
- * @param {number} totalItems - The total number of items in the data array.
- * @param {HeaderItem[]} headerItems - The array of header items to define the table columns.
- * @param {string} [width] - The width of the table (optional).
- * @param {string} [height] - The height of the table (optional).
- * @param {number} [boxShadow] - The level of shadow for the table (optional).
- * @param {boolean} [stickyHeader] - Whether the table header should stick to the top (optional).
- * @param {SxProps} [sx] - The custom styling props for the table (optional).
- * @param {(row: T) => void} [onRowClick] - The callback function triggered when a row is clicked (optional).
- * @param {boolean} [hover] - Whether to enable hover effect on rows (optional).
- * @param {boolean} [variantBackground] - Whether to apply a variant background color to rows (optional).
- * @param {string} [rowHeight] - The height of each row (optional).
- * @param {string} [rowPaddingY] - The padding of each row (optional).
- * @param {SortedColumn} initSortedColumn - The initial sorted column.
- */
-/** */
 
 const CustomDataTable = <T,>({
   fetchData,
@@ -62,18 +43,19 @@ const CustomDataTable = <T,>({
         columnId: "",
         isAscending: true,
       },
-  resetControls = false,
+  resetComponent = false,
+  showPagination = true,
+  showToolbar = true,
 }: CustomDataTableProps<T>) => {
-  const filterdData = [...data];
+  const filteredData = [...data];
 
-  ////////////////////////////////////////////////////////////////////////
   return (
     <TableProvider
       data={data}
       fetchData={fetchData}
       columnHeader={headerItems}
       initSortedColumn={initSortedColumn}
-      resetControls={resetControls}
+      resetComponent={resetComponent}
     >
       <Box
         sx={{
@@ -86,13 +68,11 @@ const CustomDataTable = <T,>({
           ...sx,
         }}
       >
-        <Box
-          sx={{
-            width: width,
-          }}
-        >
-          <CustomTableTollbar />
-        </Box>
+        {showToolbar && (
+          <Box sx={{ width: width }}>
+            <CustomTableToolbar />
+          </Box>
+        )}
 
         <TableContainer
           component={Paper}
@@ -134,9 +114,9 @@ const CustomDataTable = <T,>({
               </TableRow>
             </TableHead>
             <TableBody>
-              {filterdData.map((item: any, index: number) => (
+              {filteredData.map((item: any, index: number) => (
                 <TableRow
-                  key={(item as any).id}
+                  key={item.id}
                   onClick={() => onRowClick && onRowClick(item)}
                   hover={hover}
                   sx={{
@@ -154,15 +134,15 @@ const CustomDataTable = <T,>({
                       (item) =>
                         item.display === undefined || item.display === true
                     )
-                    .map((headerItems) =>
-                      headerItems.isIcon ? (
+                    .map((headerItem) =>
+                      headerItem.isIcon ? (
                         <TableCell
-                          key={headerItems.key}
-                          {...headerItems.tableCellProps}
+                          key={headerItem.id}
+                          {...headerItem.tableCellProps}
                           sx={{
                             paddingY: rowPaddingY,
-                            minWidth: headerItems.minWidth,
-                            maxWidth: headerItems.maxWidth,
+                            minWidth: headerItem.minWidth,
+                            maxWidth: headerItem.maxWidth,
                             height: rowHeight,
                           }}
                         >
@@ -174,17 +154,17 @@ const CustomDataTable = <T,>({
                               alignItems: "center",
                             }}
                           >
-                            {(item as any)["icon"]}
+                            {item.icon}
                           </Box>
                         </TableCell>
-                      ) : headerItems.isComponent ? (
+                      ) : headerItem.isComponent ? (
                         <TableCell
-                          key={headerItems.key}
-                          {...headerItems.tableCellProps}
+                          key={headerItem.id}
+                          {...headerItem.tableCellProps}
                           sx={{
                             paddingY: rowPaddingY,
-                            minWidth: headerItems.minWidth,
-                            maxWidth: headerItems.maxWidth,
+                            minWidth: headerItem.minWidth,
+                            maxWidth: headerItem.maxWidth,
                             height: rowHeight,
                             whiteSpace: "nowrap",
                             overflow: "hidden",
@@ -194,23 +174,23 @@ const CustomDataTable = <T,>({
                           <Typography
                             sx={{
                               fontSize: "0.8rem",
-                              textAlign: "center", // Center the text horizontally
-                              lineHeight: rowHeight, // Center the text vertically
+                              textAlign: "center",
+                              lineHeight: rowHeight,
                               overflow: "hidden",
                               textOverflow: "ellipsis",
-                              maxWidth: "100%", // Ensure text doesn't overflow TableCell
+                              maxWidth: "100%",
                             }}
                           >
-                            {(item as any)[headerItems.key]}
+                            {item[headerItem.id]}
                           </Typography>
                         </TableCell>
                       ) : (
                         <TableCell
-                          key={headerItems.key}
-                          {...headerItems.tableCellProps}
+                          key={headerItem.id}
+                          {...headerItem.tableCellProps}
                           sx={{
-                            minWidth: headerItems.minWidth,
-                            maxWidth: headerItems.maxWidth,
+                            minWidth: headerItem.minWidth,
+                            maxWidth: headerItem.maxWidth,
                             height: rowHeight,
                             whiteSpace: "nowrap",
                             overflow: "hidden",
@@ -220,33 +200,31 @@ const CustomDataTable = <T,>({
                           <Tooltip
                             enterDelay={1000}
                             title={
-                              typeof (item as any)[headerItems.key] === "object"
-                                ? (item as any)[headerItems.key].value
-                                : (item as any)[headerItems.key]
+                              typeof item[headerItem.id] === "object"
+                                ? item[headerItem.id].value
+                                : item[headerItem.id]
                             }
                           >
                             <Typography
                               sx={{
                                 fontSize: "0.8rem",
-                                textAlign: "center", // Center the text horizontally
-                                lineHeight: rowHeight, // Center the text vertically
+                                textAlign: "center",
+                                lineHeight: rowHeight,
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
                                 direction: !utilsFunctions.startsWithArabic(
-                                  typeof (item as any)[headerItems.key] ===
-                                    "object"
-                                    ? (item as any)[headerItems.key].value
-                                    : (item as any)[headerItems.key]
+                                  typeof item[headerItem.id] === "object"
+                                    ? item[headerItem.id].value
+                                    : item[headerItem.id]
                                 )
                                   ? "rtl"
                                   : "ltr",
-                                maxWidth: "100%", // Ensure text doesn't overflow TableCell
+                                maxWidth: "100%",
                               }}
                             >
-                              {typeof (item as any)[headerItems.key] ===
-                              "object"
-                                ? (item as any)[headerItems.key].value
-                                : (item as any)[headerItems.key]}
+                              {typeof item[headerItem.id] === "object"
+                                ? item[headerItem.id].value
+                                : item[headerItem.id]}
                             </Typography>
                           </Tooltip>
                         </TableCell>
@@ -257,13 +235,11 @@ const CustomDataTable = <T,>({
             </TableBody>
           </Table>
         </TableContainer>
-        <Box
-          sx={{
-            width: width,
-          }}
-        >
-          <CustomTablePagination dataLength={totalItems} />
-        </Box>
+        {showPagination && (
+          <Box sx={{ width: width }}>
+            <CustomTablePagination dataLength={totalItems} />
+          </Box>
+        )}
       </Box>
     </TableProvider>
   );

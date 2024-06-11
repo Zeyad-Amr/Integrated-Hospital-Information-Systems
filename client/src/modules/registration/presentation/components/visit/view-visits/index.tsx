@@ -67,7 +67,7 @@ const VisitsTable = () => {
       }}
     >
       <CustomDataTable
-        resetControls={state.visits.isInitial}
+        resetComponent={state.visits.reset}
         fetchData={(filters: FilterQuery[]) => {
           console.log(filters);
           dispatch(getAnonymousVisits(filters));

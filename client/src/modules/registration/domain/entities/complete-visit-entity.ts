@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import store from "@/core/state/store";
 import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
 
-interface PersonInputInterface extends Omit<PersonInterface, "id"> {}
+interface PersonInputInterface extends Omit<PersonInterface, "id"> { }
 
 export default class CompleteVisitEntity {
   static handleNullFormValues(patient: PersonInterface): PersonInterface {
@@ -79,10 +79,10 @@ export default class CompleteVisitEntity {
             values,
             schema,
             "طريقة التحقق مطلوبة",
-            state.lookups.lookups.identityTypes.map((e) => e.id)
+            state.lookups.lookups.identityTypes.map((e) => +e.id)
           )
         ),
-        gender: Yup.number().required("الجنس مطلوب").oneOf(state.lookups.lookups.genderTypes.map((e) => e.id), "الجنس مطلوب"),
+        gender: Yup.number().required("الجنس مطلوب").oneOf(state.lookups.lookups.genderTypes.map((e) => +e.id), "الجنس مطلوب"),
         birthDate: Yup.string().when(["SSN"], (values, schema) =>
           coditionCallback(values, schema, "التاريخ مطلوب")
         ),
@@ -94,7 +94,7 @@ export default class CompleteVisitEntity {
             values,
             schema,
             "المحافظة مطلوبة",
-            state.lookups.lookups.governates.map((e) => e.id)
+            state.lookups.lookups.governates.map((e) => +e.id)
           )
         ),
         address: Yup.string()

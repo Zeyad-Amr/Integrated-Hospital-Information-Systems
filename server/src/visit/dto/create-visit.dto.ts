@@ -33,6 +33,16 @@ export class VisitDto {
   mainComplaint: string;
 }
 
+export class Transfer {
+  @ApiProperty({ type: Number, example: 1 })
+  @IsNotEmpty()
+  toSubDepId: number;
+
+
+  @ApiProperty({ type: String, example: '2021-10-10T10:00:00Z' })
+  @IsOptional()
+  createdAt: Date;
+}
 export class CreateVisitDto {
   @ApiProperty({ type: CreatePersonDto, required: true })
   @IsOptional()
@@ -58,4 +68,11 @@ export class CreateVisitDto {
   @ValidateNested()
   @Type(() => AdditionalInformation)
   additionalInfo: AdditionalInformation;
+
+  @ApiProperty({ type: Transfer, required: false })
+  @IsOptional()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => Transfer)
+  transfer: Transfer;
 }

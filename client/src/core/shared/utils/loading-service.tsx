@@ -33,11 +33,25 @@ class LoadingService {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
-              width: "3rem",
+              width: "10rem",
             }}
           >
             <Box sx={{ display: "flex" }}>
-              <Typography
+              <Box component='img' src="https://i.postimg.cc/J4VLnwfN/loading.png" sx={{
+                width: '8rem',
+                mb: 3,
+                animation: 'grow 0.6s infinite alternate',
+                '@keyframes grow': {
+                  from: {
+                    transform: 'scale(1)',
+                  },
+                  to: {
+                    transform: 'scale(1.1)',
+                  },
+                },
+              }} />
+
+              {/* <Typography
                 sx={{
                   color: "#061540",
                   fontSize: "3rem",
@@ -47,7 +61,7 @@ class LoadingService {
                 }}
               >
                 Loading
-              </Typography>
+              </Typography> */}
             </Box>
             <SyncLoader color={"#fff"} loading={true} />
           </Box>

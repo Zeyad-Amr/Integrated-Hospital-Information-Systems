@@ -46,7 +46,7 @@ const subDepartmentsSlice = createSlice({
         });
         builder.addCase(getSubDepartmentsList.fulfilled, (state, action) => {
             state.loading = false;
-            state.subDepartments = PaginatedListModel.updatePaginatedList(state.subDepartments, action.payload);
+            state.subDepartments = action.payload;
             state.error = "";
             console.log('getSubDepartmentsList', action.payload);
         });

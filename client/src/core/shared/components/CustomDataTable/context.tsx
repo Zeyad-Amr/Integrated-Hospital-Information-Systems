@@ -47,9 +47,9 @@ export const TableProvider = (props: {
   columnHeader: HeaderItem[];
   data: any[];
   children: React.ReactNode;
-  resetControls?: boolean;
+  resetComponent?: boolean;
 }) => {
-  const { fetchData, initSortedColumn, columnHeader, data, resetControls } =
+  const { fetchData, initSortedColumn, columnHeader, data, resetComponent } =
     props;
 
   //***************** Define the state values
@@ -74,7 +74,7 @@ export const TableProvider = (props: {
   //***************** useEffect to apply filters initially on the first render
   useEffect(() => {
     if (reset !== true) {
-      console.log("resetControls useEffect:", resetControls);
+      console.log("resetComponent useEffect:", resetComponent);
       applyFiltersHandler();
       setReset(false);
     }
@@ -100,12 +100,12 @@ export const TableProvider = (props: {
 
   //***************** on resetFilters change, reset all filters
   useEffect(() => {
-    console.log("resetControls:", resetControls);
-    if (resetControls === true) {
+    console.log("resetComponent:", resetComponent);
+    if (resetComponent === true) {
       resetFilters();
       fetchDataHandler(true);
     }
-  }, [resetControls]);
+  }, [resetComponent]);
 
   //***************** Function to handle fetching data
   const fetchDataHandler = (resetPage: boolean) => {
@@ -128,31 +128,15 @@ export const TableProvider = (props: {
 
     //* Search
     if (searchQuery.value && searchQuery.columnId) {
-      if (
-        columnHeader.find((item) => item.id === searchQuery.columnId)
-          ?.isCustomFilter === true
-      ) {
-        filters.push(
-          Filter.custom(`${searchQuery.columnId}=${searchQuery.value}`)
-        );
-      } else {
-        filters.push(Filter.like(searchQuery.columnId, searchQuery.value));
-      }
+      filters.push(Filter.like(searchQuery.columnId, searchQuery.value));
     }
 
     //* Sorting
     if (sortedColumn && sortedColumn.disableSort !== true) {
-      if (
-        columnHeader.find((item) => item.id === sortedColumn.columnId)
-          ?.isCustomFilter === true
-      ) {
-        // custom sort
+      if (sortedColumn.isAscending) {
+        filters.push(Filter.sortAscending(sortedColumn.columnId));
       } else {
-        if (sortedColumn.isAscending) {
-          filters.push(Filter.sortAscending(sortedColumn.columnId));
-        } else {
-          filters.push(Filter.sortDescending(sortedColumn.columnId));
-        }
+        filters.push(Filter.sortDescending(sortedColumn.columnId));
       }
     }
 

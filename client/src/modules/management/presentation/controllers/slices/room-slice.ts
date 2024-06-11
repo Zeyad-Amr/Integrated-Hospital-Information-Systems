@@ -47,7 +47,7 @@ const roomSlice = createSlice({
         builder.addCase(getRoomList?.fulfilled, (state, action) => {
             state.loading = false;
             state.rooms = action.payload;
-            state.rooms = PaginatedListModel.updatePaginatedList(state.rooms, action.payload);
+            state.rooms = action.payload;
             state.error = "";
             console.log('rooms List', action.payload);
         });

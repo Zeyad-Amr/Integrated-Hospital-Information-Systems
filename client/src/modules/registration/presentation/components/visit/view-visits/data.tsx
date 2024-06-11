@@ -11,8 +11,8 @@ export interface AnonymizedVisit {
 
 export const header: HeaderItem[] = [
   {
+    filterKey: "sequenceNumber",
     id: "sequenceNumber",
-    key: "sequenceNumber",
     label: "رقم التردد",
     minWidth: 20,
     maxWidth: 50,
@@ -23,8 +23,8 @@ export const header: HeaderItem[] = [
     onClick: () => {},
   },
   {
+    filterKey: "code",
     id: "code",
-    key: "code",
     label: "رقم المريض",
     minWidth: 50,
     tableCellProps: { align: "center" },
@@ -34,8 +34,8 @@ export const header: HeaderItem[] = [
     onClick: () => {},
   },
   {
+    filterKey: "companionName",
     id: "companionName",
-    key: "companionName",
     label: "اسم المرافق",
     minWidth: 50,
     maxWidth: 70,
@@ -43,12 +43,12 @@ export const header: HeaderItem[] = [
     sortable: false,
     filterable: false,
     searchable: true,
-    isCustomFilter: true,
+
     onClick: () => {},
   },
   {
+    filterKey: "companionSSN",
     id: "companionSSN",
-    key: "companionSSN",
     label: "رقم هوية المرافق",
     minWidth: 50,
     maxWidth: 70,
@@ -56,12 +56,12 @@ export const header: HeaderItem[] = [
     sortable: false,
     filterable: false,
     searchable: true,
-    isCustomFilter: true,
+
     onClick: () => {},
   },
   {
+    filterKey: "createdAt",
     id: "createdAt",
-    key: "createdAt",
     label: "تاريخ الحجز",
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
@@ -71,8 +71,8 @@ export const header: HeaderItem[] = [
     onClick: () => {},
   },
   {
+    filterKey: "update",
     id: "update",
-    key: "update",
     label: "تعديل",
     isComponent: true,
     minWidth: 100,

@@ -10,6 +10,7 @@ import {
     IsString,
     ValidateNested,
 } from 'class-validator';
+import { Transfer } from './create-visit.dto';
 
 export class VitalsDto {
     @ApiProperty({
@@ -86,8 +87,8 @@ export class TriageAXDto {
     mainComplaint: string;
 
     @ApiProperty({
-        type: String,
-        example: 'ALERT',
+        type: Number,
+        example: 1,
         description: "level of consciousness"
     })
     @IsOptional()
@@ -95,16 +96,16 @@ export class TriageAXDto {
     LOCId: number;
 
     @ApiProperty({
-        type: String,
-        example: 'STANDARD',
+        type: Number,
+        example: 1,
     })
     @IsOptional()
     @IsInt()
     triageTypeId: number;
 
     @ApiProperty({
-        type: String,
-        example: ["DIABETES", "OBESITY"],
+        type: Number,
+        example: [1, 2],
     })
     @IsArray()
     @IsOptional()
@@ -112,7 +113,7 @@ export class TriageAXDto {
     comorbidityIds: number[];
 
     @ApiProperty({
-        type: String,
+        type: Number,
         example: 1,
     })
     @IsNotEmpty()
@@ -120,7 +121,7 @@ export class TriageAXDto {
     transferFromId: number;
 
     @ApiProperty({
-        type: String,
+        type: Number,
         example: 2,
     })
     @IsNotEmpty()
@@ -133,5 +134,16 @@ export class TriageAXDto {
     @ValidateNested()
     @Type(() => VitalsDto)
     vitals: VitalsDto;
+
+    @ApiProperty({
+        type: Transfer,
+        required: false,
+    })
+    @IsOptional()
+    @IsObject()
+    @ValidateNested()
+    @Type(() => Transfer)
+    transfer: Transfer;
+
 
 }

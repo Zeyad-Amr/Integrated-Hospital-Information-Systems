@@ -51,7 +51,7 @@ export default class AdditionalDataEntity {
                 ),
             attendantRole: Yup.number()
                 .when(["attendantRole", "attendantSerialNumber", "attendantName", "attendantSSN"], (values, schema) =>
-                    coditionCallback(values, schema, "يجب اختيار نوع المحضر", state.lookups.lookups.attendantRoles.map((e) => e.id))
+                    coditionCallback(values, schema, "يجب اختيار نوع المحضر", state.lookups.lookups.attendantRoles.map((e) => +e.id))
                 ),
             firstChar: Yup.string()
                 .when(["secondChar", "thirdChar", "carNum"], (values, schema) =>

@@ -21,9 +21,9 @@ const SidebarComponent = () => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: "row-reverse",
           alignItems: "center",
-          justifyContent: collapsed ? "center" : "flex-end",
+          justifyContent: collapsed ? "center" : "Space-between",
           cursor: "pointer",
           // marginY: "1vh",
           marginX: "1vw",
@@ -31,14 +31,14 @@ const SidebarComponent = () => {
         onClick={onCollapse}
       >
         {!collapsed ? (
-          <CloseRoundedIcon
+          <><CloseRoundedIcon
             sx={{
               color: "white",
               fontSize: "1.5rem",
               marginY: "1vh",
               marginX: "1vw",
-            }}
-          />
+            }} /><Box component='img' src="https://i.postimg.cc/J4VLnwfN/loading.png" sx={{ width: '3rem', }} /></>
+
         ) : (
           <MenuRoundedIcon sx={{ color: "white", fontSize: "1.5rem" }} />
         )}

@@ -9,6 +9,7 @@ import {
   Prisma,
   Visit,
   VisitAdditionalInformation,
+  VisitStatus,
 } from '@prisma/client';
 import { PersonRepo } from 'src/person/person.repo';
 import { PrismaGenericRepo } from 'src/shared/services/prisma-client/prisma-generic.repo';
@@ -75,6 +76,8 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
       // ======================================== Start of transaction =========================================================
       const visit = await this.prismaService.$transaction(async (tx) => {
         try {
+
+
           let additionalInfo: VisitAdditionalInformation;
           let connectAdditionalInfo;
           if (
@@ -114,8 +117,8 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
                 Car: car,
                 cameFrom: createVisitDto.additionalInfo.cameFromId
                   ? {
-                      connect: { id: createVisitDto.additionalInfo.cameFromId },
-                    }
+                    connect: { id: createVisitDto.additionalInfo.cameFromId },
+                  }
                   : undefined,
                 notes: createVisitDto.additionalInfo.notes,
                 injuryCause: createVisitDto.additionalInfo.injuryCause,
@@ -150,7 +153,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
                 person: {
                   connectOrCreate: {
                     where: {
-                      id:createVisitDto.patient.SSN?undefined:"",
+                      id: createVisitDto.patient.SSN ? undefined : "",
                       SSN: createVisitDto.patient.SSN
                         ? createVisitDto.patient.SSN
                         : undefined,
@@ -170,6 +173,8 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
                 },
               },
             });
+
+
             patientConnect = {
               id: patient.id,
             };
@@ -228,10 +233,16 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
 
           // ======================================== Create Visit  =========================================================
           const visitCode = await this.createVisitCode();
+          let visitStatus: VisitStatus = 'CREATED';
+          if (createVisitDto.transfer) {
+            visitStatus = 'BOOKED';
+
+          }
           const visit = await tx.visit.create({
             data: {
               ...createVisitDto.visit,
               code: visitCode,
+              status: visitStatus,
               creator: {
                 connect: { id: creatorId },
               },
@@ -245,6 +256,17 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
             },
             include: this.visitIncludes,
           });
+
+          if (createVisitDto.transfer) {
+            await tx.transfer.create({
+              data: {
+                toSubDepId: createVisitDto.transfer.toSubDepId,
+                visitCode: visitCode,
+                createdById: creatorId,
+                createdAt: createVisitDto.transfer.createdAt ? new Date(createVisitDto.transfer.createdAt) : new Date(),
+              },
+            });
+          }
 
           return { visit };
         } catch (error) {
@@ -270,7 +292,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
     }
   }
 
-  async addTriageAss(code: string, data: TriageAXDto) {
+  async addTriageAss(code: string, data: TriageAXDto, employeeId: string) {
     try {
       const visit = await this.prismaService.visit.findUnique({
         where: {
@@ -280,37 +302,55 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
       });
       let updatedVisit;
       // if (visit) {
-        // updatedVisit = await this.prismaService.visit.update({
-        //   where: { code },
-        //   data: {
-        //     medicalRecord: {
-        //       create: {
-        //         mainComplaint: data.mainComplaint,
-        //         consciousnessLevel: data.LOCId
-        //           ? { connect: { id: data.LOCId } }
-        //           : undefined,
-        //         triage: data.triageTypeId
-        //           ? { connect: { id: data.triageTypeId } }
-        //           : undefined,
-        //         vitals: {
-        //           create: {
-        //             ...data.vitals,
-        //           },
-        //         },
-        //         Patient: { connect: { id: visit.patientId } },
-        //       },
-        //     },
-        //     transfers: {
-        //       create: {
-        //         fromSubDepId: data.transferFromId,
-        //         toSubDepId: data.transferToId,
-        //       },
-        //     },
-        //   },
-        //   include: this.triageIncludes,
-        // });
+      // updatedVisit = await this.prismaService.visit.update({
+      //   where: { code },
+      //   data: {
+      //     medicalRecord: {
+      //       create: {
+      //         mainComplaint: data.mainComplaint,
+      //         consciousnessLevel: data.LOCId
+      //           ? { connect: { id: data.LOCId } }
+      //           : undefined,
+      //         triage: data.triageTypeId
+      //           ? { connect: { id: data.triageTypeId } }
+      //           : undefined,
+      //         vitals: {
+      //           create: {
+      //             ...data.vitals,
+      //           },
+      //         },
+      //         Patient: { connect: { id: visit.patientId } },
+      //       },
+      //     },
+      //     transfers: {
+      //       create: {
+      //         fromSubDepId: data.transferFromId,
+      //         toSubDepId: data.transferToId,
+      //       },
+      //     },
+      //   },
+      //   include: this.triageIncludes,
+      // });
       // }
-      return updatedVisit;
+
+      if (data.transfer) {
+        await this.prismaService.transfer.create({
+          data: {
+            toSubDepId: data.transfer.toSubDepId,
+            visitCode: code,
+            createdAt: data.transfer.createdAt ? new Date(data.transfer.createdAt) : new Date(),
+            createdById: employeeId,
+          },
+        });
+      }
+      await this.prismaService.visit.update({
+        where: { code },
+        data: {
+          status: VisitStatus.TRANSFERED,
+        },
+      });
+
+      return { message: 'Triage Assessment added successfully' };
     } catch (error) {
       throw error;
     }
@@ -329,6 +369,19 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
     return arr;
   };
 
+  async updateStatus(visitCode: string, status: VisitStatus) {
+    try {
+      return await this.prismaService.visit.update({
+        where: { code: visitCode },
+        data: {
+          status: status,
+        },
+      });
+
+    } catch (error) {
+      throw error;
+    }
+  }
   async findAll() {
     try {
       return await this.prismaService.visit.findMany({
@@ -355,6 +408,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
         kinship: true,
       },
     },
+    transfers: true,
     creator: {
       include: {
         person: {

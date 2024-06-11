@@ -17,11 +17,14 @@ interface CustomDataTableProps<T> {
   rowHeight?: string;
   rowPaddingY?: string;
   initSortedColumn?: SortedColumn;
-  resetControls?: boolean;
+  resetComponent?: boolean;
+  showPagination?: boolean;
+  showToolbar?: boolean;
 }
 
 /**
  * The interface for the header item.
+ * @param {string} filterKey - The key of the filter item.
  * @param {string} id - The id of the header item.
  * @param {string} label - The label of the header item.
  * @param {number} [minWidth] - The minimum width of the header item (optional).
@@ -37,8 +40,8 @@ interface CustomDataTableProps<T> {
  * @param {boolean} [searchable] - Whether the header item is searchable (optional).
  */
 interface HeaderItem {
+  filterKey: string;
   id: string;
-  key: string;
   label: string;
   minWidth?: number;
   maxWidth?: number;
@@ -52,7 +55,6 @@ interface HeaderItem {
   filterable?: boolean;
   searchable?: boolean;
   filterOptions?: FilterOption[];
-  isCustomFilter?: boolean;
   display?: boolean;
   icon?: React.ReactNode;
   cellSx?: SxProps;

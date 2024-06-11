@@ -72,7 +72,6 @@ const visitSlice = createSlice({
         builder.addCase(getAnonymousVisits.fulfilled, (state, action) => {
             state.loading = false;
             state.visits = action.payload;
-            state.visits = PaginatedListModel.updatePaginatedList(state.visits, action.payload);
             state.error = "";
         });
         builder.addCase(getAnonymousVisits.rejected, (state, action) => {
