@@ -263,6 +263,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
                 toSubDepId: createVisitDto.transfer.toSubDepId,
                 visitCode: visitCode,
                 createdById: creatorId,
+                createdAt: createVisitDto.transfer.createdAt ? new Date(createVisitDto.transfer.createdAt) : new Date(),
               },
             });
           }
