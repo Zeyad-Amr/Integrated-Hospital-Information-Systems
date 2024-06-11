@@ -61,18 +61,7 @@ const PrescriptionsForm = ({
       }) => (
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container spacing={1}>
-            <Grid
-              item
-              lg={12}
-              md={12}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={12} md={12} sm={12} xs={12}>
               <CustomTextField
                 isRequired
                 name="drugName"
@@ -91,18 +80,7 @@ const PrescriptionsForm = ({
             </Grid>
           </Grid>
           <Grid container spacing={1}>
-            <Grid
-              item
-              lg={4}
-              md={4}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
                 isRequired
                 name="beginDate"
@@ -119,18 +97,7 @@ const PrescriptionsForm = ({
                 }}
               />
             </Grid>
-            <Grid
-              item
-              lg={4}
-              md={4}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
                 isRequired
                 name="dosage"
@@ -147,18 +114,7 @@ const PrescriptionsForm = ({
                 }}
               />
             </Grid>
-            <Grid
-              item
-              lg={4}
-              md={4}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
                 isRequired
                 name="quantity"
@@ -178,18 +134,7 @@ const PrescriptionsForm = ({
           </Grid>
 
           <Grid container spacing={1}>
-            <Grid
-              item
-              lg={4}
-              md={4}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomSelectField
                 isDisabled={isViewMode}
                 isRequired
@@ -213,18 +158,7 @@ const PrescriptionsForm = ({
                 ]}
               />
             </Grid>
-            <Grid
-              item
-              lg={4}
-              md={4}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
                 name="medicineUnit"
                 label="وحدة الدواء"
@@ -240,18 +174,7 @@ const PrescriptionsForm = ({
                 }}
               />
             </Grid>
-            <Grid
-              item
-              lg={4}
-              md={4}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
                 name="refills"
                 label="إعادة التعبئة"
@@ -270,18 +193,7 @@ const PrescriptionsForm = ({
           </Grid>
 
           <Grid container spacing={1}>
-            <Grid
-              item
-              lg={12}
-              md={12}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={12} md={12} sm={12} xs={12}>
               <CustomTextField
                 name="notes"
                 label="ملاحظات"

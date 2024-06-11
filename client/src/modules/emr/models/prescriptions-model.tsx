@@ -12,7 +12,7 @@ export default class PrescriptionsModel {
       quantity: undefined,
       refills: "",
       beginDate: null,
-      substitutionAllowed: "",
+      substitutionAllowed: "0",
     };
   }
 
@@ -32,6 +32,21 @@ export default class PrescriptionsModel {
         .moreThan(0, "يجب أن تكون الكمية أكبر من 0")
         .required("الكمية مطلوبة"),
       dosage: Yup.string().required("الجرعة مطلوبة"),
+      substitutionAllowed: Yup.string()
+        .required("السماح بالاستبدال مطلوب")
+        .oneOf(
+          [
+            {
+              id: "1",
+              value: "No",
+            },
+            {
+              id: "2",
+              value: "Yes",
+            },
+          ].map((e) => e.id),
+          "السماح بالاستبدال مطلوب"
+        ),
     });
   }
 
@@ -76,7 +91,7 @@ export default class PrescriptionsModel {
       notes: json.notes,
       quantity: json.quantity,
       refills: json.refills,
-      substitutionAllowed: json.substitutionAllowed ? "2" : "1" ,
+      substitutionAllowed: json.substitutionAllowed ? "2" : "1",
     };
   }
 }

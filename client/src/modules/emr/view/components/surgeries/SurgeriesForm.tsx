@@ -32,7 +32,7 @@ const SurgeriesForm = ({
         const submitObject = {
           ...values,
           patientId: patientId,
-          visitCode:  visitCode,
+          visitCode: visitCode,
         };
 
         const action = initialValues
@@ -57,18 +57,7 @@ const SurgeriesForm = ({
       }) => (
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container spacing={1}>
-            <Grid
-              item
-              lg={12}
-              md={12}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={12} md={12} sm={12} xs={12}>
               <CustomTextField
                 isRequired
                 name="name"
@@ -88,18 +77,7 @@ const SurgeriesForm = ({
           </Grid>
 
           <Grid container spacing={1}>
-            <Grid
-              item
-              lg={6}
-              md={6}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={6} md={6} sm={12} xs={12}>
               <CustomTextField
                 name="place"
                 label="الموضع"
@@ -115,18 +93,7 @@ const SurgeriesForm = ({
                 }}
               />
             </Grid>
-            <Grid
-              item
-              lg={6}
-              md={6}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={6} md={6} sm={12} xs={12}>
               <CustomTextField
                 name="description"
                 label="الوصف"
