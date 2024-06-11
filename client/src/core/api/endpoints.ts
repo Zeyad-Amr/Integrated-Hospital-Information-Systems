@@ -105,6 +105,27 @@ const Endpoints = {
         create: '/medicalProblem',
         update: '/medicalProblem/:id',
         delete: '/medicalProblem/:id',
+    },
+    medication: {
+        list: '/medication',
+        details: '/medication/:id',
+        create: '/medication',
+        update: '/medication/:id',
+        delete: '/medication/:id',
+    },
+    prescription: {
+        list: '/prescription',
+        details: '/prescription/:id',
+        create: '/prescription',
+        update: '/prescription/:id',
+        delete: '/prescription/:id',
+    },
+    diagnosis: {
+        list: '/diagnosis',
+        details: '/diagnosis/:id',
+        create: '/diagnosis',
+        update: '/diagnosis/:id',
+        delete: '/diagnosis/:id',
     }
 };
 export default Endpoints;

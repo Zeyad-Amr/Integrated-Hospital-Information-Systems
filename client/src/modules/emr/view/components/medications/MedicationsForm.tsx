@@ -3,17 +3,17 @@ import { ExaminationFormComponentPropsInterface } from "@/core/shared/components
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { useAppDispatch } from "@/core/state/store";
 import {
-  createMedicalProblem,
-  updateMedicalProblem,
-} from "@/modules/emr/controllers/thunks/medical-problems-thunk";
-import { MedicalProblemsInterface } from "@/modules/emr/interfaces/medical-problems-interface";
-import MedicalProblemsModel from "@/modules/emr/models/medical-problems-model";
+  createMedication,
+  updateMedication,
+} from "@/modules/emr/controllers/thunks/medications-thunk";
+import { MedicationsInterface } from "@/modules/emr/interfaces/medications-interface";
+import MedicationsModel from "@/modules/emr/models/medications-model";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik } from "formik";
 import React from "react";
 
-const MedicalProblemsForm = ({
+const MedicationsForm = ({
   patientId,
   initialValues,
   isViewMode,
@@ -28,8 +28,8 @@ const MedicalProblemsForm = ({
               ...initialValues,
               endDate: initialValues?.endDate?.split("T")[0],
               beginDate: initialValues?.beginDate?.split("T")[0],
-            } as MedicalProblemsInterface)
-          : MedicalProblemsModel.defaultValues()
+            } as MedicationsInterface)
+          : MedicationsModel.defaultValues()
       }
       onSubmit={async (values) => {
         const submitObject = {
@@ -38,8 +38,8 @@ const MedicalProblemsForm = ({
         };
 
         const action = initialValues
-          ? updateMedicalProblem(submitObject)
-          : createMedicalProblem(submitObject);
+          ? updateMedication(submitObject)
+          : createMedication(submitObject);
 
         dispatch(action).then((res) => {
           if (res?.meta.requestStatus == "fulfilled") {
@@ -47,7 +47,7 @@ const MedicalProblemsForm = ({
           }
         });
       }}
-      validationSchema={MedicalProblemsModel.medicalProblemsFormValidations()}
+      validationSchema={MedicationsModel.medicationsFormValidations()}
     >
       {({
         values,
@@ -59,16 +59,16 @@ const MedicalProblemsForm = ({
       }) => (
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container spacing={1}>
-            <Grid item lg={12} md={12} sm={12} xs={12}>
+            <Grid item lg={8} md={8} sm={12} xs={12}>
               <CustomTextField
                 isRequired
-                name="name"
-                label="الاسم"
-                value={values.name}
+                name="drugName"
+                label="اسم الدواء"
+                value={values.drugName}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.name}
-                touched={touched.name}
+                error={errors.drugName}
+                touched={touched.drugName}
                 width="100%"
                 props={{
                   type: "text",
@@ -76,10 +76,9 @@ const MedicalProblemsForm = ({
                 }}
               />
             </Grid>
-          </Grid>
-          <Grid container spacing={1}>
             <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
+                isRequired
                 name="beginDate"
                 label="تاريخ البدء"
                 value={values.beginDate}
@@ -94,7 +93,9 @@ const MedicalProblemsForm = ({
                 }}
               />
             </Grid>
-            <Grid item lg={4} md={4} sm={12} xs={12}>
+          </Grid>
+          <Grid container spacing={1}>
+            <Grid item lg={6} md={6} sm={12} xs={12}>
               <CustomTextField
                 name="endDate"
                 label="تاريخ الانتهاء"
@@ -110,15 +111,15 @@ const MedicalProblemsForm = ({
                 }}
               />
             </Grid>
-            <Grid item lg={4} md={4} sm={12} xs={12}>
+            <Grid item lg={6} md={6} sm={12} xs={12}>
               <CustomTextField
-                name="verification"
-                label="التحقق"
-                value={values.verification}
+                name="dosageInstruction"
+                label="تعليمات الجرعة"
+                value={values.dosageInstruction}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.verification}
-                touched={touched.verification}
+                error={errors.dosageInstruction}
+                touched={touched.dosageInstruction}
                 width="100%"
                 props={{
                   type: "text",
@@ -127,8 +128,26 @@ const MedicalProblemsForm = ({
               />
             </Grid>
           </Grid>
+
           <Grid container spacing={1}>
-            <Grid item lg={12} md={12} sm={12} xs={12}>
+            <Grid item lg={4} md={4} sm={12} xs={12}>
+              <CustomTextField
+                name="medicationUsage"
+                label="استخدام الدواء"
+                value={values.medicationUsage}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.medicationUsage}
+                touched={touched.medicationUsage}
+                width="100%"
+                props={{
+                  type: "text",
+                  disabled: isViewMode,
+                }}
+              />
+            </Grid>
+
+            <Grid item lg={8} md={8} sm={12} xs={12}>
               <CustomTextField
                 name="comments"
                 label="تعليقات"
@@ -158,4 +177,4 @@ const MedicalProblemsForm = ({
   );
 };
 
-export default MedicalProblemsForm;
+export default MedicationsForm;

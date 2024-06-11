@@ -1,10 +1,10 @@
 import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
-export const allergiesHeaderTable: HeaderItem[] = [
+export const diagnosisHeaderTable: HeaderItem[] = [
   {
-    filterKey: "drugName",
-    id: "drugName",
-    label: "اسم الدواء",
+    filterKey: "name",
+    id: "name",
+    label: "اسم التشخيص",
     minWidth: 100,
     maxWidth: 150,
     tableCellProps: { align: "center" },
@@ -13,9 +13,9 @@ export const allergiesHeaderTable: HeaderItem[] = [
     filterable: false,
   },
   {
-    filterKey: "beginDate",
-    id: "beginDate",
-    label: "تاريخ البدء",
+    filterKey: "type",
+    id: "type",
+    label: "نوع التشخيص",
     minWidth: 100,
     maxWidth: 150,
     tableCellProps: { align: "center" },
@@ -24,9 +24,9 @@ export const allergiesHeaderTable: HeaderItem[] = [
     filterable: false,
   },
   {
-    filterKey: "medicineUnit",
-    id: "medicineUnit",
-    label: "وحدة الدواء",
+    filterKey: "icdCode",
+    id: "icdCode",
+    label: "كود التصنيف الدولي للأمراض",
     minWidth: 100,
     maxWidth: 150,
     tableCellProps: { align: "center" },

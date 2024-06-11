@@ -1,6 +1,6 @@
 import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
-export const allergiesHeaderTable: HeaderItem[] = [
+export const medicationsHeaderTable: HeaderItem[] = [
   {
     filterKey: "drugName",
     id: "drugName",
@@ -24,9 +24,9 @@ export const allergiesHeaderTable: HeaderItem[] = [
     filterable: false,
   },
   {
-    filterKey: "medicineUnit",
-    id: "medicineUnit",
-    label: "وحدة الدواء",
+    filterKey: "endDate",
+    id: "endDate",
+    label: "تاريخ الانتهاء",
     minWidth: 100,
     maxWidth: 150,
     tableCellProps: { align: "center" },

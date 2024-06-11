@@ -25,11 +25,13 @@ export interface SelectFieldProps<T> {
   hideLabel?: boolean;
   multiple?: boolean;
   sx?: any;
+  isDisabled?: boolean;
 }
 
 const CustomSelectField = <T extends { id: any; value: string }>({
   onChange,
   onBlur,
+  isDisabled = false,
   name,
   label,
   error,
@@ -157,13 +159,14 @@ const CustomSelectField = <T extends { id: any; value: string }>({
         required={isRequired}
         sx={{ marginTop: 1.1, width: { width }, maxWidth: "100%", ...sx }}
       >
-        <InputLabel>{label}</InputLabel>
+        <InputLabel disabled={isDisabled}>{label}</InputLabel>
 
         <Select
           multiple={multiple ?? false}
           label={label}
           onChange={handleSelectChange}
           onBlur={onBlur}
+          disabled={isDisabled}
           sx={{
             backgroundColor: "#fff",
             height: "3.5rem",

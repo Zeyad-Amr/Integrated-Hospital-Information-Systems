@@ -59,18 +59,7 @@ const AllergiesForm = ({
       }) => (
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container spacing={1}>
-            <Grid
-              item
-              lg={12}
-              md={12}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={12} md={12} sm={12} xs={12}>
               <CustomTextField
                 isRequired
                 name="name"
@@ -89,18 +78,7 @@ const AllergiesForm = ({
             </Grid>
           </Grid>
           <Grid container spacing={1}>
-            <Grid
-              item
-              lg={4}
-              md={4}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
                 name="beginDate"
                 label="تاريخ البدء"
@@ -116,18 +94,7 @@ const AllergiesForm = ({
                 }}
               />
             </Grid>
-            <Grid
-              item
-              lg={4}
-              md={4}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
                 name="endDate"
                 label="تاريخ الانتهاء"
@@ -143,18 +110,7 @@ const AllergiesForm = ({
                 }}
               />
             </Grid>
-            <Grid
-              item
-              lg={4}
-              md={4}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
                 name="severity"
                 label="شدة"
@@ -173,18 +129,7 @@ const AllergiesForm = ({
           </Grid>
 
           <Grid container spacing={1}>
-            <Grid
-              item
-              lg={4}
-              md={4}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
                 name="verification"
                 label="التحقق"
@@ -200,18 +145,7 @@ const AllergiesForm = ({
                 }}
               />
             </Grid>
-            <Grid
-              item
-              lg={4}
-              md={4}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
                 name="occurrence"
                 label="حدوث"
@@ -227,18 +161,7 @@ const AllergiesForm = ({
                 }}
               />
             </Grid>
-            <Grid
-              item
-              lg={4}
-              md={4}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
                 name="reaction"
                 label="رد الفعل"
@@ -257,18 +180,7 @@ const AllergiesForm = ({
           </Grid>
 
           <Grid container spacing={1}>
-            <Grid
-              item
-              lg={12}
-              md={12}
-              sm={12}
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Grid item lg={12} md={12} sm={12} xs={12}>
               <CustomTextField
                 name="comments"
                 label="تعليقات"
