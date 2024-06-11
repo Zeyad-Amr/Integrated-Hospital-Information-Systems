@@ -1,9 +1,9 @@
 "use client";
 
-import DiagnosisComponent from "@/modules/emr/view/components/diagnosis/DiagnosisComponent";
+import VitalsComponent from "@/modules/emr/view/components/vitals/VitalsComponent";
 
 // ----------------------------------------------------------------------
 
 export default function Test() {
-  return <DiagnosisComponent />;
+  return <VitalsComponent />;
 }
