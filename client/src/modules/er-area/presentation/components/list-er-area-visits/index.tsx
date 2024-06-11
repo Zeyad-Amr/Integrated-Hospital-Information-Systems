@@ -160,20 +160,10 @@ const ERVisitsTable = () => {
         headerItems={header}
         stickyHeader={true}
         boxShadow={5}
-        // onRowClick={(row: any) => {
-        //   console.log(row);
-        //   refPatientData.current = row;
-        //   setShawDialog(true);
-        // }}
-        rowProps={{
-          onDoubleClick: (event) => {
-            refPatientData.current =
-              event.currentTarget.getAttribute("data-row") &&
-              JSON.parse(
-                event.currentTarget.getAttribute("data-row") as string
-              );
-            setShawDialog(true);
-          },
+        onRowClick={(row: any) => {
+          console.log(row);
+          refPatientData.current = row;
+          setShawDialog(true);
         }}
       />
 

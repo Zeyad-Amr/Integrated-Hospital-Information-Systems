@@ -10,36 +10,38 @@ interface MessageEvent {
 }
 @Controller('streaming')
 export class StreamingController {
-  constructor(private readonly streamingService: StreamingService, private visitService:VisitService) { }
+  constructor(private readonly streamingService: StreamingService, private visitService: VisitService) { }
 
   @Sse('event') // server sent emitter
   async sendEvent(
     @PaginationParams() paginationParams: Pagination,
-  @FilteringParams([
-    'code',
-    'createdAt',
-    'creatorId',
-    "sequenceNumber",
-    'companionId',
-    'patientId',
-    'incidentId',
-    'patient.person.SSN',
-    'companion.person.SSN',
-    'companion.person.fullName',
-  ]) filters?: Array<Filter>,
-  @SortingParams([
-    'code',
-    'createdAt',
-    'creatorId',
-    "sequenceNumber",
-    'companionId',
-    'patientId',
-    'incidentId',
-    'patient.person.SSN',
-    'companion.person.SSN',
-    'companion.person.fullName',
-  ]) sort?: Sorting,): Promise<Observable<MessageEvent>> {    
-    return defer(() => this.visitService.findAll(paginationParams,filters,sort)).pipe(
+    @FilteringParams([
+      'code',
+      'createdAt',
+      'creatorId',
+      "sequenceNumber",
+      'companionId',
+      'patientId',
+      'incidentId',
+      'patient.person.SSN',
+      'companion.person.SSN',
+      'companion.person.fullName',
+      'status'
+    ]) filters?: Array<Filter>,
+    @SortingParams([
+      'code',
+      'createdAt',
+      'creatorId',
+      "sequenceNumber",
+      'companionId',
+      'patientId',
+      'incidentId',
+      'patient.person.SSN',
+      'companion.person.SSN',
+      'companion.person.fullName',
+      'status'
+    ]) sort?: Sorting,): Promise<Observable<MessageEvent>> {
+    return defer(() => this.visitService.findAll(paginationParams, filters, sort)).pipe(
       repeat({
         delay: 1000,
       }),

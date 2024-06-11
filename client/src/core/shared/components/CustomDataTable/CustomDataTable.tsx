@@ -29,6 +29,7 @@ const CustomDataTable = <T,>({
   stickyHeader = true,
   sx = { mb: 5 },
   onRowClick,
+  onRowDoubleClick,
   hover = true,
   variantBackground = true,
   rowHeight = "1rem",
@@ -42,7 +43,6 @@ const CustomDataTable = <T,>({
   showPagination = true,
   showToolbar = true,
   noDataMessage = "لا توجد بيانات",
-  rowProps,
 }: CustomDataTableProps<T>) => {
   return (
     <TableProvider
@@ -114,8 +114,10 @@ const CustomDataTable = <T,>({
                 data.map((item: any, index: number) => (
                   <TableRow
                     key={item.id}
-                    data-row={JSON.stringify(item)}
                     onClick={() => onRowClick && onRowClick(item)}
+                    onDoubleClick={() =>
+                      onRowDoubleClick && onRowDoubleClick(item)
+                    }
                     hover={hover}
                     sx={{
                       backgroundColor:
@@ -126,7 +128,6 @@ const CustomDataTable = <T,>({
                         backgroundColor: "#f0f0f0",
                       },
                     }}
-                    {...rowProps}
                   >
                     {headerItems
                       .filter(

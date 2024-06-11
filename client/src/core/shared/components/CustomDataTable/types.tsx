@@ -12,6 +12,7 @@ interface CustomDataTableProps<T> {
   stickyHeader?: boolean;
   sx?: SxProps;
   onRowClick?: (row: T) => void;
+  onRowDoubleClick?: (row: T) => void;
   hover?: boolean;
   variantBackground?: boolean;
   rowHeight?: string;
