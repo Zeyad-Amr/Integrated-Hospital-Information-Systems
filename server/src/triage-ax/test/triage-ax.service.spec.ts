@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TriageAxService } from './triage-ax.service';
+import { TriageAxService } from '../triage-ax.service';
 
 describe('TriageAxService', () => {
   let service: TriageAxService;

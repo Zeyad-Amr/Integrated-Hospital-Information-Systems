@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RadiologyImageController } from './radiology-image.controller';
-import { RadiologyImageService } from './radiology-image.service';
+import { RadiologyImageController } from '../radiology-image.controller';
+import { RadiologyImageService } from '../radiology-image.service';
 
 describe('RadiologyImageController', () => {
   let controller: RadiologyImageController;
