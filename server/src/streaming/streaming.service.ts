@@ -5,7 +5,7 @@ import { VisitService } from 'src/visit/visit.service';
 export class StreamingService {
   constructor(private readonly visitService: VisitService) { }
 
-  async getERareaVisits() {
+  async getERareaVisits() {    
     return await this.visitService.findERAreaVisits();
   }
 

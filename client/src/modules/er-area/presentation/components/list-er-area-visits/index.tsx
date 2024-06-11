@@ -4,6 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import CustomBasicTable from "@/core/shared/components/CustomBasicTable";
 import ErAreaForm from "../er-area-form/ErAreaForm";
 import { Endpoints } from "@/core/api";
+import {
+  SessionStorage,
+  SessionStorageKeys,
+} from "@/core/shared/utils/session-storage";
+import EventSource from "eventsource";
 
 const ERVisitsTable = () => {
   // useRef
@@ -13,14 +18,29 @@ const ERVisitsTable = () => {
   const [showDialog, setShawDialog] = useState(false);
   const [streamedData, setStreamedData] = useState([]);
   const [tableData, setTableData] = useState<any[]>([]);
+  const eventSourceRef = useRef<any>(null);
 
   useEffect(() => {
-    let eventSource = new EventSource(Endpoints.base + Endpoints.erArea.streaming);
+    const token: string =
+      SessionStorage.getDataByKey(SessionStorageKeys.token) ?? "";
+
+      // Close the previous EventSource connection if it exists
+    if (eventSourceRef.current) {
+      eventSourceRef.current.close();
+    }
+
+    let eventSource = new EventSource(
+      Endpoints.base + Endpoints.erArea.streaming,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    eventSourceRef.current = eventSource;
     eventSource.onmessage = (ev) => {
       let data_json = JSON.parse(ev.data).items;
       setStreamedData(data_json);
-      console.log(ev.data);
-      console.log(data_json);
     };
   }, []);
 

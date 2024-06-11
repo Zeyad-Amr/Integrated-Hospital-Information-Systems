@@ -90,7 +90,6 @@ const CustomBasicTable = <T,>({
               {...rowProps}
             >
               {headerItem.map((headerItem) => {
-                console.log(headerItem);
 
                 return headerItem.isIcon ? (
                   <TableCell
