@@ -2,7 +2,7 @@ import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
 export interface DataItem {
   id: any;
-  sequenceNumber: string;
+  sequenceNumber: any;
   name: string;
   date: string;
   time: string;
@@ -54,7 +54,11 @@ export const header: HeaderItem[] = [
     label: "رقم التردد",
     minWidth: 50,
     tableCellProps: { align: "center" },
-    showBorder: true,
+    // showBorder: true,
+    isComponent: true,
+    sortable: false,
+    filterable: false,
+    searchable: true,
   },
   {
     filterKey: "id",
@@ -62,6 +66,9 @@ export const header: HeaderItem[] = [
     label: "رقم المريض",
     minWidth: 50,
     tableCellProps: { align: "center" },
+    sortable: true,
+    filterable: false,
+    searchable: true,
   },
   {
     filterKey: "name",
@@ -69,6 +76,9 @@ export const header: HeaderItem[] = [
     label: "اسم المريض",
     minWidth: 100,
     tableCellProps: { align: "center" },
+    sortable: true,
+    filterable: false,
+    searchable: true,
   },
   {
     filterKey: "date",
@@ -76,6 +86,9 @@ export const header: HeaderItem[] = [
     label: "تاريخ الحجز",
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
+    sortable: true,
+    filterable: false,
+    searchable: false,
   },
   {
     filterKey: "time",
@@ -83,6 +96,9 @@ export const header: HeaderItem[] = [
     label: "وقت الحجز",
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
+    sortable: true,
+    filterable: false,
+    searchable: false,
   },
   {
     filterKey: "watingTime",
@@ -90,5 +106,6 @@ export const header: HeaderItem[] = [
     label: `وقت الانتظار (hh:mm)`,
     minWidth: 100,
     tableCellProps: { align: "center" },
+    isComponent: true,
   },
 ];

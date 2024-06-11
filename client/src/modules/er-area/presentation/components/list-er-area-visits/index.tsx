@@ -1,7 +1,6 @@
 import { DataItem, header } from "./data";
 import { Box } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
-import CustomBasicTable from "@/core/shared/components/CustomBasicTable";
 import ErAreaForm from "../er-area-form/ErAreaForm";
 import { Endpoints } from "@/core/api";
 import {
@@ -9,6 +8,7 @@ import {
   SessionStorageKeys,
 } from "@/core/shared/utils/session-storage";
 import EventSource from "eventsource";
+import { CustomDataTable } from "@/core/shared/components/CustomDataTable";
 
 const ERVisitsTable = () => {
   // useRef
@@ -16,7 +16,7 @@ const ERVisitsTable = () => {
 
   // useState
   const [showDialog, setShawDialog] = useState(false);
-  const [streamedData, setStreamedData] = useState([]);
+  const [streamedData, setStreamedData] = useState<any>();
   const [tableData, setTableData] = useState<any[]>([]);
   const eventSourceRef = useRef<any>(null);
 
@@ -30,7 +30,7 @@ const ERVisitsTable = () => {
     }
 
     let eventSource = new EventSource(
-      Endpoints.base + Endpoints.erArea.streaming,
+      Endpoints.devBase + Endpoints.erArea.streaming,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -39,7 +39,7 @@ const ERVisitsTable = () => {
     );
     eventSourceRef.current = eventSource;
     eventSource.onmessage = (ev) => {
-      let data_json = JSON.parse(ev.data).items;
+      let data_json = JSON.parse(ev.data);
       setStreamedData(data_json);
     };
   }, []);
@@ -109,12 +109,20 @@ const ERVisitsTable = () => {
 
   // Update tableData when streamedData changes
   useEffect(() => {
-    let apiData: any[] = streamedData ?? [];
+    let apiData: any[] = streamedData?.items ?? [];
     let newTableData: DataItem[] = [];
     apiData.forEach((item) => {
       newTableData.push({
         id: item?.code,
-        sequenceNumber: item?.sequenceNumber,
+        sequenceNumber: (
+          <Box sx={{
+            borderLeft:`0.25rem solid ${
+              item?.patient?.person?.gender?.value == "ذكر" ? "aqua" : "pink"
+                          }  !important`
+          }} fontWeight={600}>
+            {item?.sequenceNumber}
+          </Box>
+        ),
         name: item?.patient?.person
           ? item.patient?.person?.firstName +
             " " +
@@ -149,21 +157,23 @@ const ERVisitsTable = () => {
         p: 3,
       }}
     >
-      <CustomBasicTable
+      <CustomDataTable
         data={tableData}
-        headerItem={header}
+        headerItems={header}
         stickyHeader={true}
         boxShadow={5}
-        rowProps={{
-          onDoubleClick: (event) => {
-            refPatientData.current =
-              event.currentTarget.getAttribute("data-row") &&
-              JSON.parse(
-                event.currentTarget.getAttribute("data-row") as string
-              );
-            setShawDialog(true);
-          },
-        }}
+         fetchData={()=>{}}
+         totalItems={streamedData?.total ?? 0}  
+               // rowProps={{
+        //   onDoubleClick: (event) => {
+        //     refPatientData.current =
+        //       event.currentTarget.getAttribute("data-row") &&
+        //       JSON.parse(
+        //         event.currentTarget.getAttribute("data-row") as string
+        //       );
+        //     setShawDialog(true);
+        //   },
+        // }}
       />
       <ErAreaForm
         openDialog={showDialog}
