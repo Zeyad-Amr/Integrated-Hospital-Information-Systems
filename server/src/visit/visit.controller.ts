@@ -82,9 +82,9 @@ export class VisitController {
       'patient.person.SSN',
       'companion.person.SSN',
       'companion.person.fullName',
+      'status'
 
     ]) filters?: Array<Filter>,
-
     @SortingParams([
       'code',
       'createdAt',
@@ -96,6 +96,7 @@ export class VisitController {
       'patient.person.SSN',
       'companion.person.SSN',
       'companion.person.fullName',
+      'status'
     ]) sort?: Sorting,
     @Query() customFilters?: { companionName: string, companionSSN: string },
 
