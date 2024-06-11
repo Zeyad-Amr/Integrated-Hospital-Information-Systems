@@ -1,4 +1,3 @@
-import { SubDepartmentInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
 
 export interface LookupsInterface {
     identityTypes: IdentityTypeInterface[];
@@ -79,5 +78,5 @@ export interface DepartmentInterface {
 export interface FeatureInterface {
     id: string;
     value: string;
-    subDepartment: SubDepartmentInterface;
+    code: string;
 }
