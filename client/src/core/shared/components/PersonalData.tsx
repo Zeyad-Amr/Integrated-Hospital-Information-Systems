@@ -59,6 +59,7 @@ const PersonalData = ({ searchSSN = true }: PersonalDataProps) => {
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
+  console.log(lookupsState, "lookupsState");
 
   const [loadingFront, setLoadingFront] = React.useState(false);
   const [successFront, setSuccessFront] = React.useState(false);

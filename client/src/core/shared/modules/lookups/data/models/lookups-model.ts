@@ -1,5 +1,4 @@
 import { LookupsInterface } from '../../domain/interfaces/lookups-interface';
-import SubDepartmentsModel from '@/modules/management/data/models/sub-departments';
 
 export default class LookupsModel {
 
@@ -33,7 +32,6 @@ export default class LookupsModel {
                     id: feature.id,
                     value: feature.name,
                     code: feature.code,
-                    subDepartment: SubDepartmentsModel.fromJson(feature.subDepartment),
                 };
             }),
         } as LookupsInterface;

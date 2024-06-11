@@ -69,7 +69,7 @@ const SidebarLayout = (props: any) => {
           <Box
             sx={{
               width: "95%",
-              margin: "1.5rem auto",
+              margin: "0.7rem auto",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",

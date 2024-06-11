@@ -34,6 +34,7 @@ const lookupsSlice = createSlice({
         });
         builder.addCase(getLookups.fulfilled, (state, action) => {
             state.loading = false;
+            console.log(action.payload);
             state.lookups = action.payload;
             state.isFetched = true;
             state.error = "";

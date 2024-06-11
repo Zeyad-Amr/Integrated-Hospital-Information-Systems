@@ -182,17 +182,14 @@ const PermissionsForm = ({
                   <CustomSelectField
                     multiple
                     value={values.roles[index].features}
-                    options={lookupsState.lookups.features
-                      .filter(
-                        (feature: FeatureInterface) =>
-                          feature.subDepartment.id == subDepartmentData?.id
-                      )
-                      .map((feature: FeatureInterface) => {
+                    options={lookupsState.lookups.features.map(
+                      (feature: FeatureInterface) => {
                         return {
                           id: feature.id,
                           value: feature.value,
                         };
-                      })}
+                      }
+                    )}
                     isRequired
                     name={`roles[${index}].features`}
                     label={`الميــزات ل ${getNameOfItemWithItsId(

@@ -67,6 +67,7 @@ interface AccordionComponentPropsInterface {
   tableList: any;
   getListThunk: (filters: FilterQuery[]) => any;
   deleteThunk: (id: string) => any;
+  isAccordionExpanded?: boolean;
   formDialogMaxWidth?: false | Breakpoint;
   accordionWidth?: string;
   accordionSx?: any;
@@ -90,8 +91,9 @@ export default function ExaminationAccordion({
   formDialogMaxWidth = "sm",
   accordionWidth = "100%",
   accordionSx,
+  isAccordionExpanded = false,
 }: AccordionComponentPropsInterface) {
-  const [expandedAccordion, setExpandedAccordion] = useState<boolean>(false);
+  const [expandedAccordion, setExpandedAccordion] = useState<boolean>(isAccordionExpanded);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [tableItemData, setTableItemData] = useState<any>();
   const [isViewMode, setIsViewMode] = useState<boolean>(false);

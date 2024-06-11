@@ -15,33 +15,33 @@ export default class AccountModel {
 
     //* --------------------- Methods ---------------------
 
-    static handlePermissions = (permissions: any): AccountSubDepartmentPermissionInterface[] => {
+    static handlePermissions = (permissions: any[]): AccountSubDepartmentPermissionInterface[] => {
+        const subDeptMap: { [key: number]: AccountSubDepartmentPermissionInterface } = {};
 
+        permissions.forEach(permission => {
+            const subDeptId = permission.subDepartment.id;
 
-        const permissionsMap = new Map();
-        permissions.forEach((permission: any) => {
-            const subDepartmentId = permission.subDepartmentId;
-            if (permissionsMap.has(subDepartmentId)) {
-                permissionsMap.get(subDepartmentId).push(permission.feature);
-            } else {
-                permissionsMap.set(subDepartmentId, [permission.feature]);
+            if (!subDeptMap[subDeptId]) {
+                subDeptMap[subDeptId] = {
+                    subDepartment: {
+                        id: permission.subDepartment.id,
+                        name: permission.subDepartment.name,
+                        roomId: permission.subDepartment.roomId,
+                        specializationId: permission.subDepartment.specializationId,
+                        departmentId: permission.subDepartment.departmentId
+                    },
+                    permissions: []
+                };
             }
-        });
 
-        const accountPermissions: AccountSubDepartmentPermissionInterface[] = [];
-        permissionsMap.forEach((permissions: any, subDepartmentId: any) => {
-            accountPermissions.push({
-                subDepartment: {
-                    id: subDepartmentId,
-                    name: permissions[0].subDepartment.name,
-                    roomId: permissions[0].subDepartment.roomId,
-                    specializationId: permissions[0].subDepartment.specializationId,
-                    departmentId: permissions[0].subDepartment.departmentId,
-                },
-                permissions: permissions,
+            subDeptMap[subDeptId].permissions.push({
+                id: permission.feature.id.toString(),
+                value: permission.feature.name,
+                code: permission.feature.code
             });
         });
 
-        return accountPermissions;
+        return Object.values(subDeptMap);
     }
 }
+

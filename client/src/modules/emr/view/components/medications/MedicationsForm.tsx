@@ -78,6 +78,24 @@ const MedicationsForm = ({
             </Grid>
             <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
+                name="medicationUsage"
+                label="استخدام الدواء"
+                value={values.medicationUsage}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.medicationUsage}
+                touched={touched.medicationUsage}
+                width="100%"
+                props={{
+                  type: "text",
+                  disabled: isViewMode,
+                }}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={1}>
+            <Grid item lg={4} md={4} sm={12} xs={12}>
+              <CustomTextField
                 isRequired
                 name="beginDate"
                 label="تاريخ البدء"
@@ -93,9 +111,7 @@ const MedicationsForm = ({
                 }}
               />
             </Grid>
-          </Grid>
-          <Grid container spacing={1}>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
+            <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
                 name="endDate"
                 label="تاريخ الانتهاء"
@@ -111,7 +127,7 @@ const MedicationsForm = ({
                 }}
               />
             </Grid>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
+            <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
                 name="dosageInstruction"
                 label="تعليمات الجرعة"
@@ -130,24 +146,7 @@ const MedicationsForm = ({
           </Grid>
 
           <Grid container spacing={1}>
-            <Grid item lg={4} md={4} sm={12} xs={12}>
-              <CustomTextField
-                name="medicationUsage"
-                label="استخدام الدواء"
-                value={values.medicationUsage}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.medicationUsage}
-                touched={touched.medicationUsage}
-                width="100%"
-                props={{
-                  type: "text",
-                  disabled: isViewMode,
-                }}
-              />
-            </Grid>
-
-            <Grid item lg={8} md={8} sm={12} xs={12}>
+            <Grid item lg={12} md={12} sm={12} xs={12}>
               <CustomTextField
                 name="comments"
                 label="تعليقات"

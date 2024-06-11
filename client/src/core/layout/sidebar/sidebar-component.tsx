@@ -31,14 +31,21 @@ const SidebarComponent = () => {
         onClick={onCollapse}
       >
         {!collapsed ? (
-          <><CloseRoundedIcon
-            sx={{
-              color: "white",
-              fontSize: "1.5rem",
-              marginY: "1vh",
-              marginX: "1vw",
-            }} /><Box component='img' src="https://i.postimg.cc/J4VLnwfN/loading.png" sx={{ width: '3rem', }} /></>
-
+          <>
+            <CloseRoundedIcon
+              sx={{
+                color: "white",
+                fontSize: "1.5rem",
+                marginY: "1vh",
+                marginX: "1vw",
+              }}
+            />
+            <Box
+              component="img"
+              src="https://i.postimg.cc/J4VLnwfN/loading.png"
+              sx={{ width: "3rem" }}
+            />
+          </>
         ) : (
           <MenuRoundedIcon sx={{ color: "white", fontSize: "1.5rem" }} />
         )}
@@ -135,14 +142,8 @@ const SidebarComponent = () => {
         text="غرفة الكشف"
         path="/dashboard/clinic"
       >
-        <SidebarSubmenuItem
-          text="الزيارات"
-          path="/dashboard/clinic/visits"
-        />
-        <SidebarSubmenuItem
-          text="الكشف"
-          path="/dashboard/clinic/examination"
-        />
+        <SidebarSubmenuItem text="الزيارات" path="/dashboard/clinic/visits" />
+        <SidebarSubmenuItem text="الكشف" path="/dashboard/clinic/examination" />
       </SidebarMenuItem>
     </Box>
   );
