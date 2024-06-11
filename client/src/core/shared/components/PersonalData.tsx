@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useFormikContext } from "formik";
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
@@ -10,18 +10,12 @@ import PersonEntity from "@/core/shared/modules/person/domain/entities/person-en
 import { LookupsState } from "../modules/lookups/presentation/controllers/types";
 import { useAppSelector } from "@/core/state/store";
 
-import Dialog from "./Dialog";
-import PersonIcon from "@mui/icons-material/Person";
 import { ServiceKeys, sl } from "@/core/service-locator";
 import { allValuesUndefined } from "../utils/object-operations";
 import { GetPersonUseCase } from "../modules/person/domain/usecases";
 import axios from "axios";
 
-import CircularProgress from "@mui/material/CircularProgress";
 import { green } from "@mui/material/colors";
-import Fab from "@mui/material/Fab";
-import CheckIcon from "@mui/icons-material/Check";
-import PrimaryButton from "./btns/PrimaryButton";
 import OCR from "./ocr/OCR";
 // import { getPerson } from "@/core/shared/modules/person/presentation/controllers/thunks/person-thunk";
 interface PersonalDataProps {
@@ -79,23 +73,23 @@ const PersonalData = ({
   const [successBack, setSuccessBack] = React.useState(false);
   const timer = React.useRef<number>();
 
-  const buttonSxFront = {
-    ...(successFront && {
-      bgcolor: green[500],
-      "&:hover": {
-        bgcolor: green[700],
-      },
-    }),
-  };
+  // const buttonSxFront = {
+  //   ...(successFront && {
+  //     bgcolor: green[500],
+  //     "&:hover": {
+  //       bgcolor: green[700],
+  //     },
+  //   }),
+  // };
 
-  const buttonSxBack = {
-    ...(successBack && {
-      bgcolor: green[500],
-      "&:hover": {
-        bgcolor: green[700],
-      },
-    }),
-  };
+  // const buttonSxBack = {
+  //   ...(successBack && {
+  //     bgcolor: green[500],
+  //     "&:hover": {
+  //       bgcolor: green[700],
+  //     },
+  //   }),
+  // };
 
   React.useEffect(() => {
     return () => {
