@@ -99,7 +99,7 @@ const SpecializationsTable = () => {
       <CustomizedDialog
         open={showSpecializationForm}
         setOpen={setShowSpecializationForm}
-        title="اضــافة تخصص"
+        title={isEditSpecializationForm ? "تعديل تخصص" : "اضافة تخصص"}
       >
         <SpecializationsForm
           setShowSpecializationForm={setShowSpecializationForm}

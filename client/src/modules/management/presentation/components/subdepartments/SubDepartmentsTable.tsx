@@ -178,7 +178,9 @@ const SubDepartmentsTable = () => {
         }}
       />
       <CustomizedDialog
-        title="اضــافة قســم فــرعي"
+        title={
+          isEditSubDepartmentForm ? "تعديل القسم الفرعي" : "اضافة قسم فرعي"
+        }
         open={showSubDepartmentForm}
         setOpen={setshowSubDepartmentForm}
       >
