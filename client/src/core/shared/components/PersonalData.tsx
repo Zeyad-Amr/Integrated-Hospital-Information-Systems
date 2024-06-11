@@ -9,13 +9,10 @@ import FeaturedVideoRoundedIcon from "@mui/icons-material/FeaturedVideoRounded";
 import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
 import { LookupsState } from "../modules/lookups/presentation/controllers/types";
 import { useAppSelector } from "@/core/state/store";
-
 import { ServiceKeys, sl } from "@/core/service-locator";
 import { allValuesUndefined } from "../utils/object-operations";
 import { GetPersonUseCase } from "../modules/person/domain/usecases";
 import axios from "axios";
-
-import { green } from "@mui/material/colors";
 import OCR from "./ocr/OCR";
 // import { getPerson } from "@/core/shared/modules/person/presentation/controllers/thunks/person-thunk";
 interface PersonalDataProps {
@@ -25,9 +22,8 @@ interface PersonalDataProps {
   //   validationSchema?: Yup.ObjectSchema<any>;
   //   isResetForm?: boolean;
   //   validateOnMount?: boolean;
-  searchSSN?: boolean
+  searchSSN?: boolean;
 }
-
 
 const extractSSNData = (
   SSN: string
@@ -59,9 +55,7 @@ const extractSSNData = (
 };
 
 // how to use useFormikContext mentioned in the documentation https://formik.org/docs/api/useFormikContext
-const PersonalData = ({
-  searchSSN = true
-}: PersonalDataProps) => {
+const PersonalData = ({ searchSSN = true }: PersonalDataProps) => {
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
@@ -73,6 +67,7 @@ const PersonalData = ({
   const [successBack, setSuccessBack] = React.useState(false);
   const timer = React.useRef<number>();
 
+  console.log(successFront, successBack);
   // const buttonSxFront = {
   //   ...(successFront && {
   //     bgcolor: green[500],
@@ -105,8 +100,9 @@ const PersonalData = ({
   const [sub, setSub] = useState(true);
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [selectedBack, setSelectedBack] = useState<any>(null);
-  const [initialFormikValues, setInitialValues] =
-    useState<PersonInterface>(PersonEntity.defaultValue());
+  const [initialFormikValues, setInitialValues] = useState<PersonInterface>(
+    PersonEntity.defaultValue()
+  );
 
   const handleFileInput = (e: any) => {
     sub
@@ -173,13 +169,15 @@ const PersonalData = ({
     handleBlur,
     handleSubmit,
     setValues,
-  } = useFormikContext<PersonInterface>()
+  } = useFormikContext<PersonInterface>();
 
   useEffect(() => {
     const ssn = values?.SSN as string;
 
     if (ssn && ssn?.length === 14 && searchSSN) {
-      const getPersonUseCase = sl.get<GetPersonUseCase>(ServiceKeys.GetPersonUseCase);
+      const getPersonUseCase = sl.get<GetPersonUseCase>(
+        ServiceKeys.GetPersonUseCase
+      );
 
       const mergeSSNData = () => {
         const extractedData = extractSSNData(ssn);
@@ -196,9 +194,12 @@ const PersonalData = ({
 
       getPersonUseCase.call(ssn).then(
         (res: any) => {
-          console.log(res, 'res');
+          console.log(res, "res");
           if (!allValuesUndefined(res)) {
-            setValues((prev) => ({ ...prev, ...PersonEntity.handleFormValues(res) }));
+            setValues((prev) => ({
+              ...prev,
+              ...PersonEntity.handleFormValues(res),
+            }));
           } else {
             mergeSSNData();
           }
@@ -211,9 +212,7 @@ const PersonalData = ({
     }
   }, [values.SSN, searchSSN]);
 
-
   return (
-
     <>
       {showDialog ? <OCR OCRStateController={setShawDialog} /> : null}
       {/* 
@@ -615,7 +614,6 @@ const PersonalData = ({
         </Grid>
       </Box>
     </>
-
   );
 };
 

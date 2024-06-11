@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { SyncLoader } from "react-spinners";
 
 class LoadingService {
@@ -37,19 +37,23 @@ class LoadingService {
             }}
           >
             <Box sx={{ display: "flex" }}>
-              <Box component='img' src="https://i.postimg.cc/J4VLnwfN/loading.png" sx={{
-                width: '8rem',
-                mb: 3,
-                animation: 'grow 0.6s infinite alternate',
-                '@keyframes grow': {
-                  from: {
-                    transform: 'scale(1)',
+              <Box
+                component="img"
+                src="https://i.postimg.cc/J4VLnwfN/loading.png"
+                sx={{
+                  width: "8rem",
+                  mb: 3,
+                  animation: "grow 0.6s infinite alternate",
+                  "@keyframes grow": {
+                    from: {
+                      transform: "scale(1)",
+                    },
+                    to: {
+                      transform: "scale(1.1)",
+                    },
                   },
-                  to: {
-                    transform: 'scale(1.1)',
-                  },
-                },
-              }} />
+                }}
+              />
 
               {/* <Typography
                 sx={{

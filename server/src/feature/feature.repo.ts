@@ -12,10 +12,6 @@ export class FeatureRepo {
     ) { }
     async create(feature: CreateFeatureDto) {
         try {
-            // check subdepartment existence
-            if (feature.subDepartmentId) {
-                await this.subdepartment.findOne(feature.subDepartmentId);
-            }
             return await this.prisma.feature.create({
                 data: {
                     name: feature.name,
