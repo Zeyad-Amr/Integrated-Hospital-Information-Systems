@@ -39,6 +39,42 @@ export class TriageAxRepo extends PrismaGenericRepo<TriageAx> {
     }
   }
 
+  
+
+  async update(id:string,data: CreateTriageAxDto) {
+    try {
+        const {  visitCode,LOCId,triageTypeId, ...triageAxData } = data;
+        const triageAx = await this.prismaService.triageAx.update({
+          where:{
+            id
+          },
+            data: {
+                visit: {
+                    connect: {
+                        code: visitCode
+                    }
+                },
+                consciousnessLevel:{
+                  connect:{
+                    id:LOCId
+                  }
+                },
+                triage:{
+                  connect:{
+                    id:triageTypeId
+                  }
+                },
+                ...triageAxData
+            }
+        });
+        return triageAx;
+    } catch (error) {
+        throw error;
+    }
+  }
+
+
+
   includeObj: Prisma.TriageAxInclude = {
     consciousnessLevel:true,
     triage:true
