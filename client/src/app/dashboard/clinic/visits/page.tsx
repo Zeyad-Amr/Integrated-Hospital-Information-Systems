@@ -1,8 +1,8 @@
 "use client";
 
-import TestPage from "@/core/shared/components/test";
 import Sidebar from "@/core/layout/sidebar/index";
 import ProtectedLayout from "@/core/shared/components/ProtectedLayout";
+import ClinicVisitsPage from "@/modules/examination/view/pages";
 
 // ----------------------------------------------------------------------
 
@@ -10,7 +10,7 @@ export default function Visits() {
   return (
     <ProtectedLayout>
         <Sidebar>
-          <TestPage label="visits" />
+          <ClinicVisitsPage/>
         </Sidebar>
     </ProtectedLayout>
   );
