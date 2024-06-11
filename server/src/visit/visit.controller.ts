@@ -27,7 +27,7 @@ import { SortingParams, Sorting } from 'src/shared/decorators/order.decorator';
 import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
 import { TriageAXDto } from './dto/triage-assessment.dto';
 import { Public } from 'src/shared/decorators/public.decorator';
-import { UpdateVisitStatus } from './dto/update-visit.dto';
+import { UpdateVisitDto, UpdateVisitStatus } from './dto/update-visit.dto';
 
 @ApiBearerAuth()
 @ApiTags('visit')
@@ -55,10 +55,10 @@ export class VisitController {
   @ApiCreatedResponse({ description: 'triage assessment has been created successfully' })
   @ApiOkResponse({ description: 'triage assessment has been updated successfully' })
   @ApiBadRequestResponse({ description: 'body has missed some data' })
-  @Patch('triage/:visitCode')
-  async addTriageAX(@Body() triageAXDto: TriageAXDto, @Param('visitCode') visitCode: string, @Req() req) {
+  @Patch(':visitCode')
+  async addTriageAX(@Body() updateVisitDto: UpdateVisitDto, @Param('visitCode') visitCode: string) {
     try {
-      return await this.visitService.addTriageAX(visitCode, triageAXDto, req.user.sub);
+      return await this.visitService.update(visitCode, updateVisitDto);
     } catch (error) {
       throw handleError(error);
     }
