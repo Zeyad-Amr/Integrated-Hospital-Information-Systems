@@ -23,6 +23,14 @@ export class VisitDto {
   @IsInt()
   @IsNotEmpty()
   sequenceNumber: number;
+
+  @ApiProperty({
+    type: String,
+    example: 'Fall on Stairs',
+  })
+  @IsOptional()
+  @IsString()
+  mainComplaint: string;
 }
 
 export class CreateVisitDto {
