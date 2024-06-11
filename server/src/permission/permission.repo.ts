@@ -23,10 +23,6 @@ export class PermissionRepo {
                 throw new NotFoundException("Feature not found");
             }
 
-            if (feature.subDepartmentId !== permission.subdepartmentId) {
-                throw new NotFoundException("Feature does not belong to the subdepartment");
-            }
-
             // check role existence
             const role = await this.prisma.roleType.findUnique({
                 where: {

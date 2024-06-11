@@ -248,8 +248,8 @@ model Medication {
   referedBy   Employee @relation(fields: [referedById], references: [id])
   referedById String
 
-  patientId String
   patient   Patient @relation(fields: [patientId], references: [id])
+  patientId String
 }
 
 model Prescription {
@@ -272,7 +272,7 @@ model Prescription {
   patient   Patient @relation(fields: [patientId], references: [id])
   patientId String
   visit     Visit   @relation(fields: [visitCode], references: [code])
-  visitCode String  @unique
+  visitCode String  
 }
 
 model TriageAx {
@@ -553,7 +553,6 @@ model SubDepartment {
   room             Room           @relation(fields: [roomId], references: [id])
   specializationId Int
   specialization   Specialization @relation(fields: [specializationId], references: [id])
-  features         Feature[]
 
   transferFrom Transfer[]    @relation("fromSubDepartment")
   transferTo   Transfer[]    @relation("toSubDepartment")
@@ -584,8 +583,6 @@ model Feature {
   id              Int            @id @default(autoincrement())
   name            String
   code            String?
-  subDepartment   SubDepartment? @relation(fields: [subDepartmentId], references: [id])
-  subDepartmentId Int?
   Permissions     Permissions[]
 }
 

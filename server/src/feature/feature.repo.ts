@@ -20,7 +20,6 @@ export class FeatureRepo {
                 data: {
                     name: feature.name,
                     code: feature.code,
-                    subDepartmentId: feature.subDepartmentId,
                 },
             });
         } catch (error) {
@@ -43,7 +42,6 @@ export class FeatureRepo {
                     id,
                 },
                 include: {
-                    subDepartment: true,
                     Permissions: true,
                 },
             });
@@ -65,7 +63,6 @@ export class FeatureRepo {
                 data: {
                     name: feature.name,
                     code: feature.code,
-                    subDepartmentId: feature.subDepartmentId,
                 },
             });
         } catch (error) {
