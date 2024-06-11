@@ -11,6 +11,7 @@ import styles from "./loginPage.module.css";
 import { useAppDispatch } from "@/core/state/store";
 import { login } from "../../controllers/thunks/auth-thunks";
 import { useRouter } from "next/navigation";
+import PageTitle from "@/core/shared/components/PageTitle";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
@@ -45,8 +46,9 @@ const LoginPage = () => {
   return (
     <Box className={`${styles.loginPage} ${styles.flexCenter}`}>
       <Box className={`${styles.loginBG}`}></Box>
-      <Box className={`${styles.loginFormContainer} ${styles.flexCenter}`}>
-        <h1 className={`${styles.title}`}>تسجيــل الدخــول</h1>
+      <Box className={`${styles.loginFormContainer} ${styles.flexCenter}`} sx={{ overflow: 'hidden' }}>
+        <Box component='img' src="https://i.postimg.cc/HnFF8MvW/logo.png" sx={{ width: '8rem', mb: 3}} />
+        <PageTitle title="تسجيــل الدخــول" />
         <Formik
           initialValues={{
             userName: "",
@@ -67,57 +69,76 @@ const LoginPage = () => {
               component="form"
               onSubmit={handleSubmit}
               noValidate
-              style={{ width: "70%" }}
+              style={{ width: "70%", justifyContent: 'center', alignItems: 'center' }}
             >
-              <Grid
-                className={`${styles.flexCenter}`}
-                style={{ height: "100%" }}
-                lg={6}
-                md={6}
-                sm={12}
-                xs={12}
-              >
-                <CustomTextField
-                  isRequired
-                  name="userName"
-                  label="اسم المستخدم"
-                  value={values.userName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.userName}
-                  touched={touched.userName}
-                  width="100%"
-                  props={{
-                    type: "text",
-                    className: "input",
-                  }}
-                />
-                <CustomTextField
-                  isRequired
-                  name="password"
-                  label="كلمة المرور"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.password}
-                  touched={touched.password}
-                  width="100%"
-                  props={{
-                    type: "password",
-                    className: "input",
-                  }}
-                />
+              <Grid container spacing={1}>
+                <Grid
+                  item
+                  style={{ height: "100%" }}
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                >
+                  <CustomTextField
+                    isRequired
+                    name="userName"
+                    label="اسم المستخدم"
+                    value={values.userName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={errors.userName}
+                    touched={touched.userName}
+                    width="100%"
+                    props={{
+                      type: "text",
+                      className: "input",
+                    }}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  style={{ height: "100%" }}
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                >
+                  <CustomTextField
+                    isRequired
+                    name="password"
+                    label="كلمة المرور"
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={errors.password}
+                    touched={touched.password}
+                    width="100%"
+                    props={{
+                      type: "password",
+                      className: "input",
+                    }}
+                  />
+                </Grid>
+                <Grid item
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}>
+
+                  <Button
+                    type="submit"
+                    style={{
+                      color: "#fff",
+                      backgroundColor: "#232836",
+                      width: "8vw",
+                    }}
+                  >
+                    دخـــول
+                  </Button>
+                </Grid>
               </Grid>
-              <Button
-                type="submit"
-                style={{
-                  color: "#fff",
-                  backgroundColor: "#232836",
-                  width: "8vw",
-                }}
-              >
-                دخـــول
-              </Button>
+
             </Box>
           )}
         </Formik>
