@@ -11,6 +11,14 @@ import EventSource from "eventsource";
 import { CustomDataTable } from "@/core/shared/components/CustomDataTable";
 import { Button } from "@mui/material";
 
+enum VisitStatus {
+  CREATED,
+  BOOKED,
+  ARRIVED,
+  TRANSFERED,
+  EXAMINED,
+  ENDED,
+}
 const ERVisitsTable = () => {
   // useRef
   const refPatientData = useRef("");
@@ -32,8 +40,9 @@ const ERVisitsTable = () => {
 
     let eventSource = new EventSource(
       Endpoints.base +
-        Endpoints.erArea.streaming +
-        "?filters=status:like:BOOKED",
+        Endpoints.visit.streaming +
+        "?filters=status:any:" +
+        VisitStatus.BOOKED,
       {
         headers: {
           Authorization: `Bearer ${token}`,
