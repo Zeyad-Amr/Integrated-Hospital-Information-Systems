@@ -7,19 +7,19 @@ import {
   FilterQuery,
   PaginatedListModel,
 } from "@/core/api";
-import { PrescriptionsInterface } from "../../interfaces/prescriptions-interface";
-import PrescriptionsModel from "../../models/prescriptions-model";
+import { DiagnosisInterface } from "../../interfaces/diagnosis-interface";
+import DiagnosisModel from "../../models/diagnosis-model";
 
-//*  Create prescription
-export const createPrescription = createAsyncThunk(
-  "prescription/create",
-  async (data: PrescriptionsInterface, thunkApi) => {
+//*  Create diagnosis
+export const createDiagnosis = createAsyncThunk(
+  "diagnosis/create",
+  async (data: DiagnosisInterface, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     const apiClient = new ApiClient();
     try {
       await apiClient.post(
-        Endpoints.prescription.create,
-        PrescriptionsModel.toJson(data)
+        Endpoints.diagnosis.create,
+        DiagnosisModel.toJson(data)
       );
       return true;
     } catch (error) {
@@ -30,16 +30,16 @@ export const createPrescription = createAsyncThunk(
   }
 );
 
-//*  Update prescription
-export const updatePrescription = createAsyncThunk(
-  "prescription/update",
-  async (data: PrescriptionsInterface, thunkApi) => {
+//*  Update diagnosis
+export const updateDiagnosis = createAsyncThunk(
+  "diagnosis/update",
+  async (data: DiagnosisInterface, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     const apiClient = new ApiClient();
     try {
       await apiClient.patch(
-        Endpoints.prescription.update,
-        PrescriptionsModel.toJson(data),
+        Endpoints.diagnosis.update,
+        DiagnosisModel.toJson(data),
         {
           pathVariables: { id: data.id },
         }
@@ -53,20 +53,20 @@ export const updatePrescription = createAsyncThunk(
   }
 );
 
-//*  Get All prescriptions
-export const getPrescriptionsList = createAsyncThunk(
-  "prescription/list",
+//*  Get All diagnosesList
+export const getDiagnosesList = createAsyncThunk(
+  "diagnosis/list",
   async (filters: FilterQuery[], thunkApi) => {
     const { rejectWithValue } = thunkApi;
     const apiClient = new ApiClient();
     try {
-      const response = await apiClient.get(Endpoints.prescription.list, {
+      const response = await apiClient.get(Endpoints.diagnosis.list, {
         filters: filters,
       });
       console.log(response, "response");
-      return PaginatedListModel.fromJson<PrescriptionsInterface>(
+      return PaginatedListModel.fromJson<DiagnosisInterface>(
         response.data,
-        response.data.items.map((item: any) => PrescriptionsModel.fromJson(item)),
+        response.data.items.map((item: any) => DiagnosisModel.fromJson(item)),
         filters
       );
     } catch (error) {
@@ -77,17 +77,17 @@ export const getPrescriptionsList = createAsyncThunk(
   }
 );
 
-//*  Get prescription Details
-export const getPrescriptionDetails = createAsyncThunk(
-  "prescription/details",
+//*  Get diagnosis Details
+export const getDiagnosisDetails = createAsyncThunk(
+  "diagnosis/details",
   async (id: string | number, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     const apiClient = new ApiClient();
     try {
-      const response = await apiClient.get(Endpoints.prescription.details, {
+      const response = await apiClient.get(Endpoints.diagnosis.details, {
         pathVariables: { id: id },
       });
-      return PrescriptionsModel.fromJson(response.data);
+      return DiagnosisModel.fromJson(response.data);
     } catch (error) {
       const errorResponse: ErrorResponse =
         error instanceof Error ? ErrorMessage.get(error.message) : error;
@@ -96,14 +96,14 @@ export const getPrescriptionDetails = createAsyncThunk(
   }
 );
 
-//*  Delete prescription
-export const deletePrescription = createAsyncThunk(
-  "prescription/delete",
+//*  Delete diagnosis
+export const deleteDiagnosis = createAsyncThunk(
+  "diagnosis/delete",
   async (id: string | number, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     const apiClient = new ApiClient();
     try {
-      await apiClient.delete(Endpoints.prescription.delete, {
+      await apiClient.delete(Endpoints.diagnosis.delete, {
         pathVariables: { id: id },
       });
       return true;

@@ -119,6 +119,13 @@ const Endpoints = {
         create: '/prescription',
         update: '/prescription/:id',
         delete: '/prescription/:id',
+    },
+    diagnosis: {
+        list: '/diagnosis',
+        details: '/diagnosis/:id',
+        create: '/diagnosis',
+        update: '/diagnosis/:id',
+        delete: '/diagnosis/:id',
     }
 };
 export default Endpoints;

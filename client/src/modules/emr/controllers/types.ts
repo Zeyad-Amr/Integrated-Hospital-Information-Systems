@@ -6,6 +6,7 @@ import { SurgeriesInterface } from "../interfaces/surgeries-interface";
 import { MedicalProblemsInterface } from "../interfaces/medical-problems-interface";
 import { MedicationsInterface } from "../interfaces/medications-interface";
 import { PrescriptionsInterface } from "../interfaces/prescriptions-interface";
+import { DiagnosisInterface } from "../interfaces/diagnosis-interface";
 
 export interface AllergiesState {
     allergies: PaginatedList<AllergiesInterface>;
@@ -38,6 +39,13 @@ export interface MedicationsState {
 export interface PrescriptionsState {
     prescriptions: PaginatedList<PrescriptionsInterface>;
     currentPrescription: PrescriptionsInterface;
+    isFetched: boolean;
+    loading: boolean;
+    error: string;
+}
+export interface DiagnosisState {
+    diagnosesList: PaginatedList<DiagnosisInterface>;
+    currentDiagnosis: DiagnosisInterface;
     isFetched: boolean;
     loading: boolean;
     error: string;

@@ -35,8 +35,8 @@ const PrescriptionsForm = ({
       onSubmit={async (values) => {
         const submitObject = {
           ...values,
-          patientId: "3c32c0ff-c15e-4d1a-9caf-1bd7c03f839b",
-          visitCode: "202406102",
+          patientId: patientId,
+          visitCode: visitCode,
         };
 
         const action = initialValues
