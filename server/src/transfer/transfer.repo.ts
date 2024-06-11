@@ -12,8 +12,8 @@ export class TransferRepo extends PrismaGenericRepo<Transfer> {
 
     async createTransfer(data: CreateTransferDto, creatorId: string): Promise<Transfer> {
         try {
-            if (data.createdAt == undefined || data.createdAt == null) {
-                data.createdAt = new Date();
+            if (data.transferDate == undefined || data.transferDate == null) {
+                data.transferDate = new Date();
             }
 
             if (data.visitStatus == undefined || data.visitStatus == null) {
@@ -36,6 +36,7 @@ export class TransferRepo extends PrismaGenericRepo<Transfer> {
                         toSubDepId: data.toSubDepId,
                         visitCode: data.visitCode,
                         createdById: creatorId,
+                        transferDate: data.transferDate
                     }
                 })
             });

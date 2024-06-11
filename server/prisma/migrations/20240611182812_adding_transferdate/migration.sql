@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Transfer" ADD COLUMN     "transferDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

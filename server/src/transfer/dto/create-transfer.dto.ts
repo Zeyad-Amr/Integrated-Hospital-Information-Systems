@@ -14,7 +14,7 @@ export class CreateTransferDto {
 
     @ApiProperty({ type: String, example: '2021-10-10T10:00:00Z' })
     @IsOptional()
-    createdAt: Date;
+    transferDate: Date;
 
     @ApiProperty({ type: String, example: 'TRANSFERED' })
     @IsOptional()

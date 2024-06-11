@@ -33,7 +33,7 @@ export class Transfer {
 
   @ApiProperty({ type: String, example: '2021-10-10T10:00:00Z' })
   @IsOptional()
-  createdAt: Date;
+  transferDate: Date;
 }
 export class CreateVisitDto {
   @ApiProperty({ type: CreatePersonDto, required: true })

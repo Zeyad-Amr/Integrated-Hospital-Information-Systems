@@ -514,6 +514,8 @@ model Transfer {
   toSubDep     SubDepartment  @relation("toSubDepartment", fields: [toSubDepId], references: [id])
   toSubDepId   Int
 
+  transferDate DateTime @default(now())
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
