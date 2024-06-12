@@ -64,13 +64,17 @@ const ErAreaForm = ({
   const dispatch = useAppDispatch();
 
   const transferPatientVisit = () => {
-    dispatch(createVisitTransfer({ status : "TRANSFERED", visitCode : patientData?.code  })).then((res) => {
+    dispatch(
+      createVisitTransfer({
+        status: "TRANSFERED",
+        visitCode: patientData?.code,
+      })
+    ).then((res) => {
       if (res.meta.requestStatus == "fulfilled") {
-        setOpenDialog(false)
+        setOpenDialog(false);
       }
-    })
-  }
-
+    });
+  };
 
   return (
     <div>
@@ -145,11 +149,11 @@ const ErAreaForm = ({
           </CustomAccordion>
 
           <SecondaryButton
-              title="انهاء"
-              type="button"
-              sx={{ margin : "2rem 0rem 1rem 0rem"}}
-              onClick={() => transferPatientVisit()}
-            />
+            title="انهاء"
+            type="button"
+            sx={{ margin: "2rem 0rem 1rem 0rem" }}
+            onClick={() => transferPatientVisit()}
+          />
 
           {/* //* Start Transfer Data *******************  */}
           {/* <CustomAccordion

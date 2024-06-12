@@ -3,17 +3,33 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { useRouter } from "next/navigation";
+import { VisitStatus } from "@/modules/registration/domain/entities/visit-entity";
+import { useAppDispatch } from "@/core/state/store";
+import { createVisitTransfer } from "@/modules/registration/presentation/controllers/thunks/visits-thunks";
 
 interface ExaminationHeaderProps {
   patientName: string;
   clinicName: string;
+  visitId: string;
 }
 
 const ExaminationHeader = ({
   patientName,
   clinicName,
+  visitId,
 }: ExaminationHeaderProps) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const transferPatientVisit = (status: VisitStatus, visitCode: string) => {
+    dispatch(
+      createVisitTransfer({ status: status, visitCode: visitCode })
+    ).then((res) => {
+      if (res.meta.requestStatus == "fulfilled") {
+        router.push("/dashboard/clinic/visits");
+      }
+    });
+  };
   return (
     <Box
       sx={{
@@ -38,7 +54,7 @@ const ExaminationHeader = ({
         title="انهاء الزيارة"
         onClick={() => {
           console.log("انهاء الزيارة");
-          router.push("/dashboard/clinic/visits");
+          transferPatientVisit(VisitStatus.EXAMINED, visitId);
         }}
       />
     </Box>

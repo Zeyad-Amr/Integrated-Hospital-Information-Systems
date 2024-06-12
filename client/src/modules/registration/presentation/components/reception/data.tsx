@@ -2,25 +2,26 @@ import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
 export interface DataItem {
   id: any;
-  sequenceNumber: string;
+  // sequenceNumber: string;
   name: string;
   date: string;
   time: string;
   watingTime: any;
   age?: any;
   gender?: string;
-  assessment?: any;
+  status: any;
+  arrival: any;
 }
 
 export const header: HeaderItem[] = [
-  {
-    filterKey: "sequenceNumber",
-    id: "sequenceNumber",
-    label: "رقم التردد",
-    minWidth: 50,
-    tableCellProps: { align: "center" },
-    showBorder: true,
-  },
+  // {
+  //   filterKey: "sequenceNumber",
+  //   id: "sequenceNumber",
+  //   label: "رقم التردد",
+  //   minWidth: 50,
+  //   tableCellProps: { align: "center" },
+  //   showBorder: true,
+  // },
   {
     filterKey: "id",
     id: "id",
@@ -50,6 +51,15 @@ export const header: HeaderItem[] = [
     tableCellProps: { align: "center", style: { direction: "ltr" } },
   },
   {
+    filterKey: "status",
+    id: "status",
+    label: "الحالة",
+    isComponent: true,
+    minWidth: 50,
+    tableCellProps: { align: "center" },
+    showBorder: true,
+  },
+  {
     filterKey: "watingTime",
     id: "watingTime",
     label: `وقت الانتظار (hh:mm)`,
@@ -58,8 +68,8 @@ export const header: HeaderItem[] = [
     tableCellProps: { align: "center" },
   },
   {
-    filterKey: "assessment",
-    id: "assessment",
+    filterKey: "arrival",
+    id: "arrival",
     label: "",
     isComponent: true,
     minWidth: 100,

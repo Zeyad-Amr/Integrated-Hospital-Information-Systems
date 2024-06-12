@@ -24,6 +24,7 @@ const Endpoints = {
     triageAX:
       "/visit/triage/:visitCode",
     streaming: "/streaming/event",
+
   },
   incident: {
     create: "/incident",

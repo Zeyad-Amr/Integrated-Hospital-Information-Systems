@@ -11,17 +11,27 @@ import EventSource from "eventsource";
 import { CustomDataTable } from "@/core/shared/components/CustomDataTable";
 import { Button } from "@mui/material";
 import { VisitStatus } from "@/modules/registration/domain/entities/visit-entity";
+import { useAppDispatch } from "@/core/state/store";
+import { createVisitTransfer } from "../../controllers/thunks/visits-thunks";
 
 const ReceptionTable = () => {
   // useRef
   const refPatientData = useRef("");
 
   // useState
-  const [showDialog, setShawDialog] = useState(false);
+  // const [showDialog, setShawDialog] = useState(false);
   const [streamedData, setStreamedData] = useState([]);
   const [tableData, setTableData] = useState<any[]>([]);
   const eventSourceRef = useRef<any>(null);
-
+  const dispatch = useAppDispatch();
+  const transferPatientVisit = (status: VisitStatus, visitCode: string) => {
+    dispatch(
+      createVisitTransfer({ status: status, visitCode: visitCode })
+    ).then((res) => {
+      if (res.meta.requestStatus == "fulfilled") {
+      }
+    });
+  };
   useEffect(() => {
     const token: string =
       SessionStorage.getDataByKey(SessionStorageKeys.token) ?? "";
@@ -125,7 +135,7 @@ const ReceptionTable = () => {
     apiData.forEach((item) => {
       newTableData.push({
         id: item?.code,
-        sequenceNumber: item?.sequenceNumber,
+        // sequenceNumber: item?.sequenceNumber,
         name: item?.patient?.person
           ? item.patient?.person?.firstName +
             " " +
@@ -143,24 +153,54 @@ const ReceptionTable = () => {
         }),
         age: calcAge(item?.patient?.person?.birthDate),
         gender: item?.patient?.person?.gender?.value,
+        status: (
+          <Box
+            color={
+              item?.status === VisitStatus.BOOKED.toString()
+                ? "blue"
+                : item?.status === VisitStatus.ARRIVED.toString()
+                ? "green"
+                : item?.status === VisitStatus.TRANSFERED.toString().toString()
+                ? "orange"
+                : item?.status === VisitStatus.EXAMINED.toString()
+                ? "red"
+                : "black"
+            }
+          >
+            {item?.status === VisitStatus.BOOKED.toString() ? "محجوز" : ""}
+            {item?.status === VisitStatus.ARRIVED.toString() ? "وصل" : ""}
+            {item?.status === VisitStatus.TRANSFERED.toString()
+              ? "تم التحويل"
+              : ""}
+            {item?.status === VisitStatus.EXAMINED.toString() ? "تم الكشف" : ""}
+            {item?.status === VisitStatus.ENDED.toString() ? "انتهى" : ""}
+          </Box>
+        ),
         watingTime: (
           <Box color={getColorBasedOnTime(item?.createdAt)} fontWeight={600}>
             {timePassed(item?.createdAt)}
           </Box>
         ),
-        assessment: (
+        arrival: (item?.status === VisitStatus.BOOKED.toString() ||
+          item?.status === VisitStatus.EXAMINED.toString()) && (
           <Button
             color="info"
             variant="outlined"
             fullWidth
             onClick={() => {
               console.log(item);
-              // refPatientData.current = item ?? "";
-              // console.log(refPatientData.current);
-              // if (refPatientData.current) setShawDialog(true);
+              if (item?.status === VisitStatus.BOOKED.toString()) {
+                transferPatientVisit(VisitStatus.ARRIVED, item.code);
+              } else if (item?.status === VisitStatus.EXAMINED.toString()) {
+                transferPatientVisit(VisitStatus.ENDED, item.code);
+              }
             }}
           >
-            التقييم
+            {item?.status === VisitStatus.BOOKED.toString()
+              ? "وصول"
+              : item?.status === VisitStatus.EXAMINED.toString()
+              ? "انهاء"
+              : ""}
           </Button>
         ),
       });
@@ -189,7 +229,7 @@ const ReceptionTable = () => {
         onRowClick={(item) => {
           refPatientData.current = item;
           console.log(refPatientData.current);
-          if (refPatientData.current) setShawDialog(true);
+          // if (refPatientData.current) setShawDialog(true);
         }}
       />
 

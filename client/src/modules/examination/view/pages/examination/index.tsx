@@ -10,7 +10,11 @@ const ExaminationPage = () => {
   console.log("visitId", visitId);
   return (
     <>
-      <ExaminationHeader patientName="باسل توفيق" clinicName="امراض تناسلية" />
+      <ExaminationHeader
+        patientName="باسل توفيق"
+        clinicName="امراض تناسلية"
+        visitId={visitId as string}
+      />
       <Tabs
         Tabs={[
           { name: "السجل المرضي", content: <PatientHistory /> },
