@@ -8,7 +8,7 @@ import { Filter } from 'src/shared/decorators/filters.decorator';
 import { Sorting } from 'src/shared/decorators/order.decorator';
 import { TriageAXDto } from './dto/triage-assessment.dto';
 import { PrismaService } from 'src/shared/services/prisma-client/prisma.service';
-import { UpdateVisitStatus } from './dto/update-visit.dto';
+import { UpdateVisitDto, UpdateVisitStatus } from './dto/update-visit.dto';
 
 
 
@@ -72,6 +72,14 @@ export class VisitService {
     }
   }
 
+  async update(visitCode: string,updateVisitDto:UpdateVisitDto) {
+    try {
+      return await this.visitRepo.updateVisit(visitCode,updateVisitDto);
+    } catch (error) {
+      throw error
+    }
+  }
+
   async findERAreaVisits() {
     try {
       const now = new Date();
@@ -97,15 +105,6 @@ export class VisitService {
         sort: { direction: 'desc', property: 'createdAt' }
 
       });
-    } catch (error) {
-      throw error
-    }
-  }
-
-  async addTriageAX(code: string, data: TriageAXDto, employeeId: string) {
-    try {
-
-      return await this.visitRepo.addTriageAss(code, data, employeeId)
     } catch (error) {
       throw error
     }

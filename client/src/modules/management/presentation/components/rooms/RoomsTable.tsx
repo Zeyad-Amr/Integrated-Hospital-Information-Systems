@@ -95,7 +95,7 @@ const RoomsTable = () => {
       <CustomizedDialog
         open={showRoomForm}
         setOpen={setshowRoomForm}
-        title="اضــافة غــرفة"
+        title={isEditRoomForm ? "تعديل غرفة" : "اضافة غرفة"}
       >
         <RoomsForm
           isEdit={isEditRoomForm}

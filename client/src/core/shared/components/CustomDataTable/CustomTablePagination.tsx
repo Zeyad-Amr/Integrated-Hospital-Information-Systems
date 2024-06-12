@@ -5,7 +5,7 @@ interface CustomTablePaginationProps {
   dataLength: number;
 }
 export const initialPage = 0;
-export const initialRowsPerPage = 5;
+export const initialRowsPerPage = 10;
 const CustomTablePagination = ({ dataLength }: CustomTablePaginationProps) => {
   const { page, rowsPerPage, setPage, setRowsPerPage } = useTableContext();
 

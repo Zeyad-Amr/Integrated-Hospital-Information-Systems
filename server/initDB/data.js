@@ -1,8 +1,12 @@
 const departmentsData = [
-    { name: 'Registration' },
-    { name: 'Examination' },
-    { name: 'Inpatient' },
-    { name: 'Administration' },
+    { name: 'الإدارة' },
+{ name: 'مركز الاتصال' },
+{ name: 'الاستقبال' },
+{ name: 'التقييم' },
+{ name: 'الفحص' },
+{ name: 'المرضى الداخليين' },
+
+    
 ]
 // const departmentsData = [
 //     { name: 'Triage A' },

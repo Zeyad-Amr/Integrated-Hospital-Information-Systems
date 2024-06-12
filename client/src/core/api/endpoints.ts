@@ -151,5 +151,6 @@ const Endpoints = {
     update: "/lab-test/:id",
     delete: "/lab-test/:id",
   },
+
 };
 export default Endpoints;
