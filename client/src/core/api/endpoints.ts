@@ -16,6 +16,7 @@ const Endpoints = {
   visit: {
     list: "/visit",
     details: "/visit/:visitcode",
+    transfer: "/visit/:visitcode/status",
     create: "/visit",
     createAnonymously:
       "/visit/anonymous",
