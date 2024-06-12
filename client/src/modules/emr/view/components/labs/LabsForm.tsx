@@ -3,17 +3,17 @@ import { ExaminationFormComponentPropsInterface } from "@/core/shared/components
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { useAppDispatch } from "@/core/state/store";
 import {
-  createVital,
-  updateVital,
-} from "@/modules/emr/controllers/thunks/vitals-thunk";
-import { VitalsInterface } from "@/modules/emr/interfaces/vitals-interface";
-import VitalsModel from "@/modules/emr/models/vitals-model";
+  createLab,
+  updateLab,
+} from "@/modules/emr/controllers/thunks/labs-thunk";
+import { LabsInterface } from "@/modules/emr/interfaces/labs-interface";
+import LabsModel from "@/modules/emr/models/labs-model";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik } from "formik";
 import React from "react";
 
-const VitalsForm = ({
+const LabsForm = ({
   patientId,
   visitCode,
   initialValues,
@@ -28,8 +28,8 @@ const VitalsForm = ({
           ? ({
               ...initialValues,
 
-            } as VitalsInterface)
-          : VitalsModel.defaultValues()
+            } as LabsInterface)
+          : LabsModel.defaultValues()
       }
       onSubmit={async (values) => {
         const submitObject = {
@@ -39,8 +39,8 @@ const VitalsForm = ({
         };
 
         const action = initialValues
-          ? updateVital(submitObject)
-          : createVital(submitObject);
+          ? updateLab(submitObject)
+          : createLab(submitObject);
 
         dispatch(action).then((res) => {
           if (res?.meta.requestStatus == "fulfilled") {
@@ -48,7 +48,7 @@ const VitalsForm = ({
           }
         });
       }}
-      validationSchema={VitalsModel.vitalsFormValidations()}
+      validationSchema={LabsModel.labsFormValidations()}
     >
       {({
         values,
@@ -243,4 +243,4 @@ const VitalsForm = ({
   );
 };
 
-export default VitalsForm;
+export default LabsForm;

@@ -1,7 +1,7 @@
 import { Yup } from "@/core/shared/utils/validation";
 import { VitalsInterface } from "../interfaces/vitals-interface";
 
-export default class VitalssModel {
+export default class VitalsModel {
     //*   Default form values
     static defaultValues(): VitalsInterface {
         return {
