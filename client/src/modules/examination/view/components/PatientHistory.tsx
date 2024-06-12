@@ -7,7 +7,6 @@ import SurgeriesComponent from "@/modules/emr/view/components/surgeries/Surgerie
 import { Grid } from "@mui/material";
 import React from "react";
 import AddComplaint from "./AddComplaint";
-import DemographicData from "./DemographicData";
 import { VisitsState } from "@/modules/registration/presentation/controllers/types";
 
 interface PatientHistoryPropsInterface {
@@ -19,14 +18,15 @@ const PatientHistory = ({ visitState }: PatientHistoryPropsInterface) => {
     <>
       <Grid container spacing={1} sx={{ mb: 2 }}>
         <Grid item lg={12} md={12} sm={12} xs={12}>
-          <AddComplaint />
+          {visitState?.currentVisit?.code && (
+            <AddComplaint visitCode={visitState?.currentVisit?.code} />
+          )}
         </Grid>
         {/* <Grid item lg={8} md={8} sm={12} xs={12}>
           <DemographicData />
-        </Grid>
         </Grid> */}
-
       </Grid>
+
       <Grid container spacing={1}>
         <Grid item lg={6} md={6} sm={12} xs={12}>
           <Grid container spacing={1}>

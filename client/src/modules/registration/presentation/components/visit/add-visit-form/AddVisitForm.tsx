@@ -1,19 +1,19 @@
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
-import { Button, Box, Typography, Grid } from "@mui/material";
+import { Button, Box, Grid } from "@mui/material";
 import { Formik, FormikProps } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
-import AdditionalData from "@/modules/registration/presentation/components/AdditionalData";
+// import AdditionalData from "@/modules/registration/presentation/components/AdditionalData";
 import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import { AdditionalDataInterface } from "@/modules/registration/domain/interfaces/additional-data-interface";
-import AdditionalDataEntity from "@/modules/registration/domain/entities/additional-data-entity";
+// import AdditionalDataEntity from "@/modules/registration/domain/entities/additional-data-entity";
 import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
 import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
 import VisitEntity from "@/modules/registration/domain/entities/visit-entity";
 import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
 import { createVisit } from "../../../controllers/thunks/visits-thunks";
-import CompanionForm from "../../CompanionForm";
+// import CompanionForm from "../../CompanionForm";
 import PersonalData from "@/core/shared/components/PersonalData";
 import { CompanionInterface } from "@/modules/registration/domain/interfaces/companion-interface";
 import { TransferDataInterface } from "@/modules/registration/domain/interfaces/transfer-data-interface";
@@ -29,13 +29,13 @@ const AddVisitForm = () => {
   const [patientDataExpanded, setPatientDataExpanded] = useState<boolean>(true);
   const [transferDataExpanded, setTransferDataExpanded] =
     useState<boolean>(true);
-  const [companionDataExpanded, setCompanionDataExpanded] =
-    useState<boolean>(false);
-  const [additionalDataExpanded, setAdditionalDataExpanded] =
-    useState<boolean>(false);
+  // const [companionDataExpanded, setCompanionDataExpanded] =
+  //   useState<boolean>(false);
+  // const [additionalDataExpanded, setAdditionalDataExpanded] =
+  //   useState<boolean>(false);
   const [combinedValues, setCombinedValues] = useState<VisitInterface>();
 
-  const [isChild, setIsChild] = useState<boolean>(false);
+  // const [isChild, setIsChild] = useState<boolean>(false);
 
   //* buttons useRef
   const refSubmitPatient: any = useRef(null);
@@ -85,22 +85,22 @@ const AddVisitForm = () => {
   };
 
   //* Handle Companion Submit
-  const handleCompanionSubmit = (values: PersonInterface) => {
-    companionData.current = values;
-    setCombinedValues((previous) => ({
-      ...previous,
-      companion: values,
-    }));
-  };
+  // const handleCompanionSubmit = (values: PersonInterface) => {
+  //   companionData.current = values;
+  //   setCombinedValues((previous) => ({
+  //     ...previous,
+  //     companion: values,
+  //   }));
+  // };
 
   //* Handle Additional Data Submit
-  const handleAdditionalDataSubmit = (values: AdditionalDataInterface) => {
-    additionalData.current = values;
-    setCombinedValues((previous) => ({
-      ...previous,
-      additionalInfo: values,
-    }));
-  };
+  // const handleAdditionalDataSubmit = (values: AdditionalDataInterface) => {
+  //   additionalData.current = values;
+  //   setCombinedValues((previous) => ({
+  //     ...previous,
+  //     additionalInfo: values,
+  //   }));
+  // };
 
   //* Handle Transfer Data Submit
   const handleTransferDataSubmit = (values: TransferDataInterface) => {
@@ -186,14 +186,15 @@ const AddVisitForm = () => {
             handlePatientSubmit(values);
           }}
           // validateOnMount={true}
-          validationSchema={VisitEntity.getPatientSchema(!isChild)}
+          // validationSchema={VisitEntity.getPatientSchema(!isChild)}
+          validationSchema={VisitEntity.getPatientSchema(true)}
         >
           {({
-            values,
-            touched,
-            errors,
-            handleChange,
-            handleBlur,
+            // values,
+            // touched,
+            // errors,
+            // handleChange,
+            // handleBlur,
             handleSubmit,
           }) => (
             <Box component="form" onSubmit={handleSubmit} noValidate>

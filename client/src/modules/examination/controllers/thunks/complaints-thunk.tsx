@@ -4,8 +4,6 @@ import {
     Endpoints,
     ErrorMessage,
     ErrorResponse,
-    FilterQuery,
-    PaginatedListModel,
 } from "@/core/api";
 import { ComplaintsInterface } from "../../interfaces/complaints-interface";
 import ComplaintsModel from "../../models/complaints-model";
@@ -21,7 +19,7 @@ export const updateComplaint = createAsyncThunk(
                 Endpoints.visit.details,
                 ComplaintsModel.toJson(data),
                 {
-                    pathVariables: { id: data.id },
+                    pathVariables: { visitcode: data.visitCode },
                 }
             );
             return true;
