@@ -151,6 +151,12 @@ const Endpoints = {
     update: "/lab-test/:id",
     delete: "/lab-test/:id",
   },
-
+  radiologies: {
+    list: "/radiology-image",
+    details: "/radiology-image/:id",
+    create: "/radiology-image",
+    update: "/radiology-image/:id",
+    delete: "/radiology-image/:id",
+  },
 };
 export default Endpoints;

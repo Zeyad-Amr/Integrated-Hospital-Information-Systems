@@ -1,9 +1,9 @@
 "use client";
 
-import LabsComponent from "@/modules/emr/view/components/labs/LabsComponent";
+import RadiologiesComponent from "@/modules/emr/view/components/radiologies/RadiologiesComponent";
 
 // ----------------------------------------------------------------------
 
 export default function Test() {
-  return <LabsComponent />;
+  return <RadiologiesComponent />;
 }
