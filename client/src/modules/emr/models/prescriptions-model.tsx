@@ -25,6 +25,7 @@ export default class PrescriptionsModel {
         .max(45, "يجب أن يحتوي الاسم على الأكثر 45 حرف"),
       beginDate: Yup.date()
         .nullable()
+        .required("تاريخ البداية مطلوب")
         .typeError("يجب أن يكون تاريخًا صالحًا")
         .required("تاريخ البدء مطلوب"),
       quantity: Yup.number()

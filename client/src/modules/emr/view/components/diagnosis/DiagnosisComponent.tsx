@@ -8,8 +8,11 @@ import {
   getDiagnosesList,
 } from "@/modules/emr/controllers/thunks/diagnosis-thunk";
 import DiagnosisForm from "./DiagnosisForm";
+import { PatientIDsInterface } from "@/modules/emr/interfaces/patientIds-interface";
 
-const DiagnosisComponent = () => {
+const DiagnosisComponent = ({ patientId , visitCode } : PatientIDsInterface) => {
+  console.log(patientId,'patientIdiiiiiiiiiiiiiiiiiii');
+  console.log(visitCode,'visitCodeeeeeeeeeeeeeeeeeeeeeeeee');
   const diagnosisState: DiagnosisState = useAppSelector(
     (state: any) => state.diagnosis
   );
@@ -21,6 +24,8 @@ const DiagnosisComponent = () => {
       tableHeader={diagnosisHeaderTable}
       title="التشخيصات"
       FormComponent={DiagnosisForm}
+      patientId={patientId}
+      visitCode={visitCode}
     />
   );
 };

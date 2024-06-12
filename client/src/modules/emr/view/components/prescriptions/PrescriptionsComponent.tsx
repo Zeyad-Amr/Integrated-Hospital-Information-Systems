@@ -8,8 +8,9 @@ import {
 } from "@/modules/emr/controllers/thunks/prescriptions-thunk";
 import PrescriptionsForm from "./PrescriptionsForm";
 import { prescriptionsHeaderTable } from "./data";
+import { PatientIDsInterface } from "@/modules/emr/interfaces/patientIds-interface";
 
-const PrescriptionsComponent = () => {
+const PrescriptionsComponent = ({patientId , visitCode} : PatientIDsInterface) => {
   const prescriptionsState: PrescriptionsState = useAppSelector(
     (state: any) => state.prescriptions
   );
@@ -22,6 +23,8 @@ const PrescriptionsComponent = () => {
       title="الروشتات"
       FormComponent={PrescriptionsForm}
       formDialogMaxWidth="md"
+      patientId={patientId}
+      visitCode={visitCode}
     />
   );
 };

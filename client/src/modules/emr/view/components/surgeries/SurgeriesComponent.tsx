@@ -9,8 +9,9 @@ import {
   getSurgeriesList,
 } from "@/modules/emr/controllers/thunks/surgeries-thunk";
 import SurgeriesForm from "./SurgeriesForm";
+import { PatientIDsInterface } from "@/modules/emr/interfaces/patientIds-interface";
 
-const SurgeriesComponent = () => {
+const SurgeriesComponent = ({patientId , visitCode} : PatientIDsInterface) => {
   const surgeriesState: SurgeriesState = useAppSelector(
     (state: any) => state.surgeries
   );
@@ -22,6 +23,8 @@ const SurgeriesComponent = () => {
       tableHeader={surgeriesHeaderTable}
       title="الجراحة"
       FormComponent={SurgeriesForm}
+      patientId={patientId}
+      visitCode={visitCode}
     />
   );
 };

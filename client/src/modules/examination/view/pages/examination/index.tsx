@@ -35,7 +35,7 @@ const ExaminationPage = () => {
         />
         <Tabs
           Tabs={[
-            { name: "السجل المرضي", content: <PatientHistory /> },
+            { name: "السجل المرضي", content: <PatientHistory visitState={visitState} /> },
             { name: "المعامل", content: <Box>المعامل</Box> },
             { name: "الأشعة", content: <Box>الأشعة</Box> },
             {

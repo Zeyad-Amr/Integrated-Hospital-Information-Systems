@@ -8,8 +8,9 @@ import {
   getMedicalProblemsList,
 } from "@/modules/emr/controllers/thunks/medical-problems-thunk";
 import MedicalProblemsForm from "./MedicalProblemsForm";
+import { PatientIDsInterface } from "@/modules/emr/interfaces/patientIds-interface";
 
-const MedicalProblemsComponent = () => {
+const MedicalProblemsComponent = ({ patientId }: PatientIDsInterface) => {
   const medicalProblemsState: MedicalProblemsState = useAppSelector(
     (state: any) => state.medicalProblems
   );
@@ -22,6 +23,7 @@ const MedicalProblemsComponent = () => {
       title="المشاكل الطبية"
       FormComponent={MedicalProblemsForm}
       formDialogMaxWidth="md"
+      patientId={patientId}
     />
   );
 };
