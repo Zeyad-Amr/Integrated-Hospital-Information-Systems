@@ -9,6 +9,7 @@ interface VisitInterface {
     sequenceNumber?: string;
     createdAt?: Date;
     updatedAt?: Date;
+    patientId?: string;
     patient?: PersonInterface;
     companion?: CompanionInterface;
     additionalInfo?: AdditionalDataInterface

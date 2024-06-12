@@ -26,6 +26,7 @@ export default class VisitModel {
             patient: entity.patient ? PersonModel.toJson(entity.patient) : undefined,
             companion: entity.companion && !allValuesUndefined(entity.companion) ? { ...PersonModel.toJson(entity.companion), kinshipId: entity.companion.kinship } : undefined,
             visitCode: entity.visitCode,
+
         };
     }
 
@@ -36,6 +37,7 @@ export default class VisitModel {
             sequenceNumber: json.sequenceNumber,
             createdAt: json.createdAt,
             updatedAt: json.updatedAt,
+            patientId: json.patientId,
             patient: json.patientId == null && json.patient == null ? undefined : PersonModel.fromJson(json.patient.person),
             companion: json.companionId == null && json.companion == null ? undefined : CompanionModel.fromJson(json.companion),
             additionalInfo: json.AdditionalInformation == null ? undefined : AdditionalDataModel.fromJson(json.AdditionalInformation),

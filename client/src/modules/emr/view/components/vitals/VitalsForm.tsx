@@ -46,7 +46,6 @@ const VitalsForm = ({
 
         dispatch(action).then((res) => {
           if (res?.meta.requestStatus == "fulfilled") {
-            debugger
             setShowFormDialog(false);
             if (formikRef.current) formikRef.current.resetForm();
           }
