@@ -7,48 +7,85 @@ import SurgeriesComponent from "@/modules/emr/view/components/surgeries/Surgerie
 import { Grid } from "@mui/material";
 import React from "react";
 import AddComplaint from "./AddComplaint";
-import DemographicData from "./DemographicData";
+import { VisitsState } from "@/modules/registration/presentation/controllers/types";
 
-const PatientHistory = () => {
+interface PatientHistoryPropsInterface {
+  visitState: VisitsState;
+}
+
+const PatientHistory = ({ visitState }: PatientHistoryPropsInterface) => {
   return (
     <>
       <Grid container spacing={1} sx={{ mb: 2 }}>
         <Grid item lg={12} md={12} sm={12} xs={12}>
-          <AddComplaint />
+          {visitState?.currentVisit?.code && (
+            <AddComplaint visitCode={visitState?.currentVisit?.code} />
+          )}
         </Grid>
         {/* <Grid item lg={8} md={8} sm={12} xs={12}>
           <DemographicData />
         </Grid> */}
-
       </Grid>
+
       <Grid container spacing={1}>
         <Grid item lg={6} md={6} sm={12} xs={12}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
-              <DiagnosisComponent />
+              {visitState?.currentVisit?.patientId &&
+                visitState?.currentVisit?.code && (
+                  <DiagnosisComponent
+                    patientId={visitState?.currentVisit?.patientId}
+                    visitCode={visitState?.currentVisit?.code}
+                  />
+                )}
             </Grid>
             <Grid item xs={12}>
-              <MedicationsComponent />
+              {visitState?.currentVisit?.patientId && (
+                <MedicationsComponent
+                  patientId={visitState?.currentVisit?.patientId}
+                />
+              )}
             </Grid>
             <Grid item xs={12}>
-              <SurgeriesComponent />
+              {visitState?.currentVisit?.patientId &&
+                visitState?.currentVisit?.code && (
+                  <SurgeriesComponent
+                    patientId={visitState?.currentVisit?.patientId}
+                    visitCode={visitState?.currentVisit?.code}
+                  />
+                )}
             </Grid>
           </Grid>
         </Grid>
         <Grid item lg={6} md={6} sm={12} xs={12}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
-              <AllergiesComponent />
+              {visitState?.currentVisit?.patientId && (
+                <AllergiesComponent
+                  patientId={visitState?.currentVisit?.patientId}
+                />
+              )}
             </Grid>
             <Grid item xs={12}>
-              <PrescriptionsComponent />
+              {visitState?.currentVisit?.patientId &&
+                visitState?.currentVisit?.code && (
+                  <PrescriptionsComponent
+                    patientId={visitState?.currentVisit?.patientId}
+                    visitCode={visitState?.currentVisit?.code}
+                  />
+                )}
             </Grid>
             <Grid item xs={12}>
-              <MedicalProblemsComponent />
+              {visitState?.currentVisit?.patientId && (
+                <MedicalProblemsComponent
+                  patientId={visitState?.currentVisit?.patientId}
+                />
+              )}
             </Grid>
           </Grid>
         </Grid>
-      </Grid></>
+      </Grid>
+    </>
   );
 };
 

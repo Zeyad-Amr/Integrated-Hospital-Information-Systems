@@ -14,7 +14,6 @@ export default class MedicationsModel {
     };
   }
 
-  //* Define validation schema using Yup
   static medicationsFormValidations(): Yup.ObjectSchema<any> {
     return Yup.object({
       drugName: Yup.string()
@@ -23,6 +22,7 @@ export default class MedicationsModel {
         .max(45, "يجب أن يحتوي الاسم على الأكثر 45 حرف"),
       beginDate: Yup.date()
         .nullable()
+        .required("تاريخ البداية مطلوب")
         .typeError("يجب أن يكون تاريخًا صالحًا")
         .test(
           "beginDate-before-endDate",
@@ -38,6 +38,7 @@ export default class MedicationsModel {
         ),
       endDate: Yup.date()
         .nullable()
+        .required("تاريخ الانتهاء مطلوب")
         .typeError("يجب أن يكون تاريخًا صالحًا")
         .test(
           "endDate-after-beginDate",

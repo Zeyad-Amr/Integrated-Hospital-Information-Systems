@@ -8,8 +8,9 @@ import { AllergiesState } from "@/modules/emr/controllers/types";
 import React from "react";
 import { allergiesHeaderTable } from "./data";
 import AllergiesForm from "./AllergiesForm";
+import { PatientIDsInterface } from "@/modules/emr/interfaces/patientIds-interface";
 
-const AllergiesComponent = () => {
+const AllergiesComponent = ({patientId} : PatientIDsInterface) => {
   const allergiesState: AllergiesState = useAppSelector(
     (state: any) => state.allergies
   );
@@ -22,6 +23,7 @@ const AllergiesComponent = () => {
       title="الحساسية"
       FormComponent={AllergiesForm}
       formDialogMaxWidth="md"
+      patientId={patientId}
     />
   );
 };
