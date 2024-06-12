@@ -12,8 +12,8 @@ import { TriageInterface } from "@/modules/emr/interfaces/triage-interface";
 import TriageModel from "@/modules/emr/models/triage-model";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
-import { Formik } from "formik";
-import React from "react";
+import { Formik, FormikProps } from "formik";
+import React, { useRef } from "react";
 
 const TriageForm = ({
   visitCode,
@@ -25,8 +25,10 @@ const TriageForm = ({
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
+  const formikRef = useRef<FormikProps<TriageInterface>>(null);
   return (
     <Formik
+      innerRef={formikRef}
       initialValues={
         initialValues
           ? ({
@@ -47,6 +49,7 @@ const TriageForm = ({
 
         dispatch(action).then((res) => {
           if (res?.meta.requestStatus == "fulfilled") {
+            if (formikRef.current) formikRef.current.resetForm();
             setShowFormDialog(false);
           }
         });

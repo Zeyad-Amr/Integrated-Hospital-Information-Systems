@@ -1,28 +1,14 @@
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
 import CustomAlertHeaderData from "@/core/shared/components/CustomAlertHeaderData";
 import CustomFullScreenDialog from "@/core/shared/components/CustomFullScreenDialog";
-import CustomMultiSelectField from "@/core/shared/components/CustomMultiSelectField";
-import CustomSelectField from "@/core/shared/components/CustomSelectField";
-import CustomTextField from "@/core/shared/components/CustomTextField";
-import VitalsData from "@/core/shared/components/VitalsData";
-import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
-import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
-import { useAppDispatch, useAppSelector } from "@/core/state/store";
-import TriageAXEntity from "@/modules/er-area/domain/entities/triageAX-without-vitals-entity";
-import VitalsEntity from "@/modules/er-area/domain/entities/vitals-entity";
-import VitalsInterface from "@/modules/er-area/domain/interfaces/vitals-interface";
-import { Box, Button, Grid } from "@mui/material";
-import { Formik, FormikProps } from "formik";
-import React, { useEffect, useRef, useState } from "react";
-import { createTriagAX } from "../../controllers/thunks/triagAX-thunk";
-import { TriageAXInterface } from "@/modules/er-area/domain/interfaces/triageAX-interface";
-import VisitEntity from "@/modules/registration/domain/entities/visit-entity";
-import { getSubDepartmentsList } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
-import { SubDepartmentsState } from "@/modules/management/presentation/controllers/types";
-import { TransferDataInterface } from "@/modules/registration/domain/interfaces/transfer-data-interface";
-import { SubDepartmentInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
+import { useAppDispatch } from "@/core/state/store";
+import { Box } from "@mui/material";
+import React, { useState } from "react";
+
 import VitalsForm from "@/modules/emr/view/components/vitals/VitalsForm";
 import TriageForm from "@/modules/emr/view/components/triage/TriageForm";
+import { createVisitTransfer } from "@/modules/registration/presentation/controllers/thunks/visits-thunks";
+import SecondaryButton from "@/core/shared/components/btns/SecondaryButton";
 
 interface IErAreaFormProps {
   openDialog: boolean;
@@ -37,94 +23,54 @@ const ErAreaForm = ({
 }: IErAreaFormProps) => {
   const [expandVitalsAccordion, setExpandVitalsAccordion] = useState(true);
   const [expandTriageAccordion, setExpandTriageAccordion] = useState(true);
-  const [expandRestFormAccordion, setExpandRestFormAccordion] = useState(true);
-  const refSubmitTriage: any = useRef(null);
-
-  const dispatch = useAppDispatch();
-  const lookupsState: LookupsState = useAppSelector(
-    (state: any) => state.lookups
-  );
-
-  //* buttons useRef
-  const refSubmitVitals: any = useRef(null);
-
-  //* Form data refrence
-  const triageData = useRef<TriageAXInterface>();
-  const vitalsData = useRef<VitalsInterface>();
-
-  const handleSubmitTriageData = (values: TriageAXInterface) => {
-    triageData.current = values;
-  };
-
-  const handleSubmitVitalsData = (values: VitalsInterface) => {
-    vitalsData.current = values;
-  };
-
-  // const handleSubmitAllForms = () => {
-  //   if (refSubmitTriage.current) {
-  //     refSubmitTriage.current.click();
-  //   }
-  //   if (refSubmitVitals.current) {
-  //     refSubmitVitals.current.click();
-  //   }
-  // }
-
-  useEffect(() => {
-    if (triageData.current && vitalsData.current) {
-      dispatch(
-        createTriagAX({
-          assessment: {
-            ...triageData.current,
-            vitals: vitalsData.current,
-          },
-          visitCode: patientData.id,
-        })
-      ).then(() => {
-        // reset data
-        triageData.current = undefined;
-        vitalsData.current = undefined;
-        setOpenDialog(false);
-      });
-    }
-  }, [triageData.current, vitalsData.current]);
-
-  // ***************************************************************************
 
   //* useState
-  const [transferDataExpanded, setTransferDataExpanded] =
-    useState<boolean>(true);
+  // const [transferDataExpanded, setTransferDataExpanded] =
+  //   useState<boolean>(true);
 
   //* useRef
-  const refSubmitTransferData: any = useRef(null);
-  const transferData = useRef<TransferDataInterface>();
+  // const refSubmitTransferData: any = useRef(null);
+  // const transferData = useRef<TransferDataInterface>();
 
-  const submitTransferData = () => {
-    if (refSubmitTransferData.current) {
-      refSubmitTransferData.current.click();
-    }
-  };
+  // const submitTransferData = () => {
+  //   if (refSubmitTransferData.current) {
+  //     refSubmitTransferData.current.click();
+  //   }
+  // };
 
   //* Handle Transfer Data Submit
-  const handleTransferDataSubmit = (values: TransferDataInterface) => {
-    transferData.current = values;
-    // setCombinedValues((previous) => ({
-    //   ...previous,
-    //   transfer: values,
-    // }));
-  };
+  // const handleTransferDataSubmit = (values: TransferDataInterface) => {
+  //   transferData.current = values;
+  //   setCombinedValues((previous) => ({
+  //     ...previous,
+  //     transfer: values,
+  //   }));
+  // };
 
-  const formikRefTransferData =
-    useRef<FormikProps<TransferDataInterface>>(null);
+  // const formikRefTransferData =
+  //   useRef<FormikProps<TransferDataInterface>>(null);
 
-  useEffect(() => {
-    dispatch(getSubDepartmentsList([]));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getSubDepartmentsList([]));
+  // }, []);
 
-  const subdepartmentState: SubDepartmentsState = useAppSelector(
-    (state: any) => state.subDepartments
-  );
+  // const subdepartmentState: SubDepartmentsState = useAppSelector(
+  //   (state: any) => state.subDepartments
+  // );
 
-  console.log(patientData, "patientData");
+  // const lookupsState: LookupsState = useAppSelector(
+  //   (state: any) => state.lookups
+  // );
+  const dispatch = useAppDispatch();
+
+  const transferPatientVisit = () => {
+    dispatch(createVisitTransfer({ status : "TRANSFERED", visitCode : patientData?.code  })).then((res) => {
+      if (res.meta.requestStatus == "fulfilled") {
+        setOpenDialog(false)
+      }
+    })
+  }
+
 
   return (
     <div>
@@ -164,8 +110,6 @@ const ErAreaForm = ({
             margin: "1.5rem auto",
           }}
         >
-          
-
           {/* //* Vitals Data - need to reset  */}
           <CustomAccordion
             isClosable={false}
@@ -200,15 +144,21 @@ const ErAreaForm = ({
             />
           </CustomAccordion>
 
+          <SecondaryButton
+              title="انهاء"
+              type="button"
+              sx={{ margin : "2rem 0rem 1rem 0rem"}}
+              onClick={() => transferPatientVisit()}
+            />
+
           {/* //* Start Transfer Data *******************  */}
-          <CustomAccordion
+          {/* <CustomAccordion
             isClosable={false}
             title="نقل مريض"
             isDisabled={false}
             isExpanded={transferDataExpanded}
             setExpanded={setTransferDataExpanded}
           >
-            {/* //* Start Patient form ********************* */}
             <Formik
               innerRef={formikRefTransferData}
               initialValues={VisitEntity.transferDataValue()}
@@ -278,108 +228,6 @@ const ErAreaForm = ({
               title="تأكيــد"
               type="button"
               onClick={() => submitTransferData()}
-            />
-          </CustomAccordion>
-
-          {/* ************************************************************************************************************** */}
-          {/* er rest form */}
-          {/* <CustomAccordion
-            isClosable={false}
-            isDisabled={false}
-            isExpanded={expandRestFormAccordion}
-            setExpanded={setExpandRestFormAccordion}
-            title="الفرز"
-          >
-            <Formik
-              initialValues={TriageAXEntity.defaultValue()}
-              validationSchema={TriageAXEntity.getSchema()}
-              onSubmit={(values) => {
-                handleSubmitTriageData(values);
-              }}
-            >
-              {({
-                values,
-                touched,
-                errors,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-              }) => (
-                <Box component="form" onSubmit={handleSubmit} noValidate>
-                  <Grid container columns={12} spacing={2}>
-                    <Grid item lg={8} md={8} sm={12} xs={12}>
-                      <CustomTextField
-                        isRequired
-                        name="mainComplaint"
-                        label="الشكوى"
-                        value={values.mainComplaint}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.mainComplaint}
-                        touched={touched.mainComplaint}
-                        width="100%"
-                        props={{
-                          type: "text",
-                        }}
-                      />
-                    </Grid>
-                    <Grid item lg={4} md={4} sm={12} xs={12}>
-                      <CustomSelectField<any>
-                        isRequired
-                        name="transferTo"
-                        label="نقل إلى"
-                        value={values.transferTo}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.transferTo}
-                        touched={touched.transferTo}
-                        width="100%"
-                        options={lookupsState.lookups.departments}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid container columns={12} spacing={2}>
-
-                    <Grid item lg={4} md={4} sm={12} xs={12}>
-                      
-                    </Grid>
-                    <Grid item lg={4} md={4} sm={12} xs={12}>
-                      
-                    </Grid>
-                    <Grid item lg={4} md={4} sm={12} xs={12}>
-                      <CustomMultiSelectField<any>
-                        name="comorbidityIds"
-                        label="الأمراض المصاحبة"
-                        value={values.comorbidityIds}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.comorbidityIds}
-                        touched={touched.comorbidityIds}
-                        width="100%"
-                        options={lookupsState.lookups.comorbidities}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Button
-                    type="submit"
-                    sx={{ display: "none" }}
-                    ref={refSubmitTriage}
-                  ></Button>
-                </Box>
-              )}
-            </Formik>
-          </CustomAccordion> */}
-          {/* <CustomAccordion
-            title="الاشارات الحيوية"
-            isClosable={false}
-            isDisabled={false}
-            isExpanded={expandVitalsAccordion}
-            setExpanded={setExpandVitalsAccordion}
-          >
-            <VitalsData
-              initialValues={VitalsEntity.defaultValue()}
-              onSubmit={handleSubmitVitalsData}
-              refSubmitButton={refSubmitVitals}
             />
           </CustomAccordion> */}
         </Box>

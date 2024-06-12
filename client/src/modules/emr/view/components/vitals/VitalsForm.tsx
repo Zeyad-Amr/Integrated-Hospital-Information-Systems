@@ -10,8 +10,8 @@ import { VitalsInterface } from "@/modules/emr/interfaces/vitals-interface";
 import VitalsModel from "@/modules/emr/models/vitals-model";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
-import { Formik } from "formik";
-import React from "react";
+import { Formik, FormikProps } from "formik";
+import React, { useRef } from "react";
 
 const VitalsForm = ({
   patientId,
@@ -21,13 +21,15 @@ const VitalsForm = ({
   setShowFormDialog,
 }: ExaminationFormComponentPropsInterface) => {
   const dispatch = useAppDispatch();
+  const formikRef = useRef<FormikProps<VitalsInterface>>(null);
   return (
     <Formik
+      enableReinitialize
+      innerRef={formikRef}
       initialValues={
         initialValues
           ? ({
               ...initialValues,
-
             } as VitalsInterface)
           : VitalsModel.defaultValues()
       }
@@ -44,7 +46,9 @@ const VitalsForm = ({
 
         dispatch(action).then((res) => {
           if (res?.meta.requestStatus == "fulfilled") {
+            debugger
             setShowFormDialog(false);
+            if (formikRef.current) formikRef.current.resetForm();
           }
         });
       }}
