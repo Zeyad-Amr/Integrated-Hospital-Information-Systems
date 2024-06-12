@@ -8,6 +8,8 @@ import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import { getVisitByCode } from "@/modules/registration/presentation/controllers/thunks/visits-thunks";
 import { VisitsState } from "@/modules/registration/presentation/controllers/types";
 import { AuthState } from "@/modules/auth/presentation/controllers/types";
+import LabPage from "../../components/LabPage";
+import RadiologyPage from "../../components/RadiologyPage";
 
 const ExaminationPage = () => {
   const { visitId } = useParams();
@@ -36,36 +38,12 @@ const ExaminationPage = () => {
         <Tabs
           Tabs={[
             { name: "السجل المرضي", content: <PatientHistory visitState={visitState} /> },
-            { name: "المعامل", content: <Box>المعامل</Box> },
-            { name: "الأشعة", content: <Box>الأشعة</Box> },
+            { name: "المعامل", content: <LabPage visitState={visitState} /> },
+            { name: "الأشعة", content: <RadiologyPage visitState={visitState} /> },
             {
               name: "الاستشارة",
               content: (
                 <Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
-                  <Box>الاستشارة</Box>
                   <Box>الاستشارة</Box>
                 </Box>
               ),

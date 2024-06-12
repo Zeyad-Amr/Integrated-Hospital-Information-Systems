@@ -8,8 +8,12 @@ import { RadiologiesState } from "@/modules/emr/controllers/types";
 import React from "react";
 import { radiologiesHeaderTable } from "./data";
 import RadiologiesForm from "./RadiologiesForm";
+import { PatientIDsInterface } from "@/modules/emr/interfaces/patientIds-interface";
 
-const RadiologiesComponent = () => {
+const RadiologiesComponent = ({
+  patientId,
+  visitCode,
+}: PatientIDsInterface) => {
   const radiologiesState: RadiologiesState = useAppSelector(
     (state: any) => state.radiologies
   );
@@ -22,6 +26,9 @@ const RadiologiesComponent = () => {
       title="الاشعة"
       FormComponent={RadiologiesForm}
       formDialogMaxWidth="md"
+      patientId={patientId}
+      visitCode={visitCode}
+      isAccordionExpanded={true}
     />
   );
 };

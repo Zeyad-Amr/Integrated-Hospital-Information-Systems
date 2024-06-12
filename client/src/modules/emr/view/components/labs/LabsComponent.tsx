@@ -8,11 +8,10 @@ import { LabsState } from "@/modules/emr/controllers/types";
 import React from "react";
 import { labsHeaderTable } from "./data";
 import LabsForm from "./LabsForm";
+import { PatientIDsInterface } from "@/modules/emr/interfaces/patientIds-interface";
 
-const LabsComponent = () => {
-  const labsState: LabsState = useAppSelector(
-    (state: any) => state.labs
-  );
+const LabsComponent = ({ patientId, visitCode }: PatientIDsInterface) => {
+  const labsState: LabsState = useAppSelector((state: any) => state.labs);
   return (
     <ExaminationAccordion
       getListThunk={getLabsList}
@@ -22,6 +21,9 @@ const LabsComponent = () => {
       title="التحاليل"
       FormComponent={LabsForm}
       formDialogMaxWidth="md"
+      patientId={patientId}
+      visitCode={visitCode}
+      isAccordionExpanded={true}
     />
   );
 };
