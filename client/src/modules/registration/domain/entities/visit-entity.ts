@@ -10,13 +10,13 @@ interface PersonInputInterface extends Omit<PersonInterface, 'id' | 'createdAt' 
 
 
 export enum VisitStatus {
-    CREATED="CREATED",
-    BOOKED="BOOKED",
-    ARRIVED="ARRIVED",
-    TRANSFERED="TRANSFERED",
-    EXAMINED="EXAMINED",
-    ENDED="ENDED",
-  }
+    CREATED = "CREATED",
+    BOOKED = "BOOKED",
+    ARRIVED = "ARRIVED",
+    TRANSFERED = "TRANSFERED",
+    EXAMINED = "EXAMINED",
+    ENDED = "ENDED",
+}
 export default class VisitEntity {
 
     static defaultValue(): VisitInterface {
@@ -30,7 +30,7 @@ export default class VisitEntity {
             additionalInfo: undefined
         }
     }
-    
+
     static transferDataValue(): TransferDataInterface {
         return {
             toSubDepId: 0,
@@ -138,8 +138,8 @@ export default class VisitEntity {
 
 
         return Yup.object().shape({
-            sequenceNumber: Yup.number()
-                .required("يجب ادخال رقم التردد"),
+            sequenceNumber: Yup.number(),
+            // .required("يجب ادخال رقم التردد"),
             firstName: Yup.string()
                 .when([],
                     (values, schema) => coditionCallback(values, schema, "الاسم الأول مطلوب"))
@@ -198,14 +198,14 @@ export default class VisitEntity {
     }
 
     static transferDataSchema(): Yup.ObjectSchema<any> {
-    const state = store.getState();
-    return Yup.object({
-      toSubDepId: Yup.number()
-      .required("نقل المريض الي قسم فرعي مطلوب").oneOf((state.subDepartments.subDepartments.items as any).map((e : any) => e.id), "نقل المريض الي قسم فرعي مطلوب"),
-      transferDate: Yup.string()
-        .required('تاريخ نقل المريض مطلوب'),
-    });
-  }
+        const state = store.getState();
+        return Yup.object({
+            toSubDepId: Yup.number()
+                .required("نقل المريض الي قسم فرعي مطلوب").oneOf((state.subDepartments.subDepartments.items as any).map((e: any) => e.id), "نقل المريض الي قسم فرعي مطلوب"),
+            transferDate: Yup.string()
+                .required('تاريخ نقل المريض مطلوب'),
+        });
+    }
 
     static kinshipSchema(isRequired: boolean = false): Yup.ObjectSchema<any> {
         const state = store.getState();

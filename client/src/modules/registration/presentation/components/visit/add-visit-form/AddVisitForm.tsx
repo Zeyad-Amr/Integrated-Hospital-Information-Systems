@@ -131,8 +131,8 @@ const AddVisitForm = () => {
   useEffect(() => {
     if (
       patientData.current &&
-      companionData.current &&
-      additionalData.current &&
+      // companionData.current &&
+      // additionalData.current &&
       transferData.current
     ) {
       if (combinedValues) {
@@ -158,9 +158,8 @@ const AddVisitForm = () => {
   }, [combinedValues]);
 
   useEffect(() => {
-    dispatch(getSubDepartmentsList([]))
-  }, [])
-  
+    dispatch(getSubDepartmentsList([]));
+  }, []);
 
   const subdepartmentState: SubDepartmentsState = useAppSelector(
     (state: any) => state.subDepartments
@@ -178,7 +177,10 @@ const AddVisitForm = () => {
         {/* //* Start Patient form ********************* */}
         <Formik
           innerRef={formikRefPatient}
-          initialValues={{ sequenceNumber: "", ...PersonEntity.defaultValue() }}
+          initialValues={{
+            sequenceNumber: "0",
+            ...PersonEntity.defaultValue(),
+          }}
           onSubmit={(values) => {
             console.log(values);
             handlePatientSubmit(values);
@@ -195,7 +197,7 @@ const AddVisitForm = () => {
             handleSubmit,
           }) => (
             <Box component="form" onSubmit={handleSubmit} noValidate>
-              <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+              {/* <Box sx={{ display: "flex", alignItems: "flex-start" }}>
                 <CustomTextField
                   isRequired
                   name="sequenceNumber"
@@ -236,7 +238,7 @@ const AddVisitForm = () => {
                     <Typography>طفل / مجهول</Typography>
                   </Box>
                 </Box>
-              </Box>
+              </Box> */}
               <PersonalData />
               <Button
                 type="submit"
@@ -294,14 +296,14 @@ const AddVisitForm = () => {
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                   <CustomSelectField
                     value={values.toSubDepId}
-                    options={subdepartmentState?.subDepartments?.items.map(
-                      (subdepartment: SubDepartmentInterface) => {
+                    options={subdepartmentState?.subDepartments?.items
+                      .filter((s) => s.departmentId == 9)
+                      .map((subdepartment: SubDepartmentInterface) => {
                         return {
                           id: subdepartment.id,
                           value: subdepartment.name,
                         };
-                      }
-                    )}
+                      })}
                     name="toSubDepId"
                     label="نقل المريض الي"
                     onChange={handleChange}
@@ -325,7 +327,7 @@ const AddVisitForm = () => {
       </CustomAccordion>
 
       {/* //* Start Additional Data ******************* */}
-      <Box>
+      {/* <Box>
         <CustomAccordion
           isClosable={false}
           title="البيانات الأضافية"
@@ -343,10 +345,10 @@ const AddVisitForm = () => {
             }}
           />
         </CustomAccordion>
-      </Box>
+      </Box> */}
 
       {/* //* Start Companion ************************************* */}
-      <Box mt={2}>
+      {/* <Box mt={2}>
         <CustomAccordion
           isClosable={false}
           title="بيانات المرافق"
@@ -367,7 +369,7 @@ const AddVisitForm = () => {
             />
           </Box>
         </CustomAccordion>
-      </Box>
+      </Box> */}
 
       <Box
         sx={{
