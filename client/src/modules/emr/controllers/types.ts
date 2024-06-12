@@ -10,6 +10,7 @@ import { DiagnosisInterface } from "../interfaces/diagnosis-interface";
 import { VitalsInterface } from "../interfaces/vitals-interface";
 import { TriageInterface } from "../interfaces/triage-interface";
 import { LabsInterface } from "../interfaces/labs-interface";
+import { RadiologiesInterface } from "../interfaces/radiologies-interface";
 
 export interface AllergiesState {
   allergies: PaginatedList<AllergiesInterface>;
@@ -71,6 +72,13 @@ export interface TriageState {
 export interface LabsState {
   labs: PaginatedList<LabsInterface>;
   currentLab: LabsInterface;
+  isFetched: boolean;
+  loading: boolean;
+  error: string;
+}
+export interface RadiologiesState {
+  radiologies: PaginatedList<RadiologiesInterface>;
+  currentRadiology: RadiologiesInterface;
   isFetched: boolean;
   loading: boolean;
   error: string;

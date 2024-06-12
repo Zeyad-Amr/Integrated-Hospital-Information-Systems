@@ -3,17 +3,17 @@ import { ExaminationFormComponentPropsInterface } from "@/core/shared/components
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { useAppDispatch } from "@/core/state/store";
 import {
-  createLab,
-  updateLab,
-} from "@/modules/emr/controllers/thunks/labs-thunk";
-import { LabsInterface } from "@/modules/emr/interfaces/labs-interface";
-import LabsModel from "@/modules/emr/models/labs-model";
+  createRadiology,
+  updateRadiology,
+} from "@/modules/emr/controllers/thunks/radiologies-thunk";
+import { RadiologiesInterface } from "@/modules/emr/interfaces/radiologies-interface";
+import RadiologiesModel from "@/modules/emr/models/radiologies-model";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik } from "formik";
 import React from "react";
 
-const LabsForm = ({
+const RadiologiesForm = ({
   patientId,
   visitCode,
   initialValues,
@@ -28,19 +28,19 @@ const LabsForm = ({
           ? ({
             ...initialValues,
 
-          } as LabsInterface)
-          : LabsModel.defaultValues()
+          } as RadiologiesInterface)
+          : RadiologiesModel.defaultValues()
       }
       onSubmit={async (values) => {
         const submitObject = {
           ...values,
-          patientId: patientId,
-          visitCode: visitCode,
+          patientId: "3c32c0ff-c15e-4d1a-9caf-1bd7c03f839b",
+          visitCode: "202406102",
         };
 
         const action = initialValues
-          ? updateLab(submitObject)
-          : createLab(submitObject);
+          ? updateRadiology(submitObject)
+          : createRadiology(submitObject);
 
         dispatch(action).then((res) => {
           if (res?.meta.requestStatus == "fulfilled") {
@@ -48,7 +48,7 @@ const LabsForm = ({
           }
         });
       }}
-      validationSchema={LabsModel.labsFormValidations()}
+      validationSchema={RadiologiesModel.radiologiesFormValidations()}
     >
       {({
         values,
@@ -108,4 +108,4 @@ const LabsForm = ({
   );
 };
 
-export default LabsForm;
+export default RadiologiesForm;

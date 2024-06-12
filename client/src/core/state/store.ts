@@ -22,6 +22,7 @@ import diagnosis from "@/modules/emr/controllers/slices/diagnosis-slice";
 import vitals from "@/modules/emr/controllers/slices/vitals-slice";
 import assessments from "@/modules/emr/controllers/slices/triage-slice";
 import labs from "@/modules/emr/controllers/slices/labs-slice";
+import radiologies from "@/modules/emr/controllers/slices/radiologies-slice";
 
 const store = configureStore({
   reducer: {
@@ -43,7 +44,8 @@ const store = configureStore({
     diagnosis,
     vitals,
     assessments,
-    labs
+    labs,
+    radiologies
   },
 });
 
