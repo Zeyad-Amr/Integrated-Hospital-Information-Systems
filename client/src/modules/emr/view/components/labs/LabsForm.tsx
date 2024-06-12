@@ -26,16 +26,16 @@ const LabsForm = ({
       initialValues={
         initialValues
           ? ({
-              ...initialValues,
+            ...initialValues,
 
-            } as LabsInterface)
+          } as LabsInterface)
           : LabsModel.defaultValues()
       }
       onSubmit={async (values) => {
         const submitObject = {
           ...values,
-          patientId: patientId,
-          visitCode: visitCode,
+          patientId: "3c32c0ff-c15e-4d1a-9caf-1bd7c03f839b",
+          visitCode: "202406102",
         };
 
         const action = initialValues
@@ -60,175 +60,40 @@ const LabsForm = ({
       }) => (
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container spacing={1}>
-            <Grid item lg={12} md={12} sm={12} xs={12}>
+            <Grid item lg={6} md={6} sm={12} xs={12}>
               <CustomTextField
                 isRequired
-                name="cvp"
-                label="ضغط الوريد المركزي"
-                value={values.CVP}
+                name="name"
+                label="الاسم"
+                value={values.name}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.CVP}
-                touched={touched.CVP}
+                error={errors.name}
+                touched={touched.name}
                 width="100%"
                 props={{
-                  type: "number",
+                  type: "text",
                   disabled: isViewMode,
                 }}
               />
             </Grid>
-          </Grid>
-          <Grid container spacing={1}>
-            <Grid item lg={4} md={4} sm={12} xs={12}>
+            <Grid item lg={6} md={6} sm={12} xs={12}>
               <CustomTextField
-                name="GCS"
-                label="مقياس غلاسكو للغيبوبة"
-                value={values.GCS}
+                name="url"
+                label="الرابط"
+                value={values.url}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.GCS}
-                touched={touched.GCS}
+                error={errors.url}
+                touched={touched.url}
                 width="100%"
                 props={{
-                  type: "number",
+                  type: "text",
                   disabled: isViewMode,
                 }}
               />
             </Grid>
-            <Grid item lg={4} md={4} sm={12} xs={12}>
-              <CustomTextField
-                name="PR"
-                label="معدل النبض"
-                value={values.PR}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.PR}
-                touched={touched.PR}
-                width="100%"
-                props={{
-                  type: "number",
-                  disabled: isViewMode,
-                }}
-              />
-            </Grid>
-            <Grid item lg={4} md={4} sm={12} xs={12}>
-              <CustomTextField
-                name="RR"
-                label="معدل ألتنفس"
-                value={values.RR}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.RR}
-                touched={touched.RR}
-                width="100%"
-                props={{
-                  type: "number",
-                  disabled: isViewMode,
-                }}
-              />
-            </Grid>
-          </Grid>
 
-          <Grid container spacing={1}>
-            <Grid item lg={4} md={4} sm={12} xs={12}>
-              <CustomTextField
-                name="SpO2"
-                label=" نسبة الأكسجين في الدم"
-                value={values.SpO2}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.SpO2}
-                touched={touched.SpO2}
-                width="100%"
-                props={{
-                  type: "number",
-                  disabled: isViewMode,
-                }}
-              />
-            </Grid>
-            <Grid item lg={4} md={4} sm={12} xs={12}>
-              <CustomTextField
-                name="temp"
-                label="درجة الحرارة"
-                value={values.temp}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.temp}
-                touched={touched.temp}
-                width="100%"
-                props={{
-                  type: "number",
-                  disabled: isViewMode,
-                }}
-              />
-            </Grid>
-            <Grid item lg={4} md={4} sm={12} xs={12}>
-              <CustomTextField
-                name="SBP"
-                label="ضغط الدم الانقباضي"
-                value={values.SBP}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.SBP}
-                touched={touched.SBP}
-                width="100%"
-                props={{
-                  type: "number",
-                  disabled: isViewMode,
-                }}
-              />
-            </Grid>
-          </Grid>
-
-          <Grid container spacing={1}>
-            <Grid item lg={4} md={4} sm={12} xs={12}>
-              <CustomTextField
-                name="DBP"
-                label="ضغط الدم الانبساطي"
-                value={values.DBP}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.DBP}
-                touched={touched.DBP}
-                width="100%"
-                props={{
-                  type: "number",
-                  disabled: isViewMode,
-                }}
-              />
-            </Grid>
-            <Grid item lg={4} md={4} sm={12} xs={12}>
-              <CustomTextField
-                name="weight"
-                label="الوزن"
-                value={values.weight}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.weight}
-                touched={touched.weight}
-                width="100%"
-                props={{
-                  type: "number",
-                  disabled: isViewMode,
-                }}
-              />
-            </Grid>
-            <Grid item lg={4} md={4} sm={12} xs={12}>
-              <CustomTextField
-                name="height"
-                label="الطول"
-                value={values.height}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.height}
-                touched={touched.height}
-                width="100%"
-                props={{
-                  type: "number",
-                  disabled: isViewMode,
-                }}
-              />
-            </Grid>
           </Grid>
 
           {!isViewMode ? (

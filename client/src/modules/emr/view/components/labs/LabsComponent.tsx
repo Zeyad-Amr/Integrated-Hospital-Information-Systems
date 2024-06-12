@@ -19,7 +19,7 @@ const LabsComponent = () => {
       deleteThunk={deleteLab}
       tableList={labsState?.labs}
       tableHeader={labsHeaderTable}
-      title="القياسات الحيوية"
+      title="التحاليل"
       FormComponent={LabsForm}
       formDialogMaxWidth="md"
     />
