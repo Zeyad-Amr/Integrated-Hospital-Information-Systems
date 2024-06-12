@@ -1,7 +1,7 @@
 import { DataItem, header } from "./data";
 import { Box } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
-import ErAreaForm from "../er-area-form/ErAreaForm";
+
 import { Endpoints, FilterQuery } from "@/core/api";
 import {
   SessionStorage,
@@ -12,7 +12,7 @@ import { CustomDataTable } from "@/core/shared/components/CustomDataTable";
 import { Button } from "@mui/material";
 import { VisitStatus } from "@/modules/registration/domain/entities/visit-entity";
 
-const ERVisitsTable = () => {
+const ReceptionTable = () => {
   // useRef
   const refPatientData = useRef("");
 
@@ -35,9 +35,13 @@ const ERVisitsTable = () => {
       Endpoints.base +
         Endpoints.visit.streaming +
         "?filters=status:any:" +
+        VisitStatus.BOOKED +
+        "," +
         VisitStatus.ARRIVED +
         "," +
-        VisitStatus.BOOKED,
+        VisitStatus.TRANSFERED +
+        "," +
+        VisitStatus.EXAMINED,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -151,9 +155,9 @@ const ERVisitsTable = () => {
             fullWidth
             onClick={() => {
               console.log(item);
-              refPatientData.current = item ?? "";
-              console.log(refPatientData.current);
-              if (refPatientData.current) setShawDialog(true);
+              // refPatientData.current = item ?? "";
+              // console.log(refPatientData.current);
+              // if (refPatientData.current) setShawDialog(true);
             }}
           >
             التقييم
@@ -182,20 +186,20 @@ const ERVisitsTable = () => {
         headerItems={header}
         stickyHeader={true}
         boxShadow={5}
-        // onRowClick={(item) => {
-        //   refPatientData.current = item;
-        //   console.log(refPatientData.current);
-        //   if (refPatientData.current) setShawDialog(true);
-        // }}
+        onRowClick={(item) => {
+          refPatientData.current = item;
+          console.log(refPatientData.current);
+          if (refPatientData.current) setShawDialog(true);
+        }}
       />
 
-      <ErAreaForm
+      {/* <ErAreaForm
         openDialog={showDialog}
         setOpenDialog={setShawDialog}
         patientData={refPatientData.current}
-      />
+      /> */}
     </Box>
   );
 };
 
-export default ERVisitsTable;
+export default ReceptionTable;
