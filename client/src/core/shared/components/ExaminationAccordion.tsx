@@ -93,7 +93,8 @@ export default function ExaminationAccordion({
   accordionSx,
   isAccordionExpanded = false,
 }: AccordionComponentPropsInterface) {
-  const [expandedAccordion, setExpandedAccordion] = useState<boolean>(isAccordionExpanded);
+  const [expandedAccordion, setExpandedAccordion] =
+    useState<boolean>(isAccordionExpanded);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [tableItemData, setTableItemData] = useState<any>();
   const [isViewMode, setIsViewMode] = useState<boolean>(false);
@@ -159,6 +160,8 @@ export default function ExaminationAccordion({
         </AccordionSummary>
         <AccordionDetails>
           <CustomDataTable
+            height="40vh"
+            sx={{ mb: 0 }}
             showPagination={false}
             showToolbar={false}
             fetchData={(filters: FilterQuery[]) => {
@@ -211,7 +214,6 @@ export default function ExaminationAccordion({
               };
             })}
             headerItems={updatedTableHeader}
-            height="75vh"
           />
         </AccordionDetails>
       </Accordion>

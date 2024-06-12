@@ -9,9 +9,9 @@ import ClinicVisitsPage from "@/modules/examination/view/pages";
 export default function Visits() {
   return (
     <ProtectedLayout>
-        <Sidebar>
-          <ClinicVisitsPage/>
-        </Sidebar>
+      <Sidebar pageTitle={"الزيارات"}>
+        <ClinicVisitsPage />
+      </Sidebar>
     </ProtectedLayout>
   );
 }

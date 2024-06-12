@@ -9,7 +9,7 @@ import ERVisitsTableComponent from "@/modules/er-area/presentation/pages/er-visi
 export default function AllUsers() {
   return (
     <ProtectedLayout>
-      <Sidebar pageTitle={"ER Area"}>
+      <Sidebar pageTitle={"التقييم الطبي"}>
         <ERVisitsTableComponent />
       </Sidebar>
     </ProtectedLayout>

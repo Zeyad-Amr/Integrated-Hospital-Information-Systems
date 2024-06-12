@@ -108,7 +108,7 @@ const SidebarComponent = () => {
           <PeopleIcon sx={{ color: "primary.main", textAlign: "center" }} />
         }
         activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
-        text="ER Area"
+        text="التقييم الطبي"
         path="/dashboard/er-area"
       ></SidebarMenuItem>
       {/*  */}
@@ -139,7 +139,7 @@ const SidebarComponent = () => {
           <ApartmentIcon sx={{ color: "primary.main", textAlign: "center" }} />
         }
         activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
-        text="غرفة الكشف"
+        text="الفحص الطبي"
         path="/dashboard/clinic"
       >
         <SidebarSubmenuItem text="الزيارات" path="/dashboard/clinic/visits" />

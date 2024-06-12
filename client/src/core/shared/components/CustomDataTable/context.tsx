@@ -91,6 +91,7 @@ export const TableProvider = (props: {
     if (reset !== true) {
       console.log("resetComponent useEffect:", resetComponent);
       applyFiltersHandler();
+    } else {
       setReset(false);
     }
   }, [page, rowsPerPage, sortedColumn, searchQuery, filterColumns]);
