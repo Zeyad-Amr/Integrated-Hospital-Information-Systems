@@ -79,7 +79,7 @@ const labsSlice = createSlice({
       state.currentLab = initialState.currentLab;
       state.labs = PaginatedListModel.resetPaginatedList(state.labs);
       state.error = "";
-      AlertService.showAlert("تم اضافة القياسات الحيوية", "success");
+      AlertService.showAlert("تم اضافة التحليل بنجاح", "success");
     });
     builder.addCase(createLab.rejected, (state, action) => {
       state.loading = false;
@@ -97,7 +97,7 @@ const labsSlice = createSlice({
       state.currentLab = initialState.currentLab;
       state.labs = PaginatedListModel.resetPaginatedList(state.labs);
       state.error = "";
-      AlertService.showAlert("تم تحديث القياسات الحيوية بنجاح", "success");
+      AlertService.showAlert("تم تحديث التحليل بنجاح", "success");
     });
     builder.addCase(updateLab.rejected, (state, action) => {
       state.loading = false;
@@ -114,7 +114,7 @@ const labsSlice = createSlice({
       state.loading = false;
       state.error = "";
       state.labs = PaginatedListModel.resetPaginatedList(state.labs);
-      AlertService.showAlert("تم حذف القياسات الحيوية بنجاح", "success");
+      AlertService.showAlert("تم حذف التحليل بنجاح", "success");
     });
     builder.addCase(deleteLab.rejected, (state, action) => {
       state.loading = false;

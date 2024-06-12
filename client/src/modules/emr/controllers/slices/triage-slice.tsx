@@ -79,7 +79,7 @@ const assessmentsSlice = createSlice({
       state.currentAssessment = initialState.currentAssessment;
       state.assessments = PaginatedListModel.resetPaginatedList(state.assessments);
       state.error = "";
-      AlertService.showAlert("تم اضافة التشخيص الميدئي", "success");
+      AlertService.showAlert("تم اضافة التشخيص الميدئي بنجاح", "success");
     });
     builder.addCase(createTriage.rejected, (state, action) => {
       state.loading = false;

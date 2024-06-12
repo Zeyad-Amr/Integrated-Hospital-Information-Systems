@@ -34,7 +34,7 @@ const TriageForm = ({
         console.log(values);
         const submitObject = {
           ...values,
-          visitCode: "202406102",
+          visitCode: visitCode,
         };
 
         const action = initialValues

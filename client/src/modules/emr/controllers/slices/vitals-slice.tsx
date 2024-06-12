@@ -79,7 +79,7 @@ const vitalsSlice = createSlice({
       state.currentVital = initialState.currentVital;
       state.vitals = PaginatedListModel.resetPaginatedList(state.vitals);
       state.error = "";
-      AlertService.showAlert("تم اضافة القياسات الحيوية", "success");
+      AlertService.showAlert("تم اضافة القياسات الحيوية بنجاح", "success");
     });
     builder.addCase(createVital.rejected, (state, action) => {
       state.loading = false;
