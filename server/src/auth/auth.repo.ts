@@ -45,7 +45,7 @@ export class AuthRepo extends PrismaGenericRepo<User> {
                   Permissions: {
                     include: {
                       feature: true,
-                      subDepartment:true,
+                      subDepartment: true,
                     },
                   },
                 },

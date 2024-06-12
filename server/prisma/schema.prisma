@@ -92,7 +92,7 @@ model Employee {
   createdById       String?
   createdEmployees  Employee[] @relation("CreatedBy")
 
-  subdepartments               SubDepartment[]
+  subdepartments               SubDepartment[] // Removed references argument
   visitsCreated                Visit[]
   diagnosis                    Diagnosis[]
   medicalProblem               MedicalProblem[]
@@ -272,7 +272,7 @@ model Prescription {
   patient   Patient @relation(fields: [patientId], references: [id])
   patientId String
   visit     Visit   @relation(fields: [visitCode], references: [code])
-  visitCode String  
+  visitCode String
 }
 
 model TriageAx {
@@ -560,11 +560,8 @@ model SubDepartment {
   transferTo   Transfer[]    @relation("toSubDepartment")
   Department   Department?   @relation(fields: [departmentId], references: [id])
   departmentId Int?
-  employee     Employee?     @relation(fields: [employeeId], references: [id])
-  employeeId   String?
+  employees    Employee[] // Removed references argument
   Permissions  Permissions[]
-  // referralsFrom Referral[]    @relation("ReferringSubDepartment")
-  // referralsTo   Referral[]    @relation("ReferredToSubDepartment")
 }
 
 model Specialization {
@@ -582,10 +579,10 @@ model Room {
 }
 
 model Feature {
-  id              Int            @id @default(autoincrement())
-  name            String
-  code            String?
-  Permissions     Permissions[]
+  id          Int           @id @default(autoincrement())
+  name        String
+  code        String?
+  Permissions Permissions[]
 }
 
 model Permissions {
