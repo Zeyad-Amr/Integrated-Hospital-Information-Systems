@@ -6,37 +6,49 @@ import PrescriptionsComponent from "@/modules/emr/view/components/prescriptions/
 import SurgeriesComponent from "@/modules/emr/view/components/surgeries/SurgeriesComponent";
 import { Grid } from "@mui/material";
 import React from "react";
+import AddComplaint from "./AddComplaint";
+import DemographicData from "./DemographicData";
 
 const PatientHistory = () => {
   return (
-    <Grid container spacing={1}>
-      <Grid item lg={6} md={6} sm={12} xs={12}>
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <DiagnosisComponent />
-          </Grid>
-          <Grid item xs={12}>
-            <MedicationsComponent />
-          </Grid>
-          <Grid item xs={12}>
-            <SurgeriesComponent />
+    <>
+      <Grid container spacing={1} sx={{ mb: 2 }}>
+        <Grid item lg={4} md={4} sm={12} xs={12}>
+          <AddComplaint />
+        </Grid>
+        <Grid item lg={8} md={8} sm={12} xs={12}>
+          <DemographicData />
+        </Grid>
+
+      </Grid>
+      <Grid container spacing={1}>
+        <Grid item lg={6} md={6} sm={12} xs={12}>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <DiagnosisComponent />
+            </Grid>
+            <Grid item xs={12}>
+              <MedicationsComponent />
+            </Grid>
+            <Grid item xs={12}>
+              <SurgeriesComponent />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-      <Grid item lg={6} md={6} sm={12} xs={12}>
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <AllergiesComponent />
-          </Grid>
-          <Grid item xs={12}>
-            <PrescriptionsComponent />
-          </Grid>
-          <Grid item xs={12}>
-            <MedicalProblemsComponent />
+        <Grid item lg={6} md={6} sm={12} xs={12}>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <AllergiesComponent />
+            </Grid>
+            <Grid item xs={12}>
+              <PrescriptionsComponent />
+            </Grid>
+            <Grid item xs={12}>
+              <MedicalProblemsComponent />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </Grid>
+      </Grid></>
   );
 };
 
