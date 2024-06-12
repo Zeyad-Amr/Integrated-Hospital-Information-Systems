@@ -151,7 +151,22 @@ const ERVisitsTable = () => {
             fullWidth
             onClick={() => {
               console.log(item);
-              refPatientData.current = item ?? "";
+              refPatientData.current = item
+                ? {
+                    ...item,
+                    gender: item?.patient?.person?.gender?.value,
+                    name: item?.patient?.person
+                      ? item.patient?.person?.firstName +
+                        " " +
+                        item.patient?.person?.secondName +
+                        " " +
+                        item.patient?.person?.thirdName +
+                        " " +
+                        item.patient?.person?.fourthName
+                      : "لا يوجد",
+                    age: calcAge(item?.patient?.person?.birthDate),
+                  }
+                : "";
               console.log(refPatientData.current);
               if (refPatientData.current) setShawDialog(true);
             }}

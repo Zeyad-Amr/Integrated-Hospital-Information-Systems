@@ -10,6 +10,7 @@ import {
     GetVisitByCodeUseCase
 } from "@/modules/registration/domain/usecases/visit";
 import { CompleteVisitInterface } from "@/modules/registration/domain/interfaces/complete-visit-interface";
+import { ApiClient, Endpoints, ErrorMessage, ErrorResponse } from "@/core/api";
 
 //* Create Visit
 export const createVisit = createAsyncThunk(
@@ -27,6 +28,30 @@ export const createVisit = createAsyncThunk(
         }
     }
 );
+
+//* Create Transfer ( applying as MVC architecture)
+export const createVisitTransfer = createAsyncThunk(
+    "registration/visit/transfer",
+    async (data: { status : string , visitCode : string } , thunkApi) => {
+      const { rejectWithValue } = thunkApi;
+      const apiClient = new ApiClient();
+      try {
+        await apiClient.put(
+          Endpoints.visit.transfer,
+          { status : data.status },
+          {
+            pathVariables: { visitcode: data.visitCode },
+          }
+        );
+        return true;
+      } catch (error) {
+        const errorResponse: ErrorResponse =
+          error instanceof Error ? ErrorMessage.get(error.message) : error;
+        return rejectWithValue(errorResponse);
+      }
+    }
+  );
+  
 
 //* Update Visit
 export const updateVisitPatient = createAsyncThunk(

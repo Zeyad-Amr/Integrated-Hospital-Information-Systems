@@ -1,7 +1,9 @@
+import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import { ExaminationFormComponentPropsInterface } from "@/core/shared/components/ExaminationAccordion";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
-import { useAppDispatch } from "@/core/state/store";
+import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
+import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import {
   createTriage,
   updateTriage,
@@ -10,8 +12,8 @@ import { TriageInterface } from "@/modules/emr/interfaces/triage-interface";
 import TriageModel from "@/modules/emr/models/triage-model";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
-import { Formik } from "formik";
-import React from "react";
+import { Formik, FormikProps } from "formik";
+import React, { useRef } from "react";
 
 const TriageForm = ({
   visitCode,
@@ -20,14 +22,18 @@ const TriageForm = ({
   setShowFormDialog,
 }: ExaminationFormComponentPropsInterface) => {
   const dispatch = useAppDispatch();
+  const lookupsState: LookupsState = useAppSelector(
+    (state: any) => state.lookups
+  );
+  const formikRef = useRef<FormikProps<TriageInterface>>(null);
   return (
     <Formik
+      innerRef={formikRef}
       initialValues={
         initialValues
           ? ({
-            ...initialValues,
-
-          } as TriageInterface)
+              ...initialValues,
+            } as TriageInterface)
           : TriageModel.defaultValues()
       }
       onSubmit={async (values) => {
@@ -43,6 +49,7 @@ const TriageForm = ({
 
         dispatch(action).then((res) => {
           if (res?.meta.requestStatus == "fulfilled") {
+            if (formikRef.current) formikRef.current.resetForm();
             setShowFormDialog(false);
           }
         });
@@ -77,7 +84,8 @@ const TriageForm = ({
               />
             </Grid>
             <Grid item lg={4} md={4} sm={12} xs={12}>
-              <CustomTextField
+              <CustomSelectField
+                isDisabled={isViewMode}
                 name="LOCId"
                 label="مستوى الوعي"
                 value={values.LOCId}
@@ -86,14 +94,12 @@ const TriageForm = ({
                 error={errors.LOCId}
                 touched={touched.LOCId}
                 width="100%"
-                props={{
-                  type: "number",
-                  disabled: isViewMode,
-                }}
+                options={lookupsState.lookups.LOC}
               />
             </Grid>
             <Grid item lg={4} md={4} sm={12} xs={12}>
-              <CustomTextField
+              <CustomSelectField
+                isDisabled={isViewMode}
                 name="triageTypeId"
                 label="نوع الفرز"
                 value={values.triageTypeId}
@@ -102,10 +108,7 @@ const TriageForm = ({
                 error={errors.triageTypeId}
                 touched={touched.triageTypeId}
                 width="100%"
-                props={{
-                  type: "number",
-                  disabled: isViewMode,
-                }}
+                options={lookupsState.lookups.triageTypes}
               />
             </Grid>
           </Grid>
