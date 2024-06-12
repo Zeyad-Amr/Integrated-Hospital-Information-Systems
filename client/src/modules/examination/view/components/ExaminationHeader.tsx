@@ -2,6 +2,7 @@ import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 interface ExaminationHeaderProps {
   patientName: string;
@@ -12,6 +13,7 @@ const ExaminationHeader = ({
   patientName,
   clinicName,
 }: ExaminationHeaderProps) => {
+  const router = useRouter();
   return (
     <Box
       sx={{
@@ -32,7 +34,13 @@ const ExaminationHeader = ({
         <Box sx={{ width: "1px", backgroundColor: "#fff" }} />
         <Typography> {clinicName}</Typography>
       </Box>
-      <PrimaryButton title="انهاء الزيارة" />
+      <PrimaryButton
+        title="انهاء الزيارة"
+        onClick={() => {
+          console.log("انهاء الزيارة");
+          router.push("/dashboard/clinic/visits");
+        }}
+      />
     </Box>
   );
 };

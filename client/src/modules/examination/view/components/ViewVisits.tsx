@@ -6,10 +6,13 @@ import {
   SessionStorageKeys,
 } from "@/core/shared/utils/session-storage";
 import EventSource from "eventsource";
-import { CustomDataTable, HeaderItem } from "@/core/shared/components/CustomDataTable";
+import {
+  CustomDataTable,
+  HeaderItem,
+} from "@/core/shared/components/CustomDataTable";
 import { Button } from "@mui/material";
 import { VisitStatus } from "@/modules/registration/domain/entities/visit-entity";
-
+import { useRouter } from "next/navigation";
 
 export const header: HeaderItem[] = [
   {
@@ -25,44 +28,45 @@ export const header: HeaderItem[] = [
     label: "اسم المريض",
     minWidth: 100,
     tableCellProps: { align: "center" },
-    },
-    {
-      filterKey: "mainComplaint",
-      id: "mainComplaint",
-      label: "الشكوى الرئيسية",
-      minWidth: 50,
-      tableCellProps: { align: "center" },
-      showBorder: true,
-    },
-    {
-      filterKey: "age",
+  },
+  {
+    filterKey: "mainComplaint",
+    id: "mainComplaint",
+    label: "الشكوى الرئيسية",
+    minWidth: 50,
+    tableCellProps: { align: "center" },
+    showBorder: true,
+  },
+  {
+    filterKey: "age",
     id: "age",
     label: "السن",
     minWidth: 100,
     tableCellProps: { align: "center", style: { direction: "ltr" } },
   },
- 
-  // {
-  //   filterKey: "assessment",
-  //   id: "assessment",
-  //   label: "",
-  //   isComponent: true,
-  //   minWidth: 100,
-  //   tableCellProps: { align: "center" },
-  //   sortable: false,
-  //   filterable: false,
-  //   searchable: false,
-  //   onClick: () => {},
-  // },
+
+  {
+    filterKey: "open",
+    id: "open",
+    label: "",
+    isComponent: true,
+    minWidth: 100,
+    tableCellProps: { align: "center" },
+    sortable: false,
+    filterable: false,
+    searchable: false,
+    onClick: () => {},
+  },
 ];
 
-
 const ViewVisits = () => {
+  const router = useRouter();
+
   // useRef
-  const refPatientData = useRef("");
+  // const refPatientData = useRef("");
 
   // useState
-  const [showDialog, setShawDialog] = useState(false);
+
   const [streamedData, setStreamedData] = useState([]);
   const [tableData, setTableData] = useState<any[]>([]);
   const eventSourceRef = useRef<any>(null);
@@ -92,7 +96,6 @@ const ViewVisits = () => {
       let data_json = JSON.parse(ev.data).items;
       setStreamedData(data_json);
     };
-
   }, []);
 
   const calcAge = (birthdate: string | number | Date) => {
@@ -128,7 +131,7 @@ const ViewVisits = () => {
     apiData.forEach((item) => {
       newTableData.push({
         id: item?.code,
-        mainComplaint: item?.mainComplaint?? "",
+        mainComplaint: item?.mainComplaint ?? "",
         name: item?.patient?.person
           ? item.patient?.person?.firstName +
             " " +
@@ -146,21 +149,22 @@ const ViewVisits = () => {
         }),
         age: calcAge(item?.patient?.person?.birthDate),
         gender: item?.patient?.person?.gender?.value,
-        // assessment: (
-        //   <Button
-        //     color="info"
-        //     variant="outlined"
-        //     fullWidth
-        //     onClick={() => {
-        //       console.log(item);
-        //       // refPatientData.current = item ?? "";
-        //       // console.log(refPatientData.current);
-        //       // if (refPatientData.current) setShawDialog(true);
-        //     }}
-        //   >
-            
-        //   </Button>
-        // ),
+        open: (
+          <Button
+            color="info"
+            variant="outlined"
+            fullWidth
+            onClick={() => {
+              console.log(item);
+              router.push("examination/visit/" + item?.code);
+              // refPatientData.current = item ?? "";
+              // console.log(refPatientData.current);
+              // if (refPatientData.current) setShawDialog(true);
+            }}
+          >
+            عرض التقرير
+          </Button>
+        ),
       });
     });
 
@@ -184,14 +188,13 @@ const ViewVisits = () => {
         headerItems={header}
         stickyHeader={true}
         boxShadow={5}
-        rowProps={{sx:{cursor:"pointer"}}}
-        onRowClick={(item) => {
-          refPatientData.current = item;
-          console.log(refPatientData.current);
-          if (refPatientData.current) setShawDialog(true);
-        }}
-      />
+        rowProps={{ sx: { cursor: "pointer" } }}
+        // onRowClick={(item) => {
+        //   refPatientData.current = item;
+        //   console.log(refPatientData.current);
 
+        // }}
+      />
     </Box>
   );
 };
