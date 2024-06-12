@@ -8,8 +8,12 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import { SidebarContext } from "./context/context";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { useAppSelector } from "@/core/state/store";
+import { AuthState } from "@/modules/auth/presentation/controllers/types";
+import { AccountEntity } from "@/modules/auth/domain/entities/account-entity";
 const SidebarComponent = () => {
   const { collapsed, onCollapse } = useContext(SidebarContext);
+  const authState: AuthState = useAppSelector((state: any) => state.auth);
 
   return (
     <Box
@@ -58,98 +62,160 @@ const SidebarComponent = () => {
         text="لوحة التحكم"
         path="/dashboard/home"
       />
-      <SidebarMenuItem
-        icon={
-          <PeopleIcon sx={{ color: "primary.main", textAlign: "center" }} />
-        }
-        activeIcon={<PeopleIcon sx={{ color: "white" }} />}
-        text="المستخدمين"
-        path="/dashboard/users"
-      >
-        <SidebarSubmenuItem
-          text="إضافة مستخدم"
-          path="/dashboard/users/create"
-        />
-        <SidebarSubmenuItem text="عرض المستخدمين" path="/dashboard/users/all" />
-      </SidebarMenuItem>
-      <SidebarMenuItem
-        icon={
-          <ApartmentIcon sx={{ color: "primary.main", textAlign: "center" }} />
-        }
-        activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
-        text="الإصابات الجماعية"
-        path="/dashboard/incidents/"
-      >
-        <SidebarSubmenuItem
-          text="إضافة إصابة جماعية"
-          path="/dashboard/incidents/add"
-        />
-        <SidebarSubmenuItem
-          text="استكمال الإصابات الجماعية"
-          path="/dashboard/incidents/all"
-        />
-      </SidebarMenuItem>
-      <SidebarMenuItem
-        icon={
-          <PeopleIcon sx={{ color: "primary.main", textAlign: "center" }} />
-        }
-        activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
-        text="المرضى"
-        path="/dashboard/visits"
-      >
-        <SidebarSubmenuItem text="إضافة مريض" path="/dashboard/visits/add" />
-        <SidebarSubmenuItem
+      {AccountEntity.hasPermission(
+        authState.currentPermission,
+        "manage/users"
+      ) && (
+        <SidebarMenuItem
+          icon={
+            <PeopleIcon sx={{ color: "primary.main", textAlign: "center" }} />
+          }
+          activeIcon={<PeopleIcon sx={{ color: "white" }} />}
+          text="المستخدمين"
+          path="/dashboard/users"
+        >
+          <SidebarSubmenuItem
+            text="إضافة مستخدم"
+            path="/dashboard/users/create"
+          />
+          <SidebarSubmenuItem
+            text="عرض المستخدمين"
+            path="/dashboard/users/all"
+          />
+        </SidebarMenuItem>
+      )}
+      {AccountEntity.hasPermission(
+        authState.currentPermission,
+        "group-visits"
+      ) && (
+        <SidebarMenuItem
+          icon={
+            <ApartmentIcon
+              sx={{ color: "primary.main", textAlign: "center" }}
+            />
+          }
+          activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
+          text="الإصابات الجماعية"
+          path="/dashboard/incidents/"
+        >
+          <SidebarSubmenuItem
+            text="إضافة إصابة جماعية"
+            path="/dashboard/incidents/add"
+          />
+          <SidebarSubmenuItem
+            text="استكمال الإصابات الجماعية"
+            path="/dashboard/incidents/all"
+          />
+        </SidebarMenuItem>
+      )}
+      {AccountEntity.hasPermission(
+        authState.currentPermission,
+        "single-visits"
+      ) && (
+        <SidebarMenuItem
+          icon={
+            <PeopleIcon sx={{ color: "primary.main", textAlign: "center" }} />
+          }
+          activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
+          text="المرضى"
+          path="/dashboard/visits"
+        >
+          <SidebarSubmenuItem text="إضافة مريض" path="/dashboard/visits/add" />
+          <SidebarSubmenuItem
+            text="المرضى المجهولة"
+            path="/dashboard/visits/anonymous"
+          />
+        </SidebarMenuItem>
+      )}
+      {AccountEntity.hasPermission(authState.currentPermission, "booking") && (
+        <SidebarMenuItem
+          icon={
+            <PeopleIcon sx={{ color: "primary.main", textAlign: "center" }} />
+          }
+          activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
+          text="الحجوزات"
+          path="/dashboard/visits"
+        >
+          <SidebarSubmenuItem text="إضافة مريض" path="/dashboard/visits/add" />
+          {/* <SidebarSubmenuItem
           text="المرضى المجهولة"
-          path="/dashboard/visits/anonymous"
+          path="/dashboard/visits/all"
+        /> */}
+        </SidebarMenuItem>
+      )}
+      {AccountEntity.hasPermission(
+        authState.currentPermission,
+        "medical-assessment"
+      ) && (
+        <SidebarMenuItem
+          icon={
+            <PeopleIcon sx={{ color: "primary.main", textAlign: "center" }} />
+          }
+          activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
+          text="التقييم الطبي"
+          path="/dashboard/er-area"
         />
-      </SidebarMenuItem>
-      <SidebarMenuItem
-        icon={
-          <PeopleIcon sx={{ color: "primary.main", textAlign: "center" }} />
-        }
-        activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
-        text="التقييم الطبي"
-        path="/dashboard/er-area"
-      />
+      )}
       {/*  */}
-      <SidebarMenuItem
-        icon={
-          <ApartmentIcon sx={{ color: "primary.main", textAlign: "center" }} />
-        }
-        activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
-        text="إدارة الأقسام"
-        path="/dashboard/departments/manage"
-      >
-        <SidebarSubmenuItem
-          text="الغرف"
-          path="/dashboard/departments/manage/rooms"
+      {AccountEntity.hasPermission(
+        authState.currentPermission,
+        "manage/departments"
+      ) && (
+        <SidebarMenuItem
+          icon={
+            <ApartmentIcon
+              sx={{ color: "primary.main", textAlign: "center" }}
+            />
+          }
+          activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
+          text="إدارة الأقسام"
+          path="/dashboard/departments/manage"
+        >
+          <SidebarSubmenuItem
+            text="الغرف"
+            path="/dashboard/departments/manage/rooms"
+          />
+          <SidebarSubmenuItem
+            text="التخصصات"
+            path="/dashboard/departments/manage/specializations"
+          />
+          <SidebarSubmenuItem
+            text="الأقسام الفرعية"
+            path="/dashboard/departments/manage/subdepartments"
+          />
+        </SidebarMenuItem>
+      )}
+
+      {AccountEntity.hasPermission(
+        authState.currentPermission,
+        "examinations"
+      ) && (
+        <SidebarMenuItem
+          icon={
+            <ApartmentIcon
+              sx={{ color: "primary.main", textAlign: "center" }}
+            />
+          }
+          activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
+          text="الفحص الطبي"
+          path="/dashboard/clinic/visits"
         />
-        <SidebarSubmenuItem
-          text="التخصصات"
-          path="/dashboard/departments/manage/specializations"
+      )}
+      {AccountEntity.hasPermission(
+        authState.currentPermission,
+        "reception"
+      ) && (
+        <SidebarMenuItem
+          icon={
+            <ApartmentIcon
+              sx={{ color: "primary.main", textAlign: "center" }}
+            />
+          }
+          activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
+          text="الاستقبال"
+          path="/dashboard/reception"
         />
-        <SidebarSubmenuItem
-          text="الأقسام الفرعية"
-          path="/dashboard/departments/manage/subdepartments"
-        />
-      </SidebarMenuItem>
-      {/*  */}
-      <SidebarMenuItem
-        icon={
-          <ApartmentIcon sx={{ color: "primary.main", textAlign: "center" }} />
-        }
-        activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
-        text="الفحص الطبي"
-        path="/dashboard/clinic/visits"
-      />
-      <SidebarMenuItem
-        icon={
-          <ApartmentIcon sx={{ color: "primary.main", textAlign: "center" }} />
-        }
-        activeIcon={<ApartmentIcon sx={{ color: "white" }} />}
-        text="الاستقبال"
-        path="/dashboard/reception"
-      />
+      )}
     </Box>
   );
 };

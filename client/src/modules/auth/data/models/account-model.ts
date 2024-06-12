@@ -1,5 +1,7 @@
 import { AccountInterface, AccountSubDepartmentPermissionInterface } from '../../domain/interfaces/account-interface';
 import UserModel from './user-model';
+import SubDepartmentsModel from '@/modules/management/data/models/sub-departments';
+import { SubDepartmentInterface } from '@/modules/management/domain/interfaces/sub-departments-interface';
 
 export default class AccountModel {
 
@@ -9,39 +11,29 @@ export default class AccountModel {
     static fromJson(json: any): AccountInterface {
         return {
             user: UserModel.fromGetMeJson(json.user),
-            permissions: this.handlePermissions(json.permissions)
+            permissions: this.handlePermissions(json.permissions, json.user)
         };
     }
 
     //* --------------------- Methods ---------------------
 
-    static handlePermissions = (permissions: any[]): AccountSubDepartmentPermissionInterface[] => {
-        const subDeptMap: { [key: number]: AccountSubDepartmentPermissionInterface } = {};
+    static handlePermissions = (permissions: any[], user: any): AccountSubDepartmentPermissionInterface[] => {
 
-        permissions.forEach(permission => {
-            const subDeptId = permission.subDepartment.id;
+        const subDepartments: SubDepartmentInterface[] = user.employee.subdepartments.map((subDept: any) => SubDepartmentsModel.fromJson(subDept));
 
-            if (!subDeptMap[subDeptId]) {
-                subDeptMap[subDeptId] = {
-                    subDepartment: {
-                        id: permission.subDepartment.id,
-                        name: permission.subDepartment.name,
-                        roomId: permission.subDepartment.roomId,
-                        specializationId: permission.subDepartment.specializationId,
-                        departmentId: permission.subDepartment.departmentId
-                    },
-                    permissions: []
-                };
-            }
-
-            subDeptMap[subDeptId].permissions.push({
-                id: permission.feature.id.toString(),
-                value: permission.feature.name,
-                code: permission.feature.code
-            });
+        return subDepartments.map(subDept => {
+            const subDeptPermissions = permissions.filter(permission => permission.subDepartment.id === subDept.id);
+            return {
+                subDepartment: subDept,
+                permissions: subDeptPermissions.map(permission => {
+                    return {
+                        id: permission.feature.id.toString(),
+                        value: permission.feature.name,
+                        code: permission.feature.code
+                    };
+                })
+            };
         });
-
-        return Object.values(subDeptMap);
     }
 }
 

@@ -9,6 +9,10 @@ export class AccountEntity {
       user: UserEntity.defaultValue(),
     };
   }
+
+  static hasPermission(subdepartmentPermissions: AccountSubDepartmentPermissionInterface, permission: string): boolean {
+    return subdepartmentPermissions.permissions.some((p) => p.code === permission);
+  }
 }
 
 export default class AccountSubDepartmentPermissionEntity {
