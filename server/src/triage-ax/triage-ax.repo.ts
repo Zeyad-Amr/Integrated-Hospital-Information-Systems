@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../shared/services/prisma-client/prisma.service';
 import { Prisma, TriageAx } from '@prisma/client';
 import { CreateTriageAxDto } from './dto/create-triage-ax.dto';
+import { UpdateTriageAxDto } from './dto/update-triage-ax.dto';
 
 @Injectable()
 export class TriageAxRepo extends PrismaGenericRepo<TriageAx> {
@@ -41,7 +42,7 @@ export class TriageAxRepo extends PrismaGenericRepo<TriageAx> {
 
   
 
-  async update(id:string,data: CreateTriageAxDto) {
+  async update(id:string,data: UpdateTriageAxDto) {
     try {
         const {  visitCode,LOCId,triageTypeId, ...triageAxData } = data;
         const triageAx = await this.prismaService.triageAx.update({
