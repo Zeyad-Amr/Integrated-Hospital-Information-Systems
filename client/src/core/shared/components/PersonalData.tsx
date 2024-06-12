@@ -62,10 +62,10 @@ const PersonalData = ({ searchSSN = true }: PersonalDataProps) => {
   console.log(lookupsState, "lookupsState");
 
   const [loadingFront, setLoadingFront] = React.useState(false);
-  const [successFront, setSuccessFront] = React.useState(false);
+  // const [successFront, setSuccessFront] = React.useState(false);
 
   const [loadingBack, setLoadingBack] = React.useState(false);
-  const [successBack, setSuccessBack] = React.useState(false);
+  // const [successBack, setSuccessBack] = React.useState(false);
   const timer = React.useRef<number>();
 
   
@@ -101,10 +101,10 @@ const PersonalData = ({ searchSSN = true }: PersonalDataProps) => {
   useEffect(() => {
     if (selectedBack !== null) {
       if (!loadingBack) {
-        setSuccessBack(false);
+        // setSuccessBack(false);
         setLoadingBack(true);
         timer.current = window.setTimeout(() => {
-          setSuccessBack(true);
+          // setSuccessBack(true);
           setLoadingBack(false);
         }, 2000);
       }
@@ -135,10 +135,10 @@ const PersonalData = ({ searchSSN = true }: PersonalDataProps) => {
 
   useEffect(() => {
     if (!loadingFront) {
-      setSuccessFront(false);
+      // setSuccessFront(false);
       setLoadingFront(true);
       timer.current = window.setTimeout(() => {
-        setSuccessFront(true);
+        // setSuccessFront(true);
         setLoadingFront(false);
       }, 2000);
     }

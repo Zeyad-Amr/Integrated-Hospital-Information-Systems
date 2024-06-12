@@ -1,13 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Formik } from "formik";
 import PersonalData from '@/core/shared/components/PersonalData';
-import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import PrimaryButton from '@/core/shared/components/btns/PrimaryButton';
 
 const DemographicData = () => {
-    const [editing, setEditing] = useState<boolean>(false)
-
     return (
         <Formik
             initialValues={{ }}
@@ -16,17 +13,12 @@ const DemographicData = () => {
             }}
         >
             {({
-                values,
-                touched,
-                errors,
-                handleChange,
-                handleBlur,
                 handleSubmit,
             }) => (
                 <Box component="form" onSubmit={handleSubmit} noValidate>
                     <PersonalData />
                     <PrimaryButton
-                        title={editing ? "تعــــديل" : "حفـــــظ"}
+                        title={"حفـــــظ"}
                         type="submit"
                     />
                 </Box>
