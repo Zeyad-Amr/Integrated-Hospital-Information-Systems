@@ -15,7 +15,6 @@ import PageTitle from "@/core/shared/components/PageTitle";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
-
   const router = useRouter();
 
   const handleFormSchema = Yup.object({
@@ -46,8 +45,15 @@ const LoginPage = () => {
   return (
     <Box className={`${styles.loginPage} ${styles.flexCenter}`}>
       <Box className={`${styles.loginBG}`}></Box>
-      <Box className={`${styles.loginFormContainer} ${styles.flexCenter}`} sx={{ overflow: 'hidden' }}>
-        <Box component='img' src="https://i.postimg.cc/HnFF8MvW/logo.png" sx={{ width: '8rem', mb: 3}} />
+      <Box
+        className={`${styles.loginFormContainer} ${styles.flexCenter}`}
+        sx={{ overflow: "hidden" }}
+      >
+        <Box
+          component="img"
+          src="https://i.postimg.cc/HnFF8MvW/logo.png"
+          sx={{ width: "8rem", mb: 3 }}
+        />
         <PageTitle title="تسجيــل الدخــول" />
         <Formik
           initialValues={{
@@ -69,7 +75,11 @@ const LoginPage = () => {
               component="form"
               onSubmit={handleSubmit}
               noValidate
-              style={{ width: "70%", justifyContent: 'center', alignItems: 'center' }}
+              style={{
+                width: "70%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
               <Grid container spacing={1}>
                 <Grid
@@ -120,12 +130,7 @@ const LoginPage = () => {
                     }}
                   />
                 </Grid>
-                <Grid item
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  xs={12}>
-
+                <Grid item lg={12} md={12} sm={12} xs={12}>
                   <Button
                     type="submit"
                     style={{
@@ -138,7 +143,6 @@ const LoginPage = () => {
                   </Button>
                 </Grid>
               </Grid>
-
             </Box>
           )}
         </Formik>
