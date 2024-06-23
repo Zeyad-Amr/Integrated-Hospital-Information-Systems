@@ -1,5 +1,13 @@
 import VitalsInterface from "./vitals-interface";
 
+
+export interface TriageTransferInterface {
+  mainComplaint: string;
+  toSubDepId: string;
+}
+
+
+// ****************** Not Used *********************
 export interface TriageAXInterface {
   mainComplaint: string;
   LOCId?: number;
@@ -10,3 +18,4 @@ export interface TriageAXInterface {
 }
 export interface TriageAXInterfaceWithoutVitals extends Omit<TriageAXInterface, 'vitals'> {
 }
+// ***************************************

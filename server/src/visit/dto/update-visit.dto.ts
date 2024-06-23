@@ -11,6 +11,10 @@ export class UpdateVisitDto  {
     @IsOptional()
     @IsString()
     mainComplaint: string;
+
+    @ApiProperty({ type: Number, example: 1 })
+    @IsNotEmpty()
+    toSubDepId: number;
 }
 
 export class UpdateVisitStatus {

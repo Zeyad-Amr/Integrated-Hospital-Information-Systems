@@ -293,11 +293,20 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
     }
   }
 
-  async updateVisit(code: string, data: UpdateVisitDto) {
+  async updateVisit(code: string, data: UpdateVisitDto,creatorId:string) {
     try {
       await this.prismaService.visit.update({
         where: { code },
-        data,
+        data:{
+          mainComplaint:data.mainComplaint,
+          transfers:{
+            create:{
+              toSubDepId:data.toSubDepId,
+              transferDate:new Date(),
+              createdById:creatorId
+            }
+          }
+        },
       });
 
       return { message: 'Visit updated successfully' };

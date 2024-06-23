@@ -1,10 +1,10 @@
-import { TriageAXInterface } from "@/modules/er-area/domain/interfaces/triageAX-interface";
+import {  TriageTransferInterface } from "@/modules/er-area/domain/interfaces/triageAX-interface";
 import CreateTriageAXUseCase from "@/modules/er-area/domain/usecases/create-triageAX-usecase";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { sl, ServiceKeys } from "@/core/service-locator";
 
 interface CreateTriageAXInterface {
-  assessment: TriageAXInterface
+  assessment: TriageTransferInterface
   visitCode: string
 }
 
