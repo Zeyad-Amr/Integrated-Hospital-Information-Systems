@@ -1,4 +1,4 @@
-import { TriageAXInterface } from '../../domain/interfaces/triageAX-interface';
+import { TriageAXInterface, TriageTransferInterface } from '../../domain/interfaces/triageAX-interface';
 import VitalsModel from './vitals-model';
 
 export default class TriageAXModel {
@@ -12,6 +12,14 @@ export default class TriageAXModel {
             comorbidityIds: entity.comorbidityIds,
             transferTo: entity.transferTo,
             vitals: entity.vitals ? VitalsModel.toJson(entity.vitals) : entity.vitals,
+        };
+    }
+
+    //* --------------------- Serialization: Convert the model to JSON ---------------------
+    static triageTransferToJson(entity: TriageTransferInterface): any {
+        return {
+            mainComplaint: entity.mainComplaint,
+            toSubDepId: entity.toSubDepId,
         };
     }
 

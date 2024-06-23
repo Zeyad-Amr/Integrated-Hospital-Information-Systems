@@ -1,6 +1,6 @@
 import { ErrorResponse, ErrorMessage } from "@/core/api";
 import BaseTriageAXRepository from "../../domain/repositories/base-triageAX-repository";
-import { TriageAXInterface } from "../../domain/interfaces/triageAX-interface";
+import { TriageAXInterface, TriageTransferInterface } from "../../domain/interfaces/triageAX-interface";
 import { BaseTriageAXDataSource } from "../datasources/triageAX-datasource";
 
 class TriageAXRepository extends BaseTriageAXRepository {
@@ -10,6 +10,15 @@ class TriageAXRepository extends BaseTriageAXRepository {
   async createTriageAX(triageAX: TriageAXInterface, visitCode: string): Promise<void> {
     try {
       await this.triageAXDataSource.createTriageAX(triageAX, visitCode);
+    } catch (error) {
+      const errorResponse: ErrorResponse =
+        error instanceof Error ? ErrorMessage.get(error.message) : error;
+      throw errorResponse;
+    }
+  }
+  async createTriageTransfer(triageAX: TriageTransferInterface, visitCode: string): Promise<void> {
+    try {
+      await this.triageAXDataSource.createTriageTransfer(triageAX, visitCode);
     } catch (error) {
       const errorResponse: ErrorResponse =
         error instanceof Error ? ErrorMessage.get(error.message) : error;

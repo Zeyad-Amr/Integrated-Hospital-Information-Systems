@@ -56,9 +56,9 @@ export class VisitController {
   @ApiOkResponse({ description: 'triage assessment has been updated successfully' })
   @ApiBadRequestResponse({ description: 'body has missed some data' })
   @Patch(':visitCode')
-  async addTriageAX(@Body() updateVisitDto: UpdateVisitDto, @Param('visitCode') visitCode: string) {
+  async addTriageAX(@Body() updateVisitDto: UpdateVisitDto, @Param('visitCode') visitCode: string,@Req() req) {
     try {
-      return await this.visitService.update(visitCode, updateVisitDto);
+      return await this.visitService.update(visitCode, updateVisitDto,req.user.sub);
     } catch (error) {
       throw handleError(error);
     }

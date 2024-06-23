@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { TriageAXInterfaceWithoutVitals } from "../interfaces/triageAX-interface";
+import { TriageAXInterfaceWithoutVitals, TriageTransferInterface } from "../interfaces/triageAX-interface";
 
 export default class TriageAXEntity {
   static defaultValue(): TriageAXInterfaceWithoutVitals {
@@ -11,7 +11,20 @@ export default class TriageAXEntity {
       transferTo: "",
     };
   }
+  static triageTransfereDefaultValue(): TriageTransferInterface {
+    return {
+      mainComplaint: "",
+      toSubDepId: "",
+    };
+  }
+  
 
+  static triageTransferSchema(): Yup.ObjectSchema<any> {
+    return Yup.object({
+      mainComplaint: Yup.string().required("الشكوى مطلوبة"),
+      toSubDepId: Yup.string().required("نقل إلى مطلوب"),
+    });
+  }
   static getSchema(): Yup.ObjectSchema<any> {
     return Yup.object({
       mainComplaint: Yup.string().required("الشكوى مطلوبة"),

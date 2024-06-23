@@ -1,25 +1,25 @@
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
-import { Button, Box, Grid } from "@mui/material";
+import { Button, Box, Typography } from "@mui/material";
 import { Formik, FormikProps } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import CustomAccordion from "@/core/shared/components/CustomAccordion";
-// import AdditionalData from "@/modules/registration/presentation/components/AdditionalData";
-import { useAppDispatch, useAppSelector } from "@/core/state/store";
+import AdditionalData from "@/modules/registration/presentation/components/AdditionalData";
+import { useAppDispatch } from "@/core/state/store";
 import { AdditionalDataInterface } from "@/modules/registration/domain/interfaces/additional-data-interface";
-// import AdditionalDataEntity from "@/modules/registration/domain/entities/additional-data-entity";
+import AdditionalDataEntity from "@/modules/registration/domain/entities/additional-data-entity";
 import PersonEntity from "@/core/shared/modules/person/domain/entities/person-entity";
 import PersonInterface from "@/core/shared/modules/person/domain/interfaces/person-interface";
 import VisitEntity from "@/modules/registration/domain/entities/visit-entity";
 import VisitInterface from "@/modules/registration/domain/interfaces/visit-interface";
 import { createVisit } from "../../../controllers/thunks/visits-thunks";
-// import CompanionForm from "../../CompanionForm";
+import CompanionForm from "../../CompanionForm";
 import PersonalData from "@/core/shared/components/PersonalData";
 import { CompanionInterface } from "@/modules/registration/domain/interfaces/companion-interface";
 import { TransferDataInterface } from "@/modules/registration/domain/interfaces/transfer-data-interface";
-import CustomSelectField from "@/core/shared/components/CustomSelectField";
-import { SubDepartmentsState } from "@/modules/management/presentation/controllers/types";
-import { SubDepartmentInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
+// import CustomSelectField from "@/core/shared/components/CustomSelectField";
+// import { SubDepartmentsState } from "@/modules/management/presentation/controllers/types";
+// import { SubDepartmentInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
 import { getSubDepartmentsList } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
 
 const AddVisitForm = () => {
@@ -27,15 +27,15 @@ const AddVisitForm = () => {
 
   // useState
   const [patientDataExpanded, setPatientDataExpanded] = useState<boolean>(true);
-  const [transferDataExpanded, setTransferDataExpanded] =
-    useState<boolean>(true);
-  // const [companionDataExpanded, setCompanionDataExpanded] =
-  //   useState<boolean>(false);
-  // const [additionalDataExpanded, setAdditionalDataExpanded] =
-  //   useState<boolean>(false);
+  // const [transferDataExpanded, setTransferDataExpanded] =
+  //   useState<boolean>(true);
+  const [companionDataExpanded, setCompanionDataExpanded] =
+    useState<boolean>(false);
+  const [additionalDataExpanded, setAdditionalDataExpanded] =
+    useState<boolean>(false);
   const [combinedValues, setCombinedValues] = useState<VisitInterface>();
 
-  // const [isChild, setIsChild] = useState<boolean>(false);
+  const [isChild, setIsChild] = useState<boolean>(false);
 
   //* buttons useRef
   const refSubmitPatient: any = useRef(null);
@@ -85,31 +85,31 @@ const AddVisitForm = () => {
   };
 
   //* Handle Companion Submit
-  // const handleCompanionSubmit = (values: PersonInterface) => {
-  //   companionData.current = values;
-  //   setCombinedValues((previous) => ({
-  //     ...previous,
-  //     companion: values,
-  //   }));
-  // };
-
-  //* Handle Additional Data Submit
-  // const handleAdditionalDataSubmit = (values: AdditionalDataInterface) => {
-  //   additionalData.current = values;
-  //   setCombinedValues((previous) => ({
-  //     ...previous,
-  //     additionalInfo: values,
-  //   }));
-  // };
-
-  //* Handle Transfer Data Submit
-  const handleTransferDataSubmit = (values: TransferDataInterface) => {
-    transferData.current = values;
+  const handleCompanionSubmit = (values: PersonInterface) => {
+    companionData.current = values;
     setCombinedValues((previous) => ({
       ...previous,
-      transfer: values,
+      companion: values,
     }));
   };
+
+  //* Handle Additional Data Submit
+  const handleAdditionalDataSubmit = (values: AdditionalDataInterface) => {
+    additionalData.current = values;
+    setCombinedValues((previous) => ({
+      ...previous,
+      additionalInfo: values,
+    }));
+  };
+
+  //* Handle Transfer Data Submit
+  // const handleTransferDataSubmit = (values: TransferDataInterface) => {
+  //   transferData.current = values;
+  //   setCombinedValues((previous) => ({
+  //     ...previous,
+  //     transfer: values,
+  //   }));
+  // };
 
   //* Handle Submit all Forms
   const handleSubmitAllForms = () => {
@@ -131,8 +131,8 @@ const AddVisitForm = () => {
   useEffect(() => {
     if (
       patientData.current &&
-      // companionData.current &&
-      // additionalData.current &&
+      companionData.current &&
+      additionalData.current &&
       transferData.current
     ) {
       if (combinedValues) {
@@ -161,9 +161,9 @@ const AddVisitForm = () => {
     dispatch(getSubDepartmentsList([]));
   }, []);
 
-  const subdepartmentState: SubDepartmentsState = useAppSelector(
-    (state: any) => state.subDepartments
-  );
+  // const subdepartmentState: SubDepartmentsState = useAppSelector(
+  //   (state: any) => state.subDepartments
+  // );
 
   return (
     <Box sx={{ marginTop: "2.5rem" }}>
@@ -185,20 +185,20 @@ const AddVisitForm = () => {
             console.log(values);
             handlePatientSubmit(values);
           }}
-          // validateOnMount={true}
-          // validationSchema={VisitEntity.getPatientSchema(!isChild)}
-          validationSchema={VisitEntity.getPatientSchema(true)}
+          validateOnMount={true}
+          validationSchema={VisitEntity.getPatientSchema(!isChild)}
+          // validationSchema={VisitEntity.getPatientSchema(true)}
         >
           {({
-            // values,
-            // touched,
-            // errors,
-            // handleChange,
-            // handleBlur,
+            values,
+            touched,
+            errors,
+            handleChange,
+            handleBlur,
             handleSubmit,
           }) => (
             <Box component="form" onSubmit={handleSubmit} noValidate>
-              {/* <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+              <Box sx={{ display: "flex", alignItems: "flex-start" }}>
                 <CustomTextField
                   isRequired
                   name="sequenceNumber"
@@ -239,7 +239,7 @@ const AddVisitForm = () => {
                     <Typography>طفل / مجهول</Typography>
                   </Box>
                 </Box>
-              </Box> */}
+              </Box>
               <PersonalData />
               <Button
                 type="submit"
@@ -252,14 +252,13 @@ const AddVisitForm = () => {
       </CustomAccordion>
 
       {/* //* Start Transfer Data *******************  */}
-      <CustomAccordion
+      {/* <CustomAccordion
         isClosable={false}
         title="نقل المريض"
         isDisabled={false}
         isExpanded={transferDataExpanded}
         setExpanded={setTransferDataExpanded}
       >
-        {/* //* Start Patient form ********************* */}
         <Formik
           innerRef={formikRefTransferData}
           initialValues={VisitEntity.transferDataValue()}
@@ -325,10 +324,10 @@ const AddVisitForm = () => {
             </Box>
           )}
         </Formik>
-      </CustomAccordion>
+      </CustomAccordion> */}
 
       {/* //* Start Additional Data ******************* */}
-      {/* <Box>
+      <Box>
         <CustomAccordion
           isClosable={false}
           title="البيانات الأضافية"
@@ -346,10 +345,10 @@ const AddVisitForm = () => {
             }}
           />
         </CustomAccordion>
-      </Box> */}
+      </Box>
 
       {/* //* Start Companion ************************************* */}
-      {/* <Box mt={2}>
+      <Box mt={2}>
         <CustomAccordion
           isClosable={false}
           title="بيانات المرافق"
@@ -370,7 +369,7 @@ const AddVisitForm = () => {
             />
           </Box>
         </CustomAccordion>
-      </Box> */}
+      </Box>
 
       <Box
         sx={{

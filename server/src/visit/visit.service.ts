@@ -72,9 +72,9 @@ export class VisitService {
     }
   }
 
-  async update(visitCode: string,updateVisitDto:UpdateVisitDto) {
+  async update(visitCode: string,updateVisitDto:UpdateVisitDto,creatorId:string) {
     try {
-      return await this.visitRepo.updateVisit(visitCode,updateVisitDto);
+      return await this.visitRepo.updateVisit(visitCode,updateVisitDto,creatorId);
     } catch (error) {
       throw error
     }
