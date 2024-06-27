@@ -14,8 +14,7 @@ import {
 import { PersonRepo } from 'src/person/person.repo';
 import { PrismaGenericRepo } from 'src/shared/services/prisma-client/prisma-generic.repo';
 import { isEmptyObject } from 'src/shared/util.functions.ts/general.utils';
-import { TriageAXDto } from './dto/triage-assessment.dto';
-import { UpdateVisitDto } from './dto/update-visit.dto';
+import { UpdateVisit } from './types';
 
 @Injectable()
 export class VisitRepo extends PrismaGenericRepo<Visit> {
@@ -237,7 +236,6 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
           let visitStatus: VisitStatus = 'CREATED';
           if (createVisitDto.transfer) {
             visitStatus = 'BOOKED';
-
           }
           const visit = await tx.visit.create({
             data: {
@@ -293,20 +291,11 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
     }
   }
 
-  async updateVisit(code: string, data: UpdateVisitDto,creatorId:string) {
+  async updateVisit(code: string, data: UpdateVisit) {
     try {
       await this.prismaService.visit.update({
         where: { code },
-        data:{
-          mainComplaint:data.mainComplaint,
-          transfers:{
-            create:{
-              toSubDepId:data.toSubDepId,
-              transferDate:new Date(),
-              createdById:creatorId
-            }
-          }
-        },
+        data
       });
 
       return { message: 'Visit updated successfully' };

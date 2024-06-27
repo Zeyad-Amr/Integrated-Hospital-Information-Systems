@@ -20,8 +20,13 @@ const TriageForm = ({
   initialValues,
   isViewMode,
   setShowFormDialog,
-}: ExaminationFormComponentPropsInterface) => {
-  const dispatch = useAppDispatch();
+  refSubmitButton,
+  onSubmit,
+}: ExaminationFormComponentPropsInterface & {
+  refSubmitButton?: React.MutableRefObject<null>;
+  onSubmit?: (values: TriageInterface) => void;
+}) => {
+    const dispatch = useAppDispatch();
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
@@ -36,8 +41,8 @@ const TriageForm = ({
             } as TriageInterface)
           : TriageModel.defaultValues()
       }
-      onSubmit={async (values) => {
-        console.log(values);
+      onSubmit={
+        onSubmit ? onSubmit : async (values) => {
         const submitObject = {
           ...values,
           visitCode: visitCode,
@@ -116,6 +121,8 @@ const TriageForm = ({
             <PrimaryButton
               title={initialValues ? "حفــــظ" : "اضـــافة"}
               type="submit"
+              ref={refSubmitButton}
+              display={refSubmitButton ? "none" : "block"}
             />
           ) : null}
         </Box>
