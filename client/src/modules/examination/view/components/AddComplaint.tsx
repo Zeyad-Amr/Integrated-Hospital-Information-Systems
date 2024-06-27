@@ -3,10 +3,10 @@ import { Formik, FormikProps } from "formik";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import { Box } from "@mui/system";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
-import { updateComplaint } from "../../controllers/thunks/complaints-thunk";
-import ComplaintsModel from "../../models/complaints-model";
+import ComplaintsModel from "../../../registration/data/models/complaint-model";
 import { useAppDispatch } from "@/core/state/store";
-import { ComplaintsInterface } from "../../interfaces/complaints-interface";
+import { ComplaintsInterface } from "../../../registration/domain/interfaces/complaint-interface";
+import { updateComplaint } from "@/modules/registration/presentation/controllers/thunks/visits-thunks";
 
 interface AddComplaintPropsInterface {
   visitCode: string;
