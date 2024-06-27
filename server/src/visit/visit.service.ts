@@ -103,9 +103,9 @@ export class VisitService {
           },
           triageAx:{
             create:{
-              triageId:triageAxDto.triage.triageTypeId,
-              painScore:triageAxDto.triage.painScore,
-              consciousnessLevelId:triageAxDto.triage.LOCId
+              triageId:triageAxDto?.triage?.triageTypeId,
+              painScore:triageAxDto?.triage?.painScore,
+              consciousnessLevelId:triageAxDto?.triage?.LOCId
             }
           }
       });
