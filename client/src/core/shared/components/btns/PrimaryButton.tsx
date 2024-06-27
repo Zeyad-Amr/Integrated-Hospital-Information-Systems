@@ -36,5 +36,5 @@ const PrimaryButton = forwardRef<any, PrimaryButtonTypes>(
     );
   }
 );
-
+PrimaryButton.displayName = "PrimaryButton";
 export default PrimaryButton;
