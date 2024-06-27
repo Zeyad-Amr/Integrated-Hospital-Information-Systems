@@ -5,6 +5,7 @@ import {
   getAnonymousVisits,
   getVisitByCode,
   createVisitTransfer,
+  updateComplaint,
 } from "../thunks/visits-thunks";
 import { VisitsState } from "../types";
 import { ErrorResponse } from "@/core/api";
@@ -78,6 +79,23 @@ const visitSlice = createSlice({
       state.error = "";
     });
     builder.addCase(updateVisitPatient.rejected, (state, action) => {
+      state.loading = false;
+      state.error = (action.payload as ErrorResponse).message;
+      AlertService.showAlert(`${state.error}`, "error");
+    });
+
+    //* Update visit complaint
+    builder.addCase(updateComplaint.pending, (state, _action) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(updateComplaint.fulfilled, (state, _action) => {
+      state.loading = false;
+      AlertService.showAlert("تم تحديث الشكوى بنجاح", "success");
+      state.visits = PaginatedListModel.resetPaginatedList(state.visits);
+      state.error = "";
+    });
+    builder.addCase(updateComplaint.rejected, (state, action) => {
       state.loading = false;
       state.error = (action.payload as ErrorResponse).message;
       AlertService.showAlert(`${state.error}`, "error");

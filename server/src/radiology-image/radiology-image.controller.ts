@@ -24,7 +24,6 @@ import { Sorting, SortingParams } from 'src/shared/decorators/order.decorator';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiConflictResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -45,22 +44,28 @@ export class RadiologyImageController {
   @ApiOperation({ summary: 'Create radiologyImage' })
   @ApiCreatedResponse({ description: 'created successfully' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
-  async create(@Body() createRadiologyImageDto: CreateRadiologyImageDto, @Req() req) {
+  async create(
+    @Body() createRadiologyImageDto: CreateRadiologyImageDto,
+    @Req() req,
+  ) {
     try {
       const creatorId = req.user.sub;
-      return await this.vitalsService.create(createRadiologyImageDto, creatorId);
+      return await this.vitalsService.create(
+        createRadiologyImageDto,
+        creatorId,
+      );
     } catch (error) {
       throw handleError(error);
     }
   }
 
   @Get()
-  @ApiOperation({ summary: 'get all surgeries' })
-  @ApiOkResponse({ description: 'get all surgeries' })
+  @ApiOperation({ summary: 'get alll radiologyImage' })
+  @ApiOkResponse({ description: 'get all radiologyImage' })
   @CustomGetAllParamDecorator()
   async findAll(
     @PaginationParams() paginationParams: Pagination,
-    @FilteringParams([]) filters?: Array<Filter>,
+    @FilteringParams(['patientId', 'visitCode']) filters?: Array<Filter>,
     @SortingParams([]) sort?: Sorting,
   ) {
     try {

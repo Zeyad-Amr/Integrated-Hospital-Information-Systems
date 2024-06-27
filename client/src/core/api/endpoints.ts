@@ -97,6 +97,13 @@ const Endpoints = {
     update: "/allergy/:id",
     delete: "/allergy/:id",
   },
+  primarySurvey: {
+    list: "/primarySurvey",
+    details: "/primarySurvey/:id",
+    create: "/primarySurvey",
+    update: "/primarySurvey/:id",
+    delete: "/primarySurvey/:id",
+  },
   surgery: {
     list: "/surgery",
     details: "/surgery/:id",

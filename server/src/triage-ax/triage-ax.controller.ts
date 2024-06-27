@@ -24,7 +24,6 @@ import { Sorting, SortingParams } from 'src/shared/decorators/order.decorator';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiConflictResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -60,7 +59,7 @@ export class TriageAxController {
   @CustomGetAllParamDecorator()
   async findAll(
     @PaginationParams() paginationParams: Pagination,
-    @FilteringParams([]) filters?: Array<Filter>,
+    @FilteringParams(['patientId', 'visitCode']) filters?: Array<Filter>,
     @SortingParams([]) sort?: Sorting,
   ) {
     try {

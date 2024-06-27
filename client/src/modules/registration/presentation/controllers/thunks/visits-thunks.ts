@@ -11,6 +11,8 @@ import {
 } from "@/modules/registration/domain/usecases/visit";
 import { CompleteVisitInterface } from "@/modules/registration/domain/interfaces/complete-visit-interface";
 import { ApiClient, Endpoints, ErrorMessage, ErrorResponse } from "@/core/api";
+import ComplaintsModel from "@/modules/registration/data/models/complaint-model";
+import { ComplaintsInterface } from "@/modules/registration/domain/interfaces/complaint-interface";
 
 //* Create Visit
 export const createVisit = createAsyncThunk(
@@ -100,6 +102,29 @@ export const getVisitByCode = createAsyncThunk(
         } catch (error) {
             console.log('Error:', error);
             return rejectWithValue(error);
+        }
+    }
+);
+
+//*  Update Complaint
+export const updateComplaint = createAsyncThunk(
+    "registration/complaint/update",
+    async (data: ComplaintsInterface, thunkApi) => {
+        const { rejectWithValue } = thunkApi;
+        const apiClient = new ApiClient();
+        try {
+            await apiClient.patch(
+                Endpoints.visit.details,
+                ComplaintsModel.toJson(data),
+                {
+                    pathVariables: { visitcode: data.visitCode },
+                }
+            );
+            return true;
+        } catch (error) {
+            const errorResponse: ErrorResponse =
+                error instanceof Error ? ErrorMessage.get(error.message) : error;
+            return rejectWithValue(errorResponse);
         }
     }
 );
