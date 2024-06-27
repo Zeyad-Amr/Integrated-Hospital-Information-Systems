@@ -1,15 +1,11 @@
 "use client";
-
 import isEqual from "lodash/isEqual";
 import { useEffect, useMemo, useCallback, useState } from "react";
-// hooks
 import { useLocalStorage } from "@/core/shared/hooks/use-local-storage";
-// utils
 import { localStorageGetItem } from "@/core/shared/utils/storage-available";
-//
 import { SettingsValueProps } from "../types";
 import { SettingsContext } from "./settings-context";
-// ----------------------------------------------------------------------
+import i18n from "@/core/localization/i18n.config";
 
 const STORAGE_KEY = "settings";
 
@@ -26,7 +22,6 @@ export function SettingsProvider({
     STORAGE_KEY,
     defaultSettings
   );
-
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const isArabic = localStorageGetItem("i18nextLng") === "ar";
@@ -42,8 +37,9 @@ export function SettingsProvider({
   const onChangeDirectionByLang = useCallback(
     (lang: string) => {
       update("themeDirection", lang === "ar" ? "rtl" : "ltr");
+      i18n.changeLanguage(lang);
     },
-    [update]
+    [update, i18n]
   );
 
   // Drawer
@@ -70,6 +66,7 @@ export function SettingsProvider({
       open: openDrawer,
       onToggle: onToggleDrawer,
       onClose: onCloseDrawer,
+      isArabic,
     }),
     [
       reset,
@@ -80,6 +77,7 @@ export function SettingsProvider({
       onCloseDrawer,
       onToggleDrawer,
       onChangeDirectionByLang,
+      isArabic,
     ]
   );
 

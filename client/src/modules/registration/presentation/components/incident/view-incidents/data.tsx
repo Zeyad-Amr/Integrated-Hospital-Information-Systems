@@ -63,7 +63,7 @@ export const header: HeaderItem[] = [
   {
     filterKey: "numberOfIncompletedVisits",
     id: "numberOfIncompletedVisits",
-    label: "عدد الزيارات الغير مكتملة",
+    label: "غير مكتمل",
     minWidth: 50,
     maxWidth: 70,
     tableCellProps: { align: "center" },
