@@ -9,6 +9,7 @@ import React from "react";
 import { labsHeaderTable } from "./data";
 import LabsForm from "./LabsForm";
 import { PatientIDsInterface } from "@/modules/emr/interfaces/patientIds-interface";
+import { Filter } from "@/core/api";
 
 const LabsComponent = ({ patientId, visitCode }: PatientIDsInterface) => {
   const labsState: LabsState = useAppSelector((state: any) => state.labs);
@@ -24,6 +25,9 @@ const LabsComponent = ({ patientId, visitCode }: PatientIDsInterface) => {
       patientId={patientId}
       visitCode={visitCode}
       isAccordionExpanded={true}
+      initFilters={[
+        ...(patientId ? [Filter.equals("patientId", patientId)] : []),
+      ]}
     />
   );
 };

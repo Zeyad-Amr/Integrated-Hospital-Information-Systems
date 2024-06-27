@@ -9,8 +9,12 @@ import {
 import PrescriptionsForm from "./PrescriptionsForm";
 import { prescriptionsHeaderTable } from "./data";
 import { PatientIDsInterface } from "@/modules/emr/interfaces/patientIds-interface";
+import { Filter } from "@/core/api";
 
-const PrescriptionsComponent = ({patientId , visitCode} : PatientIDsInterface) => {
+const PrescriptionsComponent = ({
+  patientId,
+  visitCode,
+}: PatientIDsInterface) => {
   const prescriptionsState: PrescriptionsState = useAppSelector(
     (state: any) => state.prescriptions
   );
@@ -25,6 +29,10 @@ const PrescriptionsComponent = ({patientId , visitCode} : PatientIDsInterface) =
       formDialogMaxWidth="md"
       patientId={patientId}
       visitCode={visitCode}
+      initFilters={[
+        ...(patientId ? [Filter.equals("patientId", patientId)] : []),
+        ...(visitCode ? [Filter.equals("visitCode", visitCode)] : []),
+      ]}
     />
   );
 };

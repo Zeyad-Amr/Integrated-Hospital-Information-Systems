@@ -1,14 +1,9 @@
 "use client";
 
-import Test from "@/core/shared/components/test";
-import { Box } from "@mui/material";
+import LoginPage from "@/modules/auth/presentation/pages/login";
 
 // ----------------------------------------------------------------------
 
 export default function App() {
-  return (
-    <Box>
-      <Test />;
-    </Box>
-  );
+  return <LoginPage />;
 }

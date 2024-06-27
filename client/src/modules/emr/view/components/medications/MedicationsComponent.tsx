@@ -9,6 +9,7 @@ import {
 } from "@/modules/emr/controllers/thunks/medications-thunk";
 import MedicationsForm from "./MedicationsForm";
 import { PatientIDsInterface } from "@/modules/emr/interfaces/patientIds-interface";
+import { Filter } from "@/core/api";
 
 const MedicationsComponent = ({ patientId }: PatientIDsInterface) => {
   const medicationsState: MedicationsState = useAppSelector(
@@ -24,6 +25,9 @@ const MedicationsComponent = ({ patientId }: PatientIDsInterface) => {
       FormComponent={MedicationsForm}
       formDialogMaxWidth="md"
       patientId={patientId}
+      initFilters={[
+        ...(patientId ? [Filter.equals("patientId", patientId)] : []),
+      ]}
     />
   );
 };

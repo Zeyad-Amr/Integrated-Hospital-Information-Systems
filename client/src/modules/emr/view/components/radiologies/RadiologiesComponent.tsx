@@ -9,6 +9,7 @@ import React from "react";
 import { radiologiesHeaderTable } from "./data";
 import RadiologiesForm from "./RadiologiesForm";
 import { PatientIDsInterface } from "@/modules/emr/interfaces/patientIds-interface";
+import { Filter } from "@/core/api";
 
 const RadiologiesComponent = ({
   patientId,
@@ -29,6 +30,9 @@ const RadiologiesComponent = ({
       patientId={patientId}
       visitCode={visitCode}
       isAccordionExpanded={true}
+      initFilters={[
+        ...(patientId ? [Filter.equals("patientId", patientId)] : []),
+      ]}
     />
   );
 };

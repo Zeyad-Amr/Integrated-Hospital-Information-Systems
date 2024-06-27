@@ -1,17 +1,17 @@
 import React, { createContext, useState } from "react";
 
 interface SidebarContextProps {
-  collapsed: boolean;
-  onCollapse: () => void;
+  collapsed?: boolean;
+  onCollapse?: () => void;
 }
 
 export const SidebarContext = createContext<SidebarContextProps>({
-  collapsed: false,
+  collapsed: true,
   onCollapse: () => {},
 });
 
 export const SidebarContextProvider = (props: any) => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(props.initCollapsed ?? false);
 
   const onCollapse = () => {
     setCollapsed(!collapsed);

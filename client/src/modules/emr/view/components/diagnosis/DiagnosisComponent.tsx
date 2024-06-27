@@ -9,10 +9,11 @@ import {
 } from "@/modules/emr/controllers/thunks/diagnosis-thunk";
 import DiagnosisForm from "./DiagnosisForm";
 import { PatientIDsInterface } from "@/modules/emr/interfaces/patientIds-interface";
+import { Filter } from "@/core/api";
 
-const DiagnosisComponent = ({ patientId , visitCode } : PatientIDsInterface) => {
-  console.log(patientId,'patientIdiiiiiiiiiiiiiiiiiii');
-  console.log(visitCode,'visitCodeeeeeeeeeeeeeeeeeeeeeeeee');
+const DiagnosisComponent = ({ patientId, visitCode }: PatientIDsInterface) => {
+  console.log(patientId, "patientIdiiiiiiiiiiiiiiiiiii");
+  console.log(visitCode, "visitCodeeeeeeeeeeeeeeeeeeeeeeeee");
   const diagnosisState: DiagnosisState = useAppSelector(
     (state: any) => state.diagnosis
   );
@@ -26,6 +27,10 @@ const DiagnosisComponent = ({ patientId , visitCode } : PatientIDsInterface) => 
       FormComponent={DiagnosisForm}
       patientId={patientId}
       visitCode={visitCode}
+      initFilters={[
+        ...(patientId ? [Filter.equals("patientId", patientId)] : []),
+        ...(visitCode ? [Filter.equals("visitCode", visitCode)] : []),
+      ]}
     />
   );
 };

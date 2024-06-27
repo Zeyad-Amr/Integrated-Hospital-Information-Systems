@@ -9,9 +9,9 @@ import ExaminationPage from "@/modules/examination/view/pages/examination";
 export default function Examination() {
   return (
     <ProtectedLayout>
-        <Sidebar pageTitle={"الفحـــــص"}>
-          <ExaminationPage />
-        </Sidebar>
+      <Sidebar pageTitle={"الفحـــــص"} initCollapsed={true}>
+        <ExaminationPage />
+      </Sidebar>
     </ProtectedLayout>
   );
 }

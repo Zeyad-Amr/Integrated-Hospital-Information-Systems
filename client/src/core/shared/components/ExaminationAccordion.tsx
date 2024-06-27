@@ -71,9 +71,10 @@ interface AccordionComponentPropsInterface {
   formDialogMaxWidth?: false | Breakpoint;
   accordionWidth?: string;
   accordionSx?: any;
-  patientId? : string;
+  patientId?: string;
   visitCode?: string;
-  isVitalsRequired? : boolean;
+  isVitalsRequired?: boolean;
+  initFilters?: FilterQuery[];
 }
 
 export interface ExaminationFormComponentPropsInterface {
@@ -81,7 +82,7 @@ export interface ExaminationFormComponentPropsInterface {
   patientId?: string;
   visitCode?: string;
   initialValues: any;
-  isVitalsRequired? : boolean;
+  isVitalsRequired?: boolean;
   setShowFormDialog: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -95,10 +96,11 @@ export default function ExaminationAccordion({
   formDialogMaxWidth = "sm",
   accordionWidth = "100%",
   accordionSx,
-  isAccordionExpanded = false, 
+  isAccordionExpanded = false,
   visitCode,
   patientId,
-  isVitalsRequired
+  isVitalsRequired,
+  initFilters = [],
 }: AccordionComponentPropsInterface) {
   const [expandedAccordion, setExpandedAccordion] =
     useState<boolean>(isAccordionExpanded);
@@ -172,7 +174,7 @@ export default function ExaminationAccordion({
             showPagination={false}
             showToolbar={false}
             fetchData={(filters: FilterQuery[]) => {
-              dispatch(getListThunk(filters));
+              dispatch(getListThunk([...initFilters, ...filters]));
             }}
             resetComponent={tableList?.reset}
             totalItems={tableList?.total}
