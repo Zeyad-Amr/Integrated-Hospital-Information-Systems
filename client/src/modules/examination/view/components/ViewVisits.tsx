@@ -13,8 +13,6 @@ import {
 import { Button } from "@mui/material";
 import { VisitStatus } from "@/modules/registration/domain/entities/visit-entity";
 import { useRouter } from "next/navigation";
-import { useAppSelector } from "@/core/state/store";
-import { AuthState } from "@/modules/auth/presentation/controllers/types";
 
 export const header: HeaderItem[] = [
   {
@@ -63,7 +61,7 @@ export const header: HeaderItem[] = [
 
 const ViewVisits = () => {
   const router = useRouter();
-  const authState: AuthState = useAppSelector((state: any) => state.auth);
+  // const authState: AuthState = useAppSelector((state: any) => state.auth);
   // useRef
   // const refPatientData = useRef("");
 
@@ -131,11 +129,10 @@ const ViewVisits = () => {
     let apiData: any[] = streamedData ?? [];
     let newTableData: any[] = [];
     apiData.forEach((item) => {
-      if (
-        item?.transfers[item?.transfers.length - 1]?.toSubDepId !==
-        authState.currentPermission.subDepartment.id
-      )
-        return;
+      // if (
+      //   item?.transfers[item?.transfers.length - 1]?.toSubDepId !==
+      //   authState.currentPermission.subDepartment.id
+      // )
       newTableData.push({
         id: item?.code,
         mainComplaint: item?.mainComplaint ?? "",
