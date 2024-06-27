@@ -7,7 +7,16 @@ import { CompanionInterface } from '../interfaces/companion-interface';
 
 interface PersonInputInterface extends Omit<PersonInterface, 'id' | 'createdAt' | 'updatedAt'> { }
 
+export enum VisitStatus {
+    CREATED = "CREATED",
+    BOOKED = "BOOKED",
+    ARRIVED = "ARRIVED",
+    TRANSFERED = "TRANSFERED",
+    EXAMINED = "EXAMINED",
+    ENDED = "ENDED",
+}
 export default class VisitEntity {
+
 
     static defaultValue(): VisitInterface {
         return {
