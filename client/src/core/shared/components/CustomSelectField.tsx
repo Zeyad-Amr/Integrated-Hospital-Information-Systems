@@ -26,6 +26,10 @@ export interface SelectFieldProps<T> {
   multiple?: boolean;
   sx?: any;
   isDisabled?: boolean;
+  noMargin?: boolean;
+  height?: string;
+  transparent?: boolean;
+
 }
 
 const CustomSelectField = <T extends { id: any; value: string }>({
@@ -43,6 +47,9 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   sx,
   multiple = false,
   hideLabel = true,
+  noMargin,
+  height,
+  transparent
 }: SelectFieldProps<T>) => {
   const [selectAll, setSelectAll] = useState(false);
 
@@ -136,7 +143,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   return (
     <Box
       sx={{
-        mb: 2,
+        mb: noMargin ? 0 : 2,
         width: width,
         maxWidth: "100%",
       }}
@@ -159,7 +166,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
         required={isRequired}
         sx={{ marginTop: 1.1, width: { width }, maxWidth: "100%", ...sx }}
       >
-        <InputLabel disabled={isDisabled}>{label}</InputLabel>
+        <InputLabel disabled={isDisabled} sx={{color:'white'}}>{label}</InputLabel>
 
         <Select
           multiple={multiple ?? false}
@@ -168,8 +175,10 @@ const CustomSelectField = <T extends { id: any; value: string }>({
           onBlur={onBlur}
           disabled={isDisabled}
           sx={{
-            backgroundColor: "#fff",
-            height: "3.5rem",
+            backgroundColor: transparent ? "primary.dark" : "#fff",
+            height: height ?? "3.5rem",
+            color: transparent ? 'white' : 'primary.dark',
+            
           }}
           value={multiple ? (Array.isArray(value) ? value : []) : value}
           name={name}

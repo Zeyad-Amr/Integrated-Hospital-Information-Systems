@@ -1,11 +1,13 @@
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { VisitStatus } from "@/modules/registration/domain/entities/visit-entity";
 import { useAppDispatch } from "@/core/state/store";
 import { createVisitTransfer } from "@/modules/registration/presentation/controllers/thunks/visits-thunks";
+import CustomSelectField from "@/core/shared/components/CustomSelectField";
+import EndExaminationForm from "./EndExaminationForm";
 
 interface ExaminationHeaderProps {
   patientName: string;
@@ -18,18 +20,10 @@ const ExaminationHeader = ({
   clinicName,
   visitId,
 }: ExaminationHeaderProps) => {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
 
-  const transferPatientVisit = (status: VisitStatus, visitCode: string) => {
-    dispatch(
-      createVisitTransfer({ status: status, visitCode: visitCode })
-    ).then((res) => {
-      if (res.meta.requestStatus == "fulfilled") {
-        router.push("/dashboard/clinic/visits");
-      }
-    });
-  };
+
+  const [discharge, setDischarge] = useState<boolean>(false)
+
   return (
     <Box
       sx={{
@@ -50,13 +44,33 @@ const ExaminationHeader = ({
         <Box sx={{ width: "1px", backgroundColor: "#fff" }} />
         <Typography> {clinicName}</Typography>
       </Box>
-      <PrimaryButton
-        title="انهاء الزيارة"
-        onClick={() => {
-          console.log("انهاء الزيارة");
-          transferPatientVisit(VisitStatus.EXAMINED, visitId);
-        }}
-      />
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box
+          sx={{
+            backgroundColor: "primary.dark",
+            color: discharge ? "#fff" : "#888",
+            display: "flex",
+            border: discharge ? "1px solid #fff" : "1px solid #888",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: "5px",
+            width: "max-content",
+            cursor: "pointer",
+            transition: "0.2s",
+            userSelect: "none",
+            fontSize: "0.9rem",
+            height: "40px",
+            padding: "0 1rem",
+            boxSizing: "border-box",
+            mr: 2,
+            opacity: discharge ? 1 : 0.8
+          }}
+          onClick={() => setDischarge(!discharge)}
+        >
+          <Typography>خروج</Typography>
+        </Box>
+        <EndExaminationForm discharge={discharge} visitId={visitId} />
+      </Box>
     </Box>
   );
 };
