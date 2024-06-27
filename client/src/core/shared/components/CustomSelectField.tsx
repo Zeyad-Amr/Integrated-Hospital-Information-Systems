@@ -166,7 +166,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
         required={isRequired}
         sx={{ marginTop: 1.1, width: { width }, maxWidth: "100%", ...sx }}
       >
-        <InputLabel disabled={isDisabled} sx={{color:'white'}}>{label}</InputLabel>
+        <InputLabel disabled={isDisabled}>{label}</InputLabel>
 
         <Select
           multiple={multiple ?? false}
