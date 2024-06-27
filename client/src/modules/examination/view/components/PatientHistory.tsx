@@ -8,6 +8,7 @@ import { Grid } from "@mui/material";
 import React from "react";
 import AddComplaint from "./AddComplaint";
 import { VisitsState } from "@/modules/registration/presentation/controllers/types";
+import VitalsComponent from "@/modules/emr/view/components/vitals/VitalsComponent";
 
 interface PatientHistoryPropsInterface {
   visitState: VisitsState;
@@ -50,6 +51,15 @@ const PatientHistory = ({ visitState }: PatientHistoryPropsInterface) => {
               {visitState?.currentVisit?.patientId &&
                 visitState?.currentVisit?.code && (
                   <SurgeriesComponent
+                    patientId={visitState?.currentVisit?.patientId}
+                    visitCode={visitState?.currentVisit?.code}
+                  />
+                )}
+            </Grid>
+            <Grid item xs={12}>
+              {visitState?.currentVisit?.patientId &&
+                visitState?.currentVisit?.code && (
+                  <VitalsComponent
                     patientId={visitState?.currentVisit?.patientId}
                     visitCode={visitState?.currentVisit?.code}
                   />

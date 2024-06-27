@@ -19,6 +19,7 @@ const VitalsForm = ({
   initialValues,
   isViewMode,
   setShowFormDialog,
+  isVitalsRequired
 }: ExaminationFormComponentPropsInterface) => {
   const dispatch = useAppDispatch();
   const formikRef = useRef<FormikProps<VitalsInterface>>(null);
@@ -51,7 +52,7 @@ const VitalsForm = ({
           }
         });
       }}
-      validationSchema={VitalsModel.vitalsFormValidations()}
+      validationSchema={VitalsModel.vitalsFormValidations(isVitalsRequired)}
     >
       {({
         values,
@@ -66,7 +67,7 @@ const VitalsForm = ({
             <Grid item lg={12} md={12} sm={12} xs={12}>
               <CustomTextField
                 isRequired
-                name="cvp"
+                name="CVP"
                 label="ضغط الوريد المركزي"
                 value={values.CVP}
                 onChange={handleChange}

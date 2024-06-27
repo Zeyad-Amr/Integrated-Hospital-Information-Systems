@@ -73,6 +73,7 @@ interface AccordionComponentPropsInterface {
   accordionSx?: any;
   patientId? : string;
   visitCode?: string;
+  isVitalsRequired? : boolean;
 }
 
 export interface ExaminationFormComponentPropsInterface {
@@ -80,6 +81,7 @@ export interface ExaminationFormComponentPropsInterface {
   patientId?: string;
   visitCode?: string;
   initialValues: any;
+  isVitalsRequired? : boolean;
   setShowFormDialog: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -95,7 +97,8 @@ export default function ExaminationAccordion({
   accordionSx,
   isAccordionExpanded = false, 
   visitCode,
-  patientId
+  patientId,
+  isVitalsRequired
 }: AccordionComponentPropsInterface) {
   const [expandedAccordion, setExpandedAccordion] =
     useState<boolean>(isAccordionExpanded);
@@ -252,6 +255,7 @@ export default function ExaminationAccordion({
           setShowFormDialog={setIsDialogOpen}
           patientId={patientId}
           visitCode={visitCode}
+          isVitalsRequired={isVitalsRequired}
         />
         {/* Convert from view mode to edit mode */}
         {isViewMode && (

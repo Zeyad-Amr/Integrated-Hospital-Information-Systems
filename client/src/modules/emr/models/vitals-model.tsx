@@ -19,18 +19,24 @@ export default class VitalsModel {
     }
 
     //* Define validation schema using Yup
-    static vitalsFormValidations(): Yup.ObjectSchema<any> {
+    static vitalsFormValidations(isRequired: boolean = false): Yup.ObjectSchema<any> {
+        const fieldValidation = (fieldName: string) => {
+            return isRequired 
+                ? Yup.number().required(`${fieldName} مطلوب`).typeError(`${fieldName} يجب أن يكون رقمًا`)
+                : Yup.number().nullable().typeError(`${fieldName} يجب أن يكون رقمًا`);
+        };
+    
         return Yup.object({
-            CVP: Yup.number().nullable().typeError("CVP يجب أن يكون رقمًا"),
-            GCS: Yup.number().nullable().typeError("GCS يجب أن يكون رقمًا"),
-            PR: Yup.number().nullable().typeError("PR يجب أن يكون رقمًا"),
-            RR: Yup.number().nullable().typeError("RR يجب أن يكون رقمًا"),
-            SpO2: Yup.number().nullable().typeError("SpO2 يجب أن يكون رقمًا"),
-            temp: Yup.number().nullable().typeError("درجة الحرارة يجب أن تكون رقمًا"),
-            SBP: Yup.number().nullable().typeError("SBP يجب أن يكون رقمًا"),
-            DBP: Yup.number().nullable().typeError("DBP يجب أن يكون رقمًا"),
-            weight: Yup.number().nullable().typeError("الوزن يجب أن يكون رقمًا"),
-            height: Yup.number().nullable().typeError("الطول يجب أن يكون رقمًا"),
+            CVP: fieldValidation("CVP"),
+            GCS: fieldValidation("GCS"),
+            PR: fieldValidation("PR"),
+            RR: fieldValidation("RR"),
+            SpO2: fieldValidation("SpO2"),
+            temp: fieldValidation("درجة الحرارة"),
+            SBP: fieldValidation("SBP"),
+            DBP: fieldValidation("DBP"),
+            weight: fieldValidation("الوزن"),
+            height: fieldValidation("الطول"),
         });
     }
 

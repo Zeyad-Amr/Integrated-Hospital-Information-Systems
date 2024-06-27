@@ -2,8 +2,8 @@ import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
 export const vitalsHeaderTable: HeaderItem[] = [
   {
-    filterKey: "cvp",
-    id: "cvp",
+    filterKey: "CVP",
+    id: "CVP",
     label: "ضغط الوريد المركزي",
     minWidth: 100,
     maxWidth: 150,
