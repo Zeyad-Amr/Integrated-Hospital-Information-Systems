@@ -270,9 +270,8 @@ const ErAreaForm = ({
                         value={values.toSubDepId}
                         options={subdepartmentState?.subDepartments?.items
                           .filter(
-                            (item: SubDepartmentInterface) =>
-                              item.departmentId === 9 ||
-                              item.departmentId === 10
+                            (subDepartmentEl) =>
+                              subDepartmentEl.departmentId == 9
                           )
                           .map((subdepartment: SubDepartmentInterface) => {
                             return {
