@@ -19,7 +19,12 @@ const VitalsForm = ({
   initialValues,
   isViewMode,
   setShowFormDialog,
-}: ExaminationFormComponentPropsInterface) => {
+  refSubmitButton,
+  onSubmit,
+}: ExaminationFormComponentPropsInterface & {
+  refSubmitButton?: React.MutableRefObject<null>;
+  onSubmit?: (values: VitalsInterface) => void;
+}) => {
   const dispatch = useAppDispatch();
   const formikRef = useRef<FormikProps<VitalsInterface>>(null);
   return (
@@ -33,7 +38,8 @@ const VitalsForm = ({
             } as VitalsInterface)
           : VitalsModel.defaultValues()
       }
-      onSubmit={async (values) => {
+      onSubmit={
+        onSubmit ? onSubmit : async (values) => {
         const submitObject = {
           ...values,
           patientId: patientId,
@@ -238,6 +244,8 @@ const VitalsForm = ({
             <PrimaryButton
               title={initialValues ? "حفــــظ" : "اضـــافة"}
               type="submit"
+              ref={refSubmitButton}
+              display={refSubmitButton ? "none" : "block"}
             />
           ) : null}
         </Box>

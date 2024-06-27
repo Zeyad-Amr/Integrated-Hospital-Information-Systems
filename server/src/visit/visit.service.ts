@@ -2,13 +2,13 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateVisitDto } from './dto/create-visit.dto';
 import { VisitRepo } from './visit.repo';
 import { Pagination } from 'src/shared/decorators/pagination.decorator';
-import { Visit } from '@prisma/client';
+import { Visit, VisitStatus } from '@prisma/client';
 import { PaginatedResource } from 'src/shared/types/paginated.resource';
 import { Filter } from 'src/shared/decorators/filters.decorator';
 import { Sorting } from 'src/shared/decorators/order.decorator';
 import { TriageAXDto } from './dto/triage-assessment.dto';
 import { PrismaService } from 'src/shared/services/prisma-client/prisma.service';
-import { UpdateVisitDto, UpdateVisitStatus } from './dto/update-visit.dto';
+import { MainComplaintDto,  UpdateVisitStatus } from './dto/update-visit.dto';
 
 
 
@@ -72,9 +72,43 @@ export class VisitService {
     }
   }
 
-  async update(visitCode: string,updateVisitDto:UpdateVisitDto,creatorId:string) {
+  async addComplaint(visitCode: string,mainComplaintDto:MainComplaintDto) {
     try {
-      return await this.visitRepo.updateVisit(visitCode,updateVisitDto,creatorId);
+      return await this.visitRepo.updateVisit(visitCode,{
+        mainComplaint: mainComplaintDto.mainComplaint
+      });
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async addTriageAx(triageAxDto:TriageAXDto,creatorId:string) {
+    try {
+      return await this.visitRepo.updateVisit(triageAxDto.visitCode,{
+        status: VisitStatus.TRANSFERED,
+        mainComplaint: triageAxDto.mainComplaint,
+          transfers:{
+            create:{
+              toSubDepId:triageAxDto.toSubDepId,
+              transferDate:new Date(),
+              createdById:creatorId
+            }
+          },
+          vitals:{
+            create:{
+              ...triageAxDto.vitals,
+              authorId:creatorId,
+              patientId:triageAxDto.patientId
+            }
+          },
+          triageAx:{
+            create:{
+              triageId:triageAxDto.triage.triageTypeId,
+              painScore:triageAxDto.triage.painScore,
+              consciousnessLevelId:triageAxDto.triage.LOCId
+            }
+          }
+      });
     } catch (error) {
       throw error
     }

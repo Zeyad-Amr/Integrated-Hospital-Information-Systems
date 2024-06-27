@@ -3,7 +3,7 @@ import { TriageAXInterface, TriageTransferInterface } from "../../domain/interfa
 import TriageAXModel from "../models/triageAX-model";
 
 abstract class BaseTriageAXDataSource {
-    abstract createTriageAX(data: TriageAXInterface, visitCode: string): Promise<void>;
+    abstract createTriageAX(data: TriageAXInterface): Promise<void>;
     abstract createTriageTransfer(data: TriageTransferInterface, visitCode: string): Promise<void>;
 }
 
@@ -12,9 +12,9 @@ class TriageAXDataSource extends BaseTriageAXDataSource {
         super();
     }
 
-    async createTriageAX(data: TriageAXInterface, visitCode: string): Promise<void> {
+    async createTriageAX(data: TriageAXInterface): Promise<void> {
         console.log('DS', TriageAXModel.toJson(data));
-        await this.apiClient.patch(Endpoints.visit.triageAX, TriageAXModel.toJson(data), { pathVariables: { visitCode } });
+        await this.apiClient.patch(Endpoints.visit.triageAX, TriageAXModel.toJson(data));
     }
 
     async createTriageTransfer(data: TriageTransferInterface, visitCode: string): Promise<void> {
