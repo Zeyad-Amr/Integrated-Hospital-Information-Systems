@@ -111,6 +111,22 @@ const ProfileDialog = ({
                         (e.target as HTMLInputElement).value
                       )
                     );
+                    // const newPermissionsCode =
+                    //   authState.currentPermission.permissions.map(
+                    //     (permission) => permission.code
+                    //   );
+
+                    // const newMenuItem = menuItems.filter((item) => {
+                    //   return newPermissionsCode.includes(item.permission);
+                    // });
+
+                    // if (newMenuItem.length > 0) {
+                    //   if (newMenuItem[0].children) {
+                    //     router.push(newMenuItem[0].children[0].path);
+                    //   } else {
+                    //     router.push(newMenuItem[0].path);
+                    //   }
+                    // }
                   }}
                 >
                   {authState.permssions.map(
