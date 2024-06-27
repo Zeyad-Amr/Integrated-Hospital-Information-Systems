@@ -26,7 +26,7 @@ const TriageForm = ({
   refSubmitButton?: React.MutableRefObject<null>;
   onSubmit?: (values: TriageInterface) => void;
 }) => {
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
@@ -42,23 +42,26 @@ const TriageForm = ({
           : TriageModel.defaultValues()
       }
       onSubmit={
-        onSubmit ? onSubmit : async (values) => {
-        const submitObject = {
-          ...values,
-          visitCode: visitCode,
-        };
+        onSubmit
+          ? onSubmit
+          : async (values) => {
+              const submitObject = {
+                ...values,
+                visitCode: visitCode,
+              };
 
-        const action = initialValues
-          ? updateTriage(submitObject)
-          : createTriage(submitObject);
+              const action = initialValues
+                ? updateTriage(submitObject)
+                : createTriage(submitObject);
 
-        dispatch(action).then((res) => {
-          if (res?.meta.requestStatus == "fulfilled") {
-            if (formikRef.current) formikRef.current.resetForm();
-            setShowFormDialog(false);
-          }
-        });
-      }}
+              dispatch(action).then((res) => {
+                if (res?.meta.requestStatus == "fulfilled") {
+                  if (formikRef.current) formikRef.current.resetForm();
+                  setShowFormDialog(false);
+                }
+              });
+            }
+      }
       validationSchema={TriageModel.triageFormValidations()}
     >
       {({
@@ -72,8 +75,8 @@ const TriageForm = ({
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container spacing={1}>
             <Grid item lg={4} md={4} sm={12} xs={12}>
-              <CustomTextField
-                isRequired
+              <CustomSelectField
+                isDisabled={isViewMode}
                 name="painScore"
                 label="مستوى الألم"
                 value={values.painScore}
@@ -82,10 +85,18 @@ const TriageForm = ({
                 error={errors.painScore}
                 touched={touched.painScore}
                 width="100%"
-                props={{
-                  type: "number",
-                  disabled: isViewMode,
-                }}
+                options={[
+                  { id: 1, value: "1" },
+                  { id: 2, value: "2" },
+                  { id: 3, value: "3" },
+                  { id: 4, value: "4" },
+                  { id: 5, value: "5" },
+                  { id: 6, value: "6" },
+                  { id: 7, value: "7" },
+                  { id: 8, value: "8" },
+                  { id: 9, value: "9" },
+                  { id: 10, value: "10" },
+                ]}
               />
             </Grid>
             <Grid item lg={4} md={4} sm={12} xs={12}>
