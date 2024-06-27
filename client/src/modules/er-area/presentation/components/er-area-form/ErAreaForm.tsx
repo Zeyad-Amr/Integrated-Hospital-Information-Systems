@@ -268,14 +268,18 @@ const ErAreaForm = ({
                     <Grid item lg={12} md={12} sm={12} xs={12}>
                       <CustomSelectField
                         value={values.toSubDepId}
-                        options={subdepartmentState?.subDepartments?.items.map(
-                          (subdepartment: SubDepartmentInterface) => {
+                        options={subdepartmentState?.subDepartments?.items
+                          .filter(
+                            (item: SubDepartmentInterface) =>
+                              item.departmentId === 9 ||
+                              item.departmentId === 10
+                          )
+                          .map((subdepartment: SubDepartmentInterface) => {
                             return {
                               id: subdepartment.id,
                               value: subdepartment.name,
                             };
-                          }
-                        )}
+                          })}
                         name="toSubDepId"
                         label="نقل المريض الي"
                         onChange={handleChange}

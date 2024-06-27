@@ -432,7 +432,9 @@ model Visit {
   incident   Incident? @relation(fields: [incidentId], references: [id])
   incidentId String?
 
-  status VisitStatus @default(CREATED)
+  status           VisitStatus @default(CREATED)
+  dischargedAt     DateTime    @db.Timestamptz(3)
+  dischargedReason String?
 
   transfers           Transfer[]
   triageAx            TriageAx?

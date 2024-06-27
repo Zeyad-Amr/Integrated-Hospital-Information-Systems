@@ -203,7 +203,7 @@ const CustomDataTable = <T,>({
                               enterDelay={1000}
                               title={
                                 typeof item[headerItem.id] === "object"
-                                  ? item[headerItem.id].value
+                                  ? item[headerItem.id]
                                   : item[headerItem.id]
                               }
                             >
@@ -216,7 +216,7 @@ const CustomDataTable = <T,>({
                                   textOverflow: "ellipsis",
                                   direction: !utilsFunctions.startsWithArabic(
                                     typeof item[headerItem.id] === "object"
-                                      ? item[headerItem.id].value
+                                      ? item[headerItem.id]
                                       : item[headerItem.id]
                                   )
                                     ? "rtl"
@@ -225,7 +225,7 @@ const CustomDataTable = <T,>({
                                 }}
                               >
                                 {typeof item[headerItem.id] === "object"
-                                  ? item[headerItem.id].value
+                                  ? item[headerItem.id]
                                   : item[headerItem.id]}
                               </Typography>
                             </Tooltip>

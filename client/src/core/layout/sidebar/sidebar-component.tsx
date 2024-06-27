@@ -108,7 +108,10 @@ const SidebarComponent = () => {
             />
           </>
         ) : (
-          <MenuRoundedIcon sx={{ color: "white", fontSize: "1.5rem" }} />
+          <MenuRoundedIcon
+            sx={{ color: "white", fontSize: "1.5rem" }}
+            onClick={onCollapse}
+          />
         )}
       </Box>
       {renderMenuItems()}

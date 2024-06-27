@@ -1,12 +1,6 @@
-import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { VisitStatus } from "@/modules/registration/domain/entities/visit-entity";
-import { useAppDispatch } from "@/core/state/store";
-import { createVisitTransfer } from "@/modules/registration/presentation/controllers/thunks/visits-thunks";
-import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import EndExaminationForm from "./EndExaminationForm";
 
 interface ExaminationHeaderProps {
@@ -20,9 +14,7 @@ const ExaminationHeader = ({
   clinicName,
   visitId,
 }: ExaminationHeaderProps) => {
-
-
-  const [discharge, setDischarge] = useState<boolean>(false)
+  const [discharge, setDischarge] = useState<boolean>(false);
 
   return (
     <Box
@@ -44,7 +36,7 @@ const ExaminationHeader = ({
         <Box sx={{ width: "1px", backgroundColor: "#fff" }} />
         <Typography> {clinicName}</Typography>
       </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
         <Box
           sx={{
             backgroundColor: "primary.dark",
@@ -63,7 +55,7 @@ const ExaminationHeader = ({
             padding: "0 1rem",
             boxSizing: "border-box",
             mr: 2,
-            opacity: discharge ? 1 : 0.8
+            opacity: discharge ? 1 : 0.8,
           }}
           onClick={() => setDischarge(!discharge)}
         >

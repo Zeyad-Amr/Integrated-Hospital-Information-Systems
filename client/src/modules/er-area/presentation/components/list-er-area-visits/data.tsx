@@ -64,9 +64,5 @@ export const header: HeaderItem[] = [
     isComponent: true,
     minWidth: 100,
     tableCellProps: { align: "center" },
-    sortable: false,
-    filterable: false,
-    searchable: false,
-    onClick: () => {},
   },
 ];

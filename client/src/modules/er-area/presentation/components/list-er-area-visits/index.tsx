@@ -35,9 +35,7 @@ const ERVisitsTable = () => {
       Endpoints.base +
         Endpoints.visit.streaming +
         "?filters=status:any:" +
-        VisitStatus.ARRIVED +
-        "," +
-        VisitStatus.BOOKED,
+        VisitStatus.CREATED,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -46,7 +44,10 @@ const ERVisitsTable = () => {
     );
     eventSourceRef.current = eventSource;
     eventSource.onmessage = (ev) => {
+      console.log("data_json", ev);
       let data_json = JSON.parse(ev.data).items;
+      console.log("data_json", data_json);
+
       setStreamedData(data_json);
     };
   }, []);
@@ -137,8 +138,8 @@ const ERVisitsTable = () => {
           minute: "2-digit",
           second: "2-digit",
         }),
-        age: calcAge(item?.patient?.person?.birthDate),
-        gender: item?.patient?.person?.gender?.value,
+        // age: calcAge(item?.patient?.person?.birthDate),
+        // gender: item?.patient?.person?.gender?.value,
         watingTime: (
           <Box color={getColorBasedOnTime(item?.createdAt)} fontWeight={600}>
             {timePassed(item?.createdAt)}
