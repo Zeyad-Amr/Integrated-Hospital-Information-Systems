@@ -1,10 +1,10 @@
 import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
-export const vitalsHeaderTable: HeaderItem[] = [
+export const primarySurveyHeaderTable: HeaderItem[] = [
   {
-    filterKey: "CVP",
-    id: "CVP",
-    label: "ضغط الوريد المركزي",
+    filterKey: "breathing",
+    id: "breathing",
+    label: "التنفس",
     minWidth: 100,
     maxWidth: 150,
     tableCellProps: { align: "center" },
@@ -13,9 +13,9 @@ export const vitalsHeaderTable: HeaderItem[] = [
     filterable: false,
   },
   {
-    filterKey: "PR",
-    id: "PR",
-    label: "معدل النبض",
+    filterKey: "disability",
+    id: "disability",
+    label: "الإعاقة",
     minWidth: 100,
     maxWidth: 150,
     tableCellProps: { align: "center" },
@@ -24,9 +24,9 @@ export const vitalsHeaderTable: HeaderItem[] = [
     filterable: false,
   },
   {
-    filterKey: "SpO2",
-    id: "SpO2",
-    label: "نسبة الأكسجين في الدم",
+    filterKey: "circulation",
+    id: "circulation",
+    label: "الدورة الدموية",
     minWidth: 100,
     maxWidth: 150,
     tableCellProps: { align: "center" },

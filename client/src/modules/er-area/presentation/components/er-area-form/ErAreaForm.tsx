@@ -232,7 +232,8 @@ const ErAreaForm = ({
               isViewMode={false}
               patientId={patientData?.patientId}
               visitCode={patientData?.code}
-              initialValues={undefined}
+              initialValues={undefined} 
+              isVitalsRequired={false}
             />
           </CustomAccordion>
 
