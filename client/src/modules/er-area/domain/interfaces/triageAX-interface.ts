@@ -1,21 +1,16 @@
+import { TriageInterface } from "@/modules/emr/interfaces/triage-interface";
 import VitalsInterface from "./vitals-interface";
-
 
 export interface TriageTransferInterface {
   mainComplaint: string;
   toSubDepId: string;
 }
 
-
-// ****************** Not Used *********************
 export interface TriageAXInterface {
-  mainComplaint: string;
-  LOCId?: number;
-  triageTypeId?: number;
-  comorbidityIds?: number[];
-  transferTo: string;
+  triageTransfer?: TriageTransferInterface
+  triage?: TriageInterface
   vitals?: VitalsInterface;
+  patientId?: string
+  visitCode?: string
 }
-export interface TriageAXInterfaceWithoutVitals extends Omit<TriageAXInterface, 'vitals'> {
-}
-// ***************************************
+

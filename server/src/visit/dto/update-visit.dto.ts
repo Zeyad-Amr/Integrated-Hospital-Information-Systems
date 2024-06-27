@@ -3,7 +3,7 @@ import { CreateVisitDto } from './create-visit.dto';
 import { VisitStatus } from '@prisma/client';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class UpdateVisitDto  { 
+export class MainComplaintDto  { 
     @ApiProperty({
       type: String,
       example: 'Fall on Stairs',
@@ -11,10 +11,6 @@ export class UpdateVisitDto  {
     @IsOptional()
     @IsString()
     mainComplaint: string;
-
-    @ApiProperty({ type: Number, example: 1 })
-    @IsNotEmpty()
-    toSubDepId: number;
 }
 
 export class UpdateVisitStatus {

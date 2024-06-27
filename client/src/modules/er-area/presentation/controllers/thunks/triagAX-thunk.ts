@@ -1,22 +1,18 @@
-import {  TriageTransferInterface } from "@/modules/er-area/domain/interfaces/triageAX-interface";
+import {  TriageAXInterface } from "@/modules/er-area/domain/interfaces/triageAX-interface";
 import CreateTriageAXUseCase from "@/modules/er-area/domain/usecases/create-triageAX-usecase";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { sl, ServiceKeys } from "@/core/service-locator";
 
-interface CreateTriageAXInterface {
-  assessment: TriageTransferInterface
-  visitCode: string
-}
 
 export const createTriagAX = createAsyncThunk(
   "triagAX/create",
-  async (data: CreateTriageAXInterface, thunkApi) => {
+  async (data: TriageAXInterface, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
       console.log("Thunk", data);
       const result = await sl
         .get<CreateTriageAXUseCase>(ServiceKeys.CreateTriageAXUseCase)
-        .call(data.assessment, data.visitCode);
+        .call(data);
       console.log("Result:", result);
       return result;
     } catch (error) {

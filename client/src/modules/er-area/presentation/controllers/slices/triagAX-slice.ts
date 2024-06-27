@@ -2,16 +2,11 @@ import { ErrorResponse } from "@/core/api";
 import { createTriagAX } from "../thunks/triagAX-thunk";
 import { createSlice } from "@reduxjs/toolkit";
 import { TriagAXState } from "../types";
-import VitalsEntity from "@/modules/er-area/domain/entities/vitals-entity";
-import TriageAXEntity from "@/modules/er-area/domain/entities/triageAX-without-vitals-entity";
 import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
 const initialState: TriagAXState = {
-  triagData: {
-    ...TriageAXEntity.defaultValue(),
-    vitals: VitalsEntity.defaultValue()
-  },
+  triagData: {},
   loading: false,
   error: "",
 };

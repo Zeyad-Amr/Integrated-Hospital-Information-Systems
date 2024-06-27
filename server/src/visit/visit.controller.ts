@@ -9,7 +9,6 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { handleError } from 'src/shared/http-error';
@@ -26,8 +25,7 @@ import {
 import { SortingParams, Sorting } from 'src/shared/decorators/order.decorator';
 import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.decorator';
 import { TriageAXDto } from './dto/triage-assessment.dto';
-import { Public } from 'src/shared/decorators/public.decorator';
-import { UpdateVisitDto, UpdateVisitStatus } from './dto/update-visit.dto';
+import { MainComplaintDto, UpdateVisitStatus } from './dto/update-visit.dto';
 
 @ApiBearerAuth()
 @ApiTags('visit')
@@ -55,10 +53,25 @@ export class VisitController {
   @ApiCreatedResponse({ description: 'triage assessment has been created successfully' })
   @ApiOkResponse({ description: 'triage assessment has been updated successfully' })
   @ApiBadRequestResponse({ description: 'body has missed some data' })
-  @Patch(':visitCode')
-  async addTriageAX(@Body() updateVisitDto: UpdateVisitDto, @Param('visitCode') visitCode: string,@Req() req) {
+  @Patch('triageAx')
+  async addTriageAX(@Body() triageAxDto: TriageAXDto,@Req() req) {
     try {
-      return await this.visitService.update(visitCode, updateVisitDto,req.user.sub);
+      return await this.visitService.addTriageAx(triageAxDto,req.user.sub);
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  @ApiOperation({
+    description: 'This to add complaint to the visit with given code',
+  })
+  @ApiCreatedResponse({ description: 'complaint has been created successfully' })
+  @ApiOkResponse({ description: 'complaint has been updated successfully' })
+  @ApiBadRequestResponse({ description: 'body has missed some data' })
+  @Patch('complaint/:visitCode')
+  async addComplaint(@Body() mainComplaintDto: MainComplaintDto, @Param('visitCode') visitCode: string,@Req() req) {
+    try {
+      return await this.visitService.addComplaint(visitCode, mainComplaintDto);
     } catch (error) {
       throw handleError(error);
     }
