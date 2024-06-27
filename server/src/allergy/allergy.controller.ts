@@ -24,7 +24,6 @@ import { Sorting, SortingParams } from 'src/shared/decorators/order.decorator';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiConflictResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -53,15 +52,16 @@ export class AllergyController {
       throw handleError(error);
     }
   }
-
+  // patientId:eq:3c32c0ff-c15e-4d1a-9caf-1bd7c03f839b
+  // 202406112
   @Get()
-  @ApiOperation({ summary: 'get all surgeries' })
-  @ApiOkResponse({ description: 'get all surgeries' })
+  @ApiOperation({ summary: 'get all allergies' })
+  @ApiOkResponse({ description: 'get all allergies' })
   @CustomGetAllParamDecorator()
   async findAll(
     @PaginationParams() paginationParams: Pagination,
-    @FilteringParams(['name']) filters?: Array<Filter>,
-    @SortingParams(['name']) sort?: Sorting,
+    @FilteringParams(['patientId', 'visitCode']) filters?: Array<Filter>,
+    @SortingParams([]) sort?: Sorting,
   ) {
     try {
       return await this.vitalsService.findAll(paginationParams, filters, sort);

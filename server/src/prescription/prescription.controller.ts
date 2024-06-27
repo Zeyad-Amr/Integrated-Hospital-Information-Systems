@@ -24,7 +24,6 @@ import { Sorting, SortingParams } from 'src/shared/decorators/order.decorator';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiConflictResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -45,7 +44,10 @@ export class PrescriptionController {
   @ApiOperation({ summary: 'Create prescription' })
   @ApiCreatedResponse({ description: 'created successfully' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
-  async create(@Body() createPrescriptionDto: CreatePrescriptionDto, @Req() req) {
+  async create(
+    @Body() createPrescriptionDto: CreatePrescriptionDto,
+    @Req() req,
+  ) {
     try {
       const creatorId = req.user.sub;
       return await this.vitalsService.create(createPrescriptionDto, creatorId);
@@ -55,12 +57,12 @@ export class PrescriptionController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'get all surgeries' })
-  @ApiOkResponse({ description: 'get all surgeries' })
+  @ApiOperation({ summary: 'get all prescriptions' })
+  @ApiOkResponse({ description: 'get all prescriptions' })
   @CustomGetAllParamDecorator()
   async findAll(
     @PaginationParams() paginationParams: Pagination,
-    @FilteringParams([]) filters?: Array<Filter>,
+    @FilteringParams(['patientId', 'visitCode']) filters?: Array<Filter>,
     @SortingParams([]) sort?: Sorting,
   ) {
     try {

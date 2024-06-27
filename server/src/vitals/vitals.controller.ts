@@ -24,13 +24,10 @@ import { Sorting, SortingParams } from 'src/shared/decorators/order.decorator';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiConflictResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiProperty,
-  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -62,7 +59,7 @@ export class VitalsController {
   @CustomGetAllParamDecorator()
   async findAll(
     @PaginationParams() paginationParams: Pagination,
-    @FilteringParams([]) filters?: Array<Filter>,
+    @FilteringParams(['patientId']) filters?: Array<Filter>,
     @SortingParams([]) sort?: Sorting,
   ) {
     try {
@@ -76,7 +73,7 @@ export class VitalsController {
   @ApiOperation({ summary: 'get vitals by id' })
   @ApiOkResponse({ description: 'get a vitals' })
   @ApiNotFoundResponse({ description: 'vitals not found' })
-async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     try {
       return await this.vitalsService.findOne(id);
     } catch (error) {
@@ -88,7 +85,7 @@ async findOne(@Param('id') id: string) {
   @ApiOperation({ summary: 'update vitals' })
   @ApiOkResponse({ description: 'updated successfully' })
   @ApiNotFoundResponse({ description: 'vitals not found' })
-async update(
+  async update(
     @Param('id') id: string,
     @Body() updateVitalDto: UpdateVitalDto,
   ) {
@@ -103,7 +100,7 @@ async update(
   @ApiOperation({ summary: 'delete vitals by id' })
   @ApiOkResponse({ description: 'deleted successfully' })
   @ApiNotFoundResponse({ description: 'vitals not found' })
-async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     try {
       return await this.vitalsService.remove(id);
     } catch (error) {

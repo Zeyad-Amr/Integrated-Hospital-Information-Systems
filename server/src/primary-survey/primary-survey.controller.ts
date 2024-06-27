@@ -24,7 +24,6 @@ import { Sorting, SortingParams } from 'src/shared/decorators/order.decorator';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiConflictResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -45,7 +44,10 @@ export class PrimarySurveyController {
   @ApiOperation({ summary: 'Create primarySurvey' })
   @ApiCreatedResponse({ description: 'created successfully' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
-  async create(@Body() createPrimarySurveyDto: CreatePrimarySurveyDto, @Req() req) {
+  async create(
+    @Body() createPrimarySurveyDto: CreatePrimarySurveyDto,
+    @Req() req,
+  ) {
     try {
       const creatorId = req.user.sub;
       return await this.vitalsService.create(createPrimarySurveyDto, creatorId);
@@ -60,7 +62,7 @@ export class PrimarySurveyController {
   @CustomGetAllParamDecorator()
   async findAll(
     @PaginationParams() paginationParams: Pagination,
-    @FilteringParams([]) filters?: Array<Filter>,
+    @FilteringParams(['visitCode']) filters?: Array<Filter>,
     @SortingParams([]) sort?: Sorting,
   ) {
     try {
