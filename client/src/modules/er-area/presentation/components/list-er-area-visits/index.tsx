@@ -35,7 +35,8 @@ const ERVisitsTable = () => {
       Endpoints.base +
         Endpoints.visit.streaming +
         "?filters=status:any:" +
-        VisitStatus.CREATED,
+        VisitStatus.CREATED +
+        "&filters=patientId:isnotnull",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -44,9 +45,7 @@ const ERVisitsTable = () => {
     );
     eventSourceRef.current = eventSource;
     eventSource.onmessage = (ev) => {
-      console.log("data_json", ev);
       let data_json = JSON.parse(ev.data).items;
-      console.log("data_json", data_json);
 
       setStreamedData(data_json);
     };

@@ -28,7 +28,7 @@ const SidebarMenuItem = ({
   const handleClick = () => {
     if (children) {
       if (collapsed) {
-        onCollapse();
+        onCollapse!();
         setExpanded(true);
       } else {
         setExpanded(!expanded);

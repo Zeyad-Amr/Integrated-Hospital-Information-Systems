@@ -1,5 +1,4 @@
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
-import CustomTextField from "@/core/shared/components/CustomTextField";
 import { ExaminationFormComponentPropsInterface } from "@/core/shared/components/ExaminationAccordion";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { LookupsState } from "@/core/shared/modules/lookups/presentation/controllers/types";
