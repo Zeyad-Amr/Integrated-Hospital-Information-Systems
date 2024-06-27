@@ -14,7 +14,7 @@ export default class PrimarySurveyModel {
     }
 
     //* Define validation schema using Yup
-    static surveyFormValidations(): Yup.ObjectSchema<any> {
+    static primarySurveyFormValidations(): Yup.ObjectSchema<any> {
         return Yup.object({
             airway: Yup.string().required("Airway is required"),
             breathing: Yup.string().required("Breathing is required"),
@@ -33,6 +33,7 @@ export default class PrimarySurveyModel {
             circulation: entity.circulation,
             disability: entity.disability,
             exposure: entity.exposure,
+            visitCode: entity.visitCode,
         };
     }
 

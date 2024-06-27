@@ -11,6 +11,7 @@ import { VitalsInterface } from "../interfaces/vitals-interface";
 import { TriageInterface } from "../interfaces/triage-interface";
 import { LabsInterface } from "../interfaces/labs-interface";
 import { RadiologiesInterface } from "../interfaces/radiologies-interface";
+import { PrimarySurveyInterface } from "../interfaces/primary-survey-interface";
 
 export interface AllergiesState {
   allergies: PaginatedList<AllergiesInterface>;
@@ -79,6 +80,13 @@ export interface LabsState {
 export interface RadiologiesState {
   radiologies: PaginatedList<RadiologiesInterface>;
   currentRadiology: RadiologiesInterface;
+  isFetched: boolean;
+  loading: boolean;
+  error: string;
+}
+export interface PrimarySurveyState {
+  primarySurveys: PaginatedList<PrimarySurveyInterface>;
+  currentPrimarySurvey: PrimarySurveyInterface;
   isFetched: boolean;
   loading: boolean;
   error: string;
