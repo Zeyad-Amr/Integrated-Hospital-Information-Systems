@@ -1,6 +1,6 @@
 const Endpoints = {
   base: "https://qasr-server-lqj1.onrender.com/api",
-  devBase: "http://localhost:4000/api",
+  // base: "http://localhost:4000/api",
 
   user: {
     login: "/user/login",
@@ -21,8 +21,9 @@ const Endpoints = {
     createAnonymously:
       "/visit/anonymous",
     update: "/patient",
+    complaint:"visit/complaint/:visitCode",
     triageAX:
-      "/visit/triage/:visitCode",
+      "visit/triageAx",
     streaming: "/streaming/event",
 
   },
@@ -95,6 +96,13 @@ const Endpoints = {
     create: "/allergy",
     update: "/allergy/:id",
     delete: "/allergy/:id",
+  },
+  primarySurvey: {
+    list: "/primarySurvey",
+    details: "/primarySurvey/:id",
+    create: "/primarySurvey",
+    update: "/primarySurvey/:id",
+    delete: "/primarySurvey/:id",
   },
   surgery: {
     list: "/surgery",

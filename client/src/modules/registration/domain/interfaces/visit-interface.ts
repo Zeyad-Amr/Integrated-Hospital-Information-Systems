@@ -7,6 +7,7 @@ import { TransferDataInterface } from "./transfer-data-interface";
 interface VisitInterface {
     code?: string;
     sequenceNumber?: string;
+    mainComplaint? : string;
     createdAt?: Date;
     updatedAt?: Date;
     patientId?: string;

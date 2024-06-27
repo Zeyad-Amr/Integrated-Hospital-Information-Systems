@@ -34,6 +34,7 @@ export default class VisitModel {
     static fromJson(json: any): VisitInterface {
         return {
             code: json.code,
+            mainComplaint : json.mainComplaint,
             sequenceNumber: json.sequenceNumber,
             createdAt: json.createdAt,
             updatedAt: json.updatedAt,

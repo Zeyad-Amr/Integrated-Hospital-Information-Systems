@@ -1,5 +1,5 @@
 import { Yup } from "@/core/shared/utils/validation";
-import { ComplaintsInterface } from "../interfaces/complaints-interface";
+import { ComplaintsInterface } from "../../domain/interfaces/complaint-interface";
 
 export default class ComplaintsModel {
     //*   Default form values
@@ -21,6 +21,7 @@ export default class ComplaintsModel {
 
         return {
             mainComplaint: entity.mainComplaint,
+            toSubDepId: 1
         };
     }
 

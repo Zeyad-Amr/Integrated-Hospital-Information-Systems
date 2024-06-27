@@ -1,16 +1,8 @@
 import * as Yup from "yup";
-import { TriageAXInterfaceWithoutVitals, TriageTransferInterface } from "../interfaces/triageAX-interface";
+import {  TriageTransferInterface } from "../interfaces/triageAX-interface";
 
 export default class TriageAXEntity {
-  static defaultValue(): TriageAXInterfaceWithoutVitals {
-    return {
-      mainComplaint: "",
-      LOCId: 0,
-      triageTypeId: 0,
-      comorbidityIds: [],
-      transferTo: "",
-    };
-  }
+  
   static triageTransfereDefaultValue(): TriageTransferInterface {
     return {
       mainComplaint: "",

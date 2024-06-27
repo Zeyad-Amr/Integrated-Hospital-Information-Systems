@@ -8,8 +8,9 @@ import { VitalsState } from "@/modules/emr/controllers/types";
 import React from "react";
 import { vitalsHeaderTable } from "./data";
 import VitalsForm from "./VitalsForm";
+import { PatientIDsInterface } from "@/modules/emr/interfaces/patientIds-interface";
 
-const VitalsComponent = () => {
+const VitalsComponent = ({patientId , visitCode} : PatientIDsInterface) => {
   const vitalsState: VitalsState = useAppSelector(
     (state: any) => state.vitals
   );
@@ -22,6 +23,9 @@ const VitalsComponent = () => {
       title="القياسات الحيوية"
       FormComponent={VitalsForm}
       formDialogMaxWidth="md"
+      patientId={patientId}
+      visitCode={visitCode}
+      isVitalsRequired={true}
     />
   );
 };

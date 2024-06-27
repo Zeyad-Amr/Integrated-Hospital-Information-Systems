@@ -19,7 +19,13 @@ const VitalsForm = ({
   initialValues,
   isViewMode,
   setShowFormDialog,
-}: ExaminationFormComponentPropsInterface) => {
+  isVitalsRequired,
+  refSubmitButton,
+  onSubmit,
+}: ExaminationFormComponentPropsInterface & {
+  refSubmitButton?: React.MutableRefObject<null>;
+  onSubmit?: (values: VitalsInterface) => void;
+}) => {
   const dispatch = useAppDispatch();
   const formikRef = useRef<FormikProps<VitalsInterface>>(null);
   return (
@@ -33,7 +39,8 @@ const VitalsForm = ({
             } as VitalsInterface)
           : VitalsModel.defaultValues()
       }
-      onSubmit={async (values) => {
+      onSubmit={
+        onSubmit ? onSubmit : async (values) => {
         const submitObject = {
           ...values,
           patientId: patientId,
@@ -51,7 +58,7 @@ const VitalsForm = ({
           }
         });
       }}
-      validationSchema={VitalsModel.vitalsFormValidations()}
+      validationSchema={VitalsModel.vitalsFormValidations(isVitalsRequired)}
     >
       {({
         values,
@@ -65,8 +72,8 @@ const VitalsForm = ({
           <Grid container spacing={1}>
             <Grid item lg={12} md={12} sm={12} xs={12}>
               <CustomTextField
-                isRequired
-                name="cvp"
+                isRequired={isVitalsRequired}
+                name="CVP"
                 label="ضغط الوريد المركزي"
                 value={values.CVP}
                 onChange={handleChange}
@@ -84,6 +91,7 @@ const VitalsForm = ({
           <Grid container spacing={1}>
             <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
+                isRequired={isVitalsRequired}
                 name="GCS"
                 label="مقياس غلاسكو للغيبوبة"
                 value={values.GCS}
@@ -100,6 +108,7 @@ const VitalsForm = ({
             </Grid>
             <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
+                isRequired={isVitalsRequired}
                 name="PR"
                 label="معدل النبض"
                 value={values.PR}
@@ -116,6 +125,7 @@ const VitalsForm = ({
             </Grid>
             <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
+                isRequired={isVitalsRequired}
                 name="RR"
                 label="معدل ألتنفس"
                 value={values.RR}
@@ -135,6 +145,7 @@ const VitalsForm = ({
           <Grid container spacing={1}>
             <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
+                isRequired={isVitalsRequired}
                 name="SpO2"
                 label=" نسبة الأكسجين في الدم"
                 value={values.SpO2}
@@ -151,6 +162,7 @@ const VitalsForm = ({
             </Grid>
             <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
+                isRequired={isVitalsRequired}
                 name="temp"
                 label="درجة الحرارة"
                 value={values.temp}
@@ -167,6 +179,7 @@ const VitalsForm = ({
             </Grid>
             <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
+                isRequired={isVitalsRequired}
                 name="SBP"
                 label="ضغط الدم الانقباضي"
                 value={values.SBP}
@@ -186,6 +199,7 @@ const VitalsForm = ({
           <Grid container spacing={1}>
             <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
+                isRequired={isVitalsRequired}
                 name="DBP"
                 label="ضغط الدم الانبساطي"
                 value={values.DBP}
@@ -202,6 +216,7 @@ const VitalsForm = ({
             </Grid>
             <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
+                isRequired={isVitalsRequired}
                 name="weight"
                 label="الوزن"
                 value={values.weight}
@@ -218,6 +233,7 @@ const VitalsForm = ({
             </Grid>
             <Grid item lg={4} md={4} sm={12} xs={12}>
               <CustomTextField
+                isRequired={isVitalsRequired}
                 name="height"
                 label="الطول"
                 value={values.height}
@@ -238,6 +254,8 @@ const VitalsForm = ({
             <PrimaryButton
               title={initialValues ? "حفــــظ" : "اضـــافة"}
               type="submit"
+              ref={refSubmitButton}
+              display={refSubmitButton ? "none" : "block"}
             />
           ) : null}
         </Box>
