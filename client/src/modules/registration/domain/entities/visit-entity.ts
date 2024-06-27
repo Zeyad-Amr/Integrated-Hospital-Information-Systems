@@ -4,10 +4,8 @@ import store from '@/core/state/store';
 import PersonInterface from '@/core/shared/modules/person/domain/interfaces/person-interface';
 import PersonEntity from '@/core/shared/modules/person/domain/entities/person-entity';
 import { CompanionInterface } from '../interfaces/companion-interface';
-import { TransferDataInterface } from '../interfaces/transfer-data-interface';
 
 interface PersonInputInterface extends Omit<PersonInterface, 'id' | 'createdAt' | 'updatedAt'> { }
-
 
 export enum VisitStatus {
     CREATED = "CREATED",
@@ -19,6 +17,7 @@ export enum VisitStatus {
 }
 export default class VisitEntity {
 
+
     static defaultValue(): VisitInterface {
         return {
             code: undefined,
@@ -28,13 +27,6 @@ export default class VisitEntity {
             patient: undefined,
             companion: undefined,
             additionalInfo: undefined
-        }
-    }
-
-    static transferDataValue(): TransferDataInterface {
-        return {
-            toSubDepId: 0,
-            transferDate: "",
         }
     }
 
@@ -138,8 +130,8 @@ export default class VisitEntity {
 
 
         return Yup.object().shape({
-            sequenceNumber: Yup.number(),
-            // .required("يجب ادخال رقم التردد"),
+            sequenceNumber: Yup.number()
+                .required("يجب ادخال رقم التردد"),
             firstName: Yup.string()
                 .when([],
                     (values, schema) => coditionCallback(values, schema, "الاسم الأول مطلوب"))
@@ -197,16 +189,6 @@ export default class VisitEntity {
         })
     }
 
-    static transferDataSchema(): Yup.ObjectSchema<any> {
-        const state = store.getState();
-        return Yup.object({
-            toSubDepId: Yup.number()
-                .required("نقل المريض الي قسم فرعي مطلوب").oneOf((state.subDepartments.subDepartments.items as any).map((e: any) => e.id), "نقل المريض الي قسم فرعي مطلوب"),
-            transferDate: Yup.string()
-                .required('تاريخ نقل المريض مطلوب'),
-        });
-    }
-
     static kinshipSchema(isRequired: boolean = false): Yup.ObjectSchema<any> {
         const state = store.getState();
 
@@ -227,5 +209,4 @@ export default class VisitEntity {
     }
 
 }
-
 

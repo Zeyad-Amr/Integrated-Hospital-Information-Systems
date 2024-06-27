@@ -14,10 +14,10 @@ export default class VisitModel {
             patient: entity.patient ? PersonModel.toJson(entity.patient) : undefined,
             companion: entity.companion && !allValuesUndefined(entity.companion) ? { ...PersonModel.toJson(entity.companion), kinshipId: entity.companion.kinship } : undefined,
             visit: {
-                sequenceNumber: Number(0), //entity.sequenceNumber,
+                sequenceNumber: entity.sequenceNumber,
             },
             additionalInfo: entity.additionalInfo && !allValuesUndefined(entity.additionalInfo) ? AdditionalDataModel.toJson(entity.additionalInfo) : undefined,
-            transfer: entity.transfer && !allValuesUndefined(entity.transfer) ? TransferDataModel.toJson(entity.transfer) : undefined,
+            // transfer: entity.transfer && !allValuesUndefined(entity.transfer) ? TransferDataModel.toJson(entity.transfer) : undefined,
         }
     }
 
@@ -26,7 +26,6 @@ export default class VisitModel {
             patient: entity.patient ? PersonModel.toJson(entity.patient) : undefined,
             companion: entity.companion && !allValuesUndefined(entity.companion) ? { ...PersonModel.toJson(entity.companion), kinshipId: entity.companion.kinship } : undefined,
             visitCode: entity.visitCode,
-
         };
     }
 

@@ -16,19 +16,12 @@ import { createVisit } from "../../../controllers/thunks/visits-thunks";
 import CompanionForm from "../../CompanionForm";
 import PersonalData from "@/core/shared/components/PersonalData";
 import { CompanionInterface } from "@/modules/registration/domain/interfaces/companion-interface";
-import { TransferDataInterface } from "@/modules/registration/domain/interfaces/transfer-data-interface";
-// import CustomSelectField from "@/core/shared/components/CustomSelectField";
-// import { SubDepartmentsState } from "@/modules/management/presentation/controllers/types";
-// import { SubDepartmentInterface } from "@/modules/management/domain/interfaces/sub-departments-interface";
-import { getSubDepartmentsList } from "@/modules/management/presentation/controllers/thunks/sub-departments-thunks";
 
 const AddVisitForm = () => {
   const dispatch = useAppDispatch();
 
   // useState
   const [patientDataExpanded, setPatientDataExpanded] = useState<boolean>(true);
-  // const [transferDataExpanded, setTransferDataExpanded] =
-  //   useState<boolean>(true);
   const [companionDataExpanded, setCompanionDataExpanded] =
     useState<boolean>(false);
   const [additionalDataExpanded, setAdditionalDataExpanded] =
@@ -41,13 +34,11 @@ const AddVisitForm = () => {
   const refSubmitPatient: any = useRef(null);
   const refSubmitCompanion: any = useRef(null);
   const refSubmitAdditionalData: any = useRef(null);
-  const refSubmitTransferData: any = useRef(null);
 
   //* Form data refrence
   const patientData = useRef<PersonInterface>();
   const companionData = useRef<CompanionInterface>();
   const additionalData = useRef<AdditionalDataInterface>();
-  const transferData = useRef<TransferDataInterface>();
 
   //* Submit functions
   const submitPatient = () => {
@@ -63,11 +54,6 @@ const AddVisitForm = () => {
   const submitAdditionalData = () => {
     if (refSubmitAdditionalData.current) {
       refSubmitAdditionalData.current.click();
-    }
-  };
-  const submitTransferData = () => {
-    if (refSubmitTransferData.current) {
-      refSubmitTransferData.current.click();
     }
   };
 
@@ -102,21 +88,11 @@ const AddVisitForm = () => {
     }));
   };
 
-  //* Handle Transfer Data Submit
-  // const handleTransferDataSubmit = (values: TransferDataInterface) => {
-  //   transferData.current = values;
-  //   setCombinedValues((previous) => ({
-  //     ...previous,
-  //     transfer: values,
-  //   }));
-  // };
-
   //* Handle Submit all Forms
   const handleSubmitAllForms = () => {
     submitPatient();
     submitCompanion();
     submitAdditionalData();
-    submitTransferData();
   };
 
   //* Formik refs
@@ -125,15 +101,12 @@ const AddVisitForm = () => {
   const formikRefCompanion = useRef<FormikProps<CompanionInterface>>(null);
   const formikRefAdditionalData =
     useRef<FormikProps<AdditionalDataInterface>>(null);
-  const formikRefTransferData =
-    useRef<FormikProps<TransferDataInterface>>(null);
 
   useEffect(() => {
     if (
       patientData.current &&
       companionData.current &&
-      additionalData.current &&
-      transferData.current
+      additionalData.current
     ) {
       if (combinedValues) {
         dispatch(createVisit(combinedValues)).then((res) => {
@@ -141,29 +114,16 @@ const AddVisitForm = () => {
             patientData.current = undefined;
             companionData.current = undefined;
             additionalData.current = undefined;
-            transferData.current = undefined;
             // Reset forms after successful submission
-            if (formikRefPatient.current) formikRefPatient.current.resetForm();
-            if (formikRefCompanion.current)
-              formikRefCompanion.current.resetForm();
-            if (formikRefAdditionalData.current)
-              formikRefAdditionalData.current.resetForm();
-            if (formikRefTransferData.current)
-              formikRefTransferData.current.resetForm();
+          if (formikRefPatient.current) formikRefPatient.current.resetForm();
+          if (formikRefCompanion.current) formikRefCompanion.current.resetForm();
+          if (formikRefAdditionalData.current) formikRefAdditionalData.current.resetForm();
           }
         });
         console.log(combinedValues);
       }
     }
   }, [combinedValues]);
-
-  useEffect(() => {
-    dispatch(getSubDepartmentsList([]));
-  }, []);
-
-  // const subdepartmentState: SubDepartmentsState = useAppSelector(
-  //   (state: any) => state.subDepartments
-  // );
 
   return (
     <Box sx={{ marginTop: "2.5rem" }}>
@@ -177,17 +137,13 @@ const AddVisitForm = () => {
         {/* //* Start Patient form ********************* */}
         <Formik
           innerRef={formikRefPatient}
-          initialValues={{
-            sequenceNumber: "0",
-            ...PersonEntity.defaultValue(),
-          }}
+          initialValues={{ sequenceNumber: "", ...PersonEntity.defaultValue() }}
           onSubmit={(values) => {
             console.log(values);
             handlePatientSubmit(values);
           }}
-          validateOnMount={true}
+          // validateOnMount={true}
           validationSchema={VisitEntity.getPatientSchema(!isChild)}
-          // validationSchema={VisitEntity.getPatientSchema(true)}
         >
           {({
             values,
@@ -250,81 +206,6 @@ const AddVisitForm = () => {
           )}
         </Formik>
       </CustomAccordion>
-
-      {/* //* Start Transfer Data *******************  */}
-      {/* <CustomAccordion
-        isClosable={false}
-        title="نقل المريض"
-        isDisabled={false}
-        isExpanded={transferDataExpanded}
-        setExpanded={setTransferDataExpanded}
-      >
-        <Formik
-          innerRef={formikRefTransferData}
-          initialValues={VisitEntity.transferDataValue()}
-          onSubmit={(values) => {
-            console.log(values);
-            handleTransferDataSubmit(values);
-          }}
-          validationSchema={VisitEntity.transferDataSchema()}
-        >
-          {({
-            values,
-            touched,
-            errors,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-          }) => (
-            <Box component="form" onSubmit={handleSubmit} noValidate>
-              <Grid container spacing={1}>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <CustomTextField
-                    name="transferDate"
-                    label="تاريخ نقل المريض"
-                    value={values.transferDate}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={errors.transferDate}
-                    touched={touched.transferDate}
-                    width="100%"
-                    props={{
-                      type: "date",
-                    }}
-                  />
-                </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <CustomSelectField
-                    value={values.toSubDepId}
-                    options={subdepartmentState?.subDepartments?.items
-                      .filter((s) => s.departmentId == 9)
-                      .map((subdepartment: SubDepartmentInterface) => {
-                        return {
-                          id: subdepartment.id,
-                          value: subdepartment.name,
-                        };
-                      })}
-                    name="toSubDepId"
-                    label="نقل المريض الي"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={errors.toSubDepId}
-                    touched={touched.toSubDepId}
-                    width="100%"
-                    sx={{ margin: "0" }}
-                  />
-                </Grid>
-              </Grid>
-
-              <Button
-                type="submit"
-                sx={{ display: "none" }}
-                ref={refSubmitTransferData}
-              ></Button>
-            </Box>
-          )}
-        </Formik>
-      </CustomAccordion> */}
 
       {/* //* Start Additional Data ******************* */}
       <Box>
