@@ -22,11 +22,11 @@ export default class TriageModel {
 
     // //* --------------------- Serialization: Convert the model to JSON ---------------------
     static toJson(entity: TriageInterface): any {
-
+            
         return {
-            painScore: Number(entity.painScore) ?? undefined,
-            LOCId: Number(entity.LOCId) ?? undefined,
-            triageTypeId: Number(entity.triageTypeId) ?? undefined,
+            painScore: Number(entity.painScore) || undefined,
+            LOCId: Number(entity.LOCId) || undefined,
+            triageTypeId: Number(entity.triageTypeId) || undefined,
             visitCode: entity.visitCode,
         };
     }
