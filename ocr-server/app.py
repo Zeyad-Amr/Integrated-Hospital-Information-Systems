@@ -39,6 +39,7 @@ def extract_id():
             frontImg = cv2.imread(front_path)
             backImg = cv2.imread(back_path)
 
+            cv2.imwrite("./IDs/frontttttttttt.jpeg", frontImg)
             firstName, lastName, error = nationalIdObj.extract_name(frontImg)
             nameObj = {"firstName": firstName,
                        "lastName": lastName, "error": error}
@@ -80,6 +81,7 @@ class NationalID:
             nameImg = front[100:220, 250:630]
             cv2.imwrite("./IDs/name.jpeg", nameImg)
             preprocessedName = self.preprocess(nameImg, 3)
+            cv2.imwrite("./IDs/namePreprocessed.jpeg", preprocessedName)
             name = image_to_string(
                 preprocessedName, lang="ara", config=os.environ['TESSDATA_PREFIX'])
             if name is None or name.strip() == "":
@@ -96,11 +98,13 @@ class NationalID:
 
     def extract_id(self, front, back):
         try:
-            frontId = front[330:365, 280:640]
-            backId = back[28:58, 300:525]
+            frontId = front[330:365, 260:640]
+            backId = back[28:58, 280:525]
 
             preprocessedFront = self.preprocess(frontId, 4)
             preprocessedBack = self.preprocess(backId, 4)
+            cv2.imwrite("./IDs/frontPreprocessed.jpeg", preprocessedFront)
+            cv2.imwrite("./IDs/backPreprocessed.jpeg", preprocessedBack)
             frontNationalId = self.detectID(preprocessedFront)
             backNationalId = self.detectID(preprocessedBack)
 
@@ -108,6 +112,7 @@ class NationalID:
                 return "", "failed to detect national id"
 
             if frontNationalId != backNationalId:
+                print(frontNationalId, backNationalId)
                 return frontNationalId, "check national id"
 
             return frontNationalId, ""
@@ -127,7 +132,7 @@ class NationalID:
             median_filtered, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
         binary_inverse = cv2.bitwise_not(binary_otsu)
-
+        
         kernel = np.ones((3, 3), np.uint8)
         binary_morph = cv2.morphologyEx(
             binary_inverse, cv2.MORPH_CLOSE, kernel)
