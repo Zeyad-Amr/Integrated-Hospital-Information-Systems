@@ -197,7 +197,7 @@ const PersonalData = ({ searchSSN = true }: PersonalDataProps) => {
 
   return (
     <>
-      {showDialog ? <OCR OCRStateController={setShawDialog} /> : null}
+      {showDialog ? <OCR OCRStateController={setShawDialog} setValues={setValues} /> : null}
       <Box component="form" onSubmit={handleSubmit} noValidate>
         <Grid container columns={12} spacing={2}>
           <Grid item lg={3} md={3} sm={12} xs={12}>
