@@ -5,6 +5,9 @@ import { Button, Typography } from '@mui/material';
 import IdBackIcon from './IdBackIcon';
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import AlertService from "@/core/shared/utils/alert-service";
+import axios from 'axios';
+import PersonInterface from '../../modules/person/domain/interfaces/person-interface';
+import { FormikErrors } from 'formik';
 
 const IconContainer = styled(Box)`
   transition: transform 0.5s;
@@ -22,13 +25,14 @@ const IdBackIconWithScanner = () => (
     </Box>
 );
 
-const OCR = ({ OCRStateController }: {
+const OCR = ({ OCRStateController,setValues }: {
     OCRStateController: React.Dispatch<React.SetStateAction<boolean>>;
+    setValues:(values: React.SetStateAction<PersonInterface>, shouldValidate?: boolean | undefined) => Promise<void | FormikErrors<PersonInterface>>
 }) => {
 
     const [showFront, setShowFront] = useState(true);
 
-    const handleClick = () => {
+    const flipId = () => {
         setShowFront(!showFront);
     };
 
@@ -46,6 +50,62 @@ const OCR = ({ OCRStateController }: {
     const OCRFail = () => {
         OCRStateController(false)
         AlertService.showAlert('فشل استخرج البيانات', 'error');
+
+    }
+
+    const handleClick = () =>{
+        axios.get("http://localhost:8000/scanner/scan")
+        .then((res)=>{
+            console.log(res)
+            if(showFront){
+                flipId()
+            }else{
+                axios.get("http://localhost:8000/scanner/sendFiles")
+                .then((res)=>{
+                    console.log(res);
+                    if(res.data.status === 400){
+                        return OCRFail()
+                    }
+                    if(res.data?.name){
+                        const lastName = res.data.name.lastName.split(" ")
+                        setValues((prev)=>({
+                            ...prev,
+                            firstName:res.data.name.firstName,
+                            secondName:lastName[0],
+                            thirdName:lastName[1],
+                            fourthName:lastName[2],
+                            SSN:res.data.nationalId.nationalId
+                        }))
+                        OCRSuccess()
+                    } else {
+                        const nameErr = res.data.error.name.error
+                        const nationalIdErr = res.data.error.nationalId.error
+                        if(nameErr !== "" && nationalIdErr !== ""){
+                            OCRFail()
+                        }else {
+                            const lastName = res.data.error.name.lastName.split(" ")
+                        setValues((prev)=>({
+                            ...prev,
+                            firstName:res.data.error.name.firstName,
+                            secondName:lastName[0],
+                            thirdName:lastName[1],
+                            fourthName:lastName[2],
+                            SSN:res.data.error.nationalId.nationalId
+                        }))
+                            OCRNeedReview()
+                        }
+                    }
+                })
+                .catch((err)=>{
+                    OCRFail()
+                    console.log(err);
+                })
+            }
+        })
+        .catch((err)=>{
+            console.log(err)
+            OCRFail()
+        })
 
     }
 
@@ -74,10 +134,10 @@ const OCR = ({ OCRStateController }: {
                 </IconContainer>
                 <Box sx={{ display: 'flex', gap: 1 }}>
 
-                    <Button onClick={handleClick} variant="contained" color="primary" sx={{ mt: 2 }}>
-                        The Other Face
+                    <Button onClick={handleClick} variant="contained" color="primary">
+                        Scan
                     </Button>
-                    <Button onClick={OCRSuccess} variant="contained" color="primary" sx={{ mt: 2 }}>
+                    {/* <Button onClick={OCRSuccess} variant="contained" color="primary" sx={{ mt: 2 }}>
                         Sucess
                     </Button>
                     <Button onClick={OCRNeedReview} variant="contained" color="primary" sx={{ mt: 2 }}>
@@ -85,7 +145,7 @@ const OCR = ({ OCRStateController }: {
                     </Button>
                     <Button onClick={OCRFail} variant="contained" color="primary" sx={{ mt: 2 }}>
                         Fail
-                    </Button>
+                    </Button> */}
                 </Box>
             </Box>
         </>
