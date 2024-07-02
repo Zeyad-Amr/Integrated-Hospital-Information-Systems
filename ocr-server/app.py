@@ -1,3 +1,4 @@
+import PIL
 from flask import Flask, request, make_response, jsonify
 from werkzeug.utils import secure_filename
 from keras.models import load_model
@@ -5,6 +6,8 @@ from keras.preprocessing import image
 import numpy as np
 import cv2
 import os
+from PIL import Image
+from io import BytesIO
 
 from pytesseract import image_to_string
 
@@ -38,6 +41,10 @@ def extract_id():
             back.save(back_path)
             frontImg = cv2.imread(front_path)
             backImg = cv2.imread(back_path)
+
+            # resize images
+            frontImg = cv2.resize(frontImg, (654, 430))
+            backImg = cv2.resize(backImg, (654, 430))
 
             cv2.imwrite("./IDs/frontttttttttt.jpeg", frontImg)
             firstName, lastName, error = nationalIdObj.extract_name(frontImg)
@@ -82,14 +89,23 @@ class NationalID:
             cv2.imwrite("./IDs/name.jpeg", nameImg)
             preprocessedName = self.preprocess(nameImg, 3)
             cv2.imwrite("./IDs/namePreprocessed.jpeg", preprocessedName)
+            new_dpi = (300, 300)
+            image = Image.fromarray(preprocessedName)
+            output = BytesIO()
+            image.save(output, format='JPEG', dpi=new_dpi)
+            output.seek(0)
+
+            new_image = Image.open(output)
+            new_image.save('./IDs/output_image.jpeg', dpi=new_dpi)
             name = image_to_string(
-                preprocessedName, lang="ara", config=os.environ['TESSDATA_PREFIX'])
+                new_image, lang="ara", config=os.environ['TESSDATA_PREFIX'])
             if name is None or name.strip() == "":
                 return "", "", "failed to detect name"
             else:
                 parts = name.split('\n', 2)
                 firstName = parts[0]
                 lastName = parts[1]
+                print(name)
             return firstName, lastName, ""
 
         except Exception as e:
