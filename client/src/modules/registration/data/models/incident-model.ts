@@ -9,9 +9,10 @@ export default class IncidentModel {
 
     // //* --------------------- Serialization: Convert the model to JSON ---------------------
     static toJson(entity: IncidentInterface): any {
+        console.log(entity.numOfPatients);
+        
         return {
-            numberOfIncompletedVisits: entity.numberOfIncompletedVisits,
-            numberOfVisits: entity.numberOfVisits,
+            numberOfPatients : entity.numOfPatients? +entity.numOfPatients: undefined,
             additionalInfo: entity.additionalInfo && !allValuesUndefined(entity.additionalInfo) ? AdditionalDataModel.toJson(entity.additionalInfo) : undefined,
             companions: entity.companions ?
                 entity.companions.map((companion) => ({ ...PersonModel.toJson(companion), kinshipId: companion.kinship }))
@@ -23,7 +24,7 @@ export default class IncidentModel {
     static fromJson(json: any): IncidentInterface {
         return {
             numberOfIncompletedVisits: json.numberOfIncompletedVisits.toString(),
-            numberOfVisits: json.numberOfPatients.toString(),
+            numOfPatients : json.numberOfPatients.toString(),
             additionalInfo: AdditionalDataModel.fromJson(json.AdditionalInformation),
             companions: (json.CompanionsOnIncidents || []).map((companion: any) => CompanionModel.fromJson(companion.companion)),
             visits: json.visits.map((visit: any) => VisitModel.fromJson(visit)),

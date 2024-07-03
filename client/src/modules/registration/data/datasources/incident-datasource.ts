@@ -13,6 +13,9 @@ class IncidentDataSource extends BaseIncidentDataSource {
     }
 
     override async createIncident(incident: IncidentInterface): Promise<any> {
+        console.log(incident);
+        console.log(IncidentModel.toJson(incident));
+        
         const response = await this.apiClient.post(Endpoints.incident.create, IncidentModel.toJson(incident));
         console.log(response.data);
         return response.data;

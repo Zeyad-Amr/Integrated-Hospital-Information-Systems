@@ -27,8 +27,11 @@ const IncidentTable = () => {
 
   //* data that in the state
   let tableData: IncidentVisit[] = [];
+console.log(state.incidents.items);
 
   state.incidents.items.forEach((item: IncidentInterface) => {
+    console.log(item?.numOfPatients );
+    
     tableData.push({
       comeFrom:
         lookupsState?.lookups?.cameFromOptions?.find(
@@ -39,7 +42,7 @@ const IncidentTable = () => {
       injuryLocation: item?.additionalInfo?.place ?? "لا يوجد",
       injuryCause: item?.additionalInfo?.reason ?? "لا يوجد",
       numberOfIncompletedVisits: item?.numberOfIncompletedVisits ?? "لا يوجد",
-      numberOfVisits: item?.numberOfVisits ?? "لا يوجد",
+      numOfPatients : item?.numOfPatients  ?? "لا يوجد",
       createdAt: item?.createdAt
         ? new Date(item?.createdAt).toLocaleDateString() +
           " " +

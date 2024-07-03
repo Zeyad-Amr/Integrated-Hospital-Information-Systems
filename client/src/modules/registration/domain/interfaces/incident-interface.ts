@@ -3,7 +3,7 @@ import { CompanionInterface } from "./companion-interface";
 import VisitInterface from "./visit-interface";
 
 export default interface IncidentInterface {
-    numberOfVisits?: string;
+    numOfPatients ?: string;
     numberOfIncompletedVisits?: string;
     additionalInfo?: AdditionalDataInterface;
     companions?: CompanionInterface[];
