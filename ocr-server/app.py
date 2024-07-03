@@ -85,7 +85,7 @@ class NationalID:
         try:
             firstName = ""
             lastName = ""
-            nameImg = front[100:220, 250:630]
+            nameImg = front[100:200, 250:630]
             cv2.imwrite("./IDs/name.jpeg", nameImg)
             preprocessedName = self.preprocess(nameImg, 3)
             cv2.imwrite("./IDs/namePreprocessed.jpeg", preprocessedName)
@@ -98,7 +98,7 @@ class NationalID:
             new_image = Image.open(output)
             new_image.save('./IDs/output_image.jpeg', dpi=new_dpi)
             name = image_to_string(
-                new_image, lang="ara", config=os.environ['TESSDATA_PREFIX'])
+                preprocessedName, lang="ara", config=os.environ['TESSDATA_PREFIX'])
             if name is None or name.strip() == "":
                 return "", "", "failed to detect name"
             else:
@@ -115,7 +115,7 @@ class NationalID:
     def extract_id(self, front, back):
         try:
             frontId = front[330:365, 260:640]
-            backId = back[28:58, 280:525]
+            backId = back[28:58, 300:540]
 
             preprocessedFront = self.preprocess(frontId, 4)
             preprocessedBack = self.preprocess(backId, 4)
@@ -124,7 +124,7 @@ class NationalID:
             frontNationalId = self.detectID(preprocessedFront)
             backNationalId = self.detectID(preprocessedBack)
 
-            if len(frontNationalId) != 14 or len(backNationalId) != 14:
+            if len(frontNationalId) != 14 and len(backNationalId) != 14:
                 return "", "failed to detect national id"
 
             if frontNationalId != backNationalId:
