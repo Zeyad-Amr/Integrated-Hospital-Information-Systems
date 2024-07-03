@@ -39,7 +39,7 @@ const IncidentTable = () => {
       injuryLocation: item?.additionalInfo?.place ?? "لا يوجد",
       injuryCause: item?.additionalInfo?.reason ?? "لا يوجد",
       numberOfIncompletedVisits: item?.numberOfIncompletedVisits ?? "لا يوجد",
-      numberOfVisits: item?.numberOfVisits ?? "لا يوجد",
+      numberOfPatients : item?.numberOfPatients  ?? "لا يوجد",
       createdAt: item?.createdAt
         ? new Date(item?.createdAt).toLocaleDateString() +
           " " +
