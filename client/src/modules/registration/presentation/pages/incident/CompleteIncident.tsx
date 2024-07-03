@@ -179,7 +179,7 @@ const CompleteIncident = ({
           >
             <Typography>عدد المرضى :</Typography>
             <Typography sx={{ fontWeight: "600" }}>
-              {incidentDataState?.numberOfPatients }
+              {incidentDataState?.numOfPatients }
             </Typography>
           </Grid>
           <Grid

@@ -5,7 +5,7 @@ export interface IncidentVisit {
   injuryLocation: string;
   injuryCause: string;
   numberOfIncompletedVisits: string;
-  numberOfPatients : string;
+  numOfPatients : string;
   createdAt: string;
   update?: any;
 }
@@ -48,8 +48,8 @@ export const header: HeaderItem[] = [
     onClick: () => {},
   },
   {
-    filterKey: "numberOfPatients",
-    id: "numberOfPatients ",
+    filterKey: "numOfPatients",
+    id: "numOfPatients",
     label: "عدد الزيارات",
     minWidth: 50,
     maxWidth: 70,
