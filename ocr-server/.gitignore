@@ -1,2 +1,6 @@
 env/
 IDs/
+*.jpg
+*.jpeg
+*.png
+*.ipynb

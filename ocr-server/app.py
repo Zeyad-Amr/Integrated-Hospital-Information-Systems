@@ -46,6 +46,8 @@ def extract_id():
             frontImg = cv2.resize(frontImg, (654, 430))
             backImg = cv2.resize(backImg, (654, 430))
 
+
+
             cv2.imwrite("./IDs/frontttttttttt.jpeg", frontImg)
             firstName, lastName, error = nationalIdObj.extract_name(frontImg)
             nameObj = {"firstName": firstName,
@@ -81,24 +83,52 @@ class NationalID:
         self.model = load_model('model.h5')
         os.environ['TESSDATA_PREFIX'] = '.'
 
+    def align_images(self, input_image, template_image):
+
+    # Convert the input image to grayscale
+        gray_input_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2GRAY)
+
+        # Detect ORB keypoints and descriptors in both images
+        orb = cv2.ORB_create()
+        keypoints1, descriptors1 = orb.detectAndCompute(template_image, None)
+        keypoints2, descriptors2 = orb.detectAndCompute(gray_input_image, None)
+
+        # Match the descriptors using the Brute Force matcher
+        bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+        matches = bf.match(descriptors1, descriptors2)
+        matches = sorted(matches, key=lambda x: x.distance)
+
+        # Extract the matched keypoints
+        points1 = np.zeros((len(matches), 2), dtype=np.float32)
+        points2 = np.zeros((len(matches), 2), dtype=np.float32)
+
+        for i, match in enumerate(matches):
+            points1[i, :] = keypoints1[match.queryIdx].pt
+            points2[i, :] = keypoints2[match.trainIdx].pt
+
+        # Compute the homography matrix
+        h, mask = cv2.findHomography(points2, points1, cv2.RANSAC)
+
+        # Warp the image using the homography matrix
+        height, width = template_image.shape
+        aligned_image = cv2.warpPerspective(gray_input_image, h, (width, height))
+        aligned_image = cv2.cvtColor(aligned_image, cv2.COLOR_GRAY2BGR)
+        return aligned_image
+
     def extract_name(self, front):
         try:
             firstName = ""
             lastName = ""
-            nameImg = front[100:220, 250:630]
+            nameImg = front[100:200, 250:630]
+
             cv2.imwrite("./IDs/name.jpeg", nameImg)
+            print("Nameeeeeeee:", nameImg)
             preprocessedName = self.preprocess(nameImg, 3)
             cv2.imwrite("./IDs/namePreprocessed.jpeg", preprocessedName)
-            new_dpi = (300, 300)
-            image = Image.fromarray(preprocessedName)
-            output = BytesIO()
-            image.save(output, format='JPEG', dpi=new_dpi)
-            output.seek(0)
 
-            new_image = Image.open(output)
-            new_image.save('./IDs/output_image.jpeg', dpi=new_dpi)
             name = image_to_string(
-                new_image, lang="ara", config=os.environ['TESSDATA_PREFIX'])
+                preprocessedName, lang="ara", config=os.environ['TESSDATA_PREFIX'])
+            print("Nameeeeeeee:", name)
             if name is None or name.strip() == "":
                 return "", "", "failed to detect name"
             else:
@@ -123,41 +153,45 @@ class NationalID:
             cv2.imwrite("./IDs/backPreprocessed.jpeg", preprocessedBack)
             frontNationalId = self.detectID(preprocessedFront)
             backNationalId = self.detectID(preprocessedBack)
-
-            if len(frontNationalId) != 14 or len(backNationalId) != 14:
-                return "", "failed to detect national id"
-
-            if frontNationalId != backNationalId:
-                print(frontNationalId, backNationalId)
+            # check length of national id
+            if len(frontNationalId) != 14:
                 return frontNationalId, "check national id"
+
 
             return frontNationalId, ""
 
         except Exception as e:
             raise ValueError("failed to detect national id")
 
-    def preprocess(self, img, scaleFator):
+    def preprocess(self, img, scaleFactor=1.0):
+        print("images dimensions", img.shape)
 
-        resizedImage = cv2.resize(img, (0, 0), fx=scaleFator, fy=scaleFator)
+          # Resize the image
+        resizedImage = cv2.resize(img, (0, 0), fx=scaleFactor, fy=scaleFactor)
 
+        # Convert the image to grayscale
         grayImage = cv2.cvtColor(resizedImage, cv2.COLOR_BGR2GRAY)
 
+        # Apply median blur to reduce noise
         median_filtered = cv2.medianBlur(grayImage, 5)
 
-        _, binary_otsu = cv2.threshold(
-            median_filtered, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        # Apply Otsu's thresholding to get a binary image
+        _, binary_otsu = cv2.threshold(median_filtered, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
+        # Invert the binary image (optional, depending on text color)
         binary_inverse = cv2.bitwise_not(binary_otsu)
-        
-        kernel = np.ones((3, 3), np.uint8)
-        binary_morph = cv2.morphologyEx(
-            binary_inverse, cv2.MORPH_CLOSE, kernel)
 
+        # Apply morphological operations to enhance text regions
+        kernel = np.ones((3, 3), np.uint8)
+        binary_morph = cv2.morphologyEx(binary_inverse, cv2.MORPH_CLOSE, kernel)
+
+        # Define structuring elements for dilation and erosion
         line_dilation = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 5))
         binary_dilated = cv2.dilate(binary_morph, line_dilation, iterations=1)
 
         line_erosion = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 5))
         binary_eroded = cv2.erode(binary_dilated, line_erosion, iterations=1)
+
         return binary_eroded
 
     def detectID(self, img):
