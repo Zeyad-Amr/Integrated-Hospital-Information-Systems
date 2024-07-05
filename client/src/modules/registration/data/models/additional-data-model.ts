@@ -39,7 +39,7 @@ export default class AdditionalDataModel {
     // //* --------------------- Deserialization: Create a model from JSON data ---------------------
     static fromJson(json: any): AdditionalDataInterface {
         return {
-            comeFrom: json.cameFromId,
+            comeFrom: json.cameFrom,
             place: json.injuryLocation,
             reason: json.injuryCause,
             notes: json.notes,
