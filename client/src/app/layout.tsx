@@ -6,9 +6,15 @@ import "./globals.css";
 import { StoreProvider } from "@/core/state/provider";
 import { ServiceLocatorProvider } from "@/core/service-locator/provider";
 import { AppProvider } from "@/core/shared/modules/lookups/presentation";
+import { Metadata } from "next";
 
 // ----------------------------------------------------------------------
-
+export const metadata: Metadata = {
+  title: "Qasr HIS",
+  description:
+    "Qasr HIS is a hospital information system that helps you to manage your hospital.",
+  keywords: "hospital, information, system, qasr, his, qasr his, qasr-his",
+};
 type Props = {
   children: React.ReactNode;
 };

@@ -145,7 +145,7 @@ const CompleteIncident = ({
       return 0;
     });
   };
-
+  console.log(incidentDataState)
   return (
     <CustomizedDialog
       open={isOpenDialog}
@@ -192,7 +192,7 @@ const CompleteIncident = ({
           >
             <Typography>قادم من :</Typography>
             <Typography sx={{ fontWeight: "600" }}>
-              {incidentDataState?.additionalInfo?.comeFrom ?? "لا يوجد"}
+              {(incidentDataState?.additionalInfo?.comeFrom as any)?.value ?? "لا يوجد"}
             </Typography>
           </Grid>
           <Grid

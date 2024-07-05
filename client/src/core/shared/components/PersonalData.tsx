@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormikContext } from "formik";
 import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -12,16 +12,8 @@ import { useAppSelector } from "@/core/state/store";
 import { ServiceKeys, sl } from "@/core/service-locator";
 import { allValuesUndefined } from "../utils/object-operations";
 import { GetPersonUseCase } from "../modules/person/domain/usecases";
-import axios from "axios";
 import OCR from "./ocr/OCR";
-// import { getPerson } from "@/core/shared/modules/person/presentation/controllers/thunks/person-thunk";
 interface PersonalDataProps {
-  //   initialValues?: PersonInterface;
-  //   onSubmit?: (values: PersonInterface) => void;
-  //   refSubmitButton?: React.MutableRefObject<null>;
-  //   validationSchema?: Yup.ObjectSchema<any>;
-  //   isResetForm?: boolean;
-  //   validateOnMount?: boolean;
   searchSSN?: boolean;
 }
 
@@ -59,13 +51,7 @@ const PersonalData = ({ searchSSN = true }: PersonalDataProps) => {
   const lookupsState: LookupsState = useAppSelector(
     (state: any) => state.lookups
   );
-  console.log(lookupsState, "lookupsState");
 
-  const [loadingFront, setLoadingFront] = React.useState(false);
-  // const [successFront, setSuccessFront] = React.useState(false);
-
-  const [loadingBack, setLoadingBack] = React.useState(false);
-  // const [successBack, setSuccessBack] = React.useState(false);
   const timer = React.useRef<number>();
 
   
@@ -75,75 +61,13 @@ const PersonalData = ({ searchSSN = true }: PersonalDataProps) => {
     };
   }, []);
 
-  const fileInputRef = useRef<any>();
   const selectFile = () => {
     setShawDialog(true);
   };
   const [showDialog, setShawDialog] = useState<boolean>(false);
-  const [sub, setSub] = useState(true);
-  const [selectedFile, setSelectedFile] = useState<any>(null);
-  const [selectedBack, setSelectedBack] = useState<any>(null);
-  const [initialFormikValues, setInitialValues] = useState<PersonInterface>(
-    PersonEntity.defaultValue()
-  );
+ 
 
-  const handleFileInput = (e: any) => {
-    sub
-      ? setSelectedFile(e.target.files[0])
-      : setSelectedBack(e.target.files[0]);
-    setSub(!sub);
-    // setSelectedFile((prevSelectedFile:any) => {
-    //   return [...prevSelectedFile, e.target.files[0]];
-    // });
-  };
-
-  // integrate with model after take back SSN picture
-  useEffect(() => {
-    if (selectedBack !== null) {
-      if (!loadingBack) {
-        // setSuccessBack(false);
-        setLoadingBack(true);
-        timer.current = window.setTimeout(() => {
-          // setSuccessBack(true);
-          setLoadingBack(false);
-        }, 2000);
-      }
-      axios.get("https://z749g.wiremockapi.cloud/ocr/extract").then(
-        (response: any) => {
-          console.log(response.data);
-          const names = response.data.name.lastName.split(/\s+/);
-          const updatedValues = {
-            ...initialFormikValues,
-            firstName: response.data.name.firstName,
-            secondName: names[0],
-            thirdName: names[1],
-            fourthName: names[2],
-            SSN: response.data.nationalId.nationalId,
-            verificationMethod: 1,
-          };
-          setInitialValues(updatedValues);
-          setTimeout(() => {
-            setShawDialog(false);
-          }, 2000);
-        },
-        (err: any) => {
-          console.log(err);
-        }
-      );
-    }
-  }, [selectedBack]);
-
-  useEffect(() => {
-    if (!loadingFront) {
-      // setSuccessFront(false);
-      setLoadingFront(true);
-      timer.current = window.setTimeout(() => {
-        // setSuccessFront(true);
-        setLoadingFront(false);
-      }, 2000);
-    }
-  }, [selectedFile]);
-
+  
   const {
     values,
     touched,
@@ -177,7 +101,7 @@ const PersonalData = ({ searchSSN = true }: PersonalDataProps) => {
 
       getPersonUseCase.call(ssn).then(
         (res: any) => {
-          console.log(res, "res");
+          // console.log(res, "res");
           if (!allValuesUndefined(res)) {
             setValues((prev) => ({
               ...prev,
@@ -237,13 +161,6 @@ const PersonalData = ({ searchSSN = true }: PersonalDataProps) => {
                   marginTop: "1rem",
                 }}
               >
-                <input
-                  type="file"
-                  id="fileInput"
-                  style={{ display: "none" }}
-                  ref={fileInputRef}
-                  onChange={handleFileInput}
-                />
                 <Box
                   sx={{
                     backgroundColor: "primary.dark",

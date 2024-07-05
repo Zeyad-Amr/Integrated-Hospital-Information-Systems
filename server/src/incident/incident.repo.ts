@@ -135,7 +135,7 @@ export class IncidentRepo extends PrismaGenericRepo<
               },
               notes: incidentDto.additionalInfo.notes,
               injuryCause: incidentDto.additionalInfo.injuryCause,
-              injuryLocation: incidentDto.additionalInfo.injuryCause,
+              injuryLocation: incidentDto.additionalInfo.injuryLocation,
               Attendant: connectAttendant,
             },
           });
