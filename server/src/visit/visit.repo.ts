@@ -122,7 +122,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
                   : undefined,
                 notes: createVisitDto.additionalInfo.notes,
                 injuryCause: createVisitDto.additionalInfo.injuryCause,
-                injuryLocation: createVisitDto.additionalInfo.injuryCause,
+                injuryLocation: createVisitDto.additionalInfo.injuryLocation,
                 Attendant: connectAttendant,
               },
             });
