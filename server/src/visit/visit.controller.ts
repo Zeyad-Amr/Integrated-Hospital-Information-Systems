@@ -190,7 +190,7 @@ export class VisitController {
   @ApiCreatedResponse()
   @Get('examination/:subdepartmentId')
   async findExaminationVisits(
-    subdepartmentId: string,
+    @Param('subdepartmentId') subdepartmentId: string,
     @PaginationParams() paginationParams: Pagination,
     @FilteringParams([
       'code',
