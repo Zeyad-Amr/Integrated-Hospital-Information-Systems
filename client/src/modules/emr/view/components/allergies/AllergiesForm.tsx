@@ -1,5 +1,6 @@
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import { ExaminationFormComponentPropsInterface } from "@/core/shared/components/ExaminationAccordion";
+import SearchableSelectFieldComponent from "@/core/shared/components/SearchableSelectFieldComponent";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { useAppDispatch } from "@/core/state/store";
 import {
@@ -60,21 +61,61 @@ const AllergiesForm = ({
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container spacing={1}>
             <Grid item lg={12} md={12} sm={12} xs={12}>
-              <CustomTextField
-                isRequired
-                name="name"
-                label="الاسم"
-                value={values.name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.name}
-                touched={touched.name}
-                width="100%"
-                props={{
-                  type: "text",
-                  disabled: isViewMode,
-                }}
-              />
+
+            {/* as example of searchable select field  */}
+            <SearchableSelectFieldComponent  // don't forget to put allergies list instead of radiology tests list
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+              error={errors.name}
+              touched={touched.name}
+              disabled={isViewMode}
+              label="الاسم"
+              options={
+                [
+                  'X-ray',
+                  'CT Scan',
+                  'MRI',
+                  'Ultrasound',
+                  'Mammography',
+                  'PET Scan',
+                  'Bone Density Scan (DEXA)',
+                  'Fluoroscopy',
+                  'Angiography',
+                  'Nuclear Medicine Scan',
+                  'Echocardiogram',
+                  'Barium Swallow',
+                  'Myelogram',
+                  'Cholangiography',
+                  'Hysterosalpingography',
+                  'Urography',
+                  'Thoracoscopy',
+                  'Laparoscopy',
+                  'Cystography',
+                  'Venography',
+                  'Arthrogram',
+                  'Cholescintigraphy (HIDA Scan)',
+                  'Scintimammography',
+                  'Sialography',
+                  'Discography',
+                  'Doppler Ultrasound',
+                  'Elastography',
+                  'Interventional Radiology Procedures',
+                  'Lymphoscintigraphy',
+                  'Magnetic Resonance Angiography (MRA)',
+                  'Magnetic Resonance Cholangiopancreatography (MRCP)',
+                  'Positron Emission Mammography (PEM)',
+                  'Prostate-Specific Membrane Antigen (PSMA) PET Scan',
+                  'Radionuclide Cystogram',
+                  'Single Photon Emission Computed Tomography (SPECT)',
+                  'Thermography',
+                  'Transesophageal Echocardiography (TEE)',
+                  'Transthoracic Echocardiography (TTE)',
+                  'Ultrafast CT',
+                  'Voiding Cystourethrogram (VCUG)'
+                ]
+              }
+            />
             </Grid>
           </Grid>
           <Grid container spacing={1}>

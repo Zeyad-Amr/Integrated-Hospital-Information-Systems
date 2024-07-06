@@ -1,52 +1,63 @@
-import { Autocomplete, Box, SelectChangeEvent, TextField } from "@mui/material";
-import { FormikErrors, FormikTouched } from "formik";
-import React, { ReactNode } from "react";
+import { Autocomplete, Box, TextField } from "@mui/material";
+import React from "react";
 
-interface SearchableSelectFieldPropsInterface<T> {
-  options: { id: any; value: string }[];
-  error?: string | undefined | FormikErrors<T>;
-  touched?: boolean | undefined | FormikTouched<T>;
-  onChange: (event: SelectChangeEvent<T> | unknown, child: ReactNode) => void;
-  value: T | any;
+interface SearchableSelectFieldPropsInterface {
+  options: string[];
+  label: string;
+  error?: string;
+  touched?: boolean;
+  onChange: (event: React.ChangeEvent<any>) => void;
+  value: string;
   name: string;
+  disabled?: boolean;
 }
 
-const SearchableSelectFieldComponent = <T extends { id: any; value: string }>({
+const SearchableSelectFieldComponent = ({
   options,
+  label,
   error,
   touched,
   value,
   onChange,
-  name
-}: SearchableSelectFieldPropsInterface<T>) => {
+  name,
+  disabled = false,
+}: SearchableSelectFieldPropsInterface) => {
   return (
     <Autocomplete
       id="searchable-select"
       options={options}
-      isOptionEqualToValue={(option, value) => option.id === value.id}
-      renderOption={(props, option) => {
-        return (
-          <Box component="li" {...props} key={option.id}>
-            {option.value}
-          </Box>
-        );
-      }}
+      getOptionLabel={(option) => option}
+      renderOption={(props, option) => (
+        <Box component="li" {...props} key={option}>
+          {option}
+        </Box>
+      )}
       renderInput={(params) => (
         <TextField
           {...params}
           name={name}
-          // helperText={error && touched ? error : ""}
-          error={ error && touched ? true : false}
+          label={label}
+          helperText={error && touched ? error : ""}
+          error={error && touched ? true : false}
+          disabled={disabled}
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
       )}
-      value={value.client}
-      onChange={(e, value) => {
-        const event = {
-          ...e,
-          target: { ...e.target, name: "client", value: value },
-        };
-        onChange(event,null);
+      value={value}
+      onChange={(_event, newValue) => {
+        // Create a synthetic event for Formik
+        const syntheticEvent = {
+          target: {
+            name,
+            value: newValue || "", // Handle cases where newValue is null
+          },
+        } as React.ChangeEvent<HTMLInputElement>;
+        
+        onChange(syntheticEvent);
       }}
+      disabled={disabled}
     />
   );
 };
