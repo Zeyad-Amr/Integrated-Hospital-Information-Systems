@@ -180,4 +180,57 @@ export class VisitController {
       throw handleError(error);
     }
   }
+
+  @ApiOperation({
+    description:
+      'This is to get all examination visits in the given subdepartment',
+  })
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiCreatedResponse()
+  @Get('examination/:subdepartmentId')
+  async findExaminationVisits(
+    subdepartmentId: string,
+    @PaginationParams() paginationParams: Pagination,
+    @FilteringParams([
+      'code',
+      'createdAt',
+      'creatorId',
+      'sequenceNumber',
+      'companionId',
+      'patientId',
+      'incidentId',
+      'patient.person.SSN',
+      'companion.person.SSN',
+      'companion.person.fullName',
+      'status',
+      'consultationRequest.consultationSubdepartmentId',
+    ])
+    filters?: Array<Filter>,
+    @SortingParams([
+      'code',
+      'createdAt',
+      'creatorId',
+      'sequenceNumber',
+      'companionId',
+      'patientId',
+      'incidentId',
+      'patient.person.SSN',
+      'companion.person.SSN',
+      'companion.person.fullName',
+      'status',
+    ])
+    sort?: Sorting,
+  ) {
+    try {
+      return await this.visitService.findExaminationVisits(
+        subdepartmentId,
+        paginationParams,
+        filters,
+        sort,
+      );
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
 }

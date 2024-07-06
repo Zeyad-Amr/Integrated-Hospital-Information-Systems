@@ -154,4 +154,45 @@ export class VisitService {
       throw error;
     }
   }
+
+  async findExaminationVisits(
+    subdepartmentId: string,
+    paginationParams: Pagination,
+    filters?: Array<Filter>,
+    sort?: Sorting,
+  ): Promise<PaginatedResource<Visit>> {
+    // get all visits where last transfer tosubdepartment is the given subdepartment
+    // and if any of the consulationRequests has consultationSubdepartmentId equal to the given subdepartment
+
+    try {
+      return await this.visitRepo.getAll({
+        paginationParams,
+        filters,
+        sort,
+        include: this.visitRepo.visitIncludes,
+        additionalWhereConditions: [
+          {
+            OR: [
+              {
+                transfers: {
+                  some: {
+                    toSubDepId: +subdepartmentId,
+                  },
+                },
+              },
+              {
+                consultationRequest: {
+                  some: {
+                    consultationSubdepartmentId: +subdepartmentId,
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 }

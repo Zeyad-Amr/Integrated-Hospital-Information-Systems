@@ -127,6 +127,7 @@ const DicomViewer = () => {
             style={{ flex: "1", display: "flex", flexDirection: "row" }}
           >
             <CornerstoneViewport
+              key={imageId}
               style={{ flex: "1", width: "100%", height: "100vh" }}
               tools={config.tools}
               imageIds={config.imageIds}

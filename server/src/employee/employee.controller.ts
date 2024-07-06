@@ -7,9 +7,8 @@ import {
   Param,
   Delete,
   Req,
-  Query,
 } from '@nestjs/common';
-import { CustomFilters, EmployeeService } from './employee.service';
+import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import {
@@ -20,8 +19,6 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiProperty,
-  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -43,7 +40,7 @@ import {
 @ApiBearerAuth()
 @Controller('employee')
 export class EmployeeController {
-  constructor(private readonly employeeService: EmployeeService) { }
+  constructor(private readonly employeeService: EmployeeService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create employee' })
@@ -67,7 +64,6 @@ export class EmployeeController {
   @ApiOkResponse({ description: 'get all employees' })
   @CustomGetAllParamDecorator()
   async findAll(
-    @Query() customFilters?: CustomFilters,
     @PaginationParams() pagination?: Pagination,
     @SortingParams([
       'shiftId',
@@ -77,7 +73,8 @@ export class EmployeeController {
       'person.fullName',
       'person.SSN',
       'person.phone',
-    ]) sort?: Sorting,
+    ])
+    sort?: Sorting,
     @FilteringParams([
       'shiftId',
       'roleId',
@@ -86,10 +83,11 @@ export class EmployeeController {
       'person.fullName',
       'person.SSN',
       'person.phone',
-    ]) filters?: Array<Filter>,
+    ])
+    filters?: Array<Filter>,
   ) {
     try {
-      return await this.employeeService.findAll(pagination, sort, filters, customFilters);
+      return await this.employeeService.findAll(pagination, sort, filters);
     } catch (error) {
       throw handleError(error);
     }

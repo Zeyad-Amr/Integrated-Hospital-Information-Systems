@@ -8,7 +8,6 @@ import { Pagination } from 'src/shared/decorators/pagination.decorator';
 import { Sorting } from 'src/shared/decorators/order.decorator';
 import { Filter } from 'src/shared/decorators/filters.decorator';
 import { PaginatedResource } from 'src/shared/types/paginated.resource';
-import { CustomFilters } from './employee.service';
 
 @Injectable()
 export class EmployeeRepo extends PrismaGenericRepo<any> {
@@ -22,14 +21,15 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
   ): Promise<Employee> {
     try {
       const { auth, person, roleId, shiftId, subDepartmentIds } = item;
-      const { verificationMethodId, genderId, governateId, ...personData } = person
+      const { verificationMethodId, genderId, governateId, ...personData } =
+        person;
       const employee = await this.prismaService.employee.create({
         data: {
           role: { connect: { id: roleId } },
           shift: { connect: { id: shiftId } },
           auth: { create: { ...auth } },
           subdepartments: {
-            connect: subDepartmentIds.map((id) => ({ id }))
+            connect: subDepartmentIds.map((id) => ({ id })),
           },
           person: {
             connectOrCreate: {
@@ -37,9 +37,11 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
               create: {
                 ...personData,
                 verificationMethod: { connect: { id: verificationMethodId } },
-                governate: governateId ? { connect: { id: governateId } } : undefined,
+                governate: governateId
+                  ? { connect: { id: governateId } }
+                  : undefined,
                 gender: { connect: { id: genderId } },
-                fullName: `${person.firstName} ${person.secondName} ${person.thirdName} ${person.fourthName}`
+                fullName: `${person.firstName} ${person.secondName} ${person.thirdName} ${person.fourthName}`,
               },
             },
           },
@@ -67,7 +69,7 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
           role: { connect: { id: roleId } },
           shift: { connect: { id: shiftId } },
           subdepartments: {
-            connect: subDepartmentIds.map((id) => ({ id }))
+            connect: subDepartmentIds.map((id) => ({ id })),
           },
           person: {
             update: {
@@ -106,16 +108,13 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
     pagination: Pagination,
     sort: Sorting,
     filters: Array<Filter>,
-    customFilters: CustomFilters,
   ): Promise<PaginatedResource<Employee>> {
     try {
-      let additionalWhereConditions = getCustomFilters(customFilters);
       return this.getAll({
         paginationParams: pagination,
         filters,
         sort,
         include: this.includeObj,
-        additionalWhereConditions: additionalWhereConditions,
       });
     } catch (error) {
       throw error;
@@ -135,53 +134,3 @@ export class EmployeeRepo extends PrismaGenericRepo<any> {
     shift: true,
   };
 }
-
-function getCustomFilters(customFilters: CustomFilters) {
-  let additionalWhereConditions = [];
-  if (!customFilters) {
-    return additionalWhereConditions;
-  }
-
-  if (customFilters?.SSN) {
-    additionalWhereConditions.push({
-      person: {
-        SSN: customFilters.SSN
-      }
-    })
-  }
-
-  if (customFilters?.name) {
-    additionalWhereConditions.push({
-      person: {
-        fullName: { contains: customFilters.name, mode: "insensitive" },
-      }
-    })
-  }
-
-  if (customFilters?.roleId) {
-    additionalWhereConditions.push({
-      role: {
-        id: +customFilters.roleId
-      }
-    })
-  }
-
-  if (customFilters?.email) {
-    additionalWhereConditions.push({
-      auth: {
-        email: customFilters.email
-      }
-    })
-  }
-
-  if (customFilters?.phone) {
-    additionalWhereConditions.push({
-      person: {
-        phone: customFilters.phone
-      }
-    })
-  }
-
-  return additionalWhereConditions;
-}
-

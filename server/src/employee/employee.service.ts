@@ -7,7 +7,6 @@ import { Pagination } from 'src/shared/decorators/pagination.decorator';
 import { Sorting } from 'src/shared/decorators/order.decorator';
 import { Filter } from 'src/shared/decorators/filters.decorator';
 
-
 export interface CustomFilters {
   roleId: number;
 
@@ -24,7 +23,7 @@ export class EmployeeService {
   constructor(
     private employeeRepo: EmployeeRepo,
     private authService: AuthService,
-  ) { }
+  ) {}
   async create(createEmployeeDto: CreateEmployeeDto, creatorId: string) {
     try {
       const auth: { username?: string; password?: string; email?: string } = {};
@@ -49,9 +48,9 @@ export class EmployeeService {
     }
   }
 
-  async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>, customFilters?: CustomFilters) {
+  async findAll(pagination: Pagination, sort: Sorting, filters: Array<Filter>) {
     try {
-      return await this.employeeRepo.findAll(pagination, sort, filters, customFilters);
+      return await this.employeeRepo.findAll(pagination, sort, filters);
     } catch (error) {
       throw error;
     }
@@ -83,5 +82,3 @@ export class EmployeeService {
     }
   }
 }
-
-
