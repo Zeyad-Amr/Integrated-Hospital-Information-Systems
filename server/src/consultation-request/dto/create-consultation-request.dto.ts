@@ -1,10 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsOptional,
-  IsString,
-  IsDateString,
-  IsNotEmpty,
-} from 'class-validator';
+import { IsOptional, IsString, IsNotEmpty, IsNumber } from 'class-validator';
 import { Prisma } from '@prisma/client';
 
 export class CreateConsultationRequestDto
@@ -14,15 +9,6 @@ export class CreateConsultationRequestDto
       'patient' | 'visit' | 'requester' | 'consultant'
     >
 {
-  @ApiProperty({
-    type: String,
-    example: '2024-06-09T12:00:00Z',
-    description: 'Date of the consultation request',
-  })
-  @IsOptional()
-  @IsDateString()
-  requestDate?:  Date;
-
   @ApiProperty({
     type: String,
     example: 'Patient needs further evaluation',
@@ -52,24 +38,6 @@ export class CreateConsultationRequestDto
 
   @ApiProperty({
     type: String,
-    example: 'Consultation report content here (consultant should fill this)',
-    description: 'Report from the consultation',
-  })
-  @IsOptional()
-  @IsString()
-  consultationReport?: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'Recommend MRI and follow-up in 2 weeks (consultant should fill this)',
-    description: 'Recommendations following the consultation',
-  })
-  @IsOptional()
-  @IsString()
-  recommendations?: string;
-
-  @ApiProperty({
-    type: String,
   })
   @IsNotEmpty()
   @IsString()
@@ -83,9 +51,10 @@ export class CreateConsultationRequestDto
   visitCode: string;
 
   @ApiProperty({
-    type: String,
+    type: Number,
+    example: 1,
   })
   @IsNotEmpty()
-  @IsString()
-  consultantId: string;
+  @IsNumber()
+  consultationSubdepartmentId: number;
 }

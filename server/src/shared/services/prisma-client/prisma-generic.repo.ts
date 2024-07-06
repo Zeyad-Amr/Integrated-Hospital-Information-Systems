@@ -29,26 +29,30 @@ export class PrismaGenericRepo<T> {
         args?.additionalWhereConditions,
       );
       const order: any = getOrder(args?.sort);
-      const res = await this.prisma.$transaction(async (tx) => {
-        const count = await tx[this.modelName].count({ where: whereCondition });
-        const data = await tx[this.modelName].findMany({
-          where: whereCondition,
-          orderBy: order,
-          skip: args?.paginationParams?.offset
-            ? args.paginationParams.offset
-            : undefined,
-          take: args?.paginationParams?.limit
-            ? args.paginationParams.limit
-            : undefined,
-          include: args?.include,
-          select: args?.select,
-        });
-        return { count, data };
-      },
+      const res = await this.prisma.$transaction(
+        async (tx) => {
+          const count = await tx[this.modelName].count({
+            where: whereCondition,
+          });
+          const data = await tx[this.modelName].findMany({
+            where: whereCondition,
+            orderBy: order,
+            skip: args?.paginationParams?.offset
+              ? args.paginationParams.offset
+              : undefined,
+            take: args?.paginationParams?.limit
+              ? args.paginationParams.limit
+              : undefined,
+            include: args?.include,
+            select: args?.select,
+          });
+          return { count, data };
+        },
         {
           maxWait: 5000, // 5 seconds max wait to connect to prisma
           timeout: 20000, // 20 seconds
-        });
+        },
+      );
 
       return {
         total: res.count,

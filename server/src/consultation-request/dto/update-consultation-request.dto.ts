@@ -1,4 +1,24 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateConsultationRequestDto } from './create-consultation-request.dto';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateConsultationRequestDto extends PartialType(CreateConsultationRequestDto) {}
+import { IsOptional, IsString } from 'class-validator';
+
+export class UpdateConsultationRequestDto {
+  @ApiProperty({
+    type: String,
+    example: 'Consultation report content here (consultant should fill this)',
+    description: 'Report from the consultation',
+  })
+  @IsOptional()
+  @IsString()
+  consultationReport?: string;
+
+  @ApiProperty({
+    type: String,
+    example:
+      'Recommend MRI and follow-up in 3 weeks (consultant should fill this)',
+    description: 'Recommendations following the consultation',
+  })
+  @IsOptional()
+  @IsString()
+  recommendations?: string;
+}

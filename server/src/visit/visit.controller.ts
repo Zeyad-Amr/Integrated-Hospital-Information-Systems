@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Param, Req, Patch, Query, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Req,
+  Patch,
+  Put,
+} from '@nestjs/common';
 import { VisitService } from './visit.service';
 import { CreateVisitDto } from './dto/create-visit.dto';
 
@@ -31,7 +40,7 @@ import { MainComplaintDto, UpdateVisitStatus } from './dto/update-visit.dto';
 @ApiTags('visit')
 @Controller('visit')
 export class VisitController {
-  constructor(private readonly visitService: VisitService) { }
+  constructor(private readonly visitService: VisitService) {}
 
   @ApiOperation({
     description: 'This to add normal visit for know patient data',
@@ -50,13 +59,17 @@ export class VisitController {
   @ApiOperation({
     description: 'This to add triage assessment to the visit with given code',
   })
-  @ApiCreatedResponse({ description: 'triage assessment has been created successfully' })
-  @ApiOkResponse({ description: 'triage assessment has been updated successfully' })
+  @ApiCreatedResponse({
+    description: 'triage assessment has been created successfully',
+  })
+  @ApiOkResponse({
+    description: 'triage assessment has been updated successfully',
+  })
   @ApiBadRequestResponse({ description: 'body has missed some data' })
   @Patch('triageAx')
-  async addTriageAX(@Body() triageAxDto: TriageAXDto,@Req() req) {
+  async addTriageAX(@Body() triageAxDto: TriageAXDto, @Req() req) {
     try {
-      return await this.visitService.addTriageAx(triageAxDto,req.user.sub);
+      return await this.visitService.addTriageAx(triageAxDto, req.user.sub);
     } catch (error) {
       throw handleError(error);
     }
@@ -65,11 +78,16 @@ export class VisitController {
   @ApiOperation({
     description: 'This to add complaint to the visit with given code',
   })
-  @ApiCreatedResponse({ description: 'complaint has been created successfully' })
+  @ApiCreatedResponse({
+    description: 'complaint has been created successfully',
+  })
   @ApiOkResponse({ description: 'complaint has been updated successfully' })
   @ApiBadRequestResponse({ description: 'body has missed some data' })
   @Patch('complaint/:visitCode')
-  async addComplaint(@Body() mainComplaintDto: MainComplaintDto, @Param('visitCode') visitCode: string,@Req() req) {
+  async addComplaint(
+    @Body() mainComplaintDto: MainComplaintDto,
+    @Param('visitCode') visitCode: string,
+  ) {
     try {
       return await this.visitService.addComplaint(visitCode, mainComplaintDto);
     } catch (error) {
@@ -88,34 +106,34 @@ export class VisitController {
       'code',
       'createdAt',
       'creatorId',
-      "sequenceNumber",
+      'sequenceNumber',
       'companionId',
       'patientId',
       'incidentId',
       'patient.person.SSN',
       'companion.person.SSN',
       'companion.person.fullName',
-      'status'
-
-    ]) filters?: Array<Filter>,
+      'status',
+      'consultationRequest.consultationSubdepartmentId',
+    ])
+    filters?: Array<Filter>,
     @SortingParams([
       'code',
       'createdAt',
       'creatorId',
-      "sequenceNumber",
+      'sequenceNumber',
       'companionId',
       'patientId',
       'incidentId',
       'patient.person.SSN',
       'companion.person.SSN',
       'companion.person.fullName',
-      'status'
-    ]) sort?: Sorting,
-    @Query() customFilters?: { companionName: string, companionSSN: string },
-
+      'status',
+    ])
+    sort?: Sorting,
   ): Promise<PaginatedResource<Visit>> {
     try {
-      return await this.visitService.findAll(paginationParams, filters, sort, customFilters);
+      return await this.visitService.findAll(paginationParams, filters, sort);
     } catch (error) {
       throw handleError(error);
     }
@@ -139,7 +157,7 @@ export class VisitController {
   @ApiNotFoundResponse()
   @ApiCreatedResponse()
   @Get('all/er-area')
-  async findERAreaVisits(@Query('subdepartmentID') subdepartmentID: number) {
+  async findERAreaVisits() {
     try {
       return await this.visitService.findERAreaVisits();
     } catch (error) {
@@ -152,12 +170,14 @@ export class VisitController {
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
   @Put(':visitCode/status')
-  async updateStatus(@Param('visitCode') visitCode: string, @Body() updateVisitDto: UpdateVisitStatus) {
+  async updateStatus(
+    @Param('visitCode') visitCode: string,
+    @Body() updateVisitDto: UpdateVisitStatus,
+  ) {
     try {
       return await this.visitService.updateStatus(visitCode, updateVisitDto);
     } catch (error) {
       throw handleError(error);
     }
   }
-
 }

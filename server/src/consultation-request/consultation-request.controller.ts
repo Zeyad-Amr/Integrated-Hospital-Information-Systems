@@ -24,7 +24,6 @@ import { Sorting, SortingParams } from 'src/shared/decorators/order.decorator';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiConflictResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -39,24 +38,32 @@ import { CustomGetAllParamDecorator } from 'src/shared/decorators/custom.query.d
 @ApiBearerAuth()
 @Controller('consultationRequest')
 export class ConsultationRequestController {
-  constructor(private readonly vitalsService: ConsultationRequestService) {}
+  constructor(
+    private readonly consultationRequestService: ConsultationRequestService,
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Create consultationRequest' })
   @ApiCreatedResponse({ description: 'created successfully' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
-  async create(@Body() createConsultationRequestDto: CreateConsultationRequestDto, @Req() req) {
+  async create(
+    @Body() createConsultationRequestDto: CreateConsultationRequestDto,
+    @Req() req,
+  ) {
     try {
       const creatorId = req.user.sub;
-      return await this.vitalsService.create(createConsultationRequestDto, creatorId);
+      return await this.consultationRequestService.create(
+        createConsultationRequestDto,
+        creatorId,
+      );
     } catch (error) {
       throw handleError(error);
     }
   }
 
   @Get()
-  @ApiOperation({ summary: 'get all surgeries' })
-  @ApiOkResponse({ description: 'get all surgeries' })
+  @ApiOperation({ summary: 'get all consultationRequest' })
+  @ApiOkResponse({ description: 'get all consultationRequest' })
   @CustomGetAllParamDecorator()
   async findAll(
     @PaginationParams() paginationParams: Pagination,
@@ -64,7 +71,11 @@ export class ConsultationRequestController {
     @SortingParams([]) sort?: Sorting,
   ) {
     try {
-      return await this.vitalsService.findAll(paginationParams, filters, sort);
+      return await this.consultationRequestService.findAll(
+        paginationParams,
+        filters,
+        sort,
+      );
     } catch (error) {
       throw handleError(error);
     }
@@ -76,7 +87,7 @@ export class ConsultationRequestController {
   @ApiNotFoundResponse({ description: 'consultationRequest not found' })
   async findOne(@Param('id') id: string) {
     try {
-      return await this.vitalsService.findOne(id);
+      return await this.consultationRequestService.findOne(id);
     } catch (error) {
       throw handleError(error);
     }
@@ -89,9 +100,15 @@ export class ConsultationRequestController {
   async update(
     @Param('id') id: string,
     @Body() updateConsultationRequestDto: UpdateConsultationRequestDto,
+    @Req() req,
   ) {
     try {
-      return await this.vitalsService.update(id, updateConsultationRequestDto);
+      const consultantId = req.user.sub;
+      return await this.consultationRequestService.update(
+        id,
+        updateConsultationRequestDto,
+        consultantId,
+      );
     } catch (error) {
       throw handleError(error);
     }
@@ -103,7 +120,7 @@ export class ConsultationRequestController {
   @ApiNotFoundResponse({ description: 'consultationRequest not found' })
   async remove(@Param('id') id: string) {
     try {
-      return await this.vitalsService.remove(id);
+      return await this.consultationRequestService.remove(id);
     } catch (error) {
       throw handleError(error);
     }

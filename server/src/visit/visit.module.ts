@@ -11,4 +11,4 @@ import { PatientRepo } from 'src/patient/patient.repo';
   providers: [VisitRepo, VisitService, PrismaService, PersonRepo, PatientRepo],
   exports: [VisitService],
 })
-export class VisitModule { }
+export class VisitModule {}

@@ -7,10 +7,7 @@ import { PaginatedResource } from 'src/shared/types/paginated.resource';
 import { Filter } from 'src/shared/decorators/filters.decorator';
 import { Sorting } from 'src/shared/decorators/order.decorator';
 import { TriageAXDto } from './dto/triage-assessment.dto';
-import { PrismaService } from 'src/shared/services/prisma-client/prisma.service';
-import { MainComplaintDto,  UpdateVisitStatus } from './dto/update-visit.dto';
-
-
+import { MainComplaintDto, UpdateVisitStatus } from './dto/update-visit.dto';
 
 export interface VisitCustomFilters {
   companionName: string;
@@ -20,7 +17,7 @@ export interface VisitCustomFilters {
 
 @Injectable()
 export class VisitService {
-  constructor(private readonly visitRepo: VisitRepo) { }
+  constructor(private readonly visitRepo: VisitRepo) {}
   async create(createVisitDto: CreateVisitDto, creatorId: string) {
     try {
       if (
@@ -48,16 +45,13 @@ export class VisitService {
     paginationParams: Pagination,
     filters?: Array<Filter>,
     sort?: Sorting,
-    customFilters?: VisitCustomFilters
   ): Promise<PaginatedResource<Visit>> {
     try {
-      let additionalWhereConditions = getCustomFilters(customFilters);
       return await this.visitRepo.getAll({
         paginationParams,
         filters,
         sort,
         include: this.visitRepo.visitIncludes,
-        additionalWhereConditions: additionalWhereConditions
       });
     } catch (error) {
       throw error;
@@ -68,49 +62,49 @@ export class VisitService {
     try {
       return await this.visitRepo.findByVisitCode(visitCode);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-  async addComplaint(visitCode: string,mainComplaintDto:MainComplaintDto) {
+  async addComplaint(visitCode: string, mainComplaintDto: MainComplaintDto) {
     try {
-      return await this.visitRepo.updateVisit(visitCode,{
-        mainComplaint: mainComplaintDto.mainComplaint
+      return await this.visitRepo.updateVisit(visitCode, {
+        mainComplaint: mainComplaintDto.mainComplaint,
       });
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-  async addTriageAx(triageAxDto:TriageAXDto,creatorId:string) {
+  async addTriageAx(triageAxDto: TriageAXDto, creatorId: string) {
     try {
-      return await this.visitRepo.updateVisit(triageAxDto.visitCode,{
+      return await this.visitRepo.updateVisit(triageAxDto.visitCode, {
         status: VisitStatus.TRANSFERED,
         mainComplaint: triageAxDto.mainComplaint,
-          transfers:{
-            create:{
-              toSubDepId:triageAxDto.toSubDepId,
-              transferDate:new Date(),
-              createdById:creatorId
-            }
+        transfers: {
+          create: {
+            toSubDepId: triageAxDto.toSubDepId,
+            transferDate: new Date(),
+            createdById: creatorId,
           },
-          vitals:{
-            create:{
-              ...triageAxDto.vitals,
-              authorId:creatorId,
-              patientId:triageAxDto.patientId
-            }
+        },
+        vitals: {
+          create: {
+            ...triageAxDto.vitals,
+            authorId: creatorId,
+            patientId: triageAxDto.patientId,
           },
-          triageAx:{
-            create:{
-              triageId:triageAxDto?.triage?.triageTypeId,
-              painScore:triageAxDto?.triage?.painScore,
-              consciousnessLevelId:triageAxDto?.triage?.LOCId
-            }
-          }
+        },
+        triageAx: {
+          create: {
+            triageId: triageAxDto?.triage?.triageTypeId,
+            painScore: triageAxDto?.triage?.painScore,
+            consciousnessLevelId: triageAxDto?.triage?.LOCId,
+          },
+        },
       });
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -125,56 +119,39 @@ export class VisitService {
         additionalWhereConditions: [
           {
             transfers: {
-              none: {}
+              none: {},
             },
           },
           {
             createdAt: {
               gte: yesterday,
-              lte: now
-            }
-          }
+              lte: now,
+            },
+          },
         ],
-        include: { patient: { include: { person: { include: { verificationMethod: true, gender: true } } } }, transfers: true },
-        sort: { direction: 'desc', property: 'createdAt' }
-
+        include: {
+          patient: {
+            include: {
+              person: { include: { verificationMethod: true, gender: true } },
+            },
+          },
+          transfers: true,
+        },
+        sort: { direction: 'desc', property: 'createdAt' },
       });
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   async updateStatus(visitCode: string, updateVisitDto: UpdateVisitStatus) {
     try {
-      return await this.visitRepo.updateStatus(visitCode, updateVisitDto.status);
+      return await this.visitRepo.updateStatus(
+        visitCode,
+        updateVisitDto.status,
+      );
     } catch (error) {
       throw error;
     }
   }
 }
-
-function getCustomFilters(customFilters: VisitCustomFilters) {
-  if (!customFilters) return [];
-  let whereConditions = [];
-  if (customFilters?.companionName) {
-    whereConditions.push({
-      companion: {
-        person: {
-          fullName: { contains: customFilters.companionName, mode: 'insensitive' }
-        }
-      }
-    })
-  }
-  if (customFilters?.companionSSN) {
-    whereConditions.push({
-      companion: {
-        person: {
-          SSN: { contains: customFilters.companionSSN }
-        }
-      }
-    })
-  }
-  return whereConditions;
-}
-
-

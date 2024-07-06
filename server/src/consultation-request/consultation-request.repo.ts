@@ -1,7 +1,11 @@
 import { PrismaGenericRepo } from '../shared/services/prisma-client/prisma-generic.repo';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../shared/services/prisma-client/prisma.service';
-import { Prisma, ConsultationRequest } from '@prisma/client';
+import {
+  Prisma,
+  ConsultationRequest,
+  ConsultationStatus,
+} from '@prisma/client';
 import { CreateConsultationRequestDto } from './dto/create-consultation-request.dto';
 
 @Injectable()
@@ -10,37 +14,74 @@ export class ConsultationRequestRepo extends PrismaGenericRepo<ConsultationReque
     super('consultationRequest', prismaService);
   }
 
-  async addConsultationRequest(data: CreateConsultationRequestDto, creatorId: string) {
+  async addConsultationRequest(
+    data: CreateConsultationRequestDto,
+    creatorId: string,
+  ) {
     try {
-        const { patientId, visitCode, consultantId, ...consultationRequestData } = data;
-        const consultationRequest = await this.prismaService.consultationRequest.create({
-            data: {
-                patient: {
-                    connect: {
-                        id: patientId
-                    }
-                },
-                visit: {
-                    connect: {
-                        code: visitCode
-                    }
-                },
-                requester: {
-                    connect: {
-                        id: creatorId
-                    }
-                },
-                consultant:{
-                  connect:{
-                    id: consultantId
-                  }
-                },
-                ...consultationRequestData
-            }
+      const {
+        patientId,
+        visitCode,
+        consultationSubdepartmentId,
+        ...consultationRequestData
+      } = data;
+      const consultationRequest =
+        await this.prismaService.consultationRequest.create({
+          data: {
+            patient: {
+              connect: {
+                id: patientId,
+              },
+            },
+            visit: {
+              connect: {
+                code: visitCode,
+              },
+            },
+            requester: {
+              connect: {
+                id: creatorId,
+              },
+            },
+            consultationSubdepartment: {
+              connect: {
+                id: consultationSubdepartmentId,
+              },
+            },
+            ...consultationRequestData,
+          },
         });
-        return consultationRequest;
+      return consultationRequest;
     } catch (error) {
-        throw error;
+      throw error;
+    }
+  }
+
+  async updateConsultationRequest(
+    id: string,
+    data: Prisma.ConsultationRequestUpdateInput,
+    consultantId: string,
+  ) {
+    try {
+      const consultationRequest =
+        await this.prismaService.consultationRequest.update({
+          where: {
+            id,
+          },
+          data: {
+            ...data,
+            status: ConsultationStatus.COMPLETED,
+            consultant: {
+              connect: {
+                id: consultantId,
+              },
+            },
+          },
+          include: this.includeObj,
+        });
+      return consultationRequest;
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -51,10 +92,10 @@ export class ConsultationRequestRepo extends PrismaGenericRepo<ConsultationReque
           include: {
             verificationMethod: true,
             gender: true,
-            governate:true
-          }
-        }
-      }
+            governate: true,
+          },
+        },
+      },
     },
     requester: {
       include: {
@@ -65,12 +106,12 @@ export class ConsultationRequestRepo extends PrismaGenericRepo<ConsultationReque
           include: {
             verificationMethod: true,
             gender: true,
-            governate:true
-          }
-        }
-      }
+            governate: true,
+          },
+        },
+      },
     },
-    consultant:{
+    consultant: {
       include: {
         subdepartments: true,
         role: true,
@@ -79,10 +120,10 @@ export class ConsultationRequestRepo extends PrismaGenericRepo<ConsultationReque
           include: {
             verificationMethod: true,
             gender: true,
-            governate:true
-          }
-        }
-      }
-    }
+            governate: true,
+          },
+        },
+      },
+    },
   };
 }

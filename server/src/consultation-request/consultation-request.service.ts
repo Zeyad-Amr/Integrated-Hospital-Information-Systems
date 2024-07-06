@@ -10,9 +10,16 @@ import { Sorting } from 'src/shared/decorators/order.decorator';
 export class ConsultationRequestService {
   constructor(private consultationRequestRepo: ConsultationRequestRepo) {}
 
-  async create(createConsultationRequestDto: CreateConsultationRequestDto, creatorId: string) {
+  async create(
+    createConsultationRequestDto: CreateConsultationRequestDto,
+    creatorId: string,
+  ) {
     try {
-      const consultationRequest = await this.consultationRequestRepo.addConsultationRequest(createConsultationRequestDto, creatorId);
+      const consultationRequest =
+        await this.consultationRequestRepo.addConsultationRequest(
+          createConsultationRequestDto,
+          creatorId,
+        );
       return consultationRequest;
     } catch (error) {
       throw error;
@@ -22,30 +29,43 @@ export class ConsultationRequestService {
   async findAll(
     paginationParams: Pagination,
     filters?: Array<Filter>,
-    sort?: Sorting,) {
+    sort?: Sorting,
+  ) {
     try {
-      const consultationRequest = await this.consultationRequestRepo.getAll({paginationParams,
+      const consultationRequest = await this.consultationRequestRepo.getAll({
+        paginationParams,
         filters,
         sort,
-        include: this.consultationRequestRepo.includeObj});
+        include: this.consultationRequestRepo.includeObj,
+      });
       return consultationRequest;
     } catch (error) {
       throw error;
     }
   }
 
- async findOne(id: string) {
+  async findOne(id: string) {
     try {
-      const consultationRequest = await this.consultationRequestRepo.getByID(id);
+      const consultationRequest =
+        await this.consultationRequestRepo.getByID(id);
       return consultationRequest;
     } catch (error) {
       throw error;
     }
   }
 
-  async update(id: string, updateConsultationRequestDto: UpdateConsultationRequestDto) {
+  async update(
+    id: string,
+    updateConsultationRequestDto: UpdateConsultationRequestDto,
+    consultantId: string,
+  ) {
     try {
-      const consultationRequest = await this.consultationRequestRepo.update(id,updateConsultationRequestDto);
+      const consultationRequest =
+        await this.consultationRequestRepo.updateConsultationRequest(
+          id,
+          updateConsultationRequestDto,
+          consultantId,
+        );
       return consultationRequest;
     } catch (error) {
       throw error;

@@ -6,6 +6,10 @@ import { PrismaService } from 'src/shared/services/prisma-client/prisma.service'
 
 @Module({
   controllers: [ConsultationRequestController],
-  providers: [ConsultationRequestService,ConsultationRequestRepo,PrismaService],
+  providers: [
+    ConsultationRequestService,
+    ConsultationRequestRepo,
+    PrismaService,
+  ],
 })
 export class ConsultationRequestModule {}

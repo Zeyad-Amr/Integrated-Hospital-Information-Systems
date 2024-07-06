@@ -76,8 +76,6 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
       // ======================================== Start of transaction =========================================================
       const visit = await this.prismaService.$transaction(async (tx) => {
         try {
-
-
           let additionalInfo: VisitAdditionalInformation;
           let connectAdditionalInfo;
           if (
@@ -117,8 +115,8 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
                 Car: car,
                 cameFrom: createVisitDto.additionalInfo.cameFromId
                   ? {
-                    connect: { id: createVisitDto.additionalInfo.cameFromId },
-                  }
+                      connect: { id: createVisitDto.additionalInfo.cameFromId },
+                    }
                   : undefined,
                 notes: createVisitDto.additionalInfo.notes,
                 injuryCause: createVisitDto.additionalInfo.injuryCause,
@@ -153,7 +151,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
                 person: {
                   connectOrCreate: {
                     where: {
-                      id: createVisitDto.patient.SSN ? undefined : "",
+                      id: createVisitDto.patient.SSN ? undefined : '',
                       SSN: createVisitDto.patient.SSN
                         ? createVisitDto.patient.SSN
                         : undefined,
@@ -173,7 +171,6 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
                 },
               },
             });
-
 
             patientConnect = {
               id: patient.id,
@@ -262,7 +259,9 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
                 toSubDepId: createVisitDto.transfer.toSubDepId,
                 visitCode: visitCode,
                 createdById: creatorId,
-                transferDate: createVisitDto.transfer.transferDate ? new Date(createVisitDto.transfer.transferDate) : new Date(),
+                transferDate: createVisitDto.transfer.transferDate
+                  ? new Date(createVisitDto.transfer.transferDate)
+                  : new Date(),
               },
             });
           }
@@ -295,7 +294,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
     try {
       await this.prismaService.visit.update({
         where: { code },
-        data
+        data,
       });
 
       return { message: 'Visit updated successfully' };
@@ -303,19 +302,6 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
       throw error;
     }
   }
-
-  connectIdsArr = (ids: number[] | undefined) => {
-    if (!ids) {
-      return [];
-    }
-    let arr: { id: number }[] = [];
-    ids.map((id) => {
-      arr.push({
-        id: id,
-      });
-    });
-    return arr;
-  };
 
   async updateStatus(visitCode: string, status: VisitStatus) {
     try {
@@ -325,7 +311,6 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
           status: status,
         },
       });
-
     } catch (error) {
       throw error;
     }
@@ -357,6 +342,7 @@ export class VisitRepo extends PrismaGenericRepo<Visit> {
       },
     },
     transfers: true,
+    consultationRequest: true,
     creator: {
       include: {
         person: {

@@ -355,7 +355,6 @@ model LabTest {
 
 model ConsultationRequest {
   id                 String             @id @default(uuid())
-  requestDate        DateTime           @default(now())
   status             ConsultationStatus @default(PENDING)
   notes              String?
   reason             String?
@@ -366,14 +365,17 @@ model ConsultationRequest {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  patient      Patient  @relation(fields: [patientId], references: [id])
+  patient      Patient   @relation(fields: [patientId], references: [id])
   patientId    String
-  requester    Employee @relation("requester", fields: [requesterId], references: [id])
+  requester    Employee  @relation("requester", fields: [requesterId], references: [id])
   requesterId  String
-  consultant   Employee @relation("consultant", fields: [consultantId], references: [id])
-  consultantId String
-  visit        Visit?   @relation(fields: [visitId], references: [code])
-  visitId      String?
+  consultant   Employee? @relation("consultant", fields: [consultantId], references: [id])
+  consultantId String?
+  visit        Visit     @relation(fields: [visitId], references: [code])
+  visitId      String
+
+  consultationSubdepartment   SubDepartment? @relation(fields: [consultationSubdepartmentId], references: [id])
+  consultationSubdepartmentId Int?
 }
 
 model KinshipType {
@@ -433,6 +435,9 @@ model Visit {
   incidentId String?
 
   status VisitStatus @default(CREATED)
+
+  dischargeDate   DateTime? @db.Timestamptz(3)
+  dischargeReason String?
 
   transfers           Transfer[]
   triageAx            TriageAx?
@@ -556,12 +561,13 @@ model SubDepartment {
   specializationId Int
   specialization   Specialization @relation(fields: [specializationId], references: [id])
 
-  transferFrom Transfer[]    @relation("fromSubDepartment")
-  transferTo   Transfer[]    @relation("toSubDepartment")
-  Department   Department?   @relation(fields: [departmentId], references: [id])
-  departmentId Int?
-  employees    Employee[] // Removed references argument
-  Permissions  Permissions[]
+  transferFrom        Transfer[]            @relation("fromSubDepartment")
+  transferTo          Transfer[]            @relation("toSubDepartment")
+  Department          Department?           @relation(fields: [departmentId], references: [id])
+  departmentId        Int?
+  employees           Employee[] // Removed references argument
+  Permissions         Permissions[]
+  ConsultationRequest ConsultationRequest[]
 }
 
 model Specialization {
