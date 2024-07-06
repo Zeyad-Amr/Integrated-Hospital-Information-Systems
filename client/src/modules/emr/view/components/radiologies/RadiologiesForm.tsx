@@ -12,6 +12,8 @@ import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik } from "formik";
 import React from "react";
+import SearchableSelectFieldComponent from "@/core/shared/components/SearchableSelectFieldComponent";
+import { radiologyLookup } from "@/core/shared/modules/lookups/data/emr-lookups";
 
 const RadiologiesForm = ({
   patientId,
@@ -61,20 +63,15 @@ const RadiologiesForm = ({
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container spacing={1}>
             <Grid item lg={6} md={6} sm={12} xs={12}>
-              <CustomTextField
-                isRequired
+              <SearchableSelectFieldComponent
                 name="name"
-                label="الاسم"
                 value={values.name}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 error={errors.name}
                 touched={touched.name}
-                width="100%"
-                props={{
-                  type: "text",
-                  disabled: isViewMode,
-                }}
+                disabled={isViewMode}
+                label="الاسم"
+                options={radiologyLookup}
               />
             </Grid>
             <Grid item lg={6} md={6} sm={12} xs={12}>

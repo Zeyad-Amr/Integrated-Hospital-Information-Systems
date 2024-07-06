@@ -1,6 +1,8 @@
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import { ExaminationFormComponentPropsInterface } from "@/core/shared/components/ExaminationAccordion";
+import SearchableSelectFieldComponent from "@/core/shared/components/SearchableSelectFieldComponent";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
+import { surgerysPositionsLookup } from "@/core/shared/modules/lookups/data/emr-lookups";
 import { useAppDispatch } from "@/core/state/store";
 import {
   createSurgery,
@@ -58,20 +60,15 @@ const SurgeriesForm = ({
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container spacing={1}>
             <Grid item lg={12} md={12} sm={12} xs={12}>
-              <CustomTextField
-                isRequired
+              <SearchableSelectFieldComponent
                 name="name"
-                label="الاسم"
                 value={values.name}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 error={errors.name}
                 touched={touched.name}
-                width="100%"
-                props={{
-                  type: "text",
-                  disabled: isViewMode,
-                }}
+                disabled={isViewMode}
+                label="الاسم"
+                options={surgerysPositionsLookup}
               />
             </Grid>
           </Grid>
