@@ -13,6 +13,7 @@ import { ServiceKeys, sl } from "@/core/service-locator";
 import { allValuesUndefined } from "../utils/object-operations";
 import { GetPersonUseCase } from "../modules/person/domain/usecases";
 import OCR from "./ocr/OCR";
+import { GovernateInterface } from "../modules/lookups/domain/interfaces/lookups-interface";
 interface PersonalDataProps {
   searchSSN?: boolean;
 }
@@ -54,7 +55,7 @@ const PersonalData = ({ searchSSN = true }: PersonalDataProps) => {
 
   const timer = React.useRef<number>();
 
-  
+
   React.useEffect(() => {
     return () => {
       clearTimeout(timer.current);
@@ -65,9 +66,9 @@ const PersonalData = ({ searchSSN = true }: PersonalDataProps) => {
     setShawDialog(true);
   };
   const [showDialog, setShawDialog] = useState<boolean>(false);
- 
 
-  
+
+
   const {
     values,
     touched,
@@ -118,6 +119,11 @@ const PersonalData = ({ searchSSN = true }: PersonalDataProps) => {
       );
     }
   }, [values.SSN, searchSSN]);
+  
+  function sortGovernatessByValue(regionsArray: GovernateInterface[]) {
+    const regionsCopy = [...regionsArray];
+    return regionsCopy.sort((a, b) => a.value.localeCompare(b.value));
+  }
 
   return (
     <>
@@ -171,7 +177,6 @@ const PersonalData = ({ searchSSN = true }: PersonalDataProps) => {
                     borderBottomRightRadius: "10px",
                     borderTopRightRadius: "10px",
                     padding: "0.6rem 0.7rem 0.6rem 1rem",
-
                     cursor: "pointer",
                   }}
                   onClick={selectFile}
@@ -207,7 +212,7 @@ const PersonalData = ({ searchSSN = true }: PersonalDataProps) => {
               error={errors.governate}
               touched={touched.governate}
               width="100%"
-              options={lookupsState.lookups.governates}
+              options={sortGovernatessByValue(lookupsState.lookups.governates)}
             />
           </Grid>
         </Grid>
