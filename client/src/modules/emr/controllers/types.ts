@@ -36,6 +36,7 @@ export interface MedicalProblemsState {
 }
 export interface MedicationsState {
   medications: PaginatedList<MedicationsInterface>;
+  fdaMedications: any[];
   currentMedication: MedicationsInterface;
   isFetched: boolean;
   loading: boolean;

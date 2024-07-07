@@ -7,6 +7,7 @@ import { MedicationsInterface } from "../../interfaces/medications-interface";
 import {
   createMedication,
   deleteMedication,
+  getFdaMedicationList,
   getMedicationDetails,
   getMedicationsList,
   updateMedication,
@@ -16,6 +17,7 @@ import {
 const initialState: MedicationsState = {
   medications: PaginatedListModel.default(),
   currentMedication: MedicationsModel.defaultValues(),
+  fdaMedications : [],
   isFetched: false,
   loading: false,
   error: "",
@@ -63,6 +65,24 @@ const medicationsSlice = createSlice({
       console.log("getMedicationsList", action.payload);
     });
     builder.addCase(getMedicationsList?.rejected, (state, action) => {
+      state.loading = false;
+      state.error = (action.payload as ErrorResponse).message;
+      AlertService.showAlert(`${state.error}`, "error");
+      state.medications = initialState.medications;
+    });
+
+    //* get all FDA Medications from api
+    builder.addCase(getFdaMedicationList?.pending, (state, _action) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(getFdaMedicationList?.fulfilled, (state, action) => {
+      state.loading = false;
+      state.fdaMedications = action.payload;
+      state.error = "";
+      console.log("getFdaMedicationList", action.payload);
+    });
+    builder.addCase(getFdaMedicationList?.rejected, (state, action) => {
       state.loading = false;
       state.error = (action.payload as ErrorResponse).message;
       AlertService.showAlert(`${state.error}`, "error");
