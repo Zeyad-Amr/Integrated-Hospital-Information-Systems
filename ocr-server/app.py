@@ -223,18 +223,11 @@ class NationalID:
         # Invert the binary image (optional, depending on text color)
         binary_inverse = cv2.bitwise_not(binary_otsu)
 
-        # Apply morphological operations to enhance text regions
-        kernel = np.ones((3, 3), np.uint8)
-        binary_morph = cv2.morphologyEx(binary_inverse, cv2.MORPH_CLOSE, kernel)
+    
 
-        # Define structuring elements for dilation and erosion
-        line_dilation = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 5))
-        binary_dilated = cv2.dilate(binary_morph, line_dilation, iterations=1)
 
-        line_erosion = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 5))
-        binary_eroded = cv2.erode(binary_dilated, line_erosion, iterations=1)
 
-        return binary_eroded
+        return binary_inverse
 
     def detectID(self, img):
         contours, _ = cv2.findContours(
