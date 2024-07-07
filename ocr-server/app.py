@@ -1,4 +1,3 @@
-import PIL
 from flask import Flask, request, make_response, jsonify
 from werkzeug.utils import secure_filename
 from keras.models import load_model
@@ -6,8 +5,9 @@ from keras.preprocessing import image
 import numpy as np
 import cv2
 import os
-from PIL import Image
-from io import BytesIO
+import difflib
+
+import re
 
 from pytesseract import image_to_string
 
@@ -15,6 +15,33 @@ app = Flask(__name__)
 
 UPLOAD_FOLDER = 'IDs'
 
+governates = [
+    {"id": 1, "value": "الإسكندرية"},
+    {"id": 2, "value": "أسوان"},
+    {"id": 3, "value": "أسيوط"},
+    {"id": 4, "value": "الأقصر"},
+    {"id": 5, "value": "البحر الأحمر"},
+    {"id": 6, "value": "البحيرة"},
+    {"id": 7, "value": "بني سويف"},
+    {"id": 8, "value": "بورسعيد"},
+    {"id": 9, "value": "جنوب سيناء"},
+    {"id": 10, "value": "الجيزة"},
+    {"id": 11, "value": "الدقهلية"},
+    {"id": 12, "value": "دمياط"},
+    {"id": 13, "value": "سوهاج"},
+    {"id": 14, "value": "السويس"},
+    {"id": 15, "value": "الشرقية"},
+    {"id": 16, "value": "شمال سيناء"},
+    {"id": 17, "value": "الغربية"},
+    {"id": 18, "value": "الفيوم"},
+    {"id": 19, "value": "القاهرة"},
+    {"id": 20, "value": "القليوبية"},
+    {"id": 21, "value": "قنا"},
+    {"id": 22, "value": "كفر الشيخ"},
+    {"id": 23, "value": "مطروح"},
+    {"id": 24, "value": "المنوفية"},
+    {"id": 25, "value": "المنيا"},
+]
 
 @app.route('/extractdata', methods=['POST'])
 def extract_id():
@@ -42,19 +69,17 @@ def extract_id():
             frontImg = cv2.imread(front_path)
             backImg = cv2.imread(back_path)
 
+            fName, lName, address = nationalIdObj.extract_name_and_address(frontImg)
+            # trim leading and trailing whitespace from extracted text
+            fName = fName.strip()
+            lName = lName.strip()
+            address = address.strip()
+
+            governate = nationalIdObj.find_matching_governate(address, governates)
             # resize images
             frontImg = cv2.resize(frontImg, (654, 430))
             backImg = cv2.resize(backImg, (654, 430))
 
-
-
-            cv2.imwrite("./IDs/frontttttttttt.jpeg", frontImg)
-            firstName, lastName, error = nationalIdObj.extract_name(frontImg)
-            nameObj = {"firstName": firstName,
-                       "lastName": lastName, "error": error}
-
-            if error != "":
-                statusCode = 420
 
             nationalId, error = nationalIdObj.extract_id(frontImg, backImg)
 
@@ -64,7 +89,8 @@ def extract_id():
                 statusCode = 422
 
             idObj = {"nationalId": nationalId, "error": error}
-            return make_response(jsonify({"name": nameObj, "nationalId": idObj}), statusCode)
+            return make_response(jsonify({"f_name":fName, "l_name":lName, "national_id": idObj,
+                                          "governate":governate, "address":address}), statusCode)
 
         return make_response(jsonify({"message": "Invalid file format"}), 400)
 
@@ -83,65 +109,81 @@ class NationalID:
         self.model = load_model('model.h5')
         os.environ['TESSDATA_PREFIX'] = '.'
 
-    def align_images(self, input_image, template_image):
+    def extract_name_and_address(self, raw_image):
 
-    # Convert the input image to grayscale
-        gray_input_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2GRAY)
+        name_x, name_y, name_w, name_h = 340, 100, 500, 52  # Adjust these values as needed
+        l_name_x, l_name_y, l_name_w, l_name_h = 280, 145, 550, 55  # Adjust these values as needed
+        address_x, address_y, address_w, address_h = 250, 200, 480, 100  # Adjust these values as needed
 
-        # Detect ORB keypoints and descriptors in both images
-        orb = cv2.ORB_create()
-        keypoints1, descriptors1 = orb.detectAndCompute(template_image, None)
-        keypoints2, descriptors2 = orb.detectAndCompute(gray_input_image, None)
+        cv2.imwrite("./IDs/name_x.jpeg", raw_image[name_y:name_y+name_h, name_x:name_x+name_w])
 
-        # Match the descriptors using the Brute Force matcher
-        bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-        matches = bf.match(descriptors1, descriptors2)
-        matches = sorted(matches, key=lambda x: x.distance)
+        # Crop the images
+        name_image = raw_image[name_y:name_y+name_h, name_x:name_x+name_w]
+        l_name_image = raw_image[l_name_y:l_name_y+l_name_h, l_name_x:l_name_x+l_name_w]
+        address_image = raw_image[address_y:address_y+address_h, address_x:address_x+address_w]
 
-        # Extract the matched keypoints
-        points1 = np.zeros((len(matches), 2), dtype=np.float32)
-        points2 = np.zeros((len(matches), 2), dtype=np.float32)
+        cv2.imwrite("./IDs/name_image.jpeg", name_image)
 
-        for i, match in enumerate(matches):
-            points1[i, :] = keypoints1[match.queryIdx].pt
-            points2[i, :] = keypoints2[match.trainIdx].pt
+        # Preprocess the images
+        name_gray = cv2.cvtColor(name_image, cv2.COLOR_BGR2GRAY)
+        l_name_gray = cv2.cvtColor(l_name_image, cv2.COLOR_BGR2GRAY)
+        address_gray = cv2.cvtColor(address_image, cv2.COLOR_BGR2GRAY)
 
-        # Compute the homography matrix
-        h, mask = cv2.findHomography(points2, points1, cv2.RANSAC)
+        cv2.imwrite("./IDs/name_gray.jpeg", name_gray)
 
-        # Warp the image using the homography matrix
-        height, width = template_image.shape
-        aligned_image = cv2.warpPerspective(gray_input_image, h, (width, height))
-        aligned_image = cv2.cvtColor(aligned_image, cv2.COLOR_GRAY2BGR)
-        return aligned_image
+        name_blurred = cv2.GaussianBlur(name_gray, (3, 3), 0)
+        l_name_blurred = cv2.GaussianBlur(l_name_gray, (3, 3), 0)
+        address_blurred = cv2.GaussianBlur(address_gray, (3, 3), 0)
 
-    def extract_name(self, front):
-        try:
-            firstName = ""
-            lastName = ""
-            nameImg = front[100:200, 250:630]
+        cv2.imwrite("./IDs/name_blurred.jpeg", name_blurred)
 
-            cv2.imwrite("./IDs/name.jpeg", nameImg)
-            print("Nameeeeeeee:", nameImg)
-            preprocessedName = self.preprocess(nameImg, 3)
-            cv2.imwrite("./IDs/namePreprocessed.jpeg", preprocessedName)
+        _, name_threshed = cv2.threshold(name_blurred, 0, 255, cv2.THRESH_OTSU)
+        _, address_threshed = cv2.threshold(address_blurred, 0, 255, cv2.THRESH_OTSU)
+        _, l_name_threshed = cv2.threshold(l_name_blurred, 0, 255, cv2.THRESH_OTSU)
 
-            name = image_to_string(
-                preprocessedName, lang="ara", config=os.environ['TESSDATA_PREFIX'])
-            print("Nameeeeeeee:", name)
-            if name is None or name.strip() == "":
-                return "", "", "failed to detect name"
-            else:
-                parts = name.split('\n', 2)
-                firstName = parts[0]
-                lastName = parts[1]
-                print(name)
-            return firstName, lastName, ""
+        cv2.imwrite("./IDs/name_threshed.jpeg", name_threshed)
 
-        except Exception as e:
-            print(e)
-            raise ValueError("failed to detect name")
 
+        name_config = r'--oem 1 --psm 6 -c tessedit_char_whitelist="ءآأؤإئىئةابتثجحخدذرزسشصضطظعغفقكلمنهوي "'
+        f_name_result = image_to_string(name_threshed, lang='ara', config=name_config)
+
+
+        l_name_result = image_to_string(l_name_threshed, lang='ara', config=name_config)
+
+
+        address_config = r'--oem 1 --psm 6 -c tessedit_char_whitelist="ءآأؤإئىئةابتثجحخدذرزسشصضطظعغفقكلمنهوي- "'
+        address_result = image_to_string(address_threshed, lang='ara', config=address_config)
+
+        return f_name_result, l_name_result, address_result
+    def get_governate(self, address):
+        # Trim leading and trailing whitespace
+        trimmed_sentence = address.strip()
+        
+        # Split the sentence by spaces and hyphens
+        words = [word for word in re.split(r'[\s-]+', trimmed_sentence) if word]
+        
+        # Get the last word
+        if words:
+            return words[-1]
+        else:
+            return ''
+        
+    def find_matching_governate(self, address, governates):
+        governate = self.get_governate(address)
+        # Clean the extracted text (remove extra spaces, normalize characters, etc.)
+        cleaned_text = governate.strip()
+
+        # Use difflib's get_close_matches to find the closest matches
+        matches = difflib.get_close_matches(cleaned_text, [g["value"] for g in governates], n=1, cutoff=0.6)
+
+        if matches:
+            closest_match = matches[0]
+            # Find the matching governate object
+            matching_governate = next((g for g in governates if g["value"] == closest_match), None)
+            return matching_governate
+        else:
+            return None
+        
     def extract_id(self, front, back):
         try:
             frontId = front[330:365, 260:640]
