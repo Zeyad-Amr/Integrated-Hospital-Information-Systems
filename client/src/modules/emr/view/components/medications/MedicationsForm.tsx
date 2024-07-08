@@ -1,17 +1,20 @@
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import { ExaminationFormComponentPropsInterface } from "@/core/shared/components/ExaminationAccordion";
+import SearchableSelectFieldComponent from "@/core/shared/components/SearchableSelectFieldComponent";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
-import { useAppDispatch } from "@/core/state/store";
+import { useAppDispatch, useAppSelector } from "@/core/state/store";
 import {
   createMedication,
+  getFdaMedicationList,
   updateMedication,
 } from "@/modules/emr/controllers/thunks/medications-thunk";
+import { MedicationsState } from "@/modules/emr/controllers/types";
 import { MedicationsInterface } from "@/modules/emr/interfaces/medications-interface";
 import MedicationsModel from "@/modules/emr/models/medications-model";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const MedicationsForm = ({
   patientId,
@@ -19,16 +22,47 @@ const MedicationsForm = ({
   isViewMode,
   setShowFormDialog,
 }: ExaminationFormComponentPropsInterface) => {
+  const FDAMedicationsState: MedicationsState = useAppSelector(
+    (state: any) => state.medications
+  );
   const dispatch = useAppDispatch();
+  const [searchValue, setSearchValue] = useState<string>('')
+
+  useEffect(() => {
+    dispatch(getFdaMedicationList({ search: `*${searchValue}*` }))
+  }, [searchValue])
+
+  const formatFdaDrugs = (data: any) => {
+    const results: { names: string[] } = { names: [] }
+    data.results?.map((result: any) => (
+      console.log(result.products),
+      result.products.map((product: any) => {
+        if (!results.names.includes(convertToTitleCase(product.brand_name))) {
+          results.names.push(convertToTitleCase(product.brand_name));
+        }
+      }
+      )
+    )
+    )
+    return results
+  }
+  const getSearchValue = (value: string) => { setSearchValue(value) }
+
+  function convertToTitleCase(str: string) {
+    return str.toLowerCase().split(' ').map(function(word) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+    }).join(' ');
+}
+
   return (
     <Formik
       initialValues={
         initialValues
           ? ({
-              ...initialValues,
-              endDate: initialValues?.endDate?.split("T")[0],
-              beginDate: initialValues?.beginDate?.split("T")[0],
-            } as MedicationsInterface)
+            ...initialValues,
+            endDate: initialValues?.endDate?.split("T")[0],
+            beginDate: initialValues?.beginDate?.split("T")[0],
+          } as MedicationsInterface)
           : MedicationsModel.defaultValues()
       }
       onSubmit={async (values) => {
@@ -60,20 +94,16 @@ const MedicationsForm = ({
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container spacing={1}>
             <Grid item lg={8} md={8} sm={12} xs={12}>
-              <CustomTextField
-                isRequired
-                name="drugName"
-                label="اسم الدواء"
+              <SearchableSelectFieldComponent
+                name="name"
                 value={values.drugName}
                 onChange={handleChange}
-                onBlur={handleBlur}
+                getSearchValue={getSearchValue}
                 error={errors.drugName}
                 touched={touched.drugName}
-                width="100%"
-                props={{
-                  type: "text",
-                  disabled: isViewMode,
-                }}
+                disabled={isViewMode}
+                label="الاسم"
+                options={formatFdaDrugs(FDAMedicationsState.fdaMedications).names.sort()}
               />
             </Grid>
             <Grid item lg={4} md={4} sm={12} xs={12}>

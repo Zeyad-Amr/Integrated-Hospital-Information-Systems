@@ -10,6 +10,7 @@ interface SearchableSelectFieldPropsInterface {
   value: string;
   name: string;
   disabled?: boolean;
+  getSearchValue?: (value: string) => void
 }
 
 const SearchableSelectFieldComponent = ({
@@ -21,6 +22,7 @@ const SearchableSelectFieldComponent = ({
   onChange,
   name,
   disabled = false,
+  getSearchValue
 }: SearchableSelectFieldPropsInterface) => {
   return (
     <Autocomplete
@@ -32,9 +34,12 @@ const SearchableSelectFieldComponent = ({
           {option}
         </Box>
       )}
+      sx={{mt:'0.7rem'}}
       renderInput={(params) => (
         <TextField
           {...params}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => getSearchValue ? (event.target.value.length % 3 === 0 ? getSearchValue(event.target.value) : null) : null}
+
           name={name}
           label={label}
           helperText={error && touched ? error : ""}
@@ -46,17 +51,19 @@ const SearchableSelectFieldComponent = ({
         />
       )}
       value={value}
-      onChange={(_event, newValue) => {
+      onChange={(_event:any, newValue) => {
         // Create a synthetic event for Formik
         const syntheticEvent = {
           target: {
             name,
-            value: newValue || "", // Handle cases where newValue is null
+            value: newValue || _event.target.value, // Handle cases where newValue is null
           },
         } as React.ChangeEvent<HTMLInputElement>;
-        
+
         onChange(syntheticEvent);
       }}
+
+      
       disabled={disabled}
     />
   );

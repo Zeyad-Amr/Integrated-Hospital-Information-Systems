@@ -9,6 +9,7 @@ import {
 } from "@/core/api";
 import { MedicationsInterface } from "../../interfaces/medications-interface";
 import MedicationsModel from "../../models/medications-model";
+import axios from "axios";
 
 //*  Create Medication
 export const createMedication = createAsyncThunk(
@@ -22,6 +23,28 @@ export const createMedication = createAsyncThunk(
         MedicationsModel.toJson(data)
       );
       return true;
+    } catch (error) {
+      const errorResponse: ErrorResponse =
+        error instanceof Error ? ErrorMessage.get(error.message) : error;
+      return rejectWithValue(errorResponse);
+    }
+  }
+);
+
+//*  Get FDA Medications
+export const getFdaMedicationList = createAsyncThunk(
+  "medication/FDA/list",
+  async (params: { search: string }, thunkApi) => {
+    const { rejectWithValue } = thunkApi;
+    try {
+      const response = await axios.get('https://api.fda.gov/drug/drugsfda.json', {
+        params: {
+          search: `products.brand_name:${params.search}`,
+          limit: 50,
+        }
+      });
+      console.log(response, 'response');
+      return response.data;
     } catch (error) {
       const errorResponse: ErrorResponse =
         error instanceof Error ? ErrorMessage.get(error.message) : error;
