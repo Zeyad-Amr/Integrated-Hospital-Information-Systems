@@ -34,13 +34,16 @@ export const createMedication = createAsyncThunk(
 //*  Get FDA Medications
 export const getFdaMedicationList = createAsyncThunk(
   "medication/FDA/list",
-  async (_data, thunkApi) => {
+  async (params: { search: string }, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
-     const response = await axios.post(
-        'https://api.fda.gov/drug/drugsfda.json?search=products.marketing_status&limit=5'
-      )
-      console.log(response,'response');
+      const response = await axios.get('https://api.fda.gov/drug/drugsfda.json', {
+        params: {
+          search: `products.brand_name:${params.search}`,
+          limit: 50,
+        }
+      });
+      console.log(response, 'response');
       return response.data;
     } catch (error) {
       const errorResponse: ErrorResponse =

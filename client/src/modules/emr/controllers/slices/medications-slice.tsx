@@ -17,7 +17,7 @@ import {
 const initialState: MedicationsState = {
   medications: PaginatedListModel.default(),
   currentMedication: MedicationsModel.defaultValues(),
-  fdaMedications : [],
+  fdaMedications: [],
   isFetched: false,
   loading: false,
   error: "",
@@ -85,7 +85,7 @@ const medicationsSlice = createSlice({
     builder.addCase(getFdaMedicationList?.rejected, (state, action) => {
       state.loading = false;
       state.error = (action.payload as ErrorResponse).message;
-      AlertService.showAlert(`${state.error}`, "error");
+      AlertService.showAlert(`The medication is not found`, "error");
       state.medications = initialState.medications;
     });
 

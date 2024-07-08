@@ -143,7 +143,6 @@ export default function ExaminationAccordion({
     }
     return formattedItem;
   };
-
   return (
     <>
       <Accordion

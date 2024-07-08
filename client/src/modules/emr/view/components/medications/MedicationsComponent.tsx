@@ -15,6 +15,7 @@ const MedicationsComponent = ({ patientId }: PatientIDsInterface) => {
   const medicationsState: MedicationsState = useAppSelector(
     (state: any) => state.medications
   );
+  
   return (
     <ExaminationAccordion
       getListThunk={getMedicationsList}

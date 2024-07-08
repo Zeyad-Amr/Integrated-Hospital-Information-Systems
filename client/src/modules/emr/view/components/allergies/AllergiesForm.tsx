@@ -24,10 +24,7 @@ const AllergiesForm = ({
 }: ExaminationFormComponentPropsInterface) => {
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(getFdaMedicationList())
-  }, [])
-  
+ 
   return (
     <Formik
       initialValues={
