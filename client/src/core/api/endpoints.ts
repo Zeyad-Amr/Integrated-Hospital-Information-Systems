@@ -18,14 +18,12 @@ const Endpoints = {
     details: "/visit/:visitcode",
     transfer: "/visit/:visitcode/status",
     create: "/visit",
-    createAnonymously:
-      "/visit/anonymous",
+    createAnonymously: "/visit/anonymous",
     update: "/patient",
-    complaint:"visit/complaint/:visitCode",
-    triageAX:
-      "visit/triageAx",
+    complaint: "visit/complaint/:visitCode",
+    triageAX: "visit/triageAx",
     streaming: "/streaming/event",
-
+    examinationVisitStreaming: "/streaming/examination/visits",
   },
   incident: {
     create: "/incident",
@@ -65,8 +63,7 @@ const Endpoints = {
     details: "/subdepartment/:id",
     create: "/subdepartment",
     update: "/subdepartment/:id",
-    updateAssignFeatures:
-      "/subdepartment/:id/assignfeatures",
+    updateAssignFeatures: "/subdepartment/:id/assignfeatures",
     delete: "/subdepartment/:id",
   },
   feature: {

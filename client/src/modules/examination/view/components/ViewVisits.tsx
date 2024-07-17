@@ -13,6 +13,8 @@ import {
 import { Button } from "@mui/material";
 import { VisitStatus } from "@/modules/registration/domain/entities/visit-entity";
 import { useRouter } from "next/navigation";
+import { AuthState } from "@/modules/auth/presentation/controllers/types";
+import { useAppSelector } from "@/core/state/store";
 
 export const header: HeaderItem[] = [
   {
@@ -61,9 +63,7 @@ export const header: HeaderItem[] = [
 
 const ViewVisits = () => {
   const router = useRouter();
-  // const authState: AuthState = useAppSelector((state: any) => state.auth);
-  // useRef
-  // const refPatientData = useRef("");
+  const authState: AuthState = useAppSelector((state: any) => state.auth);
 
   // useState
 
@@ -82,9 +82,11 @@ const ViewVisits = () => {
 
     let eventSource = new EventSource(
       Endpoints.base +
-        Endpoints.visit.streaming +
+        Endpoints.visit.examinationVisitStreaming +
         "?filters=status:any:" +
-        VisitStatus.TRANSFERED,
+        VisitStatus.TRANSFERED +
+        "?subdepartmentId=" +
+        authState.currentPermission.subDepartment.id,
       {
         headers: {
           Authorization: `Bearer ${token}`,
