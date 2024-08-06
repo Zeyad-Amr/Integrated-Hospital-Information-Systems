@@ -19,6 +19,7 @@
     - [Improved Communication and Interoperability](#improved-communication-and-interoperability)
   - [How to Run the Project](#how-to-run-the-project)
   - [Swagger API Documentation](#swagger-api-documentation)
+  - [Methodology](#methodology)
   - [System Architecture](#system-architecture)
   - [Technologies \& Tools](#technologies--tools)
   - [Future Work](#future-work)
@@ -31,6 +32,8 @@
     - [Constants](#constants)
   - [Contributors](#contributors)
   - [Supervisors](#supervisors)
+  - [Special Thanks](#special-thanks)
+  - [Acknowledgments](#acknowledgments)
 
 ## Introduction
 
@@ -64,9 +67,13 @@ The system includes the following portals:
 
 ## User Stories
 
-- **As a Registrar**: I want to quickly and accurately register patients to reduce waiting times.
-- **As a Doctor**: I need immediate access to patient data to provide timely treatment.
-- **As an Admin**: I want to manage system settings and user roles efficiently.
+- **As a Registrar:** I want to quickly register patients, handle various patient scenarios, and use auto-completion to reduce waiting times and entry errors.
+
+- **As a Doctor:** I need immediate access to comprehensive patient data, including detailed EMR and radiology images, to provide timely and accurate treatment.
+
+- **As an Admin:** I want to manage system settings, customize workflows, and control user roles efficiently to ensure flexibility, security, and smooth operations.
+
+- **As a Doctor:** I want real-time data transfer and consultation requests to enhance communication and improve patient care.
 
 ## Top Features
 
@@ -161,6 +168,19 @@ By following these steps, you can easily set up and run the project locally usin
 ## Swagger API Documentation
 
 API documentation is available via [Swagger](https://qasr-server-lqj1.onrender.com/api/docs). It provides interactive endpoints and detailed descriptions for testing and understanding the API.
+
+## Methodology
+
+The project employs an iterative methodology, which emphasizes continuous improvement through repeated cycles. This approach includes the following phases:
+
+1. **Planning:** Define goals, allocate resources, and set timelines.
+2. **Analysis:** Gather requirements, assess feasibility, and document findings.
+3. **Design:** Develop system architecture, UI/UX designs, and prototypes.
+4. **Development:** Implement features incrementally, integrate code, and gather feedback.
+5. **Evaluation:** Assess performance, resolve issues, and implement improvements.
+6. **Upgrade:** Enhance features, optimize performance, and manage new versions.
+
+This methodology ensures adaptability, ongoing stakeholder engagement, and continuous refinement throughout the project.
 
 ## System Architecture
 
@@ -293,8 +313,20 @@ Use uppercase with underscores.
 - Professor Emeritus Ahmed Hisham Kandil
 - Assistant Professor Eman Ayman
 
+## Special Thanks
+
+- **Qasr Al-Ainy Hospital:** For providing valuable feedback and insights that guided the development of features tailored to emergency hospital workflows.
+
+- **Baheya Hospital:** For validating the system's functionality and ensuring its adaptability to different hospital processes.
+
+- **OpenFDA APIs:** For providing drug data that was integrated into the system's medication management features.
+
+- **Open Source Communities:** For the tools and libraries that supported the development of document processing, OCR, and interoperability standards.
+
+## Acknowledgments
+
+- **Healthcare Professionals:** For their ongoing support and feedback, which were crucial in refining the system and ensuring its effectiveness in real-world scenarios.
+
+- **Stakeholders:** For their contributions through surveys and interviews, which helped shape the features and functionality of the system.
+
 All rights reserved © 2024
-
-```
-
-```
