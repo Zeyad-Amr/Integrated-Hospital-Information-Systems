@@ -1,12 +1,22 @@
 # Integrating Advanced Technologies into Hospital Information Systems to Manage Healthcare Data
 
 ## Table of Contents
+
+- [Integrating Advanced Technologies into Hospital Information Systems to Manage Healthcare Data](#integrating-advanced-technologies-into-hospital-information-systems-to-manage-healthcare-data)
+  - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
   - [System Overview](#system-overview)
   - [Workflow Overview](#workflow-overview)
   - [Portals](#portals)
   - [User Stories](#user-stories)
   - [Top Features](#top-features)
+    - [Comprehensive Patient Registration Handling](#comprehensive-patient-registration-handling)
+    - [Advanced Data Entry Solutions](#advanced-data-entry-solutions)
+    - [Document Processing Efficiency](#document-processing-efficiency)
+    - [Enhanced Electronic Medical Records (EMR)](#enhanced-electronic-medical-records-emr)
+    - [Simple DICOM Viewer](#simple-dicom-viewer)
+    - [Customization and Adaptability](#customization-and-adaptability)
+    - [Improved Communication and Interoperability](#improved-communication-and-interoperability)
   - [How to Run the Project](#how-to-run-the-project)
   - [Swagger API Documentation](#swagger-api-documentation)
   - [System Architecture](#system-architecture)
@@ -30,7 +40,7 @@ Egyptian public hospitals, particularly emergency departments, face significant 
 
 The system is designed to address these challenges through digitalization, streamlining data management, enhancing communication, and utilizing advanced technologies. It is tailored to meet the needs of emergency departments and integrates various hospital workflows.
 
-https://github.com/user-attachments/assets/77ede865-d77a-4695-8704-58fe5b5aa0fc
+<https://github.com/user-attachments/assets/77ede865-d77a-4695-8704-58fe5b5aa0fc>
 
 ## Workflow Overview
 
@@ -60,11 +70,52 @@ The system includes the following portals:
 
 ## Top Features
 
-- **Single Patient Visit Registration**: Efficiently registers individual patients.
-- **Group Patients Visits Registration**: Handles multiple patient registrations simultaneously.
-- **Anonymous Registration**: Manages unidentified or unconscious patients securely.
-- **Enhanced Data Entry**: Utilizes autocomplete and real-time database integration.
-- **OCR Implementation**: Extracts and processes data from national ID cards.
+### Comprehensive Patient Registration Handling
+
+- **Diverse Patient Cases:** Efficiently manage a range of patient scenarios including conscious patients, unconscious patients with or without companions, and groups of patients.
+- **Visit Code System:** Utilize a structured visit code format for tracking patient registration with details such as date and serial number.
+
+### Advanced Data Entry Solutions
+
+- **Auto-Completion:** Automatically fetch previous visit data using SSN to streamline data entry.
+- **Searchable Select Fields:** Improve data accuracy and efficiency with searchable fields for selecting relevant information.
+
+### Document Processing Efficiency
+
+- **Streamlined Data Entry:** Use document processing to minimize manual entry errors with automated steps including scanning, preprocessing, and OCR.
+- **OCR Technology:** High-performance OCR with preprocessing (Gray Scale, Median Filter, Thresholding) and a CNN model, achieving 99.7% accuracy and 21 ms processing time.
+- **Increased Throughput:** Enhance registration speed, doubling the number of people processed within 10 minutes.
+
+### Enhanced Electronic Medical Records (EMR)
+
+- **Comprehensive EMR:** Maintain detailed patient records including personal information, triage assessments, examinations, medications, and lab results.
+- **Exam Page Tabs:** Organize patient data with tabs for history, labs, radiology, and consultations.
+- **Standardized Lookups:** Ensure consistent data entry with standardized lookups for lab tests, radiology tests, allergies, and medications.
+
+### Simple DICOM Viewer
+
+- **Image Viewing Tools:** Basic DICOM viewer includes contrast adjustment, zoom level indication, and image resolution display for easy access to radiology images.
+
+### Customization and Adaptability
+
+- **Flexible Workflow Management:** Easily adapt workflows to meet evolving hospital needs. For instance, adjust workflows when departments are reorganized or when new processes are introduced.
+  - **Example:** Transitioning a heart subdepartment from an independent unit to the TriageA subdepartment, ensuring the system supports both the old and new workflow models seamlessly.
+- **Customizable Role-Based Authorization:** Tailor access controls with role-based permissions to match specific operational requirements and enhance security.
+
+  - **Multi-Subdepartment Roles:** Assign roles that span multiple subdepartments, ensuring users have appropriate access based on their responsibilities.
+  - **Example:** Consultants have access to consultation requests and patient records, while interns have limited access, reflecting their roles in the hospital.
+
+- **Adaptive Features:** Adjust system features and workflows to align with different hospital environments and procedures.
+
+  - **Example:** At Qasr Hospital, patients are directed during triage assessment, whereas at Baheya Hospital, patients are directed during registration. The system accommodates these differences through customizable workflows.
+
+- **Seamless Hospital Transitions:** Facilitate smooth transitions between different hospital setups by adapting the system to new operational models and requirements.
+  - **Example:** When moving from one hospital to another, the system can be customized to fit the new hospital's registration and patient management processes without disrupting ongoing operations.
+
+### Improved Communication and Interoperability
+
+- **Real-Time Data Transfer:** Enable immediate data availability and seamless flow from triage to examination, with real-time consultation requests.
+- **Interoperability Standards:** Integrate hospital and departmental systems using Fast Healthcare Interoperability Resources (FHIR) for scalable, compliant solutions.
 
 ## How to Run the Project
 
@@ -243,3 +294,7 @@ Use uppercase with underscores.
 - Assistant Professor Eman Ayman
 
 All rights reserved © 2024
+
+```
+
+```
