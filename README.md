@@ -2,21 +2,29 @@
 
 ## Table of Contents
 
-- [Abstract](#abstract)
-- [Introduction](#introduction)
-- [System Overview](#system-overview)
-- [Workflow Overview](#workflow-overview)
-- [Portals](#portals)
-- [User Stories](#user-stories)
-- [Selected Features](#selected-features)
-- [Demo and Screenshots](#demo-and-screenshots)
-- [How to Run the Project](#how-to-run-the-project)
-- [Swagger API Documentation](#swagger-api-documentation)
-- [System Architecture](#system-architecture)
-- [Technologies \& Tools](#technologies--tools)
-- [Future Work](#future-work)
-- [Code Naming Conventions](#code-naming-conventions)
-- [Contributors](#contributors)
+- [Integrating Advanced Technologies into Hospital Information Systems to Manage Healthcare Data](#integrating-advanced-technologies-into-hospital-information-systems-to-manage-healthcare-data)
+  - [Table of Contents](#table-of-contents)
+  - [Abstract](#abstract)
+  - [Introduction](#introduction)
+  - [System Overview](#system-overview)
+  - [Workflow Overview](#workflow-overview)
+  - [Portals](#portals)
+  - [User Stories](#user-stories)
+  - [Top Features](#top-features)
+  - [Demo and Screenshots](#demo-and-screenshots)
+  - [How to Run the Project](#how-to-run-the-project)
+  - [Swagger API Documentation](#swagger-api-documentation)
+  - [System Architecture](#system-architecture)
+  - [Technologies \& Tools](#technologies--tools)
+  - [Future Work](#future-work)
+  - [Code Naming Conventions](#code-naming-conventions)
+    - [Variables and Functions](#variables-and-functions)
+    - [Classes](#classes)
+    - [Files](#files)
+    - [Interfaces and Types](#interfaces-and-types)
+    - [Folder Structure](#folder-structure)
+    - [Constants](#constants)
+  - [Contributors](#contributors)
 
 ## Abstract
 
@@ -54,7 +62,7 @@ The system includes the following portals:
 - **As a Doctor**: I need immediate access to patient data to provide timely treatment.
 - **As an Admin**: I want to manage system settings and user roles efficiently.
 
-## Selected Features
+## Top Features
 
 - **Single Patient Visit Registration**: Efficiently registers individual patients.
 - **Group Patients Visits Registration**: Handles multiple patient registrations simultaneously.
