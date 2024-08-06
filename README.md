@@ -1,17 +1,12 @@
 # Integrating Advanced Technologies into Hospital Information Systems to Manage Healthcare Data
 
 ## Table of Contents
-
-- [Integrating Advanced Technologies into Hospital Information Systems to Manage Healthcare Data](#integrating-advanced-technologies-into-hospital-information-systems-to-manage-healthcare-data)
-  - [Table of Contents](#table-of-contents)
-  - [Abstract](#abstract)
   - [Introduction](#introduction)
   - [System Overview](#system-overview)
   - [Workflow Overview](#workflow-overview)
   - [Portals](#portals)
   - [User Stories](#user-stories)
   - [Top Features](#top-features)
-  - [Demo and Screenshots](#demo-and-screenshots)
   - [How to Run the Project](#how-to-run-the-project)
   - [Swagger API Documentation](#swagger-api-documentation)
   - [System Architecture](#system-architecture)
@@ -27,8 +22,6 @@
   - [Contributors](#contributors)
   - [Supervisors](#supervisors)
 
-## Abstract
-
 ## Introduction
 
 Egyptian public hospitals, particularly emergency departments, face significant challenges in managing healthcare data. These departments, which operate 24/7, provide immediate care for acute illnesses or injuries and encounter high patient volumes, coordination issues, and gaps in data management.
@@ -36,6 +29,8 @@ Egyptian public hospitals, particularly emergency departments, face significant 
 ## System Overview
 
 The system is designed to address these challenges through digitalization, streamlining data management, enhancing communication, and utilizing advanced technologies. It is tailored to meet the needs of emergency departments and integrates various hospital workflows.
+
+https://github.com/user-attachments/assets/77ede865-d77a-4695-8704-58fe5b5aa0fc
 
 ## Workflow Overview
 
@@ -71,10 +66,6 @@ The system includes the following portals:
 - **Enhanced Data Entry**: Utilizes autocomplete and real-time database integration.
 - **OCR Implementation**: Extracts and processes data from national ID cards.
 
-## Demo and Screenshots
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/CGJMwEnW_Fw?si=n6lL_meE7MZHxvoI" frameborder="0" allowfullscreen></iframe>
-
 ## How to Run the Project
 
 To run the project using Docker, follow these steps:
@@ -87,7 +78,7 @@ To run the project using Docker, follow these steps:
    ```
 
 2. **Create Environment File**:
-   Create a `.env` file in the project root with the necessary environment variables. For example:
+   Create a `.env` file with the necessary environment variables at the project's root. For example:
 
    ```env
     DATABASE_URL=postgresql://postgres:password@postgres:5432/nestdb
