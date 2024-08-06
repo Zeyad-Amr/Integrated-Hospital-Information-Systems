@@ -25,6 +25,7 @@
     - [Folder Structure](#folder-structure)
     - [Constants](#constants)
   - [Contributors](#contributors)
+  - [Supervisors](#supervisors)
 
 ## Abstract
 
@@ -72,7 +73,48 @@ The system includes the following portals:
 
 ## Demo and Screenshots
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CGJMwEnW_Fw?si=n6lL_meE7MZHxvoI" frameborder="0" allowfullscreen></iframe>
+
 ## How to Run the Project
+
+To run the project using Docker, follow these steps:
+
+1. **Clone the Repository**:
+
+   ```sh
+   git clone https://github.com/Zeyad-Amr/Qasr-HIS.git
+   cd Qasr-HIS
+   ```
+
+2. **Create Environment File**:
+   Create a `.env` file in the project root with the necessary environment variables. For example:
+
+   ```env
+    DATABASE_URL=postgresql://postgres:password@postgres:5432/nestdb
+    JWT_SECRET=your_jwt_secret
+    BASE_URL=http://localhost:4000
+   ```
+
+3. **Build and Run Docker Containers**:
+
+   ```sh
+   docker-compose up --build
+   ```
+
+4. **Access the Application**:
+
+   - The application will be available at `http://localhost:3000` for the frontend.
+   - The backend API will be available at `http://localhost:4000`.
+   - The OCR server will be available at `http://localhost:5000`.
+
+5. **Stopping the Containers**:
+   To stop the running containers, use:
+
+   ```sh
+   docker-compose down
+   ```
+
+By following these steps, you can easily set up and run the project locally using Docker.
 
 ## Swagger API Documentation
 
@@ -90,9 +132,10 @@ The system architecture includes:
 
 ## Technologies & Tools
 
-- **Frontend**: TypeScript, Next.js
-- **Backend**: Nest.js
-- **Database**: PostgreSQL
+- **Frontend**: TypeScript, Next.js, Material-UI, Axios, Redux-Toolkit, Formik, Yup, Cornerstone.js
+- **Backend**: Nest.js, TypeScript, Swagger, JWT
+- **Database**: PostgreSQL, Prisma ORM
+- **OCR**: Python, OpenCV, Tesseract, Flask, TensorFlow
 - **Containerization**: Docker
 - **Architecture**: Clean Architecture
 - **Wireframing**: Figma
@@ -202,3 +245,10 @@ Use uppercase with underscores.
         </tr>
     </tbody>
 </table>
+
+## Supervisors
+
+- Professor Emeritus Ahmed Hisham Kandil
+- Assistant Professor Eman Ayman
+
+All rights reserved © 2024
