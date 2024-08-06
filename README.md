@@ -2,8 +2,6 @@
 
 ## Table of Contents
 
-- [Integrating Advanced Technologies into Hospital Information Systems to Manage Healthcare Data](#integrating-advanced-technologies-into-hospital-information-systems-to-manage-healthcare-data)
-  - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
   - [System Overview](#system-overview)
   - [Workflow Overview](#workflow-overview)
@@ -184,13 +182,7 @@ This methodology ensures adaptability, ongoing stakeholder engagement, and conti
 
 ## System Architecture
 
-The system architecture includes:
-
-- **OCR Server**: Manages image processing and text extraction.
-- **EMR Server**: Stores and manages Electronic Medical Records (EMR).
-- **API Gateway**: Facilitates secure communication between components.
-- **External System Connections**: Integrates with pharmacy, RIS, and LIS via FHIR.
--
+![System Architecture](https://github.com/user-attachments/assets/dc678c46-43e0-41f7-bf39-66fdd416f100)
 
 ## Technologies & Tools
 
