@@ -8,13 +8,12 @@ import {
   createAllergy,
   updateAllergy,
 } from "@/modules/emr/controllers/thunks/allergies-thunk";
-import { getFdaMedicationList } from "@/modules/emr/controllers/thunks/medications-thunk";
 import { AllergiesInterface } from "@/modules/emr/interfaces/allergies-interface";
 import AllergiesModel from "@/modules/emr/models/allergies-model";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik } from "formik";
-import React, { useEffect } from "react";
+import React from "react";
 
 const AllergiesForm = ({
   patientId,

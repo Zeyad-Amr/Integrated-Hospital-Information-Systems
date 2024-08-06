@@ -14,7 +14,7 @@ import MedicationsModel from "@/modules/emr/models/medications-model";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik } from "formik";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const MedicationsForm = ({
   patientId,
