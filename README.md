@@ -85,12 +85,57 @@ The system includes the following portals:
 - **Auto-Completion:** Automatically fetch previous visit data using SSN to streamline data entry.
 - **Searchable Select Fields:** Improve data accuracy and efficiency with searchable fields for selecting relevant information.
 
-### Document Processing Efficiency
+## Document Processing Efficiency
 
-- **Streamlined Data Entry:** Use document processing to minimize manual entry errors with automated steps including scanning, preprocessing, and OCR.
-- **OCR Technology:** High-performance OCR with preprocessing (Gray Scale, Median Filter, Thresholding) and a CNN model, achieving 99.7% accuracy and 21 ms processing time.
-- **Increased Throughput:** Enhance registration speed, doubling the number of people processed within 10 minutes.
+**Streamlined Data Entry**: Minimize manual entry errors with automated document processing steps including scanning, preprocessing, and OCR.
 
+**OCR Technology**: High-performance OCR with preprocessing (Gray Scale, Median Filter, Thresholding) and a CNN model, achieving 99.7% accuracy and 21 ms processing time.
+
+**Increased Throughput**: Enhance registration speed, doubling the number of people processed within 10 minutes.
+
+### Steps
+
+1. **Scanning**
+2. **Preprocessing**
+3. **OCR Model**
+4. **Data Output**
+
+### Preprocessing Steps
+
+- **Gray Scale**
+- **Median Filter**
+- **Thresholding**
+
+### OCR Implementation
+
+#### Dataset Preparation
+
+1. Data Acquisition
+2. Dataset Augmentation
+3. Labeling Data
+
+#### Model Training
+
+1. Data Loading
+2. Model Architecture (CNN)
+3. Training Process
+
+### Performance Metrics Results
+
+- **Processing Time**: 21 ms
+- **Accuracy**: 99.7%
+
+### Detection Process
+
+1. Preprocessing
+2. ID ROI
+3. Contour Detection
+4. Data Output
+
+### Contour Detection
+
+- Accurate identification of text regions
+- Enhanced data extraction quality
 ### Enhanced Electronic Medical Records (EMR)
 
 - **Comprehensive EMR:** Maintain detailed patient records including personal information, triage assessments, examinations, medications, and lab results.
