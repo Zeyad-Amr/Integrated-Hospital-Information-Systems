@@ -1,4 +1,4 @@
-# Integrating Advanced Technologies into Hospital Information Systems to Manage Healthcare Data
+# Integrating Technologies into Hospital Information Systems to Manage Healthcare Data
 
 ## Table of Contents
 
