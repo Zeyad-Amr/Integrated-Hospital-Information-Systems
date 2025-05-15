@@ -44,30 +44,50 @@ $ yarn run start:dev
 # production mode
 $ yarn run start:prod
 ```
+# Qasr-HIS
+## Filter Rules
 
-## Test
+The following filter rules can be used when applying filters to your data:
 
-```bash
-# unit tests
-$ yarn run test
+### `EQUALS` (eq)
+- Example: `field:eq:value`
 
-# e2e tests
-$ yarn run test:e2e
+### `NOT_EQUALS` (neq)
+- Example: `field:neq:value`
 
-# test coverage
-$ yarn run test:cov
-```
+### `GREATER_THAN` (gt)
+- Example: `field:gt:value`
 
-## Support
+### `GREATER_THAN_OR_EQUALS` (gte)
+- Example: `field:gte:value`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### `LESS_THAN` (lt)
+- Example: `field:lt:value`
 
-## Stay in touch
+### `LESS_THAN_OR_EQUALS` (lte)
+- Example: `field:lte:value`
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### `LIKE` (like)
+- Description: it checks if string contains specific pattern
+- Example: `field:like:pattern`
 
-## License
+### `STARTS_WITH` (stw)
+- Example: `name:stw:ahmed`
 
-Nest is [MIT licensed](LICENSE).
+### `IS_NULL` (isnull)
+- Example: `field:isnull`
+
+### `IS_NOT_NULL` (isnotnull)
+- Example: `field:isnotnull`
+
+## Sorting Rules
+- Example: `field:asc`
+- Example: `field:desc`
+
+# Model
+- to run the model 
+- 1. pip install -r requirements.txt
+- 2. python app.py
+- API -> http://localhost:5000/extractdata
+- API body -> accepts 2 images in form data with names {front:img, back:img}
+- status codes: 200 success, 420: failed to detect name, 421: failed to detect national id , 422: check national id
